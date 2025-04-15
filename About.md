@@ -2,7 +2,7 @@
 
 **Document Version:** 1.1
 **Date:** April 15, 2025
-**Author:** AI Assistant
+**Author:** Drago
 **Platform Name:** GroqTales
 
 ## 1. Introduction
