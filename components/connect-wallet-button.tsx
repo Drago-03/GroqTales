@@ -6,13 +6,18 @@ import { Loader2, Wallet } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 export function ConnectWalletButton() {
-  const { address, isConnected, isSigningIn, connect, signIn } = useWeb3Auth();
+  const { address, isConnected, isSigningIn, connect, signIn, connectors } = useWeb3Auth();
   const { toast } = useToast();
 
   const handleConnect = async () => {
     try {
       if (!isConnected) {
-        await connect();
+        // Get the first available connector (usually injected - MetaMask)
+        const connector = connectors[0];
+        if (!connector) {
+          throw new Error("No wallet connector found");
+        }
+        await connect({ connector });
       } else {
         await signIn();
         toast({

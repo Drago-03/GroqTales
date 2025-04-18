@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { LoadingAnimation } from "@/components/loading-animation";
-import { Github, Wallet, ArrowRight, BookOpen } from "lucide-react";
+import { Github, Wallet, ArrowRight, BookOpen, Sparkles, Users, Shield, DollarSign, MessageSquare, Check, Trophy } from "lucide-react";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -55,7 +55,7 @@ export default function LandingPage() {
         <div className="w-24 h-24 mb-8 relative">
           <div className="absolute inset-0 rounded-full theme-gradient-bg animate-pulse"></div>
           <div className="absolute inset-2 rounded-full bg-background flex items-center justify-center">
-            <span className="text-2xl font-bold gradient-heading">GT</span>
+            <BookOpen className="w-12 h-12 text-primary" />
           </div>
         </div>
         <LoadingAnimation message="Welcome to GroqTales" />
@@ -71,16 +71,6 @@ export default function LandingPage() {
         <div className="absolute bottom-40 right-20 w-40 h-40 bg-gradient-to-r from-blue-200 to-teal-200 rounded-full blur-3xl opacity-20 animate-float-delayed"></div>
         <div className="absolute top-1/2 left-1/3 w-36 h-36 bg-gradient-to-r from-yellow-200 to-orange-200 rounded-full blur-3xl opacity-20 animate-float-slow"></div>
       </div>
-
-      {/* Header */}
-      <header className="container mx-auto px-4 py-6 flex justify-between items-center relative z-10">
-        <div className="flex items-center space-x-2">
-          <div className="w-10 h-10 rounded-full theme-gradient-bg flex items-center justify-center">
-            <span className="text-lg font-bold text-white">GT</span>
-          </div>
-          <span className="text-xl font-bold">GroqTales</span>
-        </div>
-      </header>
 
       {/* Hero section */}
       <main className="flex-1 container mx-auto px-4 py-20 flex flex-col lg:flex-row items-center justify-between relative z-10">
@@ -151,22 +141,26 @@ export default function LandingPage() {
       <section className="bg-muted/30 py-20 relative z-10">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 gradient-heading">Key Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-card border border-border p-6 rounded-lg shadow-sm">
+          
+          {/* Animated Feature Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 animate-features">
+            <div className="bg-card border border-border p-6 rounded-lg shadow-sm transform hover:scale-105 transition-transform duration-300">
               <div className="w-12 h-12 mb-4 rounded-full theme-gradient-bg opacity-80 flex items-center justify-center">
                 <BookOpen className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Decentralized Stories</h3>
               <p className="text-muted-foreground">Create and share your stories on a decentralized platform that you own.</p>
             </div>
-            <div className="bg-card border border-border p-6 rounded-lg shadow-sm">
+
+            <div className="bg-card border border-border p-6 rounded-lg shadow-sm transform hover:scale-105 transition-transform duration-300">
               <div className="w-12 h-12 mb-4 rounded-full theme-gradient-bg opacity-80 flex items-center justify-center">
                 <Wallet className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-2">NFT Integration</h3>
               <p className="text-muted-foreground">Turn your best stories into NFTs and monetize your creative work.</p>
             </div>
-            <div className="bg-card border border-border p-6 rounded-lg shadow-sm">
+
+            <div className="bg-card border border-border p-6 rounded-lg shadow-sm transform hover:scale-105 transition-transform duration-300">
               <div className="w-12 h-12 mb-4 rounded-full theme-gradient-bg opacity-80 flex items-center justify-center">
                 <ArrowRight className="h-6 w-6 text-white" />
               </div>
@@ -174,7 +168,116 @@ export default function LandingPage() {
               <p className="text-muted-foreground">Browse stories anonymously or connect with wallet for full features.</p>
             </div>
           </div>
+
+          {/* Additional Features with Animation */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 opacity-0 animate-fade-in">
+            <div className="bg-card border border-border p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-10 h-10 mb-3 rounded-full theme-gradient-bg opacity-80 flex items-center justify-center">
+                <Sparkles className="h-5 w-5 text-white" />
+              </div>
+              <h4 className="text-lg font-semibold mb-2">AI-Powered Writing</h4>
+              <p className="text-sm text-muted-foreground">Get creative suggestions and overcome writer's block with AI assistance.</p>
+            </div>
+
+            <div className="bg-card border border-border p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-10 h-10 mb-3 rounded-full theme-gradient-bg opacity-80 flex items-center justify-center">
+                <Users className="h-5 w-5 text-white" />
+              </div>
+              <h4 className="text-lg font-semibold mb-2">Collaborative Writing</h4>
+              <p className="text-sm text-muted-foreground">Create stories together with other writers in real-time collaboration.</p>
+            </div>
+
+            <div className="bg-card border border-border p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-10 h-10 mb-3 rounded-full theme-gradient-bg opacity-80 flex items-center justify-center">
+                <Shield className="h-5 w-5 text-white" />
+              </div>
+              <h4 className="text-lg font-semibold mb-2">Rights Protection</h4>
+              <p className="text-sm text-muted-foreground">Protect your intellectual property with blockchain verification.</p>
+            </div>
+
+            <div className="bg-card border border-border p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-10 h-10 mb-3 rounded-full theme-gradient-bg opacity-80 flex items-center justify-center">
+                <DollarSign className="h-5 w-5 text-white" />
+              </div>
+              <h4 className="text-lg font-semibold mb-2">Multiple Revenue</h4>
+              <p className="text-sm text-muted-foreground">Earn through NFT sales, tips, subscriptions, and royalties.</p>
+            </div>
+          </div>
+
+          {/* Feature Highlights with Animation */}
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 opacity-0 animate-slide-up">
+            <div className="bg-card border border-border p-8 rounded-lg shadow-sm">
+              <h3 className="text-xl font-semibold mb-4 flex items-center">
+                <MessageSquare className="h-6 w-6 mr-2 text-primary" />
+                Interactive Storytelling
+              </h3>
+              <ul className="space-y-3 text-muted-foreground">
+                <li className="flex items-center">
+                  <Check className="h-5 w-5 mr-2 text-green-500" />
+                  Choose-your-own-adventure stories
+                </li>
+                <li className="flex items-center">
+                  <Check className="h-5 w-5 mr-2 text-green-500" />
+                  Reader participation and voting
+                </li>
+                <li className="flex items-center">
+                  <Check className="h-5 w-5 mr-2 text-green-500" />
+                  Multimedia story elements
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-card border border-border p-8 rounded-lg shadow-sm">
+              <h3 className="text-xl font-semibold mb-4 flex items-center">
+                <Trophy className="h-6 w-6 mr-2 text-primary" />
+                Creator Benefits
+              </h3>
+              <ul className="space-y-3 text-muted-foreground">
+                <li className="flex items-center">
+                  <Check className="h-5 w-5 mr-2 text-green-500" />
+                  Analytics and performance tracking
+                </li>
+                <li className="flex items-center">
+                  <Check className="h-5 w-5 mr-2 text-green-500" />
+                  Community engagement tools
+                </li>
+                <li className="flex items-center">
+                  <Check className="h-5 w-5 mr-2 text-green-500" />
+                  Marketing and promotion support
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
+
+        {/* Add styles for animations */}
+        <style jsx>{`
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+
+          @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+
+          .animate-features > div {
+            animation: fadeIn 0.6s ease-out forwards;
+          }
+
+          .animate-features > div:nth-child(1) { animation-delay: 0.2s; }
+          .animate-features > div:nth-child(2) { animation-delay: 0.4s; }
+          .animate-features > div:nth-child(3) { animation-delay: 0.6s; }
+
+          .animate-fade-in {
+            animation: fadeIn 0.8s ease-out 0.8s forwards;
+          }
+
+          .animate-slide-up {
+            animation: slideUp 0.8s ease-out 1s forwards;
+          }
+        `}</style>
       </section>
     </div>
   );
