@@ -1,55 +1,57 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { Loader2, Wallet } from "lucide-react";
-import { useState } from "react";
-import { useWallet } from "@/hooks/use-wallet";
+import { useWeb3 } from "@/components/providers/web3-provider";
+import { Loader2 } from "lucide-react";
+import { truncateAddress } from "@/lib/utils";
 
 export function WalletConnect() {
-  const [isConnecting, setIsConnecting] = useState(false);
-  const { address, connect } = useWallet();
-  const { toast } = useToast();
+  const { account, chainId, connectWallet, disconnectWallet, isConnecting } = useWeb3();
 
-  const handleConnect = async () => {
-    setIsConnecting(true);
-    try {
-      await connect();
-    } catch (error) {
-      console.error("Failed to connect wallet:", error);
-      toast({
-        variant: "destructive",
-        title: "Connection Failed",
-        description: "Failed to connect to MetaMask",
-      });
-    } finally {
-      setIsConnecting(false);
+  const getNetworkName = (chainId: number | null) => {
+    switch (chainId) {
+      case 1:
+        return "Ethereum";
+      case 137:
+        return "Polygon";
+      default:
+        return "Unsupported Network";
     }
   };
 
+  if (isConnecting) {
+    return (
+      <Button disabled variant="outline" className="w-[200px]">
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        Connecting...
+      </Button>
+    );
+  }
+
+  if (account) {
+    return (
+      <div className="flex items-center gap-2">
+        <div className="text-sm text-muted-foreground">
+          {getNetworkName(chainId)}
+        </div>
+        <Button
+          variant="outline"
+          className="w-[200px]"
+          onClick={disconnectWallet}
+        >
+          {truncateAddress(account)}
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <Button
-      onClick={handleConnect}
-      disabled={isConnecting}
-      variant={address ? "outline" : "default"}
-      className="flex items-center"
+      variant="outline"
+      className="w-[200px]"
+      onClick={connectWallet}
     >
-      {isConnecting ? (
-        <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Connecting...
-        </>
-      ) : address ? (
-        <>
-          <Wallet className="mr-2 h-4 w-4" />
-          {`${address.slice(0, 6)}...${address.slice(-4)}`}
-        </>
-      ) : (
-        <>
-          <Wallet className="mr-2 h-4 w-4" />
-          Connect Wallet
-        </>
-      )}
+      Connect Wallet
     </Button>
   );
 }

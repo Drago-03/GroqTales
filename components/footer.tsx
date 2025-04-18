@@ -4,7 +4,7 @@ import Link from "next/link";
 import { 
   Twitter, Github, Linkedin, MessageCircle, Heart, Users, ExternalLink,
   Sparkles, PenSquare, Frame, FileText, HelpCircle, GraduationCap, Wallet,
-  FileCheck, Shield, Cookie, Mail
+  FileCheck, Shield, Cookie, Mail, BookOpen
 } from "lucide-react";
 
 export function Footer() {
@@ -16,6 +16,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 rounded-full theme-gradient-bg flex items-center justify-center">
+                <BookOpen className="w-4 h-4 text-white" />
+              </div>
               <span className="text-xl font-bold gradient-heading">GroqTales</span>
             </div>
             <p className="text-sm text-muted-foreground">
@@ -134,6 +137,12 @@ export function Footer() {
                 <Link href="/contact" className="text-sm hover:text-foreground transition-colors flex items-center">
                   <Mail className="h-4 w-4 mr-2 opacity-60" />
                   Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link href="/admin/login" className="text-sm hover:text-foreground transition-colors flex items-center">
+                  <Shield className="h-4 w-4 mr-2 opacity-60" />
+                  Admin
                 </Link>
               </li>
             </ul>

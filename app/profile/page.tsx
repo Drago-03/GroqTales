@@ -17,7 +17,8 @@ import {
   Trophy,
   Eye,
   Heart,
-  Github
+  Github,
+  MessageSquare
 } from "lucide-react";
 
 // Sample user data
