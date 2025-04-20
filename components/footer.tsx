@@ -1,14 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { 
   Twitter, Github, Linkedin, MessageCircle, Heart, Users, ExternalLink,
   Sparkles, PenSquare, Frame, FileText, HelpCircle, GraduationCap, Wallet,
   FileCheck, Shield, Cookie, Mail, BookOpen
 } from "lucide-react";
+import { AdminLoginModal } from "./admin-login-modal";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const [showAdminModal, setShowAdminModal] = useState(false);
 
   return (
     <footer className="bg-gradient-to-t from-background to-background border-t">
@@ -140,10 +143,13 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/admin/login" className="text-sm hover:text-foreground transition-colors flex items-center">
+                <button 
+                  onClick={() => setShowAdminModal(true)}
+                  className="text-sm hover:text-foreground transition-colors flex items-center w-full text-left"
+                >
                   <Shield className="h-4 w-4 mr-2 opacity-60" />
                   Admin
-                </Link>
+                </button>
               </li>
             </ul>
           </div>
@@ -158,6 +164,8 @@ export function Footer() {
           </div>
         </div>
       </div>
+      
+      <AdminLoginModal open={showAdminModal} onOpenChange={setShowAdminModal} />
     </footer>
   );
 } 

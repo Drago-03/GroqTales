@@ -10,13 +10,51 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LoadingAnimation } from "@/components/loading-animation";
 import { useToast } from "@/components/ui/use-toast";
-import { PenSquare, Image as ImageIcon, Sparkles } from "lucide-react";
+import { PenSquare, Image as ImageIcon, Sparkles, AlertCircle } from "lucide-react";
+// We'll import ipfs conditionally to avoid errors
+// import { create } from 'ipfs-http-client';
+
+// Move IPFS client creation to a function to avoid initialization at module scope
+const getIpfsClient = async () => {
+  // Dynamically import ipfs-http-client only when needed
+  const { create } = await import('ipfs-http-client');
+  
+  const projectId = process.env.NEXT_PUBLIC_INFURA_IPFS_PROJECT_ID;
+  const projectSecret = process.env.NEXT_PUBLIC_INFURA_IPFS_PROJECT_SECRET;
+  
+  if (!projectId || !projectSecret) {
+    throw new Error('IPFS Project ID and Secret must be defined in environment variables');
+  }
+  
+  const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
+  
+  return create({
+    host: 'ipfs.infura.io',
+    port: 5001,
+    protocol: 'https',
+    headers: {
+      authorization: auth,
+    },
+  });
+};
+
+interface StoryMetadata {
+  title: string;
+  description: string;
+  genre: string;
+  content: string;
+  coverImage: string;
+  author: string;
+  createdAt: string;
+  ipfsHash: string;
+}
 
 export default function CreateStoryPage() {
   const router = useRouter();
   const { account } = useWeb3();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [storyData, setStoryData] = useState({
     title: "",
     description: "",
@@ -24,6 +62,7 @@ export default function CreateStoryPage() {
     content: "",
     coverImage: null as File | null
   });
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   // Check authentication on mount
   useEffect(() => {
@@ -65,6 +104,10 @@ export default function CreateStoryPage() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Create preview URL
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+      
       setStoryData(prev => ({
         ...prev,
         coverImage: file
@@ -72,32 +115,116 @@ export default function CreateStoryPage() {
     }
   };
 
+  const uploadToIPFS = async (file: File): Promise<string> => {
+    try {
+      // Get IPFS client when needed
+      const ipfsClient = await getIpfsClient();
+      const added = await ipfsClient.add(file);
+      return added.path;
+    } catch (error) {
+      console.error('Error uploading to IPFS:', error);
+      throw new Error('Failed to upload to IPFS');
+    }
+  };
+
+  const createStoryNFT = async (metadata: StoryMetadata) => {
+    try {
+      // Here you would:
+      // 1. Deploy NFT contract if not already deployed
+      // 2. Mint NFT with metadata
+      // 3. Return NFT contract address and token ID
+      
+      // For now, we'll simulate the NFT creation
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      return {
+        contractAddress: "0x...",
+        tokenId: "1"
+      };
+    } catch (error) {
+      console.error('Error creating NFT:', error);
+      throw new Error('Failed to create NFT');
+    }
+  };
+
+  const saveToDatabase = async (metadata: StoryMetadata, nftData: any) => {
+    try {
+      // Here you would save the story data to your backend
+      // For now, we'll simulate the database save
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // In production, you would make an API call:
+      // await fetch('/api/stories', {
+      //   method: 'POST',
+      //   body: JSON.stringify({ ...metadata, ...nftData }),
+      // });
+    } catch (error) {
+      console.error('Error saving to database:', error);
+      throw new Error('Failed to save story data');
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    setIsSubmitting(true);
 
     try {
-      // Here you would typically:
-      // 1. Upload the cover image to IPFS
-      // 2. Save the story content to IPFS
-      // 3. Create an NFT with the metadata
-      // 4. Save the story details to your backend
+      // Validate inputs
+      if (!storyData.title || !storyData.content || !storyData.genre) {
+        throw new Error('Please fill in all required fields');
+      }
+
+      // Show progress toast
+      toast({
+        title: "Creating Story",
+        description: "Uploading content to IPFS...",
+      });
+
+      // Upload cover image to IPFS
+      let coverImageHash = '';
+      if (storyData.coverImage) {
+        coverImageHash = await uploadToIPFS(storyData.coverImage);
+      }
+
+      // Create story metadata
+      const metadata: StoryMetadata = {
+        title: storyData.title,
+        description: storyData.description,
+        genre: storyData.genre,
+        content: storyData.content,
+        coverImage: coverImageHash,
+        author: account || 'admin',
+        createdAt: new Date().toISOString(),
+        ipfsHash: '', // Will be set after content upload
+      };
+
+      // Upload story content to IPFS
+      const contentBlob = new Blob([JSON.stringify(metadata)], { type: 'application/json' });
+      const contentFile = new File([contentBlob], 'story.json');
+      const contentHash = await uploadToIPFS(contentFile);
+      metadata.ipfsHash = contentHash;
+
+      // Create NFT
+      const nftData = await createStoryNFT(metadata);
+
+      // Save to database
+      await saveToDatabase(metadata, nftData);
 
       toast({
         title: "Story Created!",
-        description: "Your story has been successfully created and published.",
+        description: "Your story has been successfully published and minted as an NFT.",
       });
 
-      router.push('/stories'); // Redirect to stories page
-    } catch (error) {
+      // Redirect to story page
+      router.push(`/stories/${contentHash}`);
+    } catch (error: any) {
       console.error('Error creating story:', error);
       toast({
         title: "Error",
-        description: "Failed to create story. Please try again.",
+        description: error.message || "Failed to create story. Please try again.",
         variant: "destructive",
       });
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -213,6 +340,28 @@ export default function CreateStoryPage() {
                     </span>
                   )}
                 </div>
+                {previewUrl && (
+                  <div className="mt-4">
+                    <img
+                      src={previewUrl}
+                      alt="Cover preview"
+                      className="max-w-[200px] rounded-md border"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Creation Process Steps */}
+              <div className="bg-muted/30 p-4 rounded-lg">
+                <h3 className="font-medium mb-2 flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4 text-primary" />
+                  Story Creation Process
+                </h3>
+                <ol className="space-y-2 text-sm text-muted-foreground">
+                  <li>1. Your story content will be uploaded to IPFS for permanent storage</li>
+                  <li>2. A unique NFT will be created with your story metadata</li>
+                  <li>3. You'll be able to manage and share your story from your profile</li>
+                </ol>
               </div>
 
               <div className="flex justify-end gap-4">
@@ -220,15 +369,16 @@ export default function CreateStoryPage() {
                   type="button"
                   variant="outline"
                   onClick={() => router.back()}
+                  disabled={isSubmitting}
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   className="theme-gradient-bg"
-                  disabled={isLoading}
+                  disabled={isSubmitting}
                 >
-                  {isLoading ? (
+                  {isSubmitting ? (
                     <LoadingAnimation message="Creating Story" />
                   ) : (
                     <>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,6 +28,10 @@ export default function AdminLoginPage() {
   const [error, setError] = useState<string>("");
   const router = useRouter();
   const { toast } = useToast();
+  const searchParams = useSearchParams();
+  
+  // Get the return URL from query parameters if available
+  const returnUrl = searchParams.get('returnUrl') || '/admin/dashboard';
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -38,29 +42,63 @@ export default function AdminLoginPage() {
     setError(""); // Clear error when input changes
   };
 
+  // Generate a secure token for session management
+  const generateSessionToken = (userId: string): string => {
+    // In a real app, this would use a more secure method like JWT
+    // For this demo, we'll create a simple but reasonably unique token
+    const timestamp = Date.now();
+    const randomPart = Math.random().toString(36).substring(2, 15);
+    return `${userId}_${timestamp}_${randomPart}`;
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
 
     try {
-      // Validate employee ID format
-      if (!formData.employeeId.match(/^GT\d{3}$/)) {
-        throw new Error("Invalid employee ID format. Should be GT followed by 3 digits (e.g., GT001)");
+      // Check for simple admin login
+      if (formData.employeeId === "admin" && formData.password === "groqtales") {
+        // Set up a robust admin session with a secure token
+        const sessionToken = generateSessionToken('admin');
+        setupAdminSession("admin", sessionToken);
+        
+        toast({
+          title: "Login Successful",
+          description: "Welcome to the admin dashboard"
+        });
+
+        // Redirect with token in URL for more reliable session establishment
+        const redirectUrl = returnUrl.includes('?') 
+          ? `${returnUrl}&sessionToken=${sessionToken}`
+          : `${returnUrl}?sessionToken=${sessionToken}`;
+        
+        router.push(redirectUrl);
+        return;
+      }
+      
+      // Validate employee ID format for GT001 pattern
+      if (formData.employeeId !== "admin" && !formData.employeeId.match(/^GT\d{3}$/)) {
+        throw new Error("Invalid employee ID format. Should be GT followed by 3 digits (e.g., GT001) or 'admin'");
       }
 
       // In production, this would be an API call to validate credentials
       if (formData.employeeId === MOCK_ADMIN.employeeId && formData.password === MOCK_ADMIN.password) {
-        // Store admin session
-        localStorage.setItem('adminSession', 'true');
-        localStorage.setItem('employeeId', formData.employeeId);
+        // Set up a robust admin session with a secure token
+        const sessionToken = generateSessionToken(formData.employeeId);
+        setupAdminSession(formData.employeeId, sessionToken);
         
         toast({
           title: "Login Successful",
-          description: "Welcome to the admin dashboard",
+          description: "Welcome to the admin dashboard"
         });
 
-        router.push('/admin/dashboard');
+        // Redirect with token in URL for more reliable session establishment
+        const redirectUrl = returnUrl.includes('?') 
+          ? `${returnUrl}&sessionToken=${sessionToken}`
+          : `${returnUrl}?sessionToken=${sessionToken}`;
+        
+        router.push(redirectUrl);
       } else {
         throw new Error("Invalid employee ID or password");
       }
@@ -73,6 +111,34 @@ export default function AdminLoginPage() {
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Function to set up a robust admin session
+  const setupAdminSession = (employeeId: string, sessionToken: string) => {
+    try {
+      // Try multiple storage methods for better resilience
+      
+      // Primary storage - localStorage for persistent sessions
+      localStorage.setItem('adminSession', 'true');
+      localStorage.setItem('employeeId', employeeId);
+      localStorage.setItem('adminSessionToken', sessionToken);
+      localStorage.setItem('adminSessionTimestamp', Date.now().toString());
+      
+      // Secondary storage - cookies for cross-tab consistency
+      const expirationDate = new Date();
+      expirationDate.setHours(expirationDate.getHours() + 24); // 24-hour expiration
+      document.cookie = `adminSessionActive=true; path=/; expires=${expirationDate.toUTCString()}`;
+      document.cookie = `adminSessionToken=${sessionToken}; path=/; expires=${expirationDate.toUTCString()}`;
+      
+      // Tertiary - session storage as another option
+      sessionStorage.setItem('adminSession', 'true');
+      
+      console.log("Admin session established for:", employeeId);
+    } catch (error) {
+      // If any storage mechanism fails, log but continue
+      // The URL token will still work as a fallback
+      console.error("Error setting up storage for admin session:", error);
     }
   };
 
@@ -97,7 +163,7 @@ export default function AdminLoginPage() {
               <Input
                 id="employeeId"
                 name="employeeId"
-                placeholder="GT001"
+                placeholder="GT001 or admin"
                 value={formData.employeeId}
                 onChange={handleInputChange}
                 required
@@ -105,7 +171,7 @@ export default function AdminLoginPage() {
                 className="font-mono"
               />
               <p className="text-xs text-muted-foreground">
-                Format: GT followed by 3 digits (e.g., GT001)
+                Enter "GT001" with password "admin123" or "admin" with password "groqtales"
               </p>
             </div>
             <div className="space-y-2">
