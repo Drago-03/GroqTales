@@ -16,79 +16,101 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
-type Genre = {
+export type Genre = {
   name: string;
   slug: string;
-  icon: LucideIcon;
+  icon: React.ReactNode;
   color: string;
   description: string;
+  elements?: string;
+  famousWorks?: string;
 };
 
-const genres: Genre[] = [
+export const genres: Genre[] = [
   {
     name: "Fantasy",
     slug: "fantasy",
-    icon: Sparkles,
-    color: "text-purple-500",
-    description: "Magical worlds, mythical creatures, and epic adventures"
+    icon: <Sparkles className="text-purple-500" />,
+    color: "#9333ea",
+    description: "Magical worlds, mythical creatures, and epic adventures",
+    elements: "Magic systems, fantastical creatures, quests, prophecies, chosen ones, ancient artifacts",
+    famousWorks: "Lord of the Rings, Harry Potter, The Chronicles of Narnia, Game of Thrones"
   },
   {
     name: "Sci-Fi",
     slug: "sci-fi",
-    icon: Rocket,
-    color: "text-blue-500",
-    description: "Futuristic technology, space exploration, and alternate realities"
+    icon: <Rocket className="text-blue-500" />,
+    color: "#3b82f6",
+    description: "Futuristic technology, space exploration, and alternate realities",
+    elements: "Advanced technology, space travel, time manipulation, dystopian futures, artificial intelligence",
+    famousWorks: "Dune, Foundation, The Expanse, Star Wars, Blade Runner"
   },
   {
     name: "Horror",
     slug: "horror",
-    icon: Skull,
-    color: "text-red-700",
-    description: "Terrifying tales, supernatural entities, and psychological terror"
+    icon: <Skull className="text-red-700" />,
+    color: "#b91c1c",
+    description: "Terrifying tales, supernatural entities, and psychological terror",
+    elements: "Monsters, ghosts, psychological fear, isolation, suspense, the unknown",
+    famousWorks: "The Shining, Dracula, It, The Haunting of Hill House"
   },
   {
     name: "Romance",
     slug: "romance",
-    icon: Heart,
-    color: "text-pink-500",
-    description: "Love stories, relationships, and emotional journeys"
+    icon: <Heart className="text-pink-500" />,
+    color: "#ec4899",
+    description: "Love stories, relationships, and emotional journeys",
+    elements: "Love interests, emotional connections, obstacles to love, personal growth, happy endings",
+    famousWorks: "Pride and Prejudice, The Notebook, Outlander, Bridgerton"
   },
   {
     name: "Adventure",
     slug: "adventure",
-    icon: Compass,
-    color: "text-amber-600",
-    description: "Thrilling quests, exploration, and exciting challenges"
+    icon: <Compass className="text-amber-600" />,
+    color: "#d97706",
+    description: "Thrilling quests, exploration, and exciting challenges",
+    elements: "Journeys, dangers, exotic locations, heroic protagonists, treasure hunting",
+    famousWorks: "The Hobbit, Treasure Island, Indiana Jones, The Alchemist"
   },
   {
     name: "Historical",
     slug: "historical",
-    icon: BookOpen,
-    color: "text-yellow-800",
-    description: "Stories set in past time periods with historical context"
+    icon: <BookOpen className="text-yellow-800" />,
+    color: "#92400e",
+    description: "Stories set in past time periods with historical context",
+    elements: "Historical accuracy, period settings, cultural context, historical figures",
+    famousWorks: "War and Peace, The Book Thief, All the Light We Cannot See"
   },
   {
     name: "Educational",
     slug: "educational",
-    icon: GraduationCap,
-    color: "text-green-600",
-    description: "Informative stories that teach valuable lessons and facts"
+    icon: <GraduationCap className="text-green-600" />,
+    color: "#16a34a",
+    description: "Informative stories that teach valuable lessons and facts",
+    elements: "Learning objectives, factual information, educational themes, moral lessons",
+    famousWorks: "The Magic School Bus, Sophie's World, A Short History of Nearly Everything"
   },
   {
     name: "Magical Realism",
     slug: "magical-realism",
-    icon: Wand2,
-    color: "text-teal-500",
-    description: "Ordinary worlds with magical elements woven into reality"
+    icon: <Wand2 className="text-teal-500" />,
+    color: "#14b8a6",
+    description: "Ordinary worlds with magical elements woven into reality",
+    elements: "Subtle magic, realistic settings, metaphor, cultural traditions",
+    famousWorks: "One Hundred Years of Solitude, Midnight's Children, The House of the Spirits"
   }
 ];
+
+export function getGenreBySlug(slug: string): Genre | undefined {
+  return genres.find(genre => genre.slug === slug);
+}
 
 export function GenreCard({ genre }: { genre: Genre }) {
   return (
     <Link href={`/genres/${genre.slug}`} className="block group">
       <div className="bg-card hover:bg-accent transition-colors rounded-lg shadow p-6 h-full">
         <div className="flex items-center mb-4">
-          <genre.icon className={cn("h-6 w-6 mr-2", genre.color)} />
+          <div className="mr-2">{genre.icon}</div>
           <h3 className="font-medium text-lg">{genre.name}</h3>
         </div>
         <p className="text-sm text-muted-foreground">{genre.description}</p>

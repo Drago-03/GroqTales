@@ -35,7 +35,7 @@ import {
   DialogDescription,
   DialogFooter
 } from "@/components/ui/dialog";
-import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid';
 import { isAdminLoggedIn, useAdminInteractions, getAdminAvatarUrl } from "@/lib/admin-service";
 import { VerifiedBadge } from "@/components/verified-badge";
 
@@ -507,7 +507,7 @@ export default function CommunityPage() {
       
       // Add the post to the local stories state
       const newStory: Story = {
-        id: `admin-story-${uuidv4()}`,
+        id: `admin-story-${nanoid()}`,
         type: 'text',
         title: '',
         content: adminNewPost,
@@ -619,7 +619,7 @@ export default function CommunityPage() {
       setStories(prev => prev.map(story => {
         if (story.id === storyId) {
           const newComment: Comment = {
-            id: `admin-comment-${uuidv4()}`,
+            id: `admin-comment-${nanoid()}`,
             author: {
               name: 'GroqTales',
               username: 'groqtales',

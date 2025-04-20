@@ -96,14 +96,30 @@ export function CreateStoryDialog({ isOpen, onClose }: CreateStoryDialogProps) {
     if (step < 3) {
       setStep(step + 1);
     } else {
-      // Navigate to create page with parameters
-      const params = new URLSearchParams({
-        type: storyType!,
-        genre: genre!,
-        format: format!
-      });
+      // Determine which create page to navigate to based on type and format
+      let targetPath = '/create';
+      
+      // If it's an AI-generated story, use the AI story page
+      if (storyType === 'text' && format === 'nft') {
+        targetPath = '/create/ai-story';
+      } else if (format === 'nft') {
+        // If it's an NFT but not AI-generated text, use the standard create page
+        targetPath = '/create';
+      } else if (storyType === 'comic' || storyType === 'art') {
+        // For visual story types
+        targetPath = '/create';
+      }
+      
+      // Store the selections in localStorage for the target page to use
+      localStorage.setItem('storyCreationData', JSON.stringify({
+        type: storyType,
+        genre: genre,
+        format: format,
+        timestamp: new Date().getTime()
+      }));
+      
       resetAndClose();
-      router.push(`/create?${params.toString()}`);
+      router.push(targetPath);
     }
   };
 
