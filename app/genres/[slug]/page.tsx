@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowLeftIcon } from '@heroicons/react/24/outline';
+import { ArrowLeft } from 'lucide-react';
 import { getGenreBySlug } from '@/components/genre-selector';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -36,7 +36,7 @@ export default function GenrePage({ params }: { params: { slug: string } }) {
           <CardContent>
             <Link href="/genres">
               <Button>
-                <ArrowLeftIcon className="h-4 w-4 mr-2" />
+                <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Genres
               </Button>
             </Link>
@@ -54,7 +54,7 @@ export default function GenrePage({ params }: { params: { slug: string } }) {
         <div className="flex items-center mb-4">
           <Link href="/genres">
             <Button variant="ghost">
-              <ArrowLeftIcon className="h-4 w-4 mr-2" />
+              <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Genres
             </Button>
           </Link>

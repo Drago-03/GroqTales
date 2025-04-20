@@ -26,14 +26,6 @@ Set up the following environment variables in your Vercel project settings:
 - `MONAD_RPC_URL`: Monad RPC URL (defaults to `https://rpc.testnet.monad.xyz/json-rpc`)
 - `MINTER_PRIVATE_KEY`: Private key for NFT minting (ensure this is securely stored)
 
-## FastAPI Integration
-
-The Python FastAPI component (`main.py`) needs to be deployed separately from the Next.js frontend:
-
-1. Deploy the FastAPI service to a platform that supports Python (e.g., Heroku, AWS, or DigitalOcean)
-2. Update the `rewrites` section in `vercel.json` with the actual URL of your FastAPI service
-3. Set the `NEXT_PUBLIC_API_URL` environment variable to the URL of your FastAPI service
-
 ## Database Setup
 
 Before your first deployment, ensure your MongoDB database is properly initialized:
@@ -43,6 +35,13 @@ Before your first deployment, ensure your MongoDB database is properly initializ
    npm run setup-db
    ```
 2. Verify the database collections and indexes were created
+
+## Fixed Dependencies
+
+We've updated the project to use Lucide React icons instead of Heroicons to resolve build issues. The following dependencies have been updated:
+
+- `@radix-ui/react-tooltip`: Fixed to version 1.0.7
+- Replaced `@heroicons/react` imports with `lucide-react` equivalents
 
 ## Deployment Steps
 
@@ -69,6 +68,7 @@ Before your first deployment, ensure your MongoDB database is properly initializ
 ## Troubleshooting
 
 - **Build Errors**: Check the build logs on Vercel for specific errors
+- **Missing Dependencies**: If you see errors about missing dependencies, make sure the package.json includes all necessary packages 
 - **API Integration Issues**: Verify environment variables and check if all APIs are accessible from Vercel
 - **Database Connection Issues**: Ensure your MongoDB URI is correctly formatted and the IP is whitelisted
 
