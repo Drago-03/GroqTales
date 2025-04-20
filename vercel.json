@@ -1,7 +1,7 @@
 {
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
-  "installCommand": "npm ci",
+  "installCommand": "node scripts/custom-install.js",
   "framework": "nextjs",
   "outputDirectory": ".next",
   "headers": [

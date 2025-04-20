@@ -22,26 +22,90 @@ try {
   console.log('Environment check skipped - will use Vercel environment variables.');
 }
 
-// Install any missing dependencies
+// Fix tooltip component if needed
 try {
-  console.log('\nChecking for missing dependencies...');
+  console.log('\nChecking tooltip component...');
+  require('./fix-tooltip');
+} catch (error) {
+  console.error('Error checking tooltip component:', error);
+}
+
+// Install missing dependencies directly (force install)
+try {
+  console.log('\nInstalling missing dependencies directly...');
   
-  const missingDeps = [
-    '@radix-ui/react-tooltip@1.0.7',
+  // Create a temporary package.json with just the missing dependencies
+  const tempPackageJson = {
+    "name": "temp-dependencies",
+    "version": "1.0.0",
+    "dependencies": {
+      "@radix-ui/react-tooltip": "^1.0.7"
+    }
+  };
+  
+  fs.writeFileSync('temp-package.json', JSON.stringify(tempPackageJson, null, 2));
+  
+  // Install the dependencies from temp package.json directly to node_modules
+  execSync('npm install --legacy-peer-deps --no-package-lock --package-lock-only=false', { 
+    stdio: 'inherit',
+    env: { ...process.env, npm_config_prefix: process.cwd() } 
+  });
+  
+  // Clean up temp file
+  fs.unlinkSync('temp-package.json');
+  
+  console.log('Successfully installed missing dependencies.');
+} catch (error) {
+  console.error('Failed to install dependencies:', error);
+  console.log('Will attempt to continue with the build.');
+}
+
+// Now fix the files that use @heroicons
+try {
+  console.log('\nFixing @heroicons imports in source files...');
+  
+  // Helper function to replace heroicons imports
+  const fixHeroiconsImports = (filePath) => {
+    if (fs.existsSync(filePath)) {
+      let content = fs.readFileSync(filePath, 'utf8');
+      
+      // Replace heroicons imports with lucide-react
+      content = content.replace(
+        /import\s+\{([^}]+)\}\s+from\s+['"]@heroicons\/react\/24\/outline['"];?/g,
+        'import { $1 } from "lucide-react";'
+      );
+      
+      // Replace heroicons solid imports
+      content = content.replace(
+        /import\s+\{([^}]+)\}\s+from\s+['"]@heroicons\/react\/24\/solid['"];?/g,
+        'import { $1 } from "lucide-react";'
+      );
+      
+      // Replace specific icon names if needed (camelCase to PascalCase)
+      content = content.replace(/ArrowLeftIcon/g, 'ArrowLeft');
+      content = content.replace(/HeartIcon/g, 'Heart');
+      content = content.replace(/EyeIcon/g, 'Eye');
+      content = content.replace(/ShareIcon/g, 'Share');
+      content = content.replace(/HeartIconSolid/g, 'Heart');
+      
+      fs.writeFileSync(filePath, content);
+      console.log(`Fixed imports in ${filePath}`);
+    }
+  };
+  
+  // Fix all known problematic files
+  const filesToFix = [
+    'app/genres/[slug]/page.tsx',
+    'app/stories/[id]/page.tsx'
   ];
   
-  for (const dep of missingDeps) {
-    try {
-      console.log(`Installing ${dep}...`);
-      execSync(`npm install ${dep} --no-save`, { stdio: 'inherit' });
-    } catch (err) {
-      console.error(`Warning: Failed to install ${dep}. Proceeding anyway.`);
-    }
+  for (const file of filesToFix) {
+    fixHeroiconsImports(path.join(process.cwd(), file));
   }
   
-  console.log('Dependencies check completed.');
+  console.log('Fixed heroicons imports in source files.');
 } catch (error) {
-  console.log('Warning: Failed to check dependencies. Proceeding anyway.');
+  console.error('Error fixing heroicons imports:', error);
 }
 
 // Make sure the build directory exists
@@ -53,5 +117,9 @@ try {
 } catch (error) {
   console.log('Warning: Failed to create build directory. Proceeding anyway.');
 }
+
+// Trace the process.env.NODE_ENV value for debugging
+console.log(`\nNode environment: ${process.env.NODE_ENV || 'not set'}`);
+console.log(`Current working directory: ${process.cwd()}`);
 
 console.log('\n✅ Vercel preparation completed successfully!\n'); 
