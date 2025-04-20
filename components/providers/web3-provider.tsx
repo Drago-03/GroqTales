@@ -4,6 +4,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from "react
 import { useRouter, usePathname } from "next/navigation";
 import { LoadingAnimation } from "@/components/loading-animation";
 import { useToast } from "@/components/ui/use-toast";
+import { BrowserProvider } from "ethers";
 
 interface Web3ContextType {
   account: string | null;
@@ -47,6 +48,26 @@ const checkWalletInstallation = () => {
     typeof (window as any).walletConnect !== 'undefined'
   );
 };
+
+// Ethereum provider types
+type EthereumEvents = {
+  accountsChanged: string[];
+  chainChanged: string;
+  connect: { chainId: string };
+  disconnect: { code: number; message: string };
+};
+
+// Extend the window interface
+declare global {
+  interface Window {
+    ethereum?: {
+      request(args: { method: string; params?: any[] }): Promise<any>;
+      on(event: string, callback: (params: any) => void): void;
+      removeListener(event: string, callback: (params: any) => void): void;
+      isMetaMask?: boolean;
+    };
+  }
+}
 
 export function Web3Provider({ children }: { children: ReactNode }) {
   const [account, setAccount] = useState<string | null>(null);
@@ -104,13 +125,15 @@ export function Web3Provider({ children }: { children: ReactNode }) {
         const wasConnected = localStorage.getItem('walletConnected') === 'true';
         
         if (wasConnected && typeof window.ethereum !== 'undefined') {
-          const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+          const provider = new BrowserProvider(window.ethereum);
+          const accounts = await provider.listAccounts();
+          
           if (accounts.length > 0) {
-            setAccount(accounts[0]);
+            setAccount(accounts[0].address);
             
             // Get current chain ID
-            const chainIdHex = await window.ethereum.request({ method: 'eth_chainId' });
-            const currentChainId = parseInt(chainIdHex, 16);
+            const network = await provider.getNetwork();
+            const currentChainId = Number(network.chainId);
             setChainId(currentChainId);
 
             if (!SUPPORTED_CHAIN_IDS.includes(currentChainId)) {
@@ -154,52 +177,26 @@ export function Web3Provider({ children }: { children: ReactNode }) {
   }, [pathname, router, isPublicRoute, toast]);
 
   const connectWallet = async () => {
-    if (!isBrowserSupported) {
-      toast({
-        title: "Unsupported Browser",
-        description: "Please use Chrome, Firefox, or Brave browser to connect your wallet.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!isWalletInstalled) {
-      toast({
-        title: "Wallet Not Found",
-        description: "Please install MetaMask or another Web3 wallet to continue.",
-        variant: "destructive",
-      });
-      // Open MetaMask download page in a new tab
-      window.open('https://metamask.io/download/', '_blank');
+    if (!window.ethereum) {
+      console.error('No ethereum wallet found');
       return;
     }
 
     setIsConnecting(true);
     try {
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const provider = new BrowserProvider(window.ethereum);
+      const accounts = await provider.send('eth_requestAccounts', []);
       setAccount(accounts[0]);
       localStorage.setItem('walletConnected', 'true');
-
-      // Get current chain ID
-      const chainIdHex = await window.ethereum.request({ method: 'eth_chainId' });
-      const currentChainId = parseInt(chainIdHex, 16);
-      setChainId(currentChainId);
-
-      if (!SUPPORTED_CHAIN_IDS.includes(currentChainId)) {
-        await switchNetwork(DEFAULT_CHAIN_ID);
-      }
-
-      toast({
-        title: "Wallet Connected",
-        description: "Successfully connected to your wallet",
-      });
-    } catch (error: any) {
-      console.error('Error connecting to wallet:', error);
-      toast({
-        title: "Connection Failed",
-        description: error.message || "Failed to connect to your wallet",
-        variant: "destructive",
-      });
+      
+      // Get the current chain ID
+      const network = await provider.getNetwork();
+      setChainId(Number(network.chainId));
+      
+      return accounts[0];
+    } catch (error) {
+      console.error('Failed to connect wallet:', error);
+      throw error;
     } finally {
       setIsConnecting(false);
     }

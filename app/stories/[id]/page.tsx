@@ -108,7 +108,7 @@ export default function StoryPage({ params }: { params: { id: string } }) {
               
               <CardContent>
                 <div className="prose max-w-none dark:prose-invert">
-                  {story.description.split('\n\n').map((paragraph, index) => (
+                  {story.description.split('\n\n').map((paragraph: string, index: number) => (
                     <p key={index}>{paragraph}</p>
                   ))}
                 </div>
@@ -193,7 +193,7 @@ export default function StoryPage({ params }: { params: { id: string } }) {
           <h2 className="text-2xl font-bold mb-6">Similar Stories</h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {relatedStories.map((story) => (
+            {relatedStories.map((story: any) => (
               <StoryCard key={story.id} story={story} />
             ))}
           </div>
