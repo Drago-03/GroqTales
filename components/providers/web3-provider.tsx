@@ -12,6 +12,8 @@ interface Web3ContextType {
   disconnectWallet: () => void;
   isConnecting: boolean;
   switchNetwork: (chainId: number) => Promise<void>;
+  isBrowserSupported: boolean;
+  isWalletInstalled: boolean;
 }
 
 const Web3Context = createContext<Web3ContextType>({
@@ -21,6 +23,8 @@ const Web3Context = createContext<Web3ContextType>({
   disconnectWallet: () => {},
   isConnecting: false,
   switchNetwork: async () => {},
+  isBrowserSupported: true,
+  isWalletInstalled: false,
 });
 
 export const useWeb3 = () => useContext(Web3Context);
@@ -28,11 +32,29 @@ export const useWeb3 = () => useContext(Web3Context);
 const SUPPORTED_CHAIN_IDS = [1, 137]; // Ethereum Mainnet and Polygon
 const DEFAULT_CHAIN_ID = 1;
 
+// Check if browser is supported
+const checkBrowserSupport = () => {
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  const isSafari = /^((?!chrome|android).)*safari/i.test(userAgent);
+  return !isSafari;
+};
+
+// Check if any supported wallet is installed
+const checkWalletInstallation = () => {
+  return typeof window !== 'undefined' && (
+    typeof window.ethereum !== 'undefined' ||
+    typeof (window as any).coinbaseWallet !== 'undefined' ||
+    typeof (window as any).walletConnect !== 'undefined'
+  );
+};
+
 export function Web3Provider({ children }: { children: ReactNode }) {
   const [account, setAccount] = useState<string | null>(null);
   const [chainId, setChainId] = useState<number | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
+  const [isBrowserSupported, setIsBrowserSupported] = useState(true);
+  const [isWalletInstalled, setIsWalletInstalled] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const { toast } = useToast();
@@ -42,6 +64,12 @@ export function Web3Provider({ children }: { children: ReactNode }) {
 
   // Check if current route is public
   const isPublicRoute = publicRoutes.includes(pathname) || pathname.startsWith('/stories/');
+
+  // Check browser support and wallet installation on mount
+  useEffect(() => {
+    setIsBrowserSupported(checkBrowserSupport());
+    setIsWalletInstalled(checkWalletInstallation());
+  }, []);
 
   // Handle account changes in MetaMask
   useEffect(() => {
@@ -103,11 +131,6 @@ export function Web3Provider({ children }: { children: ReactNode }) {
         }
       } catch (error) {
         console.error('Error checking connection', error);
-        toast({
-          title: "Connection Error",
-          description: "Failed to check wallet connection",
-          variant: "destructive",
-        });
       } finally {
         setInitialLoading(false);
       }
@@ -131,12 +154,23 @@ export function Web3Provider({ children }: { children: ReactNode }) {
   }, [pathname, router, isPublicRoute, toast]);
 
   const connectWallet = async () => {
-    if (typeof window.ethereum === 'undefined') {
+    if (!isBrowserSupported) {
       toast({
-        title: "MetaMask Required",
-        description: "Please install MetaMask to use this feature",
+        title: "Unsupported Browser",
+        description: "Please use Chrome, Firefox, or Brave browser to connect your wallet.",
         variant: "destructive",
       });
+      return;
+    }
+
+    if (!isWalletInstalled) {
+      toast({
+        title: "Wallet Not Found",
+        description: "Please install MetaMask or another Web3 wallet to continue.",
+        variant: "destructive",
+      });
+      // Open MetaMask download page in a new tab
+      window.open('https://metamask.io/download/', '_blank');
       return;
     }
 
@@ -159,11 +193,11 @@ export function Web3Provider({ children }: { children: ReactNode }) {
         title: "Wallet Connected",
         description: "Successfully connected to your wallet",
       });
-    } catch (error) {
-      console.error('Error connecting to MetaMask', error);
+    } catch (error: any) {
+      console.error('Error connecting to wallet:', error);
       toast({
         title: "Connection Failed",
-        description: "Failed to connect to your wallet",
+        description: error.message || "Failed to connect to your wallet",
         variant: "destructive",
       });
     } finally {
@@ -253,6 +287,8 @@ export function Web3Provider({ children }: { children: ReactNode }) {
       disconnectWallet, 
       isConnecting,
       switchNetwork,
+      isBrowserSupported,
+      isWalletInstalled,
     }}>
       {children}
     </Web3Context.Provider>

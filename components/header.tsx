@@ -8,20 +8,21 @@ import { PenSquare, Users, Sparkles, BookOpen } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useWeb3 } from "@/components/providers/web3-provider";
 import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { CreateStoryDialog } from "./create-story-dialog";
 
 export function Header() {
   const pathname = usePathname();
   const { account } = useWeb3();
   const { toast } = useToast();
-  const router = useRouter();
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
   
   // Define active class for navigation links
   const isActive = (path: string) => {
     return pathname === path ? "theme-gradient-bg text-white" : "hover:bg-accent/10";
   };
 
-  const handleCreateStory = () => {
+  const handleCreateClick = () => {
     // Check if user is authenticated
     const isAdmin = localStorage.getItem('adminSession');
     
@@ -34,7 +35,7 @@ export function Header() {
       return;
     }
 
-    router.push('/create');
+    setShowCreateDialog(true);
   };
 
   return (
@@ -82,7 +83,7 @@ export function Header() {
             variant="default" 
             size="sm" 
             className="hidden md:flex items-center theme-gradient-bg text-white border-0 hover:opacity-90"
-            onClick={handleCreateStory}
+            onClick={handleCreateClick}
           >
             <PenSquare className="mr-2 h-4 w-4" />
             Create
@@ -91,6 +92,11 @@ export function Header() {
           <UserNav />
         </div>
       </div>
+
+      <CreateStoryDialog
+        isOpen={showCreateDialog}
+        onClose={() => setShowCreateDialog(false)}
+      />
     </header>
   );
 }
