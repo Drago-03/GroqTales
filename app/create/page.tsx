@@ -16,26 +16,30 @@ import { PenSquare, Image as ImageIcon, Sparkles, AlertCircle } from "lucide-rea
 
 // Move IPFS client creation to a function to avoid initialization at module scope
 const getIpfsClient = async () => {
-  // Dynamically import ipfs-http-client only when needed
-  const { create } = await import('ipfs-http-client');
-  
-  const projectId = process.env.NEXT_PUBLIC_INFURA_IPFS_PROJECT_ID;
-  const projectSecret = process.env.NEXT_PUBLIC_INFURA_IPFS_PROJECT_SECRET;
-  
-  if (!projectId || !projectSecret) {
-    throw new Error('IPFS Project ID and Secret must be defined in environment variables');
+  try {
+    // Dynamically import ipfs-http-client only when needed
+    const { create } = await import('ipfs-http-client');
+    
+    const projectId = process.env.NEXT_PUBLIC_INFURA_IPFS_PROJECT_ID;
+    const projectSecret = process.env.NEXT_PUBLIC_INFURA_IPFS_PROJECT_SECRET;
+    
+    if (!projectId || !projectSecret) {
+      throw new Error('IPFS Project ID and Secret must be defined in environment variables');
+    }
+    
+    const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
+    
+    // Use a more compatible configuration that avoids readonly property issues
+    return create({
+      url: 'https://ipfs.infura.io:5001/api/v0',
+      headers: {
+        authorization: auth,
+      }
+    });
+  } catch (error) {
+    console.error('Error creating IPFS client:', error);
+    throw new Error('Failed to initialize IPFS client');
   }
-  
-  const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
-  
-  return create({
-    host: 'ipfs.infura.io',
-    port: 5001,
-    protocol: 'https',
-    headers: {
-      authorization: auth,
-    },
-  });
 };
 
 interface StoryMetadata {
@@ -63,8 +67,10 @@ export default function CreateStoryPage() {
     coverImage: null as File | null
   });
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [storyType, setStoryType] = useState<string | null>(null);
+  const [storyFormat, setStoryFormat] = useState<string | null>(null);
 
-  // Check authentication on mount
+  // Check authentication on mount and load story creation data
   useEffect(() => {
     const checkAuth = () => {
       const isAdmin = localStorage.getItem('adminSession');
@@ -78,6 +84,39 @@ export default function CreateStoryPage() {
         router.push('/');
         return;
       }
+      
+      // Try to load story creation data from localStorage
+      try {
+        const savedData = localStorage.getItem('storyCreationData');
+        if (savedData) {
+          const parsedData = JSON.parse(savedData);
+          // Check if the data is still valid (less than 10 minutes old)
+          const now = new Date().getTime();
+          const createdAt = parsedData.timestamp || 0;
+          const isValid = (now - createdAt) < 10 * 60 * 1000; // 10 minutes
+          
+          if (isValid) {
+            setStoryType(parsedData.type || null);
+            setStoryFormat(parsedData.format || null);
+            
+            // Initialize the genre from saved data
+            if (parsedData.genre) {
+              setStoryData(prev => ({
+                ...prev,
+                genre: parsedData.genre
+              }));
+            }
+            
+            console.log('Loaded story creation data:', parsedData);
+          } else {
+            // Data is too old, remove it
+            localStorage.removeItem('storyCreationData');
+          }
+        }
+      } catch (error) {
+        console.error('Error loading story creation data:', error);
+      }
+      
       setIsLoading(false);
     };
 
@@ -119,11 +158,14 @@ export default function CreateStoryPage() {
     try {
       // Get IPFS client when needed
       const ipfsClient = await getIpfsClient();
-      const added = await ipfsClient.add(file);
+      
+      // Create a buffer from the file
+      const buffer = await file.arrayBuffer();
+      const added = await ipfsClient.add(new Uint8Array(buffer));
       return added.path;
     } catch (error) {
       console.error('Error uploading to IPFS:', error);
-      throw new Error('Failed to upload to IPFS');
+      throw new Error('Failed to upload to IPFS. Please try again later.');
     }
   };
 
@@ -246,7 +288,10 @@ export default function CreateStoryPage() {
                 <PenSquare className="h-6 w-6 text-white" />
               </div>
               <div>
-                <CardTitle>Create Your Story</CardTitle>
+                <CardTitle>
+                  Create Your {storyType ? `${storyType.charAt(0).toUpperCase() + storyType.slice(1)} ` : ''}Story
+                  {storyFormat === 'nft' && ' NFT'}
+                </CardTitle>
                 <CardDescription>Share your creativity with the world</CardDescription>
               </div>
             </div>

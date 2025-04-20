@@ -5,8 +5,8 @@
  * generating stories, analyzing content, and enhancing user experience.
  */
 
-// Default API key - replace with environment variable in production
-const GROQ_API_KEY = process.env.NEXT_PUBLIC_GROQ_API_KEY || "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";
+// Get API key from environment variable
+const GROQ_API_KEY = process.env.NEXT_PUBLIC_GROQ_API_KEY;
 
 // Available models
 export const GROQ_MODELS = {
@@ -47,6 +47,10 @@ export async function generateStoryContent(
     
     // Use custom API key if provided, otherwise use default
     const activeApiKey = apiKey || GROQ_API_KEY;
+    
+    if (!activeApiKey) {
+      throw new Error("No Groq API key provided. Please set NEXT_PUBLIC_GROQ_API_KEY in your .env.local file or provide an API key in the options.");
+    }
     
     const messages = [];
     
@@ -254,10 +258,10 @@ export async function testGroqConnection(apiKey?: string) {
       success: true,
       message: result
     };
-  } catch (error) {
+  } catch (error: unknown) {
     return {
       success: false,
-      error: error.message
+      error: error instanceof Error ? error.message : String(error)
     };
   }
 } 

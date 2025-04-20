@@ -63,7 +63,7 @@ export function AIStoryGenerator() {
   const [themes, setThemes] = useState("");
   const [userApiKey, setUserApiKey] = useState("");
   const [isUsingCustomKey, setIsUsingCustomKey] = useState(false);
-  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(true);
 
   // Fetch available models on component mount
   useEffect(() => {
@@ -372,6 +372,16 @@ Please generate this story with attention to quality, creativity, and narrative 
           </TabsList>
           
           <TabsContent value="generate" className="space-y-4 mt-4">
+            <div className="p-4 border rounded-md bg-blue-50 dark:bg-blue-950/40 mb-4">
+              <h3 className="text-sm font-semibold mb-1 flex items-center">
+                <Sparkles className="h-4 w-4 text-blue-500 mr-2" />
+                Create a High-Quality AI Story
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                Fill out the sections below to provide details for your story. The more information you provide, the better the AI can craft a quality story tailored to your vision.
+              </p>
+            </div>
+            
             <div className="space-y-2">
               <Label htmlFor="title">Story Title (Optional)</Label>
               <Input
@@ -406,115 +416,97 @@ Please generate this story with attention to quality, creativity, and narrative 
               </Select>
             </div>
             
-            <Accordion type="single" collapsible defaultValue="characters">
-              <AccordionItem value="characters">
-                <AccordionTrigger>Characters</AccordionTrigger>
-                <AccordionContent>
-                  <div className="space-y-2">
-                    <Label htmlFor="characters">
-                      Main Characters
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger className="ml-2 cursor-help">ⓘ</TooltipTrigger>
-                          <TooltipContent>
-                            <p className="w-80 text-xs">Describe the main characters of your story: their names, personalities, goals, and relationships.</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </Label>
-                    <Textarea
-                      id="characters"
-                      placeholder="Describe the main characters of your story (e.g., names, personalities, motivations, relationships)"
-                      className="min-h-20"
-                      value={mainCharacters}
-                      onChange={(e) => setMainCharacters(e.target.value)}
-                      disabled={isLoading}
-                    />
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
+            <div className="border rounded-md p-4 bg-muted/10 space-y-4">
+              <h3 className="font-medium text-sm">Story Outline</h3>
               
-              <AccordionItem value="setting">
-                <AccordionTrigger>Setting</AccordionTrigger>
-                <AccordionContent>
-                  <div className="space-y-2">
-                    <Label htmlFor="setting">
-                      World & Setting
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger className="ml-2 cursor-help">ⓘ</TooltipTrigger>
-                          <TooltipContent>
-                            <p className="w-80 text-xs">Describe the world, time period, and locations where your story takes place.</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </Label>
-                    <Textarea
-                      id="setting"
-                      placeholder="Describe the world, time period, and locations where your story takes place"
-                      className="min-h-20"
-                      value={setting}
-                      onChange={(e) => setSetting(e.target.value)}
-                      disabled={isLoading}
-                    />
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
+              <div className="space-y-2">
+                <Label htmlFor="characters">
+                  Main Characters
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger className="ml-2 cursor-help">ⓘ</TooltipTrigger>
+                      <TooltipContent>
+                        <p className="w-80 text-xs">Describe the main characters of your story: their names, personalities, goals, and relationships.</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </Label>
+                <Textarea
+                  id="characters"
+                  placeholder="Describe the main characters of your story (e.g., names, personalities, motivations, relationships)"
+                  className="min-h-20"
+                  value={mainCharacters}
+                  onChange={(e) => setMainCharacters(e.target.value)}
+                  disabled={isLoading}
+                />
+              </div>
               
-              <AccordionItem value="plot">
-                <AccordionTrigger>Plot</AccordionTrigger>
-                <AccordionContent>
-                  <div className="space-y-2">
-                    <Label htmlFor="plot">
-                      Plot Outline
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger className="ml-2 cursor-help">ⓘ</TooltipTrigger>
-                          <TooltipContent>
-                            <p className="w-80 text-xs">Describe the main events, conflicts, and resolution of your story.</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </Label>
-                    <Textarea
-                      id="plot"
-                      placeholder="Describe the main events, conflicts, and resolution of your story"
-                      className="min-h-20"
-                      value={plotOutline}
-                      onChange={(e) => setPlotOutline(e.target.value)}
-                      disabled={isLoading}
-                    />
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
+              <div className="space-y-2">
+                <Label htmlFor="setting">
+                  World & Setting
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger className="ml-2 cursor-help">ⓘ</TooltipTrigger>
+                      <TooltipContent>
+                        <p className="w-80 text-xs">Describe the world, time period, and locations where your story takes place.</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </Label>
+                <Textarea
+                  id="setting"
+                  placeholder="Describe the world, time period, and locations where your story takes place"
+                  className="min-h-20"
+                  value={setting}
+                  onChange={(e) => setSetting(e.target.value)}
+                  disabled={isLoading}
+                />
+              </div>
               
-              <AccordionItem value="themes">
-                <AccordionTrigger>Themes</AccordionTrigger>
-                <AccordionContent>
-                  <div className="space-y-2">
-                    <Label htmlFor="themes">
-                      Themes & Motifs
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger className="ml-2 cursor-help">ⓘ</TooltipTrigger>
-                          <TooltipContent>
-                            <p className="w-80 text-xs">Describe key themes, motifs, or messages you want the story to explore.</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    </Label>
-                    <Textarea
-                      id="themes"
-                      placeholder="Describe key themes, motifs, or messages you want the story to explore"
-                      className="min-h-20"
-                      value={themes}
-                      onChange={(e) => setThemes(e.target.value)}
-                      disabled={isLoading}
-                    />
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+              <div className="space-y-2">
+                <Label htmlFor="plot">
+                  Plot Outline
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger className="ml-2 cursor-help">ⓘ</TooltipTrigger>
+                      <TooltipContent>
+                        <p className="w-80 text-xs">Describe the main events, conflicts, and resolution of your story.</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </Label>
+                <Textarea
+                  id="plot"
+                  placeholder="Describe the main events, conflicts, and resolution of your story"
+                  className="min-h-20"
+                  value={plotOutline}
+                  onChange={(e) => setPlotOutline(e.target.value)}
+                  disabled={isLoading}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="themes">
+                  Themes & Motifs
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger className="ml-2 cursor-help">ⓘ</TooltipTrigger>
+                      <TooltipContent>
+                        <p className="w-80 text-xs">Describe key themes, motifs, or messages you want the story to explore.</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </Label>
+                <Textarea
+                  id="themes"
+                  placeholder="Describe key themes, motifs, or messages you want the story to explore"
+                  className="min-h-20"
+                  value={themes}
+                  onChange={(e) => setThemes(e.target.value)}
+                  disabled={isLoading}
+                />
+              </div>
+            </div>
             
             <div className="space-y-2 mt-4">
               <Label htmlFor="prompt">Additional Details & Instructions</Label>
@@ -536,6 +528,8 @@ Please generate this story with attention to quality, creativity, and narrative 
                     checked={showAdvancedOptions}
                     onChange={() => setShowAdvancedOptions(!showAdvancedOptions)}
                     className="rounded border-gray-300"
+                    aria-label="Show Advanced Options"
+                    title="Show Advanced Options"
                   />
                   <span>Show Advanced Options</span>
                 </Label>
@@ -589,6 +583,8 @@ Please generate this story with attention to quality, creativity, and narrative 
                         type="checkbox"
                         checked={isUsingCustomKey}
                         onChange={() => setIsUsingCustomKey(!isUsingCustomKey)}
+                        title="Use Custom Key"
+                        placeholder="Use Custom Key"
                         className="mr-2 rounded border-gray-300"
                       />
                       Use my Groq API key
@@ -613,7 +609,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                           <a 
                             href="https://console.groq.com/keys" 
                             target="_blank" 
-                            rel="noreferrer" 
+                            rel="noopener noreferrer" 
                             className="text-primary hover:underline"
                           >
                             console.groq.com
