@@ -45,7 +45,7 @@ const getIpfsClient = async () => {
       console.warn('IPFS client creation failed in production, using mock IPFS client');
       // Return a mock IPFS client that can be used in production without failing
       return {
-        add: async (content) => {
+        add: async (content: Uint8Array | Buffer | string) => {
           console.warn('Using mock IPFS client, content will not be stored on IPFS');
           return { path: `mock-ipfs-hash-${Date.now()}` };
         }
