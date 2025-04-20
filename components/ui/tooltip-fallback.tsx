@@ -3,8 +3,8 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 
-// This is a shimmed tooltip component that doesn't rely on @radix-ui/react-tooltip
-// It provides the same API but with a simplified implementation
+// This is a fallback tooltip component for use when @radix-ui/react-tooltip is not available
+// It provides basic tooltip functionality but without animations and advanced positioning
 
 const TooltipProvider = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
@@ -58,4 +58,4 @@ const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
 );
 TooltipContent.displayName = 'TooltipContent';
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }; 

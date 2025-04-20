@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node scripts/check-env.js && next dev",
+    "prebuild": "node scripts/fix-tooltip.js",
     "build": "node scripts/prepare-vercel.js && next build",
     "start": "next start",
     "lint": "next lint",
@@ -34,7 +35,7 @@
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-toast": "^1.1.5",
-    "@radix-ui/react-tooltip": "^1.0.7",
+    "@radix-ui/react-tooltip": "1.0.7",
     "@tanstack/react-query": "^5.74.3",
     "@uploadthing/react": "^6.2.2",
     "@web3modal/wagmi": "^4.0.0-alpha.0",

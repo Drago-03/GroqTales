@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Heart, EyeIcon, Share } from 'lucide-react';
+import { ArrowLeft, Heart, Eye, Share } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -120,7 +120,7 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                       {story.likes}
                     </Button>
                     <div className="flex items-center">
-                      <EyeIcon className="h-4 w-4 mr-2" />
+                      <Eye className="h-4 w-4 mr-2" />
                       <span>{story.views} views</span>
                     </div>
                   </div>
