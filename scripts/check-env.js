@@ -11,8 +11,14 @@ const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
 
-// Load environment variables from .env.local
-dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
+// In production environments like Vercel, env vars are set in the platform
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Load environment variables from .env.local if it exists
+const envLocalPath = path.resolve(process.cwd(), '.env.local');
+if (fs.existsSync(envLocalPath)) {
+  dotenv.config({ path: envLocalPath });
+}
 
 // Required environment variables
 const requiredVars = [
@@ -28,9 +34,36 @@ const recommendedVars = [
   'NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID'
 ];
 
-// Check if .env.local exists
-const envLocalPath = path.resolve(process.cwd(), '.env.local');
-if (!fs.existsSync(envLocalPath)) {
+// In production, we assume env vars are set correctly in the platform
+if (isProduction && !fs.existsSync(envLocalPath)) {
+  console.log('\n🔍 Environment Variables Check - Production Mode\n');
+  console.log('Using environment variables configured in the hosting platform.\n');
+  
+  // Just check that required vars exist
+  const missingVars = [];
+  for (const varName of requiredVars) {
+    if (!process.env[varName]) {
+      missingVars.push(varName);
+    }
+  }
+  
+  if (missingVars.length === 0) {
+    console.log('\x1b[32m%s\x1b[0m', '✅ All required environment variables are set!\n');
+  } else {
+    console.error('\x1b[31m%s\x1b[0m', '❌ Missing required environment variables:');
+    missingVars.forEach(varName => {
+      console.error(`   - ${varName}`);
+    });
+    console.log('\n\x1b[33m%s\x1b[0m', 'Please configure these variables in your hosting platform.');
+    process.exit(1);
+  }
+  
+  console.log('\n✨ Environment check completed successfully!\n');
+  process.exit(0);
+}
+
+// For development environment, check for .env.local
+if (!isProduction && !fs.existsSync(envLocalPath)) {
   console.error('\x1b[31m%s\x1b[0m', 'ERROR: .env.local file not found!');
   console.log('\x1b[33m%s\x1b[0m', 'Please copy .env.example to .env.local and fill in your environment variables.');
   process.exit(1);
