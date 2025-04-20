@@ -1,8 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeftIcon, HeartIcon, EyeIcon, ShareIcon } from '@heroicons/react/24/outline';
-import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
+import { ArrowLeft, Heart, EyeIcon, Share } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -41,7 +40,7 @@ export default function StoryPage({ params }: { params: { id: string } }) {
           <CardContent>
             <Link href="/nft-gallery">
               <Button>
-                <ArrowLeftIcon className="h-4 w-4 mr-2" />
+                <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Gallery
               </Button>
             </Link>
@@ -60,7 +59,7 @@ export default function StoryPage({ params }: { params: { id: string } }) {
         <div className="flex items-center mb-8">
           <Link href="/nft-gallery">
             <Button variant="ghost">
-              <ArrowLeftIcon className="h-4 w-4 mr-2" />
+              <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Gallery
             </Button>
           </Link>
@@ -117,7 +116,7 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                 <div className="flex items-center justify-between mt-8">
                   <div className="flex items-center space-x-4">
                     <Button variant="outline" size="sm">
-                      <HeartIcon className="h-4 w-4 mr-2" />
+                      <Heart className="h-4 w-4 mr-2" />
                       {story.likes}
                     </Button>
                     <div className="flex items-center">
@@ -127,7 +126,7 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                   </div>
                   
                   <Button variant="outline" size="sm">
-                    <ShareIcon className="h-4 w-4 mr-2" />
+                    <Share className="h-4 w-4 mr-2" />
                     Share
                   </Button>
                 </div>

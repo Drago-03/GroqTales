@@ -4,15 +4,6 @@
   "installCommand": "npm ci",
   "framework": "nextjs",
   "outputDirectory": ".next",
-  "rewrites": [
-    {
-      "source": "/api/v1/:path*",
-      "destination": "https://your-fastapi-server.com/api/v1/:path*"
-    }
-  ],
-  "env": {
-    "NEXT_PUBLIC_API_URL": "https://your-fastapi-server.com"
-  },
   "headers": [
     {
       "source": "/(.*)",
