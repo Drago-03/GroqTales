@@ -1,282 +1,226 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { PenSquare, Camera, Palette, BookText, Coins, BookOpen, ChevronLeft } from "lucide-react";
+import { genres } from "@/components/genre-selector";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useToast } from "@/components/ui/use-toast";
-import {
-  BookOpen,
-  Image as ImageIcon,
-  PenSquare,
-  Sparkles,
-  FileText,
-  Camera,
-  Palette,
-  BookMarked
-} from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { useRouter } from "next/navigation";
 
 interface CreateStoryDialogProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-type StoryType = 'text' | 'image' | 'comic' | 'art';
-type StoryFormat = 'nft' | 'free';
+interface CreateOption {
+  id: string;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  path: string;
+}
 
-const genres = [
-  { value: 'science-fiction', label: 'Science Fiction' },
-  { value: 'fantasy', label: 'Fantasy' },
-  { value: 'mystery', label: 'Mystery' },
-  { value: 'romance', label: 'Romance' },
-  { value: 'horror', label: 'Horror' },
-  { value: 'adventure', label: 'Adventure' },
-  { value: 'comedy', label: 'Comedy' },
-  { value: 'drama', label: 'Drama' },
-  { value: 'thriller', label: 'Thriller' },
-  { value: 'historical', label: 'Historical' }
+const createOptions: CreateOption[] = [
+  {
+    id: "ai",
+    title: "AI Story",
+    description: "Create a story with AI assistance",
+    icon: <BookText className="w-5 h-5" />,
+    path: "/create/ai-story"
+  },
+  {
+    id: "text",
+    title: "Text Story",
+    description: "Create a story with your own writing",
+    icon: <PenSquare className="w-5 h-5" />,
+    path: "/create"
+  },
+  {
+    id: "image",
+    title: "Image Story",
+    description: "Create a story with images",
+    icon: <Camera className="w-5 h-5" />,
+    path: "/create"
+  }
 ];
 
 export function CreateStoryDialog({ isOpen, onClose }: CreateStoryDialogProps) {
-  const [step, setStep] = useState(1);
-  const [storyType, setStoryType] = useState<StoryType | null>(null);
-  const [genre, setGenre] = useState<string | null>(null);
-  const [format, setFormat] = useState<StoryFormat | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [selectedFormat, setSelectedFormat] = useState<string>("free");
+  const [selectedGenre, setSelectedGenre] = useState<string>("");
   const router = useRouter();
-  const { toast } = useToast();
-
-  const resetAndClose = () => {
-    setStep(1);
-    setStoryType(null);
-    setGenre(null);
-    setFormat(null);
-    onClose();
+  
+  const handleOptionSelect = (option: CreateOption) => {
+    setSelectedOption(option.id);
+    setCurrentStep(2);
   };
-
+  
+  const handleBack = () => {
+    setCurrentStep(1);
+    setSelectedOption(null);
+  };
+  
+  const handleFormatChange = (value: string) => {
+    setSelectedFormat(value);
+  };
+  
+  const handleGenreChange = (value: string) => {
+    setSelectedGenre(value);
+  };
+  
   const handleContinue = () => {
-    if (step === 1 && !storyType) {
-      toast({
-        title: "Please select a story type",
-        variant: "destructive",
-      });
-      return;
+    if (!selectedOption) return;
+    
+    // Create a path based on the selections
+    let path = "/create";
+    
+    if (selectedOption === "ai") {
+      path = "/create/ai-story";
     }
-
-    if (step === 2 && !genre) {
-      toast({
-        title: "Please select a genre",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (step === 3 && !format) {
-      toast({
-        title: "Please select a format",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (step < 3) {
-      setStep(step + 1);
-    } else {
-      // Determine which create page to navigate to based on type and format
-      let targetPath = '/create';
+    
+    try {
+      // Store the selection in localStorage with stringified JSON
+      const storyData = {
+        type: selectedOption,
+        format: selectedFormat,
+        genre: selectedGenre,
+        timestamp: new Date().getTime()
+      };
       
-      // If it's an AI-generated story, use the AI story page
-      if (storyType === 'text' && format === 'nft') {
-        targetPath = '/create/ai-story';
-      } else if (format === 'nft') {
-        // If it's an NFT but not AI-generated text, use the standard create page
-        targetPath = '/create';
-      } else if (storyType === 'comic' || storyType === 'art') {
-        // For visual story types
-        targetPath = '/create';
+      // Store to localStorage
+      localStorage.setItem('storyCreationData', JSON.stringify(storyData));
+      
+      // Verify the data was saved correctly
+      const savedData = localStorage.getItem('storyCreationData');
+      if (!savedData) {
+        throw new Error("Failed to save story creation data");
       }
       
-      // Store the selections in localStorage for the target page to use
-      localStorage.setItem('storyCreationData', JSON.stringify({
-        type: storyType,
-        genre: genre,
-        format: format,
-        timestamp: new Date().getTime()
-      }));
+      console.log("Story creation data saved successfully:", storyData);
       
-      resetAndClose();
-      router.push(targetPath);
+      // Close the dialog first to avoid UI issues
+      onClose();
+      
+      // Force a slight delay to ensure the dialog is closed
+      // and localStorage is updated before navigation
+      setTimeout(() => {
+        console.log("Navigating to:", path);
+        // Use router.push with { forceOptimisticNavigation: true } for more reliable navigation
+        router.push(path);
+      }, 100); // Increased delay for more reliability
+    } catch (error) {
+      console.error("Error saving data or navigating:", error);
+      // Show an error through toast notification if available
+      alert("Error creating story. Please try again.");
+      
+      // Try direct navigation as fallback
+      window.location.href = path;
     }
   };
 
-  const renderStoryTypeSelection = () => (
-    <div className="grid grid-cols-2 gap-4">
-      <Button
-        variant={storyType === 'text' ? 'default' : 'outline'}
-        className="h-32 flex flex-col items-center justify-center gap-2"
-        onClick={() => setStoryType('text')}
-      >
-        <FileText className="h-8 w-8" />
-        <span>Text Story</span>
-        <span className="text-xs text-muted-foreground">Pure written content</span>
-      </Button>
-
-      <Button
-        variant={storyType === 'image' ? 'default' : 'outline'}
-        className="h-32 flex flex-col items-center justify-center gap-2"
-        onClick={() => setStoryType('image')}
-      >
-        <Camera className="h-8 w-8" />
-        <span>Story with Images</span>
-        <span className="text-xs text-muted-foreground">Text with illustrations</span>
-      </Button>
-
-      <Button
-        variant={storyType === 'comic' ? 'default' : 'outline'}
-        className="h-32 flex flex-col items-center justify-center gap-2"
-        onClick={() => setStoryType('comic')}
-      >
-        <BookMarked className="h-8 w-8" />
-        <span>Comic Story</span>
-        <span className="text-xs text-muted-foreground">Sequential art narrative</span>
-      </Button>
-
-      <Button
-        variant={storyType === 'art' ? 'default' : 'outline'}
-        className="h-32 flex flex-col items-center justify-center gap-2"
-        onClick={() => setStoryType('art')}
-      >
-        <Palette className="h-8 w-8" />
-        <span>Art Story</span>
-        <span className="text-xs text-muted-foreground">Visual storytelling</span>
-      </Button>
-    </div>
-  );
-
-  const renderGenreSelection = () => (
-    <div className="space-y-4">
-      <Label htmlFor="genre">Select Genre</Label>
-      <Select value={genre || ''} onValueChange={setGenre}>
-        <SelectTrigger id="genre">
-          <SelectValue placeholder="Choose a genre" />
-        </SelectTrigger>
-        <SelectContent>
-          {genres.map((g) => (
-            <SelectItem key={g.value} value={g.value}>
-              {g.label}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
-  );
-
-  const renderFormatSelection = () => (
-    <div className="space-y-4">
-      <Label>Select Format</Label>
-      <RadioGroup
-        value={format || ''}
-        onValueChange={(value: string) => setFormat(value as StoryFormat)}
-        className="grid grid-cols-2 gap-4"
-      >
-        <div>
-          <RadioGroupItem
-            value="nft"
-            id="nft"
-            className="peer sr-only"
-          />
-          <Label
-            htmlFor="nft"
-            className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
-          >
-            <Sparkles className="mb-3 h-6 w-6" />
-            <div className="space-y-1 text-center">
-              <p className="font-medium leading-none">NFT Story</p>
-              <p className="text-sm text-muted-foreground">
-                Mint as an NFT for sale
-              </p>
-            </div>
-          </Label>
-        </div>
-
-        <div>
-          <RadioGroupItem
-            value="free"
-            id="free"
-            className="peer sr-only"
-          />
-          <Label
-            htmlFor="free"
-            className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
-          >
-            <BookOpen className="mb-3 h-6 w-6" />
-            <div className="space-y-1 text-center">
-              <p className="font-medium leading-none">Free Story</p>
-              <p className="text-sm text-muted-foreground">
-                Share with everyone
-              </p>
-            </div>
-          </Label>
-        </div>
-      </RadioGroup>
-    </div>
-  );
-
   return (
-    <Dialog open={isOpen} onOpenChange={resetAndClose}>
-      <DialogContent className="sm:max-w-[500px]">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create New Story</DialogTitle>
-          <DialogDescription>
-            {step === 1 && "Choose the type of story you want to create"}
-            {step === 2 && "Select a genre for your story"}
-            {step === 3 && "Choose how you want to share your story"}
-          </DialogDescription>
+          <DialogTitle className="flex items-center gap-2">
+            {currentStep === 2 && (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="h-8 w-8 mr-1" 
+                onClick={handleBack}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+            )}
+            <PenSquare className="w-5 h-5" />
+            {currentStep === 1 ? "Create Story" : "Story Details"}
+          </DialogTitle>
         </DialogHeader>
-
-        <div className="py-6">
-          {step === 1 && renderStoryTypeSelection()}
-          {step === 2 && renderGenreSelection()}
-          {step === 3 && renderFormatSelection()}
-        </div>
-
-        <div className="flex justify-between">
-          <Button
-            variant="outline"
-            onClick={() => step > 1 ? setStep(step - 1) : resetAndClose()}
-          >
-            {step > 1 ? 'Back' : 'Cancel'}
-          </Button>
-          <Button onClick={handleContinue}>
-            {step < 3 ? 'Continue' : 'Create Story'}
-          </Button>
-        </div>
-
-        {/* Step indicator */}
-        <div className="absolute top-2 right-2 flex gap-1">
-          {[1, 2, 3].map((s) => (
-            <div
-              key={s}
-              className={`w-2 h-2 rounded-full ${
-                s === step ? 'bg-primary' : 'bg-muted'
-              }`}
-            />
-          ))}
-        </div>
+        
+        {currentStep === 1 && (
+          <div className="grid gap-4 py-4">
+            {createOptions.map((option) => (
+              <Button
+                key={option.id}
+                variant="outline"
+                className={`w-full h-auto p-4 justify-start gap-4 hover:bg-accent/10 transition-colors ${
+                  selectedOption === option.id ? 'border-primary' : ''
+                }`}
+                onClick={() => handleOptionSelect(option)}
+              >
+                <div className="p-2 rounded-full bg-primary/10 text-primary">
+                  {option.icon}
+                </div>
+                <div className="text-left">
+                  <h3 className="font-medium">{option.title}</h3>
+                  <p className="text-sm text-muted-foreground">{option.description}</p>
+                </div>
+              </Button>
+            ))}
+          </div>
+        )}
+        
+        {currentStep === 2 && (
+          <div className="grid gap-6 py-4">
+            <div className="space-y-4">
+              <h3 className="font-medium">Story Format</h3>
+              <RadioGroup 
+                defaultValue={selectedFormat} 
+                onValueChange={handleFormatChange}
+                className="grid grid-cols-2 gap-4"
+              >
+                <div className="flex items-center space-x-2 border rounded-md p-3 cursor-pointer hover:bg-accent/10">
+                  <RadioGroupItem value="free" id="free" />
+                  <Label htmlFor="free" className="flex flex-col cursor-pointer">
+                    <span className="font-medium">Free Story</span>
+                    <span className="text-xs text-muted-foreground">Available to all readers</span>
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2 border rounded-md p-3 cursor-pointer hover:bg-accent/10">
+                  <RadioGroupItem value="nft" id="nft" />
+                  <Label htmlFor="nft" className="flex flex-col cursor-pointer">
+                    <span className="font-medium">NFT Story</span>
+                    <span className="text-xs text-muted-foreground">Create as digital asset</span>
+                  </Label>
+                </div>
+              </RadioGroup>
+            </div>
+            
+            <div className="space-y-4">
+              <h3 className="font-medium">Choose Genre</h3>
+              <div className="grid grid-cols-2 gap-2 max-h-[200px] overflow-y-auto pr-2">
+                {genres.map((genre) => (
+                  <div 
+                    key={genre.slug}
+                    onClick={() => handleGenreChange(genre.slug)} 
+                    className={`border rounded-md p-3 cursor-pointer hover:bg-accent/10 flex items-center space-x-2 ${
+                      selectedGenre === genre.slug ? 'border-primary bg-primary/5' : ''
+                    }`}
+                  >
+                    <div>{genre.icon}</div>
+                    <span>{genre.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {currentStep === 2 && (
+          <DialogFooter>
+            <Button
+              onClick={handleContinue}
+              disabled={!selectedGenre}
+              className="w-full theme-gradient-bg text-white"
+            >
+              Continue to Editor
+            </Button>
+          </DialogFooter>
+        )}
       </DialogContent>
     </Dialog>
   );

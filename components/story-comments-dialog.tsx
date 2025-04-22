@@ -7,6 +7,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,7 +24,7 @@ interface Comment {
     avatar: string;
   };
   content: string;
-  timestamp: Date;
+  timestamp: Date | string;
   likes: number;
 }
 
@@ -63,10 +64,30 @@ export function StoryCommentsDialog({
     onAddComment("");
   };
 
+  // Prevent dialog from closing when clicking inside
+  const handleContentClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
+  // Format timestamp
+  const formatTimestamp = (timestamp: Date | string) => {
+    const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp;
+    return date.toLocaleDateString(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl h-[80vh] flex flex-col">
-        <DialogHeader>
+      <DialogContent 
+        className="max-w-2xl h-[80vh] flex flex-col overflow-hidden"
+        onClick={handleContentClick}
+      >
+        <DialogHeader className="flex-shrink-0">
           <DialogTitle>Comments</DialogTitle>
           <DialogDescription>
             Join the discussion about "{storyTitle}"
@@ -97,7 +118,7 @@ export function StoryCommentsDialog({
                           )}
                         </div>
                         <p className="text-xs text-muted-foreground">
-                          @{comment.author.username} • {comment.timestamp.toLocaleDateString()}
+                          @{comment.author.username} • {formatTimestamp(comment.timestamp)}
                         </p>
                       </div>
                       {onLikeComment && (
@@ -123,7 +144,7 @@ export function StoryCommentsDialog({
 
         {/* Comment Input */}
         {isWalletConnected ? (
-          <form onSubmit={handleSubmit} className="flex gap-2 pt-4 border-t">
+          <form onSubmit={handleSubmit} className="flex gap-2 pt-4 border-t flex-shrink-0">
             <Textarea
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
@@ -139,7 +160,7 @@ export function StoryCommentsDialog({
             </Button>
           </form>
         ) : (
-          <div className="text-center border-t pt-4">
+          <div className="text-center border-t pt-4 flex-shrink-0">
             <p className="text-muted-foreground mb-4">
               Connect your wallet to join the conversation
             </p>
@@ -152,6 +173,8 @@ export function StoryCommentsDialog({
             </Button>
           </div>
         )}
+
+        <DialogClose className="absolute right-4 top-4" />
       </DialogContent>
     </Dialog>
   );

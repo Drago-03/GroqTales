@@ -3,7 +3,7 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Heart, MessageSquare, Share2, Sparkles } from "lucide-react";
+import { Heart, MessageSquare, Share2, Sparkles, PenSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -34,9 +34,11 @@ interface Story {
 interface StoryCardProps {
   story: Story;
   viewMode?: "grid" | "list";
+  hideLink?: boolean;
+  showCreateButton?: boolean;
 }
 
-export function StoryCard({ story, viewMode = "grid" }: StoryCardProps) {
+export function StoryCard({ story, viewMode = "grid", hideLink = false, showCreateButton = false }: StoryCardProps) {
   const isGrid = viewMode === "grid";
   
   // Handle different author data structures
@@ -51,71 +53,99 @@ export function StoryCard({ story, viewMode = "grid" }: StoryCardProps) {
   const imageUrl = story.coverImage || story.image || '/covers/default.jpg';
   const storyContent = story.description || story.content || '';
   
-  return (
-    <Card className={cn(
-      "overflow-hidden transition-all duration-200 hover:shadow-md",
-      isGrid ? "h-full" : "flex gap-4"
-    )}>
-      <Link href={`/stories/${story.id}`} className="block">
-        <div className={isGrid ? "relative pt-[60%]" : "relative w-48 min-w-48"}>
-          <img
-            src={imageUrl}
-            alt={story.title}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          {story.price && (
-            <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-xs font-medium flex items-center">
-              <Sparkles className="h-3 w-3 mr-1 text-yellow-400" />
-              {story.price}
+  const handleCreateSimilar = () => {
+    // Direct navigation with URL parameters
+    const genre = story.genre || 'fantasy';
+    window.location.href = `/create/ai-story?source=card&genre=${encodeURIComponent(genre)}&format=nft`;
+  };
+  
+  // Create the card content
+  const cardContent = (
+    <>
+      <div className={isGrid ? "relative pt-[60%]" : "relative w-48 min-w-48"}>
+        <img
+          src={imageUrl}
+          alt={story.title}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {story.price && (
+          <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-xs font-medium flex items-center">
+            <Sparkles className="h-3 w-3 mr-1 text-yellow-400" />
+            {story.price}
+          </div>
+        )}
+        {story.isTop10 && (
+          <div className="absolute top-2 left-2 bg-gradient-to-r from-purple-600 to-blue-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+            Top 10
+          </div>
+        )}
+      </div>
+      <div className="flex-1">
+        <CardHeader className="p-4 pb-2">
+          <div className="flex items-center space-x-2">
+            <Avatar className="h-6 w-6">
+              <AvatarImage src={authorAvatar} />
+              <AvatarFallback>{authorName?.[0] || 'U'}</AvatarFallback>
+            </Avatar>
+            <p className="text-sm font-medium">{authorName}</p>
+          </div>
+          <h3 className="text-lg font-semibold mt-2 line-clamp-2">{story.title}</h3>
+        </CardHeader>
+        <CardContent className="p-4 pt-0">
+          <p className="text-muted-foreground text-sm line-clamp-2">{storyContent}</p>
+        </CardContent>
+        <CardFooter className="p-4 pt-0 flex justify-between">
+          <div className="flex space-x-4 text-sm text-muted-foreground">
+            <div className="flex items-center">
+              <Heart className="h-3.5 w-3.5 mr-1" />
+              {story.likes || 0}
             </div>
-          )}
-          {story.isTop10 && (
-            <div className="absolute top-2 left-2 bg-gradient-to-r from-purple-600 to-blue-500 text-white px-2 py-1 rounded-full text-xs font-bold">
-              Top 10
-            </div>
-          )}
-        </div>
-        <div className="flex-1">
-          <CardHeader className="p-4 pb-2">
-            <div className="flex items-center space-x-2">
-              <Avatar className="h-6 w-6">
-                <AvatarImage src={authorAvatar} />
-                <AvatarFallback>{authorName?.[0] || 'U'}</AvatarFallback>
-              </Avatar>
-              <p className="text-sm font-medium">{authorName}</p>
-            </div>
-            <h3 className="text-lg font-semibold mt-2 line-clamp-2">{story.title}</h3>
-          </CardHeader>
-          <CardContent className="p-4 pt-0">
-            <p className="text-muted-foreground text-sm line-clamp-2">{storyContent}</p>
-          </CardContent>
-          <CardFooter className="p-4 pt-0 flex justify-between">
-            <div className="flex space-x-4 text-sm text-muted-foreground">
+            {story.views && (
               <div className="flex items-center">
-                <Heart className="h-3.5 w-3.5 mr-1" />
-                {story.likes || 0}
+                <span className="mr-1">👁️</span>
+                {story.views}
               </div>
-              {story.views && (
-                <div className="flex items-center">
-                  <span className="mr-1">👁️</span>
-                  {story.views}
-                </div>
-              )}
-              {story.comments !== undefined && (
-                <div className="flex items-center">
-                  <MessageSquare className="h-3.5 w-3.5 mr-1" />
-                  {story.comments}
-                </div>
-              )}
-            </div>
+            )}
+            {story.comments !== undefined && (
+              <div className="flex items-center">
+                <MessageSquare className="h-3.5 w-3.5 mr-1" />
+                {story.comments}
+              </div>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
             {story.genre && (
               <span className="text-xs bg-muted px-2 py-1 rounded-full">
                 {story.genre}
               </span>
             )}
-          </CardFooter>
-        </div>
-      </Link>
+            {showCreateButton && (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="h-6 w-6" 
+                title="Create Similar Story"
+                onClick={handleCreateSimilar}
+              >
+                <PenSquare className="h-3.5 w-3.5" />
+              </Button>
+            )}
+          </div>
+        </CardFooter>
+      </div>
+    </>
+  );
+  
+  return (
+    <Card className={cn(
+      "overflow-hidden transition-all duration-200 hover:shadow-md",
+      isGrid ? "h-full" : "flex gap-4"
+    )}>
+      {hideLink ? (
+        <div className="block">{cardContent}</div>
+      ) : (
+        <Link href={`/stories/${story.id}`} className="block">{cardContent}</Link>
+      )}
     </Card>
   );
 }

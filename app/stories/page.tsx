@@ -19,13 +19,20 @@ export default function StoriesPage() {
             Unleash your creativity and share your stories with the world. Learn how to create, publish, and monetize your stories on GroqTales.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Button size="lg" className="theme-gradient-bg text-white border-0 hover:opacity-90">
+            <Button size="lg" className="theme-gradient-bg text-white border-0 hover:opacity-90" 
+              onClick={() => {
+                // Direct navigation with URL parameters
+                window.location.href = `/create/ai-story?source=stories_page&format=free`;
+              }}
+            >
               <PenSquare className="mr-2 h-5 w-5" />
               Start Writing
             </Button>
-            <Button variant="outline" size="lg">
-              <BookOpen className="mr-2 h-5 w-5" />
-              Browse Examples
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/nft-gallery">
+                <BookOpen className="mr-2 h-5 w-5" />
+                Browse Examples
+              </Link>
             </Button>
           </div>
         </div>
@@ -143,7 +150,12 @@ export default function StoriesPage() {
             <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
               Join thousands of storytellers who are sharing their creativity with the world and building a community through the power of Web3.
             </p>
-            <Button size="lg" className="theme-gradient-bg text-white border-0 hover:opacity-90">
+            <Button size="lg" className="theme-gradient-bg text-white border-0 hover:opacity-90" 
+              onClick={() => {
+                // Direct navigation with URL parameters
+                window.location.href = `/create/ai-story?source=stories_cta&format=free`;
+              }}
+            >
               <PenSquare className="mr-2 h-5 w-5" />
               Create Your First Story
             </Button>

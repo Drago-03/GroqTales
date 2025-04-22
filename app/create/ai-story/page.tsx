@@ -1,12 +1,133 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AIStoryGenerator } from "@/components/ai-story-generator";
-import { Sparkles, BookText, Wallet, NetworkIcon } from "lucide-react";
+import { Sparkles, BookText, Wallet, NetworkIcon, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
+import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function AIStoryGeneratorPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { toast } = useToast();
+  const [navigatedFrom, setNavigatedFrom] = useState<string | null>(null);
+  
+  // Get parameters from URL
+  const source = searchParams.get('source');
+  const genre = searchParams.get('genre') || 'fantasy';
+  const format = searchParams.get('format') || 'free';
+  
+  // Create story creation data from URL parameters
+  useEffect(() => {
+    try {
+      console.log("Setting up storyCreationData from URL parameters");
+      
+      // Create data from URL parameters
+      const storyData = {
+        type: 'ai',
+        format: format,
+        genre: genre,
+        redirectToCreate: !!source, // Set true if source exists
+        timestamp: new Date().getTime()
+      };
+      
+      console.log("Created storyCreationData from URL params:", storyData);
+      localStorage.setItem('storyCreationData', JSON.stringify(storyData));
+      
+    } catch (error) {
+      console.error('Error setting up story creation data:', error);
+      // Create fresh data with default values on error
+      const defaultData = {
+        type: 'ai',
+        format: 'free',
+        genre: 'fantasy',
+        redirectToCreate: true,
+        timestamp: new Date().getTime()
+      };
+      localStorage.setItem('storyCreationData', JSON.stringify(defaultData));
+    }
+  }, [source, genre, format]);
+
+  // Enhanced navigation detection from URL parameters
+  useEffect(() => {
+    // This function runs when the component mounts to detect navigation source
+    const detectNavigationSource = () => {
+      // Check URL parameters for source
+      if (source) {
+        console.log("Navigation source from URL:", source);
+        
+        // Set the navigation source for customized welcome
+        if (source === 'story') {
+          setNavigatedFrom('story');
+          
+          toast({
+            title: "Inspired to create your own story?",
+            description: "Now you can craft your unique story with our AI tools!",
+          });
+        } else if (source === 'stories' || source === 'stories_page' || source === 'stories_cta') {
+          setNavigatedFrom('stories');
+          
+          toast({
+            title: "Ready to join our storytellers?",
+            description: "Create your own unique story with AI assistance.",
+          });
+        } else if (source === 'trending' || source === 'card') {
+          setNavigatedFrom('trending');
+          
+          toast({
+            title: "Create your own amazing story!",
+            description: `Start crafting your ${genre} masterpiece now.`,
+          });
+        } else {
+          setNavigatedFrom('homepage');
+          
+          toast({
+            title: "Let's create something amazing!",
+            description: "Fill out the story details below to get started.",
+          });
+        }
+      } else {
+        // Direct navigation (typed URL or bookmark)
+        setNavigatedFrom('direct');
+      }
+    };
+    
+    // Run once on mount
+    detectNavigationSource();
+  }, [toast, source, genre]); // Add dependencies
+
   return (
-    <div className="container mx-auto px-4 py-12">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="container mx-auto px-4 py-12"
+    >
       <div className="max-w-4xl mx-auto">
+        <div className="flex justify-between items-center mb-6">
+          <Button 
+            variant="ghost" 
+            className="flex items-center"
+            onClick={() => {
+              if (navigatedFrom === 'story') {
+                router.back(); // Go back to the previous page
+              } else if (navigatedFrom === 'stories' || source?.includes('stories')) {
+                router.push('/stories');
+              } else {
+                router.push('/');
+              }
+            }}
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to {navigatedFrom === 'story' ? 'Story' : 
+                     navigatedFrom === 'stories' || source?.includes('stories') ? 'Stories' : 
+                     'Home'}
+          </Button>
+        </div>
+        
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold mb-4 gradient-heading">AI Story Creator</h1>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
@@ -40,7 +161,7 @@ export default function AIStoryGeneratorPage() {
           </div>
         </div>
         
-        <AIStoryGenerator />
+        <AIStoryGenerator initialGenre={genre} initialFormat={format} showWelcome={!!source} />
         
         <div className="mt-12 p-6 border rounded-xl bg-muted/30">
           <h2 className="text-xl font-semibold mb-4">About This Feature</h2>
@@ -62,6 +183,6 @@ export default function AIStoryGeneratorPage() {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 } 

@@ -13,7 +13,8 @@ import {
   ShieldCheck, 
   Zap,
   BookMarked,
-  Globe
+  Globe,
+  Shapes
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,6 +22,9 @@ import { genres } from "@/components/genre-selector";
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import * as React from "react";
+import { AIStoryGenerator } from "@/components/ai-story-generator";
+import { TrendingStories } from "@/components/trending-stories";
+import { FeaturedCreators } from "@/components/featured-creators";
 
 // Animate in view component
 function AnimateInView({ 
@@ -45,6 +49,11 @@ function AnimateInView({
   );
 }
 
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
 export default function HomePage() {
   const { account, connectWallet } = useWeb3();
   const router = useRouter();
@@ -63,310 +72,267 @@ export default function HomePage() {
   };
 
   const createStory = () => {
-    if (!account) {
-      connectWallet();
-      return;
-    }
-    router.push('/create');
+    router.push('/create/ai-story');
   };
 
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen">
+    <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="py-20 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 -z-10" />
-        <div className="absolute inset-0 bg-grid-black/[0.03] -z-10" />
+      <motion.section 
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: 0.1,
+              delayChildren: 0.2
+            }
+          }
+        }}
+        className="relative py-20 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center text-center bg-background"
+      >
+        <motion.div
+          variants={fadeIn}
+          className="absolute inset-0 overflow-hidden -z-10"
+        >
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsl(var(--primary)/0.2),transparent_40%)]"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-background to-transparent"></div>
+        </motion.div>
         
-        <div className="container mx-auto max-w-6xl relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <AnimateInView>
-              <div className="space-y-6">
-                <div className="inline-flex items-center px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-sm font-medium">
-                  <Sparkles className="h-3.5 w-3.5 mr-2" />
-                  AI-Powered Storytelling Platform
-                </div>
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold gradient-heading">
-                  Create & Share Amazing Stories
-                </h1>
-                <p className="text-lg text-muted-foreground max-w-md">
-                  Unleash your creativity with GroqTales. Write, illustrate, and even mint your stories as NFTs using cutting-edge AI tools.
-                </p>
-                <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
-                  <Button 
-                    onClick={handleGetStarted} 
-                    size="lg"
-                    className="theme-gradient-bg"
-                  >
-                    Get Started <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                  <Button 
-                    onClick={createStory}
-                    variant="outline" 
-                    size="lg"
-                  >
-                    <PenSquare className="mr-2 h-4 w-4" /> Create a Story
-                  </Button>
-                </div>
-              </div>
-            </AnimateInView>
+        <motion.div variants={fadeIn} className="max-w-3xl mx-auto">
+          <motion.h1 
+            variants={fadeIn}
+            className="text-4xl font-extrabold tracking-tight gradient-heading sm:text-5xl md:text-6xl"
+          >
+            Immortalize Your Stories on the Blockchain
+          </motion.h1>
+          
+          <motion.p 
+            variants={fadeIn}
+            className="mt-6 text-xl text-muted-foreground"
+          >
+            Create, own, and share unique stories as NFTs on GroqTales. Connect with fellow creators in a decentralized storytelling ecosystem.
+          </motion.p>
+          
+          <div className="flex flex-wrap justify-center gap-4 mt-8">
+            <Button 
+              size="lg" 
+              className="theme-gradient-bg text-white border-0 shadow-md hover:shadow-xl hover:opacity-90 transition-all duration-300" 
+              asChild
+            >
+              <Link href="/stories">
+                <BookOpen className="mr-2 h-5 w-5" />
+                Explore Stories
+              </Link>
+            </Button>
             
-            <AnimateInView delay={0.2}>
-              <div className="relative p-4">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl blur-xl opacity-20 -z-10" />
-                <div className="relative bg-card overflow-hidden shadow-xl rounded-2xl border">
-                  <div className="absolute top-0 left-0 right-0 h-1 theme-gradient-bg" />
-                  <div className="p-6">
-                    <div className="flex items-center space-x-2 mb-4">
-                      <div className="w-3 h-3 rounded-full bg-red-500" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                      <div className="w-3 h-3 rounded-full bg-green-500" />
-                    </div>
-                    <div className="space-y-4">
-                      <div className="h-10 rounded-md bg-muted/50 w-3/4" />
-                      <div className="h-24 rounded-md bg-muted/50" />
-                      <div className="h-36 rounded-md bg-muted/50" />
-                      <div className="h-10 rounded-md bg-muted/50 w-1/2 ml-auto" />
-                    </div>
-                  </div>
-                  <div className="p-4 border-t bg-muted/20 flex items-center justify-between">
-                    <Sparkles className="h-5 w-5 text-primary" />
-                    <div className="h-8 w-24 rounded-md bg-primary/20" />
-                  </div>
-                </div>
-                <div className="absolute -bottom-6 -right-6 w-40 h-40 bg-primary/10 rounded-full blur-3xl" />
-              </div>
-            </AnimateInView>
+            <Button 
+              size="lg" 
+              className="bg-primary text-white border-primary/20 hover:bg-primary/90 transition-all duration-300 shadow-md"
+              onClick={() => {
+                // Direct navigation using window.location for maximum reliability
+                window.location.href = '/create/ai-story?source=home&format=free';
+              }}
+            >
+              <PenSquare className="mr-2 h-5 w-5" />
+              Create Story
+            </Button>
           </div>
-        </div>
-      </section>
-      
+        </motion.div>
+      </motion.section>
+
       {/* Features Section */}
-      <section className="py-20 px-4 bg-muted/20">
-        <div className="container mx-auto max-w-6xl">
-          <AnimateInView>
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold mb-4">Powerful Storytelling Tools</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Create compelling narratives with our suite of storytelling tools, powered by Groq AI and blockchain technology.
-              </p>
-            </div>
-          </AnimateInView>
+      <motion.section 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: 0.2
+            }
+          }
+        }}
+        className="py-16 px-4 sm:px-6 lg:px-8 bg-accent/5"
+      >
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            variants={fadeIn}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl gradient-heading">
+              A New Era of Digital Storytelling
+            </h2>
+            <p className="mt-4 text-xl text-muted-foreground">
+              Combining the art of storytelling with blockchain technology
+            </p>
+          </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <AnimateInView delay={0.1}>
-              <div className="bg-card p-6 rounded-xl border hover:shadow-md transition-all">
-                <div className="w-12 h-12 rounded-full theme-gradient-bg flex items-center justify-center mb-4">
-                  <Sparkles className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">AI-Powered Creation</h3>
-                <p className="text-muted-foreground">
-                  Use Groq's powerful AI models to generate high-quality stories based on your ideas and prompts.
-                </p>
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <motion.div 
+              variants={fadeIn}
+              className="relative p-6 bg-card rounded-xl shadow-sm border border-border flex flex-col items-center text-center hover:shadow-md transition-shadow"
+            >
+              <div className="h-14 w-14 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                <BookOpen className="h-7 w-7 text-primary" />
               </div>
-            </AnimateInView>
-            
-            <AnimateInView delay={0.2}>
-              <div className="bg-card p-6 rounded-xl border hover:shadow-md transition-all">
-                <div className="w-12 h-12 rounded-full theme-gradient-bg flex items-center justify-center mb-4">
-                  <Wallet className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">NFT Minting</h3>
-                <p className="text-muted-foreground">
-                  Turn your stories into valuable NFTs on the Monad blockchain with just a few clicks.
-                </p>
+              <h3 className="text-xl font-semibold mb-2">Own Your Stories</h3>
+              <p className="text-muted-foreground">
+                Mint your stories as unique NFTs and truly own your creative work on the blockchain.
+              </p>
+            </motion.div>
+
+            <motion.div 
+              variants={fadeIn}
+              className="relative p-6 bg-card rounded-xl shadow-sm border border-border flex flex-col items-center text-center hover:shadow-md transition-shadow"
+            >
+              <div className="h-14 w-14 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                <Sparkles className="h-7 w-7 text-primary" />
               </div>
-            </AnimateInView>
-            
-            <AnimateInView delay={0.3}>
-              <div className="bg-card p-6 rounded-xl border hover:shadow-md transition-all">
-                <div className="w-12 h-12 rounded-full theme-gradient-bg flex items-center justify-center mb-4">
-                  <Globe className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Global Community</h3>
-                <p className="text-muted-foreground">
-                  Share your work with readers and writers worldwide and collaborate on creative projects.
-                </p>
+              <h3 className="text-xl font-semibold mb-2">AI-Powered Creation</h3>
+              <p className="text-muted-foreground">
+                Use our Groq-powered AI tools to generate, enhance, and analyze your stories.
+              </p>
+            </motion.div>
+
+            <motion.div 
+              variants={fadeIn}
+              className="relative p-6 bg-card rounded-xl shadow-sm border border-border flex flex-col items-center text-center hover:shadow-md transition-shadow"
+            >
+              <div className="h-14 w-14 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                <Shapes className="h-7 w-7 text-primary" />
               </div>
-            </AnimateInView>
-            
-            <AnimateInView delay={0.4}>
-              <div className="bg-card p-6 rounded-xl border hover:shadow-md transition-all">
-                <div className="w-12 h-12 rounded-full theme-gradient-bg flex items-center justify-center mb-4">
-                  <BookMarked className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Multiple Formats</h3>
-                <p className="text-muted-foreground">
-                  Create text stories, visual narratives, or comics - all supported by our versatile platform.
-                </p>
-              </div>
-            </AnimateInView>
-            
-            <AnimateInView delay={0.5}>
-              <div className="bg-card p-6 rounded-xl border hover:shadow-md transition-all">
-                <div className="w-12 h-12 rounded-full theme-gradient-bg flex items-center justify-center mb-4">
-                  <ShieldCheck className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Ownership Protection</h3>
-                <p className="text-muted-foreground">
-                  Secure your creative work with blockchain verification and provable ownership records.
-                </p>
-              </div>
-            </AnimateInView>
-            
-            <AnimateInView delay={0.6}>
-              <div className="bg-card p-6 rounded-xl border hover:shadow-md transition-all">
-                <div className="w-12 h-12 rounded-full theme-gradient-bg flex items-center justify-center mb-4">
-                  <Zap className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Fast & Responsive</h3>
-                <p className="text-muted-foreground">
-                  Enjoy a smooth creation experience with our lightning-fast platform and intuitive interface.
-                </p>
-              </div>
-            </AnimateInView>
+              <h3 className="text-xl font-semibold mb-2">Community-Driven</h3>
+              <p className="text-muted-foreground">
+                Connect with other writers, collaborate on stories, and build a supportive network.
+              </p>
+            </motion.div>
           </div>
         </div>
-      </section>
-      
-      {/* Popular Genres */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <AnimateInView>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Explore Popular Genres</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Discover stories across multiple genres or create your own in your favorite category.
-              </p>
-            </div>
-          </AnimateInView>
-          
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {genres.slice(0, 8).map((genre, index) => (
-              <AnimateInView key={genre.slug} delay={0.1 * index}>
-                <Link href={`/genres/${genre.slug}`}>
-                  <div className="bg-card hover:bg-accent/10 border rounded-xl p-4 text-center transition-all hover:shadow-md">
-                    <div className="flex justify-center mb-2">{genre.icon}</div>
-                    <h3 className="font-medium">{genre.name}</h3>
-                  </div>
-                </Link>
-              </AnimateInView>
-            ))}
+      </motion.section>
+
+      {/* AI Generator Demo */}
+      <motion.section 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={fadeIn}
+        className="py-16 px-4 sm:px-6 lg:px-8"
+      >
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl gradient-heading">
+              Try Our AI Story Generator
+            </h2>
+            <p className="mt-4 text-xl text-muted-foreground">
+              Experience the power of Groq's LLM to create unique story snippets
+            </p>
           </div>
           
-          <AnimateInView delay={0.8}>
-            <div className="mt-10 text-center">
-              <Button asChild variant="outline">
-                <Link href="/genres">
-                  View All Genres <ArrowRight className="ml-2 h-4 w-4" />
+          <AIStoryGenerator />
+        </div>
+      </motion.section>
+
+      {/* Trending Stories */}
+      <motion.section 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={fadeIn}
+        className="py-16 px-4 sm:px-6 lg:px-8 bg-accent/5"
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl gradient-heading">
+              Trending Stories
+            </h2>
+            <p className="mt-4 text-xl text-muted-foreground">
+              Discover the most popular stories on GroqTales
+            </p>
+          </div>
+          
+          <TrendingStories />
+          
+          <div className="mt-12 text-center">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Button 
+                asChild 
+                variant="outline" 
+                size="lg"
+                className="border-primary/20 hover:border-primary/50 transition-all duration-300"
+              >
+                <Link href="/stories">
+                  <BookOpen className="mr-2 h-5 w-5" />
+                  View All Stories
                 </Link>
               </Button>
-            </div>
-          </AnimateInView>
-        </div>
-      </section>
-      
-      {/* Testimonials Section */}
-      <section className="py-20 px-4 bg-muted/20">
-        <div className="container mx-auto max-w-6xl">
-          <AnimateInView>
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold mb-4">What Our Users Say</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Join thousands of storytellers who are creating and sharing their work on GroqTales.
-              </p>
-            </div>
-          </AnimateInView>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Alex Chen",
-                role: "Fiction Writer",
-                image: "/avatars/avatar-1.png",
-                quote: "The AI story generation tool has transformed my creative process. I can now develop ideas in minutes that used to take days."
-              },
-              {
-                name: "Maya Johnson",
-                role: "Digital Artist",
-                image: "/avatars/avatar-2.png",
-                quote: "Being able to mint my visual stories as NFTs has opened up new revenue streams I never thought possible as an independent creator."
-              },
-              {
-                name: "Jamal Peters",
-                role: "Educator",
-                image: "/avatars/avatar-3.png", 
-                quote: "I use GroqTales with my students to teach creative writing. The platform's intuitive design makes storytelling accessible to everyone."
-              }
-            ].map((testimonial, index) => (
-              <AnimateInView key={index} delay={0.2 * index}>
-                <div className="bg-card p-6 rounded-xl border relative">
-                  <div className="absolute -top-6 left-6">
-                    <div className="bg-card p-1 rounded-full border shadow-sm">
-                      <div className="w-12 h-12 rounded-full overflow-hidden">
-                        <Image 
-                          src={testimonial.image} 
-                          alt={testimonial.name} 
-                          width={48} 
-                          height={48}
-                          className="object-cover" 
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="pt-6">
-                    <p className="italic text-muted-foreground mb-4">"{testimonial.quote}"</p>
-                    <div>
-                      <h4 className="font-semibold">{testimonial.name}</h4>
-                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                    </div>
-                  </div>
-                </div>
-              </AnimateInView>
-            ))}
+            </motion.div>
           </div>
         </div>
-      </section>
-      
-      {/* CTA Section */}
-      <section className="py-24 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-primary/5 -z-10" />
-        
-        <div className="container mx-auto max-w-5xl relative z-10">
-          <AnimateInView>
-            <div className="bg-card border rounded-2xl p-8 md:p-12 shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-1 theme-gradient-bg" />
-              <div className="absolute -bottom-32 -right-32 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
-              
-              <div className="relative text-center max-w-2xl mx-auto">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Start Your Creative Journey?</h2>
-                <p className="text-lg text-muted-foreground mb-8">
-                  Join our community of storytellers and bring your ideas to life with GroqTales.
-                </p>
-                <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-3">
-                  <Button 
-                    onClick={createStory} 
-                    size="lg"
-                    className="theme-gradient-bg"
-                  >
-                    Create Your First Story <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                  <Button 
-                    asChild
-                    variant="outline" 
-                    size="lg"
-                  >
-                    <Link href="/stories">
-                      <BookOpen className="mr-2 h-4 w-4" /> Explore Stories
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </AnimateInView>
+      </motion.section>
+
+      {/* Featured Creators */}
+      <motion.section 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={fadeIn}
+        className="py-16 px-4 sm:px-6 lg:px-8"
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl gradient-heading">
+              Featured Creators
+            </h2>
+            <p className="mt-4 text-xl text-muted-foreground">
+              Meet the brilliant minds behind our top stories
+            </p>
+          </div>
+          
+          <FeaturedCreators />
         </div>
-      </section>
+      </motion.section>
+
+      {/* CTA Section */}
+      <motion.section 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={fadeIn}
+        className="py-16 px-4 sm:px-6 lg:px-8 bg-primary/5 border-t border-primary/10"
+      >
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-3xl mx-auto text-center"
+        >
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl gradient-heading">
+            Ready to Share Your Story?
+          </h2>
+          <p className="mt-6 text-xl text-muted-foreground">
+            Join our community of creators and immortalize your stories on the blockchain.
+          </p>
+          <Button 
+            size="lg" 
+            className="theme-gradient-bg text-white border-0 shadow-md hover:shadow-xl hover:opacity-90 transition-all duration-300"
+            onClick={() => {
+              // Direct navigation using window.location for maximum reliability
+              window.location.href = '/create/ai-story?source=home&format=free';
+            }}
+          >
+            <PenSquare className="mr-2 h-5 w-5" />
+            Create Your First Story
+          </Button>
+        </motion.div>
+      </motion.section>
     </div>
   );
 }
