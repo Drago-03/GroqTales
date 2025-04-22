@@ -38,6 +38,8 @@ import {
 import { nanoid } from 'nanoid';
 import { isAdminLoggedIn, useAdminInteractions, getAdminAvatarUrl } from "@/lib/admin-service";
 import { VerifiedBadge } from "@/components/verified-badge";
+import { StoryCard } from "@/components/story-card";
+import { StoryDetailsDialog } from "@/components/story-details-dialog";
 
 // Types for our content
 interface Story {
@@ -196,9 +198,9 @@ export default function CommunityPage() {
   const { account, connectWallet } = useWeb3();
   const { toast } = useToast();
   const [selectedStory, setSelectedStory] = useState<Story | null>(null);
-  const [storyDetailOpen, setStoryDetailOpen] = useState(false);
+  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+  const [showCommentsDialog, setShowCommentsDialog] = useState(false);
   const [isFollowing, setIsFollowing] = useState<Record<string, boolean>>({});
-  const [showComments, setShowComments] = useState(false);
   const [showWalletPrompt, setShowWalletPrompt] = useState(false);
   const [walletPromptAction, setWalletPromptAction] = useState<'vote' | 'comment' | 'follow' | null>(null);
   const [pendingAction, setPendingAction] = useState<{type: string, data: any} | null>(null);
@@ -244,7 +246,7 @@ export default function CommunityPage() {
             break;
           case 'comment':
             if (selectedStory) {
-              setShowComments(true);
+              setShowCommentsDialog(true);
             }
             break;
           case 'follow':
@@ -357,7 +359,7 @@ export default function CommunityPage() {
 
   const handleStoryClick = (story: Story) => {
     setSelectedStory(story);
-    setStoryDetailOpen(true);
+    setShowDetailsDialog(true);
   };
 
   const handleFollowAuthor = (authorName: string) => {
@@ -378,100 +380,66 @@ export default function CommunityPage() {
     });
   };
 
-  const handleCommentClick = (story: Story) => {
-    setSelectedStory(story);
-    // Allow viewing comments without login, but will require login to post
-    setShowComments(true);
+  const handleComment = () => {
+    if (!selectedStory) return;
+    setShowDetailsDialog(false);
+    setShowCommentsDialog(true);
   };
 
-  const handleAddComment = (storyId: string, content: string) => {
-    // If it's an admin and they're logged in, use the admin comment function
-    if (isAdmin) {
-      handleAdminComment(storyId, content);
-      return;
-    }
-    
-    // Otherwise, proceed with regular user comment logic
-    if (!content) {
-      requireWalletConnection('comment', () => {
-        setSelectedStory(stories.find(s => s.id === storyId) || null);
-        setShowComments(true);
+  const handleAddComment = (content: string) => {
+    if (!account) {
+      toast({
+        title: "Connect Wallet",
+        description: "Please connect your wallet to comment",
+        variant: "destructive",
       });
       return;
     }
-    
-    // Regular user commenting (existing logic)
-    setStories(prev => prev.map(story => {
-      if (story.id === storyId) {
-        const newComment: Comment = {
-          id: `comment-${Date.now()}`,
-          author: {
-            name: 'Connected User',
-            username: 'wallet_user',
-            avatar: `https://api.dicebear.com/7.x/personas/svg?seed=connected_user`
-          },
-          content,
-          timestamp: new Date(),
-          likes: 0
-        };
-        
-        return {
-          ...story,
-          comments: [...story.comments, newComment],
-          commentCount: story.commentCount + 1
-        };
-      }
-      return story;
-    }));
-    
+
+    if (!content) return;
+
+    // Format the new comment
+    const newComment = {
+      id: `comment-${Date.now()}`,
+      author: {
+        name: account.slice(0, 6) + '...' + account.slice(-4),
+        username: account.toLowerCase(),
+        avatar: `https://api.dicebear.com/7.x/personas/svg?seed=${account}`
+      },
+      content,
+      timestamp: new Date().toISOString(),
+      likes: 0
+    };
+
+    // Update the selected story's comments
+    if (selectedStory) {
+      const updatedStory = {
+        ...selectedStory,
+        comments: [...(selectedStory.comments || []), newComment]
+      };
+      setSelectedStory(updatedStory);
+    }
+
     toast({
-      title: "Comment added",
-      description: "Your comment has been added successfully"
+      title: "Comment Added",
+      description: "Your comment has been added successfully",
     });
   };
 
-  const handleLikeComment = (storyId: string, commentId: string) => {
+  const handleLike = () => {
     if (!account) {
-      setWalletPromptAction('vote');
-      setShowWalletPrompt(true);
+      toast({
+        title: "Connect Wallet",
+        description: "Please connect your wallet to like this story",
+        variant: "destructive",
+      });
       return;
     }
 
-    setStories(prevStories =>
-      prevStories.map(story => {
-        if (story.id === storyId) {
-          return {
-            ...story,
-            comments: story.comments.map(comment => {
-              if (comment.id === commentId) {
-                return {
-                  ...comment,
-                  likes: comment.likes + 1
-                };
-              }
-              return comment;
-            })
-          };
-        }
-        return story;
-      })
-    );
-    
-    // Also update the selected story if it's the one being liked
-    if (selectedStory && selectedStory.id === storyId) {
-      setSelectedStory({
-        ...selectedStory,
-        comments: selectedStory.comments.map(comment => {
-          if (comment.id === commentId) {
-            return {
-              ...comment,
-              likes: comment.likes + 1
-            };
-          }
-          return comment;
-        })
-      });
-    }
+    toast({
+      title: "Liked!",
+      description: "You liked this story",
+    });
   };
 
   const filteredAndSortedStories = () => {
@@ -652,404 +620,54 @@ export default function CommunityPage() {
     }
   };
 
-  // Render card component with updated voting UI
-  const renderStoryCard = (story: Story) => (
-    <Card key={story.id} className="mb-6 overflow-hidden">
-      <CardHeader className="pb-3">
-        <div className="flex justify-between">
-          <div className="flex items-center space-x-3">
-            <Avatar>
-              <AvatarImage src={story.author.avatar} />
-              <AvatarFallback>{story.author.name[0]}</AvatarFallback>
-            </Avatar>
-            <div>
-              <div className="flex items-center">
-                <p className="font-medium">{story.author.name}</p>
-                {story.author.name === "GroqTales" && (
-                  <VerifiedBadge className="ml-1" />
-                )}
-                <p className="text-xs ml-2 text-muted-foreground">
-                  @{story.author.username} • {new Date(story.timestamp).toLocaleDateString()}
-                </p>
-              </div>
-              {story.title && <p className="font-semibold text-lg">{story.title}</p>}
-            </div>
-          </div>
-          
-          {/* Admin actions */}
-          {isAdmin && story.author.name !== "GroqTales" && (
-            <Button 
-              variant="ghost" 
-              size="icon"
-              className="text-red-500 hover:text-red-700 hover:bg-red-100"
-              onClick={() => handleAdminDeleteStory(story.id)}
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          )}
-        </div>
-      </CardHeader>
-      <CardContent>
-        {story.image && (
-          <div className="relative h-48">
-            <Image
-              src={story.image}
-              alt={story.title}
-              fill
-              className="object-cover"
-            />
-            {story.isNFT && (
-              <div className="absolute top-2 right-2 bg-primary text-white px-2 py-1 rounded text-sm">
-                NFT • {story.price}
-              </div>
-            )}
-          </div>
-        )}
-        <div className="prose prose-sm dark:prose-invert max-w-none">
-          <p>{story.content}</p>
-        </div>
-      </CardContent>
-      <CardFooter className="flex justify-between items-center">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleVote(story.id, true);
-            }}
-            className={story.userVote === 'up' 
-              ? "text-primary bg-primary/10" 
-              : "text-muted-foreground hover:text-primary"}
-          >
-            <ThumbsUp className="w-4 h-4 mr-1" />
-            {story.likes}
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleVote(story.id, false);
-            }}
-            className={story.userVote === 'down' 
-              ? "text-destructive bg-destructive/10" 
-              : "text-muted-foreground hover:text-destructive"}
-          >
-            <ThumbsDown className="w-4 h-4 mr-1" />
-            {story.dislikes}
-          </Button>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button 
-            variant="ghost" 
-            size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleCommentClick(story);
-            }}
-          >
-            <MessageSquare className="w-4 h-4 mr-1" />
-            {story.commentCount}
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              // Share functionality
-              if (navigator.share) {
-                navigator.share({
-                  title: story.title,
-                  text: `Check out this story: ${story.title}`,
-                  url: window.location.href,
-                }).catch(err => console.error('Error sharing', err));
-              } else {
-                // Fallback for browsers that don't support sharing
-                navigator.clipboard.writeText(window.location.href);
-                toast({
-                  title: "Link Copied",
-                  description: "Story link copied to clipboard"
-                });
-              }
-            }}
-          >
-            <Share2 className="w-4 h-4" />
-          </Button>
-        </div>
-      </CardFooter>
-    </Card>
-  );
-
   return (
-    <div className="container mx-auto px-4 max-w-5xl py-8">
-      <h1 className="text-3xl font-bold mb-8 gradient-heading">Community Stories</h1>
-      
-      {/* Admin post form */}
-      {isAdmin && (
-        <Card className="mb-8 border-purple-200 shadow-sm">
-          <CardHeader className="pb-2">
-            <div className="flex items-center space-x-3">
-              <Avatar>
-                <AvatarImage src={getAdminAvatarUrl()} />
-                <AvatarFallback>GT</AvatarFallback>
-              </Avatar>
-              <div className="flex items-center">
-                <p className="font-medium">GroqTales</p>
-                <VerifiedBadge className="ml-1" />
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleAdminPost} className="space-y-4">
-              <Input
-                value={adminNewPost}
-                onChange={(e) => setAdminNewPost(e.target.value)}
-                placeholder="Share an official announcement with the community..."
-                className="bg-muted/30"
-              />
-              <div className="flex justify-end">
-                <Button 
-                  type="submit" 
-                  disabled={isAdminPosting || !adminNewPost.trim()}
-                  className="theme-gradient-bg"
-                >
-                  {isAdminPosting ? "Posting..." : "Post as Admin"}
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      )}
-    
-      {/* Rest of your community page content */}
-      {/* Filters and Tabs */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-        <Tabs defaultValue={activeTab} onValueChange={setActiveTab}>
-          <TabsList>
-            <TabsTrigger value="trending">
-              <TrendingUp className="w-4 h-4 mr-2" />
-              Trending
-            </TabsTrigger>
-            <TabsTrigger value="latest">
-              <Clock className="w-4 h-4 mr-2" />
-              Latest
-            </TabsTrigger>
-            <TabsTrigger value="top">
-              <Sparkles className="w-4 h-4 mr-2" />
-              Top
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
+    <div className="container mx-auto px-4 py-12">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+        <div>
+          <h1 className="text-4xl font-bold mb-2">Community Stories</h1>
+          <p className="text-muted-foreground">
+            Discover and engage with stories from our community
+          </p>
+        </div>
 
-        <div className="flex items-center gap-4">
-          <div className="flex flex-col gap-1">
-            <label id="type-filter-label" className="text-sm font-medium sr-only">
-              Filter by Type
-            </label>
-            <select
-              className="p-2 rounded-md border bg-background"
-              value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value)}
-              aria-labelledby="type-filter-label"
-            >
-              <option value="all">All Types</option>
-              <option value="nft">NFT Stories</option>
-              <option value="text">Text Stories</option>
-              <option value="comic">Comics</option>
-              <option value="art">Art Stories</option>
-            </select>
-          </div>
-
-          <Button variant="outline">
-            <Filter className="w-4 h-4 mr-2" />
-            More Filters
+        <div className="flex gap-4">
+          <Input
+            placeholder="Search stories..."
+            className="w-[200px]"
+          />
+          <Button className="theme-gradient-bg">
+            Share Your Story
           </Button>
         </div>
       </div>
 
-      {/* Stories Grid */}
-      {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <Card key={i} className="animate-pulse">
-              <div className="h-48 bg-muted rounded-t-lg"></div>
-              <CardContent className="p-4">
-                <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
-                <div className="h-4 bg-muted rounded w-1/2"></div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredAndSortedStories().map(renderStoryCard)}
-        </div>
-      )}
-
-      {/* Load More Button */}
-      <div className="mt-8 text-center">
-        <Button
-          variant="outline"
-          onClick={() => {
-            setIsLoading(true);
-            setTimeout(() => {
-              setStories(prev => [...prev, ...generateMockStories(10)]);
-              setIsLoading(false);
-            }, 1000);
-          }}
-        >
-          Load More Stories
-        </Button>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {filteredAndSortedStories().map((story) => (
+          <div key={story.id} onClick={() => handleStoryClick(story)}>
+            <StoryCard story={story} />
+          </div>
+        ))}
       </div>
 
-      {/* Add Story Detail Dialog */}
-      {selectedStory && storyDetailOpen && (
-        <Dialog open={storyDetailOpen} onOpenChange={setStoryDetailOpen}>
-          <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="text-2xl">{selectedStory.title}</DialogTitle>
-            </DialogHeader>
-
-            <div className="space-y-6">
-              {/* Author info with follow button */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-12 w-12">
-                    <AvatarImage src={selectedStory.author.avatar} />
-                    <AvatarFallback>{selectedStory.author.name[0]}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h3 className="font-bold">{selectedStory.author.name}</h3>
-                    <p className="text-sm text-muted-foreground">@{selectedStory.author.username}</p>
-                  </div>
-                </div>
-                <Button 
-                  variant={isFollowing[selectedStory.author.name] ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => handleFollowAuthor(selectedStory.author.name)}
-                >
-                  {isFollowing[selectedStory.author.name] ? "Following" : "Follow"}
-                </Button>
-              </div>
-
-              {/* Story image if available */}
-              {selectedStory.image && (
-                <div className="relative aspect-video w-full overflow-hidden rounded-lg">
-                  <Image
-                    src={selectedStory.image}
-                    alt={selectedStory.title}
-                    fill
-                    className="object-cover"
-                  />
-                  {selectedStory.isNFT && (
-                    <div className="absolute top-2 right-2 bg-primary text-white px-3 py-1 rounded-full">
-                      NFT • {selectedStory.price}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Story content */}
-              <div className="prose prose-sm dark:prose-invert max-w-none">
-                <p>{selectedStory.fullContent}</p>
-              </div>
-
-              {/* Tags */}
-              <div className="flex flex-wrap gap-2">
-                {selectedStory.tags.map((tag, i) => (
-                  <span key={i} className="text-xs bg-muted px-2 py-1 rounded">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              {/* Interaction buttons */}
-              <div className="flex justify-between items-center border-t pt-4">
-                <div className="flex items-center gap-4">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleVote(selectedStory.id, true)}
-                    className={selectedStory.userVote === 'up' 
-                      ? "text-primary bg-primary/10" 
-                      : "text-muted-foreground hover:text-primary"}
-                  >
-                    <ThumbsUp className="w-4 h-4 mr-1" />
-                    {selectedStory.likes}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleVote(selectedStory.id, false)}
-                    className={selectedStory.userVote === 'down' 
-                      ? "text-destructive bg-destructive/10" 
-                      : "text-muted-foreground hover:text-destructive"}
-                  >
-                    <ThumbsDown className="w-4 h-4 mr-1" />
-                    {selectedStory.dislikes}
-                  </Button>
-                </div>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  onClick={() => handleCommentClick(selectedStory)}
-                >
-                  <MessageSquare className="w-4 h-4 mr-1" />
-                  {selectedStory.commentCount} Comments
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
-
-      {/* Wallet Connection Prompt */}
-      <Dialog open={showWalletPrompt} onOpenChange={setShowWalletPrompt}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Connect Your Wallet</DialogTitle>
-            <DialogDescription>
-              {walletPromptAction === 'vote' && "You need to connect your wallet to vote on stories."}
-              {walletPromptAction === 'comment' && "You need to connect your wallet to comment on stories."}
-              {walletPromptAction === 'follow' && "You need to connect your wallet to follow authors."}
-              {!walletPromptAction && "You need to connect your wallet to interact with the community."}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex justify-center py-6">
-            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-              <Wallet className="h-8 w-8 text-primary" />
-            </div>
-          </div>
-          <DialogFooter className="flex flex-col sm:flex-row sm:justify-center gap-2">
-            <Button 
-              onClick={() => setShowWalletPrompt(false)}
-              variant="outline"
-            >
-              Cancel
-            </Button>
-            <Button 
-              onClick={handleConnectAndContinue}
-              className="theme-gradient-bg text-white"
-            >
-              Connect Wallet
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Comments dialog */}
       {selectedStory && (
-        <StoryCommentsDialog
-          isOpen={showComments}
-          onClose={() => setShowComments(false)}
-          storyTitle={selectedStory.title || selectedStory.content.substring(0, 30) + "..."}
-          comments={selectedStory.comments}
-          onAddComment={(content) => handleAddComment(selectedStory.id, content)}
-          onLikeComment={(commentId) => handleLikeComment(selectedStory.id, commentId)}
-          isWalletConnected={isAdmin || !!account}
-          isAdmin={isAdmin}
-        />
+        <>
+          <StoryDetailsDialog
+            isOpen={showDetailsDialog}
+            onClose={() => setShowDetailsDialog(false)}
+            story={selectedStory}
+            onComment={handleComment}
+            onLike={handleLike}
+          />
+
+          <StoryCommentsDialog
+            isOpen={showCommentsDialog}
+            onClose={() => setShowCommentsDialog(false)}
+            storyTitle={selectedStory.title}
+            comments={selectedStory.comments || []}
+            onAddComment={handleAddComment}
+            isWalletConnected={!!account}
+          />
+        </>
       )}
     </div>
   );

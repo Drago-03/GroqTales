@@ -8,6 +8,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Heart, Eye, ArrowUpRight, Star, BarChart3 } from "lucide-react";
 import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { StoryCard } from "@/components/story-card";
+import { StoryDetailsDialog } from "@/components/story-details-dialog";
+import { useToast } from "@/components/ui/use-toast";
+import { useWeb3 } from "@/components/providers/web3-provider";
+import { StoryCommentsDialog } from "@/components/story-comments-dialog";
 
 interface NFTStory {
   id: number;
@@ -209,6 +222,11 @@ export default function NftGalleryPage() {
   const [imageError, setImageError] = useState<{[key: string]: boolean}>({});
   const [activeTab, setActiveTab] = useState("trending");
   const [selectedGenre, setSelectedGenre] = useState("all");
+  const [selectedStory, setSelectedStory] = useState<NFTStory | null>(null);
+  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+  const [showCommentsDialog, setShowCommentsDialog] = useState(false);
+  const { account } = useWeb3();
+  const { toast } = useToast();
 
   const handleImageError = (id: number) => {
     setImageError(prev => ({...prev, [id]: true}));
@@ -252,6 +270,50 @@ export default function NftGalleryPage() {
 
   // Get unique genres from NFT data
   const uniqueGenres = Array.from(new Set(nftData.map(nft => nft.genre.toLowerCase())));
+
+  const handleStoryClick = (story: NFTStory) => {
+    setSelectedStory(story);
+    setShowDetailsDialog(true);
+  };
+
+  const handlePurchase = () => {
+    if (!account) {
+      toast({
+        title: "Connect Wallet",
+        description: "Please connect your wallet to purchase this NFT",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Purchase Initiated",
+      description: "Starting the NFT purchase process...",
+    });
+    // Add purchase logic here
+  };
+
+  const handleComment = () => {
+    if (!selectedStory) return;
+    setShowDetailsDialog(false);
+    setShowCommentsDialog(true);
+  };
+
+  const handleLike = () => {
+    if (!account) {
+      toast({
+        title: "Connect Wallet",
+        description: "Please connect your wallet to like this story",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Liked!",
+      description: "You liked this story",
+    });
+  };
 
   return (
     <div className="py-12 min-h-screen">
@@ -469,6 +531,28 @@ export default function NftGalleryPage() {
             </table>
           </div>
         </div>
+
+        {selectedStory && (
+          <>
+            <StoryDetailsDialog
+              isOpen={showDetailsDialog}
+              onClose={() => setShowDetailsDialog(false)}
+              story={selectedStory}
+              onPurchase={handlePurchase}
+              onComment={handleComment}
+              onLike={handleLike}
+            />
+
+            <StoryCommentsDialog
+              isOpen={showCommentsDialog}
+              onClose={() => setShowCommentsDialog(false)}
+              storyTitle={selectedStory.title}
+              comments={[]}
+              onAddComment={() => {}}
+              isWalletConnected={!!account}
+            />
+          </>
+        )}
       </div>
     </div>
   );

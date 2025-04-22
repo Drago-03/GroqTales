@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Heart, Eye, Share } from 'lucide-react';
+import { ArrowLeft, Heart, Eye, Share, PenSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -183,6 +183,19 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                   <Separator />
                   
                   <Button className="w-full">Purchase NFT</Button>
+                  
+                  <Button 
+                    variant="outline" 
+                    className="w-full flex items-center justify-center"
+                    onClick={() => {
+                      // Direct navigation with URL parameters
+                      const genre = story.genre || 'fantasy';
+                      window.location.href = `/create/ai-story?source=story&genre=${encodeURIComponent(genre)}&format=nft`;
+                    }}
+                  >
+                    <PenSquare className="h-4 w-4 mr-2" />
+                    Create Your Own Story
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -194,8 +207,22 @@ export default function StoryPage({ params }: { params: { id: string } }) {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {relatedStories.map((story: any) => (
-              <StoryCard key={story.id} story={story} />
+              <StoryCard key={story.id} story={story} hideLink={true} />
             ))}
+          </div>
+          
+          <div className="mt-10 text-center">
+            <Button 
+              className="theme-gradient-bg text-white"
+              onClick={() => {
+                // Direct navigation with URL parameters
+                const genreSlug = genre?.slug || 'fantasy';
+                window.location.href = `/create/ai-story?source=stories&genre=${encodeURIComponent(genreSlug)}&format=nft`;
+              }}
+            >
+              <PenSquare className="h-4 w-4 mr-2" />
+              Create Your Own Story
+            </Button>
           </div>
         </div>
       </div>

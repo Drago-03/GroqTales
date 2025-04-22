@@ -3,19 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
   --light-gradient: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
   --dark-gradient: linear-gradient(90deg, #3F2B96 0%, #A8C0FF 100%);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
 }
 
 @layer base {
@@ -47,6 +36,7 @@
     --radius: 0.8rem;
     --theme-gradient: var(--light-gradient);
   }
+  
   .dark {
     --background: 222 47% 11%;
     --foreground: 210 40% 98%;
@@ -82,6 +72,42 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Add content-visibility to improve rendering performance */
+    content-visibility: auto;
+  }
+  
+  /* Prevent flicker on theme change */
+  html.no-transitions * {
+    transition: none !important;
+  }
+
+  /* Performance optimizations */
+  .reduce-motion *,
+  .is-scrolling *,
+  .is-resizing * {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  /* Delay animations until page is loaded */
+  html:not(.content-loaded) * {
+    animation-play-state: paused !important;
+  }
+
+  /* Layer promotion for fixed elements to improve scrolling */
+  .fixed, 
+  .sticky {
+    will-change: transform;
+  }
+
+  /* Improve paint performance for common UI elements */
+  button, 
+  a, 
+  input, 
+  select, 
+  textarea {
+    transform: translateZ(0);
   }
 }
 
@@ -112,11 +138,22 @@
   .card-glow:hover::before {
     @apply opacity-75;
   }
+
+  /* Performance optimizations for scrolling */
+  .optimize-paint {
+    contain: paint;
+  }
 }
 
 .animated-gradient {
   background-size: 400% 400%;
   animation: gradient 8s ease infinite;
+}
+
+/* Reduce animation complexity when scrolling or resizing */
+.is-scrolling .animated-gradient,
+.is-resizing .animated-gradient {
+  animation-play-state: paused;
 }
 
 @keyframes gradient {
