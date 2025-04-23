@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./theme-toggle";
 import { UserNav } from "@/components/user-nav";
-import { PenSquare, Users, BookOpen, FlaskConical } from "lucide-react";
+import { PenSquare, Users, BookOpen, FlaskConical, ChevronDown, Trophy } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useWeb3 } from "@/components/providers/web3-provider";
 import { useToast } from "@/components/ui/use-toast";
@@ -12,6 +12,27 @@ import { useState, useEffect } from "react";
 import { CreateStoryDialog } from "./create-story-dialog";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+// Type definitions for nav items
+type NavSubItem = {
+  href: string;
+  label: string;
+  icon?: React.ReactNode;
+};
+
+type NavItem = {
+  href?: string;
+  label: string;
+  icon?: React.ReactNode;
+  type?: 'link' | 'dropdown';
+  items?: NavSubItem[];
+};
 
 export function Header() {
   const pathname = usePathname();
@@ -26,12 +47,17 @@ export function Header() {
       setScrolled(window.scrollY > 10);
     };
     
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
   // Define active class for navigation links
   const isActive = (path: string) => {
+    if (path === '/community') {
+      return pathname === '/community' || pathname === '/community/creators' 
+        ? "bg-primary/10 text-primary font-medium" 
+        : "hover:bg-accent/20 text-muted-foreground";
+    }
     return pathname === path ? "bg-primary/10 text-primary font-medium" : "hover:bg-accent/20 text-muted-foreground";
   };
 
@@ -51,12 +77,14 @@ export function Header() {
     setShowCreateDialog(true);
   };
 
-  const navItems = [
-    { href: "/stories", label: "Stories" },
-    { href: "/genres", label: "Genres" },
-    { href: "/community", label: "Community", icon: <Users className="h-4 w-4 mr-1.5" /> },
-    { href: "/nft-gallery", label: "NFT Gallery" },
-    { href: "/story-tools", label: "AI Tools", icon: <FlaskConical className="h-4 w-4 mr-1.5" /> },
+  const navItems: NavItem[] = [
+    { type: 'link', href: "/genres", label: "Genres" },
+    { type: "dropdown", label: "Community", icon: <Users className="h-4 w-4 mr-1.5" />, items: [
+      { href: "/community", label: "Community Hub" },
+      { href: "/community/creators", label: "Top Creators", icon: <Trophy className="h-4 w-4 mr-1.5" /> }
+    ]},
+    { type: 'link', href: "/nft-gallery", label: "NFT Gallery" },
+    { type: 'link', href: "/story-tools", label: "AI Tools", icon: <FlaskConical className="h-4 w-4 mr-1.5" /> },
   ];
 
   return (
@@ -85,18 +113,43 @@ export function Header() {
           <nav className="hidden md:flex items-center space-x-2">
             {navItems.map((item, index) => (
               <motion.div
-                key={item.href}
+                key={item.type === "dropdown" ? `dropdown-${item.label}` : (item.href || `item-${index}`)}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 + 0.1, duration: 0.2 }}
+                whileHover={{ scale: 1.03 }}
+                className="inline-flex items-center"
               >
-                <Link 
-                  href={item.href} 
-                  className={`px-4 py-2 text-sm rounded-md transition-all duration-200 flex items-center ${isActive(item.href)} hover:scale-105`}
-                >
-                  {item.icon}
-                  {item.label}
-                </Link>
+                {item.type === "dropdown" ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className={`px-4 py-2 text-sm rounded-md transition-all duration-200 flex items-center ${isActive('/community')} hover:scale-105`}>
+                      {item.icon}
+                      {item.label}
+                      <ChevronDown className="ml-1 h-3 w-3" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      {item.items?.map((subItem) => (
+                        <DropdownMenuItem key={subItem.href} asChild>
+                          <Link 
+                            href={subItem.href} 
+                            className="flex items-center w-full"
+                          >
+                            {subItem.icon && subItem.icon}
+                            {subItem.label}
+                          </Link>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : item.href ? (
+                  <Link 
+                    href={item.href} 
+                    className={`px-4 py-2 text-sm rounded-md transition-all duration-200 flex items-center ${isActive(item.href)} hover:scale-105`}
+                  >
+                    {item.icon}
+                    {item.label}
+                  </Link>
+                ) : null}
               </motion.div>
             ))}
           </nav>
@@ -106,6 +159,9 @@ export function Header() {
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2, duration: 0.3 }}
           >
             <Button 
               variant="default" 

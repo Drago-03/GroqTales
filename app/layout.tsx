@@ -9,6 +9,7 @@ import { Web3Provider } from "@/components/providers/web3-provider";
 import Script from "next/script";
 import fs from 'fs';
 import path from 'path';
+import ClientLayout from "@/components/client-layout";
 
 // Optimize font loading
 const inter = Inter({ 
@@ -81,12 +82,14 @@ export default function RootLayout({
               disableTransitionOnChange={false}
               storageKey="groqtales-theme"
             >
-              <div className="min-h-screen bg-background flex flex-col">
-                <Header />
-                <main className="container mx-auto px-4 py-6 flex-grow">{children}</main>
-                <Footer />
-              </div>
-              <Toaster />
+              <ClientLayout>
+                <div className="min-h-screen bg-background flex flex-col">
+                  <Header />
+                  <main className="container mx-auto px-4 py-6 flex-grow">{children}</main>
+                  <Footer />
+                </div>
+                <Toaster />
+              </ClientLayout>
             </ThemeProvider>
           </QueryProvider>
         </Web3Provider>

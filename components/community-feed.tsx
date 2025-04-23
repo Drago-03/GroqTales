@@ -133,7 +133,21 @@ const dummyPosts: CommunityPost[] = [
   },
 ];
 
-function PostActions({ post, onVote }: { post: CommunityPost, onVote: (postId: string, vote: 'up' | 'down' | null) => void }) {
+// List of dummy users with avatars for comments
+const dummyUsers = [
+  { id: 1, name: "Alex Carter", avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
+  { id: 2, name: "Sophie Nguyen", avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
+  { id: 3, name: "Michael Brown", avatar: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
+  { id: 4, name: "Emma Wilson", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
+  { id: 5, name: "Rahul Patel", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
+  { id: 6, name: "Lila Chen", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
+  { id: 7, name: "David Kim", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
+  { id: 8, name: "Isabella Lopez", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
+  { id: 9, name: "Ethan Davis", avatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
+  { id: 10, name: "Ava Rodriguez", avatar: "https://images.unsplash.com/photo-1542080681-b52d485c3763?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" }
+];
+
+function PostActions({ post, onVote, onCommentClick }: { post: CommunityPost, onVote: (postId: string, vote: 'up' | 'down' | null) => void, onCommentClick: (postId: string) => void }) {
   return (
     <div className="flex items-center justify-between text-muted-foreground pt-3 border-t">
       <div className="flex items-center space-x-2">
@@ -156,7 +170,7 @@ function PostActions({ post, onVote }: { post: CommunityPost, onVote: (postId: s
         </Button>
       </div>
       
-      <Button variant="ghost" size="sm" className="flex items-center">
+      <Button variant="ghost" size="sm" className="flex items-center" onClick={() => onCommentClick(post.id)}>
         <MessageSquare className="h-4 w-4 mr-1" />
         <span className="text-xs">{post.comments}</span>
       </Button>
@@ -173,7 +187,7 @@ function PostActions({ post, onVote }: { post: CommunityPost, onVote: (postId: s
   );
 }
 
-function PostCard({ post, onVote }: { post: CommunityPost, onVote: (postId: string, vote: 'up' | 'down' | null) => void }) {
+function PostCard({ post, onVote, onCommentClick }: { post: CommunityPost, onVote: (postId: string, vote: 'up' | 'down' | null) => void, onCommentClick: (postId: string) => void }) {
   return (
     <Card className="overflow-hidden hover:border-primary/20 transition-all duration-200 bg-gradient-to-br from-background via-background to-background/80">
       <CardHeader className="p-4 pb-0 flex flex-row items-start justify-between space-y-0">
@@ -243,7 +257,7 @@ function PostCard({ post, onVote }: { post: CommunityPost, onVote: (postId: stri
         )}
       </CardContent>
       <CardFooter className="p-4 pt-0">
-        <PostActions post={post} onVote={onVote} />
+        <PostActions post={post} onVote={onVote} onCommentClick={onCommentClick} />
       </CardFooter>
     </Card>
   );
@@ -286,7 +300,10 @@ function CreatePostForm() {
 
 export function CommunityFeed() {
   const [posts, setPosts] = useState<CommunityPost[]>(dummyPosts);
-  
+  const [commentInput, setCommentInput] = useState('');
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
+  const [usedComments, setUsedComments] = useState<{ [postId: string]: string[] }>({});
+
   const handleVote = (postId: string, vote: 'up' | 'down' | null) => {
     setPosts(prev => prev.map(post => {
       if (post.id === postId) {
@@ -308,13 +325,49 @@ export function CommunityFeed() {
     }));
   };
 
+  const handleCommentSubmit = (postId: string) => {
+    if (!commentInput.trim()) return;
+
+    // Here you would typically send the comment to a backend API
+    // For this example, we'll just update the post's comment count
+    setPosts(prev => prev.map(post => {
+      if (post.id === postId) {
+        return { ...post, comments: post.comments + 1 };
+      }
+      return post;
+    }));
+
+    setCommentInput('');
+    setSelectedPostId(null);
+  };
+
+  const handleCommentClick = (postId: string) => {
+    setSelectedPostId(postId === selectedPostId ? null : postId);
+    // Initialize used comments for this post if not already done
+    if (!usedComments[postId]) {
+      setUsedComments(prev => ({ ...prev, [postId]: [] }));
+    }
+  };
+
+  // Function to get a unique comment for a post
+  const getUniqueComment = (postId: string, tag: string) => {
+    const availableComments = getCommentsByTag(tag);
+    const used = usedComments[postId] || [];
+    const unusedComments = availableComments.filter(comment => !used.includes(comment));
+    
+    // If we've used all comments, reset the used list to start fresh
+    if (unusedComments.length === 0) {
+      setUsedComments(prev => ({ ...prev, [postId]: [] }));
+      return availableComments[Math.floor(Math.random() * availableComments.length)];
+    }
+    
+    const selectedComment = unusedComments[Math.floor(Math.random() * unusedComments.length)];
+    setUsedComments(prev => ({ ...prev, [postId]: [...(prev[postId] || []), selectedComment] }));
+    return selectedComment;
+  };
+
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500">Community Hub</h1>
-        <p className="text-muted-foreground">Join the conversation with writers, readers, and storytellers</p>
-      </div>
-      
       <Tabs defaultValue="trending" className="mb-6">
         <TabsList className="bg-card/30 border w-full">
           <TabsTrigger value="trending" className="flex-1">Trending</TabsTrigger>
@@ -327,7 +380,49 @@ export function CommunityFeed() {
       
       <div className="space-y-4">
         {posts.map((post) => (
-          <PostCard key={post.id} post={post} onVote={handleVote} />
+          <div key={post.id}>
+            <PostCard post={post} onVote={handleVote} onCommentClick={() => handleCommentClick(post.id)} />
+            {selectedPostId === post.id && (
+              <div className="mt-2 ml-10">
+                <Card>
+                  <CardContent className="p-4">
+                    <h4 className="font-semibold mb-2">Comments ({post.comments})</h4>
+                    <div className="mb-4 max-h-60 overflow-y-auto">
+                      {/* Generate dummy comments matching the post's comment count */}
+                      {Array.from({ length: post.comments }).map((_, index) => {
+                        const user = dummyUsers[index % dummyUsers.length];
+                        return (
+                          <div key={index} className="border-b pb-2 mb-2 flex items-start space-x-2">
+                            <Avatar className="w-6 h-6">
+                              <AvatarImage src={user.avatar} alt={user.name} />
+                              <AvatarFallback>{user.name.substring(0, 2)}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <p className="text-sm font-medium">{user.name}: {getUniqueComment(post.id, post.tags[0] || 'General')}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <Textarea 
+                      placeholder="Add a comment..." 
+                      className="resize-none focus-visible:ring-primary/20 bg-background/50 mb-2"
+                      rows={2}
+                      value={commentInput}
+                      onChange={(e) => setCommentInput(e.target.value)}
+                    />
+                    <Button 
+                      size="sm" 
+                      onClick={() => handleCommentSubmit(post.id)}
+                      disabled={!commentInput.trim()}
+                    >
+                      Post Comment
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+          </div>
         ))}
       </div>
       
@@ -338,4 +433,100 @@ export function CommunityFeed() {
       </div>
     </div>
   );
+}
+
+// Helper function to get comments based on tag
+function getCommentsByTag(tag: string) {
+  const generalComments = [
+    "Great post!",
+    "Really interesting thoughts.",
+    "I agree with this.",
+    "Thanks for sharing!",
+    "This is amazing.",
+    "Very insightful.",
+    "Love this perspective.",
+    "Well said!",
+    "Couldn't agree more.",
+    "This is so cool!",
+    "Wow, what a unique idea!",
+    "I'm inspired by this.",
+    "This made my day!",
+    "Such a creative approach.",
+    "I learned something new here."
+  ];
+  const sciFiComments = [
+    "Love this sci-fi concept!",
+    "This tech idea is mind-blowing.",
+    "Reminds me of classic cyberpunk.",
+    "What an innovative future vision!",
+    "The AI elements are fascinating.",
+    "This could be the next big sci-fi hit!",
+    "Amazing world-building with tech.",
+    "I'm hooked on this sci-fi plot.",
+    "The futuristic setting is so vivid.",
+    "Can't wait to read more about this tech!"
+  ];
+  const web3Comments = [
+    "Blockchain storytelling is the future!",
+    "Love how you're using NFTs for stories.",
+    "Web3 is changing the creative game.",
+    "This decentralized approach is awesome.",
+    "So cool to see crypto in publishing.",
+    "NFT stories are such a unique concept!",
+    "I'm excited about Web3 creativity.",
+    "This is revolutionizing authorship.",
+    "Can't wait to collect this as an NFT.",
+    "Web3 is opening new doors for writers!"
+  ];
+  const indieComments = [
+    "Supporting indie creators all the way!",
+    "Love seeing independent stories shine.",
+    "Indie writers are the best.",
+    "This is why I support indie authors.",
+    "Your unique voice stands out.",
+    "Indie storytelling is so authentic.",
+    "Keep up the amazing indie work!",
+    "Indie creators like you inspire me.",
+    "This indie project looks fantastic.",
+    "Can't wait for more indie content!"
+  ];
+  const fantasyComments = [
+    "This fantasy world is enchanting!",
+    "Love the magical elements here.",
+    "Your fantasy setting is so immersive.",
+    "This feels like an epic fantasy tale.",
+    "The mythical creatures are amazing.",
+    "I want to live in this fantasy realm!",
+    "Such a captivating fantasy story.",
+    "The magic system here is intriguing.",
+    "Can't wait for the next fantasy chapter.",
+    "This fantasy plot is spellbinding!"
+  ];
+  const nftComments = [
+    "Amazing to see stories as NFTs!",
+    "Love the idea of collecting stories.",
+    "NFT storytelling is so innovative.",
+    "This is the future of digital art.",
+    "I want to own this story NFT.",
+    "Tokenized stories are brilliant.",
+    "NFTs add so much value to writing.",
+    "This NFT concept is groundbreaking.",
+    "Can't wait to trade story NFTs.",
+    "Storytelling with NFTs is next-level!"
+  ];
+
+  let comments = generalComments;
+  if (tag.toLowerCase().includes('sci')) comments = sciFiComments;
+  if (tag.toLowerCase().includes('web3')) comments = web3Comments;
+  if (tag.toLowerCase().includes('indie') || tag.toLowerCase().includes('creator')) comments = indieComments;
+  if (tag.toLowerCase().includes('fantasy') || tag.toLowerCase().includes('world')) comments = fantasyComments;
+  if (tag.toLowerCase().includes('nft')) comments = nftComments;
+
+  return comments;
+}
+
+// Helper function to generate random comment text based on post tags
+function getRandomComment(tag: string) {
+  const comments = getCommentsByTag(tag);
+  return comments[Math.floor(Math.random() * comments.length)];
 } 

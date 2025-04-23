@@ -53,12 +53,6 @@ export function Footer() {
             <h3 className="font-semibold text-lg mb-4 gradient-heading">Explore</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/stories" className="text-sm hover:text-foreground transition-colors flex items-center">
-                  <FileText className="h-4 w-4 mr-2 opacity-60" />
-                  Stories Feed
-                </Link>
-              </li>
-              <li>
                 <Link href="/genres" className="text-sm hover:text-foreground transition-colors flex items-center">
                   <Sparkles className="h-4 w-4 mr-2 opacity-60" />
                   Genres
@@ -142,15 +136,6 @@ export function Footer() {
                   Contact Us
                 </Link>
               </li>
-              <li>
-                <button 
-                  onClick={() => setShowAdminModal(true)}
-                  className="text-sm hover:text-foreground transition-colors flex items-center w-full text-left"
-                >
-                  <Shield className="h-4 w-4 mr-2 opacity-60" />
-                  Admin
-                </button>
-              </li>
             </ul>
           </div>
         </div>
@@ -168,4 +153,4 @@ export function Footer() {
       <AdminLoginModal open={showAdminModal} onOpenChange={setShowAdminModal} />
     </footer>
   );
-} 
+}
