@@ -27,26 +27,32 @@ export function useMonad(): UseMonadResult {
   const [networkInfo, setNetworkInfo] = useState<MonadNetworkInfo | null>(null);
   const [isOnMonadNetwork, setIsOnMonadNetwork] = useState(false);
 
-  // Fetch Monad network information
-  useEffect(() => {
-    async function fetchNetworkInfo() {
-      try {
-        const response = await fetch('/api/monad/info');
-        if (!response.ok) {
-          throw new Error(`Failed to fetch network info: ${response.statusText}`);
-        }
-        const data = await response.json();
-        setNetworkInfo(data.network);
-        
-        // Check if user is on Monad network
-        setIsOnMonadNetwork(chainId === data.network.chainId);
-      } catch (err: any) {
-        console.error('Error fetching Monad network info:', err);
+  // Fetch network info with error handling
+  const fetchNetworkInfo = useCallback(async () => {
+    try {
+      const response = await fetch('/api/monad/info');
+      if (!response.ok) {
+        throw new Error(`Failed to fetch network info: ${response.statusText}`);
       }
+      const data = await response.json();
+      setNetworkInfo(data.network);
+    } catch (err) {
+      console.error('Error fetching Monad network info:', err);
+      setError(err instanceof Error ? err.message : 'Failed to fetch network info');
+      // Provide fallback network info to prevent app breakage
+      setNetworkInfo({
+        name: 'Monad Network (Fallback)',
+        chainId: 0,
+        rpcUrl: 'https://fallback.rpc.url',
+        currency: 'MONAD'
+      });
     }
-    
+  }, []);
+
+  // Fetch Monad network information only once on mount
+  useEffect(() => {
     fetchNetworkInfo();
-  }, [chainId]);
+  }, [fetchNetworkInfo]);
 
   // Check if network changes
   useEffect(() => {

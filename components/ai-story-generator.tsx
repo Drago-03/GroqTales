@@ -171,7 +171,7 @@ export function AIStoryGenerator({
   const [selectedGenres, setSelectedGenres] = useState<string[]>([initialGenre]);
   const [overview, setOverview] = useState("");
   const [generatedContent, setGeneratedContent] = useState("");
-  const [selectedModel, setSelectedModel] = useState<string>(availableModels.GROQ);
+  const [selectedModel, setSelectedModel] = useState<string>(defaultModel || '');
   const [temperature, setTemperature] = useState(0.7);
   const [isMinting, setIsMinting] = useState(false);
   const [mintedNftUrl, setMintedNftUrl] = useState("");
@@ -191,8 +191,8 @@ export function AIStoryGenerator({
 
   // Model names for display
   const modelDisplayNames: Record<string, string> = {
-    [availableModels.OPENAI]: "ChatGPT (OpenAI)",
-    [availableModels.GROQ]: "Llama 3.1 (via Groq)"
+    [availableModels.OPENAI || 'openai']: "ChatGPT (OpenAI)",
+    [availableModels.GROQ || 'groq']: "Llama 3.1 (via Groq)"
   };
 
   // Fetch models function (mock for now)
@@ -206,8 +206,11 @@ export function AIStoryGenerator({
   useEffect(() => {
     if (defaultModel) {
       setSelectedModel(defaultModel);
+    } else {
+      // Fallback to a known valid model if defaultModel is not set
+      setSelectedModel(availableModels.LLAMA_3_70B || 'llama-3.3-70b-versatile');
     }
-  }, [defaultModel]);
+  }, [defaultModel, availableModels]);
 
   // Remove the old useEffect for localStorage and replace with URL parameter check
   useEffect(() => {
@@ -280,27 +283,36 @@ export function AIStoryGenerator({
 
 ## Story Parameters
 - Title: ${title || "[Generate an appropriate title]"}
-- Genres: ${selectedGenres.map(g => g.replace(/-/g, ' ')).join(", ")}
-- Overview: ${overview || "[No overview provided]"}
+- Genres: ${selectedGenres.map(g => g.replace(/-/g, ' ')).join(", ") || "[Select appropriate genres if not specified]"}
+- Overview: ${overview || "[No overview provided, use creativity based on other inputs]"}
+- Creativity Level: ${temperature < 0.4 ? "Low (more predictable and structured)" : temperature > 0.7 ? "High (more creative and experimental)" : "Balanced (mix of structure and creativity)"}
 
-## Story Elements
+## Detailed Story Elements
 `;
 
     // Add character details if provided
     if (mainCharacters.trim()) {
       engineeredPrompt += `
-### Characters
+### Main Characters
 ${mainCharacters}
-
+`;
+    } else {
+      engineeredPrompt += `
+### Main Characters
+[Not specified, create compelling characters based on genre and overview]
 `;
     }
 
     // Add setting details if provided
     if (setting.trim()) {
       engineeredPrompt += `
-### Setting
+### World & Setting
 ${setting}
-
+`;
+    } else {
+      engineeredPrompt += `
+### World & Setting
+[Not specified, develop a fitting setting based on genre and other inputs]
 `;
     }
 
@@ -309,39 +321,51 @@ ${setting}
       engineeredPrompt += `
 ### Plot Outline
 ${plotOutline}
-
+`;
+    } else {
+      engineeredPrompt += `
+### Plot Outline
+[Not specified, craft an engaging plot based on provided elements]
 `;
     }
 
     // Add themes if provided
     if (themes.trim()) {
       engineeredPrompt += `
-### Themes to Explore
+### Themes & Motifs to Explore
 ${themes}
-
+`;
+    } else {
+      engineeredPrompt += `
+### Themes & Motifs to Explore
+[Not specified, incorporate relevant themes based on genre and story context]
 `;
     }
 
     // Add user's specific prompt/request if provided
     if (prompt.trim()) {
       engineeredPrompt += `
-### Additional Details
+### Additional Details & Specific Instructions
 ${prompt}
-
+`;
+    } else {
+      engineeredPrompt += `
+### Additional Details & Specific Instructions
+[No additional instructions provided, use best judgment for story enhancement]
 `;
     }
 
     // Add specific instructions about formatting and structure
     engineeredPrompt += `
-## Output Format
+## Output Format & Guidelines
 - Begin with a captivating title if one wasn't provided
-- Structure the story with clear sections and paragraphs
-- Include rich descriptions and vivid dialogue
-- Develop characters with depth and motivation
-- Maintain an engaging narrative arc with beginning, middle, and conclusion
+- Structure the story with clear sections and paragraphs for readability
+- Include rich descriptions and vivid dialogue to enhance immersion
+- Develop characters with depth, motivation, and distinct personalities
+- Maintain an engaging narrative arc with a clear beginning, middle, and conclusion
 - Aim for a cohesive story of approximately 1000-1500 words
 
-Please generate this story with attention to quality, creativity, and narrative coherence.
+Please generate this story with attention to quality, creativity, and narrative coherence. Adjust the style based on the specified creativity level and ensure all provided elements are cohesively integrated into the final output.
 `;
 
     return engineeredPrompt;
@@ -381,7 +405,7 @@ Please generate this story with attention to quality, creativity, and narrative 
         };
         
         // Test connection with custom API key first if using GROQ special model
-        if (selectedModel === availableModels.GROQ) {
+        if (selectedModel === (availableModels.LLAMA_3_70B || 'llama-3.3-70b-versatile')) {
           const testResult = await testConnection(userApiKey, true);
           if (!testResult.success) {
             throw new Error(`API key test failed: ${testResult.message}`);
@@ -400,8 +424,11 @@ Please generate this story with attention to quality, creativity, and narrative 
         }
       }
       
+      // Ensure a valid model is selected
+      const modelToUse = selectedModel || defaultModel || availableModels.LLAMA_3_70B || 'llama-3.3-70b-versatile';
+      
       // Get model display name
-      const modelDisplayName = modelDisplayNames[selectedModel] || selectedModel;
+      const modelDisplayName = modelDisplayNames[modelToUse] || modelToUse;
       
       // Show a progress toast
       toast({
@@ -411,14 +438,14 @@ Please generate this story with attention to quality, creativity, and narrative 
       
       // Log request details for debugging (without API key)
       console.log("Generating story with:", { 
-        model: selectedModel, 
+        model: modelToUse, 
         modelName: modelDisplayName,
         prompt: "Content length: " + engineeredPrompt.length,
         temperature
       });
       
       // Call the generate function with the appropriate options
-      const content = await generate(engineeredPrompt, selectedModel, 
+      const content = await generate(engineeredPrompt, modelToUse, 
         isUsingCustomKey && userApiKey ? customOptions : options);
       
       if (!content || content.trim() === '') {
@@ -530,9 +557,10 @@ Please generate this story with attention to quality, creativity, and narrative 
       // For free story publishing
       else {
         // Just generate the story
+        const modelToUse = selectedModel || defaultModel || availableModels.LLAMA_3_70B || 'llama-3.3-70b-versatile';
         const content = await generate(
           engineeredPrompt,
-          selectedModel,
+          modelToUse,
           { 
             temperature, 
             system_prompt: "You are an expert creative writer with a talent for crafting engaging stories.",
@@ -919,23 +947,39 @@ Please generate this story with attention to quality, creativity, and narrative 
                   <div className="space-y-4 mt-4">
                     <div className="space-y-2">
                       <Label htmlFor="model">AI Model</Label>
-                      <Select
-                        value={selectedModel}
-                        onValueChange={setSelectedModel}
-                        disabled={isLoading || Object.keys(availableModels).length === 0}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select an AI model" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Object.entries(availableModels).map(([key, value]) => (
-                            <SelectItem key={key} value={value}>
-                              {modelDisplayNames[value] || key.replace(/_/g, ' ')}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      {selectedModel === availableModels.GROQ && (
+                      <div className="relative z-100" onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                      }} onMouseDown={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                      }}>
+                        <Select
+                          value={selectedModel}
+                          onValueChange={setSelectedModel}
+                          disabled={isLoading}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select an AI model" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Object.entries(availableModels).length > 0 ? (
+                              Object.entries(availableModels).map(([key, value]) => (
+                                <SelectItem key={key} value={value}>
+                                  {modelDisplayNames[value] || key.replace(/_/g, ' ')}
+                                </SelectItem>
+                              ))
+                            ) : (
+                              // Fallback options if availableModels is empty
+                              <>
+                                <SelectItem value="openai">ChatGPT (OpenAI)</SelectItem>
+                                <SelectItem value="groq">Llama 3.1 (via Groq)</SelectItem>
+                              </>
+                            )}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      {selectedModel === (availableModels.GROQ || 'groq') && (
                         <p className="text-xs text-muted-foreground mt-1">
                           This model uses the API key from your .env.local file by default.
                           {!isUsingCustomKey && (
@@ -1080,7 +1124,10 @@ Please generate this story with attention to quality, creativity, and narrative 
                     <div className="flex flex-col gap-4 mt-4">
                       <div className="flex gap-4 justify-end">
                         <Button
-                          onClick={handleGenerate}
+                          onClick={() => {
+                            console.log('Generate for Free button clicked');
+                            handleGenerate();
+                          }}
                           disabled={isGroqLoading}
                           className="theme-gradient-bg min-w-32"
                         >
@@ -1103,13 +1150,17 @@ Please generate this story with attention to quality, creativity, and narrative 
                           ) : (
                             <>
                               <Sparkles className="mr-2 h-4 w-4" />
-                              {storyFormat === 'nft' ? 'Generate for NFT' : 'Generate & Publish'}
+                              Generate for Free
                             </>
                           )}
                         </Button>
                         
                         <Button
-                          onClick={handleGenerateAndMint}
+                          onClick={() => {
+                            console.log('Generate for NFT button clicked');
+                            setStoryFormat('nft');
+                            handleGenerateAndMint();
+                          }}
                           disabled={isGroqLoading || isMonadLoading || !account || !isOnMonadNetwork}
                           className="theme-gradient-bg"
                           title={!account ? "Connect wallet to mint NFT" : !isOnMonadNetwork ? "Switch to Monad network" : ""}
@@ -1139,7 +1190,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                           ) : (
                             <>
                               <Wallet className="mr-2 h-4 w-4" />
-                              {storyFormat === 'nft' ? 'Generate & Mint NFT' : 'Generate & Publish'}
+                              Generate for NFT
                             </>
                           )}
                         </Button>
