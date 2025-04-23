@@ -169,6 +169,7 @@ export function AIStoryGenerator({
   const [prompt, setPrompt] = useState("");
   const [title, setTitle] = useState("");
   const [selectedGenres, setSelectedGenres] = useState<string[]>([initialGenre]);
+  const [storyType, setStoryType] = useState("text");
   const [overview, setOverview] = useState("");
   const [generatedContent, setGeneratedContent] = useState("");
   const [selectedModel, setSelectedModel] = useState<string>(defaultModel || '');
@@ -283,6 +284,7 @@ export function AIStoryGenerator({
 
 ## Story Parameters
 - Title: ${title || "[Generate an appropriate title]"}
+- Story Type: ${storyType === "image" ? "AI Image Story (with vivid visual descriptions for image generation)" : storyType === "comic" ? "Comic Style Story (formatted with panel-by-panel breakdowns and dialogue for a graphic novel style)" : "Text Story (traditional narrative text format with detailed prose)"}
 - Genres: ${selectedGenres.map(g => g.replace(/-/g, ' ')).join(", ") || "[Select appropriate genres if not specified]"}
 - Overview: ${overview || "[No overview provided, use creativity based on other inputs]"}
 - Creativity Level: ${temperature < 0.4 ? "Low (more predictable and structured)" : temperature > 0.7 ? "High (more creative and experimental)" : "Balanced (mix of structure and creativity)"}
@@ -355,12 +357,22 @@ ${prompt}
 `;
     }
 
-    // Add specific instructions about formatting and structure
+    // Add specific instructions about formatting and structure based on story type
     engineeredPrompt += `
 ## Output Format & Guidelines
 - Begin with a captivating title if one wasn't provided
-- Structure the story with clear sections and paragraphs for readability
-- Include rich descriptions and vivid dialogue to enhance immersion
+`;
+    if (storyType === "image") {
+      engineeredPrompt += `- Structure the story with vivid visual descriptions for AI-generated images to accompany the narrative. Ensure each major scene or key moment includes detailed imagery descriptions for optimal image generation.
+`;
+    } else if (storyType === "comic") {
+      engineeredPrompt += `- Structure the story in a comic book format with panel-by-panel descriptions and dialogue. Clearly label each panel (e.g., Panel 1, Panel 2) and describe the visual content and character dialogue or captions for each panel to create a graphic novel style.
+`;
+    } else {
+      engineeredPrompt += `- Structure the story with clear sections and paragraphs for readability. Focus on detailed prose and narrative depth to create an immersive reading experience.
+`;
+    }
+    engineeredPrompt += `- Include rich descriptions and vivid dialogue to enhance immersion
 - Develop characters with depth, motivation, and distinct personalities
 - Maintain an engaging narrative arc with a clear beginning, middle, and conclusion
 - Aim for a cohesive story of approximately 1000-1500 words
@@ -748,6 +760,40 @@ Please generate this story with attention to quality, creativity, and narrative 
     );
   };
 
+  // Function to fetch images from Unsplash as placeholders
+  const fetchUnsplashImage = async (prompt: string) => {
+    try {
+      const apiKey = process.env.NEXT_PUBLIC_UNSPLASH_API_KEY;
+      if (!apiKey || apiKey === 'your_unsplash_api_key_here') {
+        throw new Error('Unsplash API key is not defined in environment variables');
+      }
+
+      console.log('Fetching image for prompt:', prompt);
+      const query = encodeURIComponent(prompt.split(' ').slice(0, 3).join(' '));
+      const response = await fetch(`https://api.unsplash.com/search/photos?query=${query}&per_page=1&client_id=${apiKey}`);
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch image from Unsplash: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      if (data.results && data.results.length > 0) {
+        return data.results[0].urls.regular;
+      } else {
+        throw new Error('No image found on Unsplash for the given query');
+      }
+    } catch (error) {
+      console.error('Error fetching image from Unsplash:', error);
+      // Return a placeholder image URL as fallback
+      return 'https://via.placeholder.com/800x400?text=AI+Generated+Image+Failed';
+    }
+  };
+
+  // Replace the generateImageWithImagen function call with fetchUnsplashImage
+  const generateImageWithImagen = async (prompt: string) => {
+    return await fetchUnsplashImage(prompt);
+  };
+
   return (
     <>
       <WelcomeAnimation />
@@ -789,6 +835,33 @@ Please generate this story with attention to quality, creativity, and narrative 
                   onChange={(e) => setTitle(e.target.value)}
                   disabled={isLoading}
                 />
+              </div>
+              
+              <div className="space-y-2">
+                <Label>Story Type</Label>
+                <div className="grid grid-cols-3 gap-2">
+                  <Button
+                    variant={storyType === "text" ? "default" : "outline"}
+                    onClick={() => setStoryType("text")}
+                    className={storyType === "text" ? "bg-primary text-white" : "text-primary"}
+                  >
+                    AI Text Story
+                  </Button>
+                  <Button
+                    variant={storyType === "image" ? "default" : "outline"}
+                    onClick={() => setStoryType("image")}
+                    className={storyType === "image" ? "bg-primary text-white" : "text-primary"}
+                  >
+                    AI Image Story
+                  </Button>
+                  <Button
+                    variant={storyType === "comic" ? "default" : "outline"}
+                    onClick={() => setStoryType("comic")}
+                    className={storyType === "comic" ? "bg-primary text-white" : "text-primary"}
+                  >
+                    AI Comic Style
+                  </Button>
+                </div>
               </div>
               
               <div className="space-y-2">
@@ -1097,25 +1170,370 @@ Please generate this story with attention to quality, creativity, and narrative 
               </div>
               
               {generatedContent ? (
-                <div className="mt-6 border rounded-lg p-4 bg-card">
-                  <div className="flex justify-between items-center mb-3">
-                    <h3 className="font-medium text-lg">Generated Story</h3>
+                <motion.div 
+                  className="mt-6 border rounded-xl p-6 bg-gradient-to-br from-background via-background/95 to-primary/5 shadow-lg overflow-hidden"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                >
+                  <div className="flex justify-between items-center mb-4">
+                    <motion.h3 
+                      className="font-medium text-xl text-primary flex items-center"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2, duration: 0.4 }}
+                    >
+                      <Sparkles className="h-5 w-5 mr-2 text-amber-500" />
+                      Generated {storyType === "image" ? "AI Image Story" : storyType === "comic" ? "Comic Style Story" : "Text Story"}
+                    </motion.h3>
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.3, duration: 0.4 }}
+                    >
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setActiveTab("mint");
+                        }}
+                        className="hover:bg-primary/10 border-primary/30 text-primary"
+                      >
+                        {storyFormat === 'nft' ? 'Continue to NFT' : 'Continue to Publish'}
+                      </Button>
+                    </motion.div>
+                  </div>
+                  <motion.div 
+                    className="bg-gradient-to-r from-primary/10 via-amber-500/5 to-primary/10 p-1 rounded-lg overflow-hidden relative"
+                    initial={{ scale: 0.98, opacity: 0.8 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/10 to-transparent opacity-30"></div>
+                    <div className="prose prose-lg dark:prose-invert max-h-96 overflow-y-auto p-6 bg-background rounded-md relative z-10">
+                      {storyType === "image" ? (
+                        <>
+                          <motion.h1 
+                            className="text-2xl font-bold mb-4 text-foreground"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4, duration: 0.5 }}
+                          >
+                            {title || "Untitled AI Image Story"}
+                          </motion.h1>
+                          <motion.h3 
+                            className="text-lg font-medium mb-2 text-foreground/85"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.45, duration: 0.5 }}
+                          >
+                            Genre: {selectedGenres.map(g => g.charAt(0).toUpperCase() + g.slice(1).replace('-', ' ')).join(", ") || "Not specified"}
+                          </motion.h3>
+                          {(() => {
+                            let wordCount = 0;
+                            let nextImageThreshold = 200;
+                            let imageCount = 0;
+                            const elements: JSX.Element[] = [];
+                            const lines = generatedContent.split('\n');
+                            lines.forEach((line, i) => {
+                              wordCount += line.split(' ').length;
+                              const shouldInsertImage = wordCount >= nextImageThreshold && storyType === "image";
+                              
+                              if (shouldInsertImage) {
+                                nextImageThreshold += 200;
+                                const imagePrompt = line.trim() !== '' ? line : 'Generate an image based on the story context';
+                                elements.push(
+                                  <motion.div 
+                                    key={`image-${i}-${imageCount}`}
+                                    className="my-4 border rounded-lg overflow-hidden relative h-48 w-full bg-muted"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.4 + (i * 0.05), duration: 0.5 }}
+                                    onAnimationComplete={async () => {
+                                      const imageUrl = await generateImageWithImagen(imagePrompt);
+                                      if (imageUrl) {
+                                        // Update the DOM to display the image
+                                        const imageElement = document.querySelector(`[data-image-id="image-${i}-${imageCount}"]`);
+                                        if (imageElement) {
+                                          imageElement.innerHTML = `<img src="${imageUrl}" alt="AI-generated image ${imageCount + 1}" style="width: 100%; height: 100%; object-fit: cover;" />`;
+                                        }
+                                      }
+                                    }}
+                                    data-image-id={`image-${i}-${imageCount}`}
+                                  >
+                                    <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/50 text-sm">
+                                      Loading AI-generated image {imageCount + 1} with Unsplash...
+                                    </div>
+                                  </motion.div>
+                                );
+                                imageCount++;
+                              }
+                              
+                              // Check for markdown headings
+                              if (line.startsWith('# ')) {
+                                elements.push(
+                                  <motion.h1 
+                                    key={i} 
+                                    className="text-2xl font-bold mb-4 text-foreground"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.4 + (i * 0.05), duration: 0.5 }}
+                                  >
+                                    {line.slice(2)}
+                                  </motion.h1>
+                                );
+                              } else if (line.startsWith('## ')) {
+                                elements.push(
+                                  <motion.h2 
+                                    key={i} 
+                                    className="text-xl font-semibold mt-6 mb-3 text-foreground/90"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.4 + (i * 0.05), duration: 0.5 }}
+                                  >
+                                    {line.slice(3)}
+                                  </motion.h2>
+                                );
+                              } else if (line.startsWith('### ')) {
+                                elements.push(
+                                  <motion.h3 
+                                    key={i} 
+                                    className="text-lg font-medium mt-4 mb-2 text-foreground/85"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.4 + (i * 0.05), duration: 0.5 }}
+                                  >
+                                    {line.slice(4)}
+                                  </motion.h3>
+                                );
+                              } else if (line.trim() === '') {
+                                elements.push(
+                                  <motion.div 
+                                    key={i} 
+                                    className="h-4"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.4 + (i * 0.05), duration: 0.5 }}
+                                  />
+                                );
+                              } else {
+                                elements.push(
+                                  <motion.p 
+                                    key={i} 
+                                    className="mb-4 leading-relaxed text-foreground/90 indent-6 relative"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.4 + (i * 0.05), duration: 0.5 }}
+                                  >
+                                    <span className="absolute left-0 text-primary/50 text-xs">{i+1}</span>
+                                    {line}
+                                  </motion.p>
+                                );
+                              }
+                            });
+                            // Add any remaining images if needed
+                            const remainingImages = Math.floor(wordCount / 200) - imageCount;
+                            for (let idx = 0; idx < remainingImages; idx++) {
+                              elements.push(
+                                <motion.div 
+                                  key={`image-extra-${idx}-${imageCount + idx + 1}`}
+                                  className="my-4 border rounded-lg overflow-hidden relative h-48 w-full bg-muted"
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: 0.4 + ((lines.length + idx) * 0.05), duration: 0.5 }}
+                                  onAnimationComplete={async () => {
+                                    const imagePrompt = 'Generate an image based on the story context';
+                                    const imageUrl = await generateImageWithImagen(imagePrompt);
+                                    if (imageUrl) {
+                                      // Update the DOM to display the image
+                                      const imageElement = document.querySelector(`[data-image-id="image-extra-${idx}-${imageCount + idx + 1}"]`);
+                                      if (imageElement) {
+                                        imageElement.innerHTML = `<img src="${imageUrl}" alt="AI-generated image ${imageCount + idx + 1}" style="width: 100%; height: 100%; object-fit: cover;" />`;
+                                      }
+                                    }
+                                  }}
+                                  data-image-id={`image-extra-${idx}-${imageCount + idx + 1}`}
+                                >
+                                  <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/50 text-sm">
+                                    Loading AI-generated image {imageCount + idx + 1} with Unsplash...
+                                  </div>
+                                </motion.div>
+                              );
+                            }
+                            return elements;
+                          })()}
+                        </>
+                      ) : storyType === "comic" ? (
+                        generatedContent.split('\n').map((line, i) => {
+                          // Check for markdown headings
+                          if (line.startsWith('# ')) {
+                            return (
+                              <motion.h1 
+                                key={i} 
+                                className="text-2xl font-bold mb-4 text-foreground"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4 + (i * 0.05), duration: 0.5 }}
+                              >
+                                {line.slice(2)}
+                              </motion.h1>
+                            );
+                          } else if (line.startsWith('## ')) {
+                            return (
+                              <motion.h2 
+                                key={i} 
+                                className="text-xl font-semibold mt-6 mb-3 text-foreground/90"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4 + (i * 0.05), duration: 0.5 }}
+                              >
+                                {line.slice(3)}
+                              </motion.h2>
+                            );
+                          } else if (line.startsWith('### ')) {
+                            return (
+                              <motion.h3 
+                                key={i} 
+                                className="text-lg font-medium mt-4 mb-2 text-foreground/85"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4 + (i * 0.05), duration: 0.5 }}
+                              >
+                                {line.slice(4)}
+                              </motion.h3>
+                            );
+                          } else if (line.trim() === '') {
+                            return (
+                              <motion.div 
+                                key={i} 
+                                className="h-4"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.4 + (i * 0.05), duration: 0.5 }}
+                              />
+                            );
+                          } else {
+                            return (
+                              <motion.p 
+                                key={i} 
+                                className="mb-4 leading-relaxed text-foreground/90 indent-6 relative"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4 + (i * 0.05), duration: 0.5 }}
+                              >
+                                <span className="absolute left-0 text-primary/50 text-xs">{i+1}</span>
+                                {line}
+                              </motion.p>
+                            );
+                          }
+                        })
+                      ) : (
+                        generatedContent.split('\n').map((line, i) => {
+                          // Check for markdown headings
+                          if (line.startsWith('# ')) {
+                            return (
+                              <motion.h1 
+                                key={i} 
+                                className="text-2xl font-bold mb-4 text-foreground"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4 + (i * 0.05), duration: 0.5 }}
+                              >
+                                {line.slice(2)}
+                              </motion.h1>
+                            );
+                          } else if (line.startsWith('## ')) {
+                            return (
+                              <motion.h2 
+                                key={i} 
+                                className="text-xl font-semibold mt-6 mb-3 text-foreground/90"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4 + (i * 0.05), duration: 0.5 }}
+                              >
+                                {line.slice(3)}
+                              </motion.h2>
+                            );
+                          } else if (line.startsWith('### ')) {
+                            return (
+                              <motion.h3 
+                                key={i} 
+                                className="text-lg font-medium mt-4 mb-2 text-foreground/85"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4 + (i * 0.05), duration: 0.5 }}
+                              >
+                                {line.slice(4)}
+                              </motion.h3>
+                            );
+                          } else if (line.trim() === '') {
+                            return (
+                              <motion.div 
+                                key={i} 
+                                className="h-4"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.4 + (i * 0.05), duration: 0.5 }}
+                              />
+                            );
+                          } else {
+                            return (
+                              <motion.p 
+                                key={i} 
+                                className="mb-4 leading-relaxed text-foreground/90 indent-6 relative"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4 + (i * 0.05), duration: 0.5 }}
+                              >
+                                <span className="absolute left-0 text-primary/50 text-xs">{i+1}</span>
+                                {line}
+                              </motion.p>
+                            );
+                          }
+                        })
+                      )}
+                    </div>
+                  </motion.div>
+                  <motion.div 
+                    className="mt-4 flex justify-end gap-3"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6, duration: 0.5 }}
+                  >
                     <Button
-                      variant="outline"
+                      variant="ghost"
                       size="sm"
                       onClick={() => {
-                        setActiveTab("mint");
+                        navigator.clipboard.writeText(generatedContent);
+                        toast({
+                          title: "Copied",
+                          description: "Story copied to clipboard",
+                        });
                       }}
+                      className="text-primary hover:bg-primary/5 border-primary/20"
                     >
-                      {storyFormat === 'nft' ? 'Continue to NFT' : 'Continue to Publish'}
+                      <Copy className="mr-2 h-4 w-4" />
+                      Copy Story
                     </Button>
-                  </div>
-                  <div className="prose prose-sm dark:prose-invert max-h-96 overflow-y-auto border rounded p-4 bg-muted/20">
-                    {generatedContent.split('\n').map((line, i) => (
-                      <p key={i}>{line}</p>
-                    ))}
-                  </div>
-                </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        const element = document.createElement('a');
+                        const file = new Blob([generatedContent], { type: 'text/plain' });
+                        element.href = URL.createObjectURL(file);
+                        element.download = `${title || 'Untitled_Story'}.md`;
+                        document.body.appendChild(element);
+                        element.click();
+                        document.body.removeChild(element);
+                      }}
+                      className="text-primary hover:bg-primary/5 border-primary/20"
+                    >
+                      <Download className="mr-2 h-4 w-4" />
+                      Download
+                    </Button>
+                  </motion.div>
+                </motion.div>
               ) : (
                 <>
                   {isGroqLoading ? (
