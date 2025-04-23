@@ -9,11 +9,21 @@
 const GROQ_API_KEY = process.env.NEXT_PUBLIC_GROQ_API_KEY;
 
 // Available models
+/* 
+ * GROQ_MODELS:
+ * - LLAMA_3_70B: Standard Llama 3 70B model
+ * - LLAMA_4_SCOUT: Meta's Llama 4 Scout 17B model optimized for instruction following
+ * - MIXTRAL: Mixtral 8x7B model with larger context window
+ * - GEMMA: Google's Gemma 7B instructed model
+ * - GROQ: Special endpoint that uses your API key from .env.local file
+ *   without specifying a model (lets Groq's backend choose the best model)
+ */
 export const GROQ_MODELS = {
   LLAMA_3_70B: "llama-3.3-70b-versatile",
   LLAMA_4_SCOUT: "meta-llama/llama-4-scout-17b-16e-instruct",
   MIXTRAL: "mixtral-8x7b-32768",
-  GEMMA: "gemma-7b-it"
+  GEMMA: "gemma-7b-it",
+  GROQ: "groq-endpoint"
 };
 
 // Base URL for Groq API
@@ -52,6 +62,9 @@ export async function generateStoryContent(
       throw new Error("No Groq API key provided. Please set NEXT_PUBLIC_GROQ_API_KEY in your .env.local file or provide an API key in the options.");
     }
     
+    // Check if we're using the special GROQ endpoint model
+    const isSpecialGroqModel = model === GROQ_MODELS.GROQ;
+    
     const messages = [];
     
     // Add system prompt if provided
@@ -68,18 +81,27 @@ export async function generateStoryContent(
       content: prompt
     });
     
+    // Construct request body based on whether we're using the special GROQ model
+    const requestBody = isSpecialGroqModel
+      ? {
+          messages,
+          temperature,
+          max_tokens
+        }
+      : {
+          model,
+          messages,
+          temperature,
+          max_tokens
+        };
+    
     const response = await fetch(`${GROQ_API_URL}/chat/completions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${activeApiKey}`
       },
-      body: JSON.stringify({
-        model,
-        messages,
-        temperature,
-        max_tokens
-      })
+      body: JSON.stringify(requestBody)
     });
     
     if (!response.ok) {
@@ -239,7 +261,7 @@ export async function improveStoryContent(content: string, focus?: string, apiKe
 }
 
 /**
- * Test function to verify Groq API connectivity
+ * Test function to verify Groq API connectivity with the default GROQ model
  * 
  * @param apiKey Optional custom Groq API key to test
  */
@@ -262,6 +284,37 @@ export async function testGroqConnection(apiKey?: string) {
     return {
       success: false,
       error: error instanceof Error ? error.message : String(error)
+    };
+  }
+}
+
+/**
+ * Test function to verify Groq API connectivity with the special GROQ model
+ * specifically designed to work with the API key from .env.local
+ * 
+ * @param apiKey Optional custom Groq API key to test
+ */
+export async function testGroqSpecialModel(apiKey?: string) {
+  try {
+    const result = await generateStoryContent(
+      "Write a one-sentence test response to verify the special GROQ model is working.",
+      GROQ_MODELS.GROQ,
+      { 
+        max_tokens: 50,
+        apiKey
+      }
+    );
+    
+    return {
+      success: true,
+      message: result,
+      model: "GROQ special model"
+    };
+  } catch (error: unknown) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : String(error),
+      model: "GROQ special model"
     };
   }
 } 

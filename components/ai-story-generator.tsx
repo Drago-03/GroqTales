@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useGroq } from "@/hooks/use-groq";
 import { useMonad } from "@/hooks/use-monad";
 import { useWeb3 } from "@/components/providers/web3-provider";
@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
-import { Loader2, Sparkles, BookText, CopyCheck, Wallet, Key, Zap, Stars } from "lucide-react";
+import { Loader2, Sparkles, BookText, CopyCheck, Wallet, Key, Zap, Stars, Send, RefreshCw, Wand2, Type, Download, Copy, BookOpen, Rocket } from "lucide-react";
 import Link from "next/link";
 import {
   Accordion,
@@ -159,7 +159,7 @@ export function AIStoryGenerator({
   initialFormat?: string; 
   showWelcome?: boolean;
 }) {
-  const { generate, generateIdeas, availableModels, defaultModel, isLoading: isGroqLoading, error: groqError, fetchModels } = useGroq();
+  const { generate, generateIdeas, availableModels, defaultModel, isLoading: isGroqLoading, error: groqError, fetchModels, modelNames, testConnection } = useGroq();
   const { mintNFT, generateAndMint, isLoading: isMonadLoading, networkInfo, error: monadError, isOnMonadNetwork, switchToMonadNetwork } = useMonad();
   const { account } = useWeb3();
   const { toast } = useToast();
@@ -171,7 +171,7 @@ export function AIStoryGenerator({
   const [selectedGenres, setSelectedGenres] = useState<string[]>([initialGenre]);
   const [overview, setOverview] = useState("");
   const [generatedContent, setGeneratedContent] = useState("");
-  const [selectedModel, setSelectedModel] = useState("");
+  const [selectedModel, setSelectedModel] = useState<string>(availableModels.GROQ);
   const [temperature, setTemperature] = useState(0.7);
   const [isMinting, setIsMinting] = useState(false);
   const [mintedNftUrl, setMintedNftUrl] = useState("");
@@ -182,17 +182,25 @@ export function AIStoryGenerator({
   const [plotOutline, setPlotOutline] = useState("");
   const [setting, setSetting] = useState("");
   const [themes, setThemes] = useState("");
-  const [userApiKey, setUserApiKey] = useState("");
-  const [isUsingCustomKey, setIsUsingCustomKey] = useState(false);
+  const [userApiKey, setUserApiKey] = useState<string>("");
+  const [isUsingCustomKey, setIsUsingCustomKey] = useState<boolean>(false);
   const [showAdvancedOptions, setShowAdvancedOptions] = useState(true);
 
   // Add this state variable near the other state declarations
   const [showWelcomeAnimation, setShowWelcomeAnimation] = useState(showWelcome);
 
-  // Fetch available models on component mount
-  useEffect(() => {
-    fetchModels();
-  }, [fetchModels]);
+  // Model names for display
+  const modelDisplayNames: Record<string, string> = {
+    [availableModels.OPENAI]: "ChatGPT (OpenAI)",
+    [availableModels.GROQ]: "Llama 3.1 (via Groq)"
+  };
+
+  // Fetch models function (mock for now)
+  const fetchAvailableModels = useCallback(async () => {
+    // In a real app, this would fetch from an API
+    // For now, we just use the existing available models
+    // No action needed as availableModels is already defined
+  }, []);
 
   // Set default model when available
   useEffect(() => {
@@ -233,7 +241,7 @@ export function AIStoryGenerator({
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible' && !isGroqLoading) {
         // Refresh models when user returns to the page
-        fetchModels();
+        fetchAvailableModels();
       }
     };
     
@@ -241,7 +249,7 @@ export function AIStoryGenerator({
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [isGroqLoading, fetchModels]);
+  }, [isGroqLoading, fetchAvailableModels]);
 
   // Show errors as toasts
   useEffect(() => {
@@ -371,6 +379,19 @@ Please generate this story with attention to quality, creativity, and narrative 
           ...options,
           apiKey: userApiKey
         };
+        
+        // Test connection with custom API key first if using GROQ special model
+        if (selectedModel === availableModels.GROQ) {
+          const testResult = await testConnection(userApiKey, true);
+          if (!testResult.success) {
+            throw new Error(`API key test failed: ${testResult.message}`);
+          } else {
+            toast({
+              title: "API Key Valid",
+              description: `Successfully connected to ${testResult.model || 'Groq API'}`,
+            });
+          }
+        }
       } else {
         // Make sure to use the environment variable API key
         const envApiKey = process.env.NEXT_PUBLIC_GROQ_API_KEY;
@@ -379,15 +400,19 @@ Please generate this story with attention to quality, creativity, and narrative 
         }
       }
       
+      // Get model display name
+      const modelDisplayName = modelDisplayNames[selectedModel] || selectedModel;
+      
       // Show a progress toast
       toast({
         title: "Generating Story",
-        description: "Please wait while we craft your story with Groq AI...",
+        description: `Creating your story with ${modelDisplayName}...`,
       });
       
       // Log request details for debugging (without API key)
       console.log("Generating story with:", { 
         model: selectedModel, 
+        modelName: modelDisplayName,
         prompt: "Content length: " + engineeredPrompt.length,
         temperature
       });
@@ -406,7 +431,7 @@ Please generate this story with attention to quality, creativity, and narrative 
       // Success toast
       toast({
         title: "Story Generated",
-        description: "Your AI story has been created successfully!",
+        description: `Your story was successfully created with ${modelDisplayName}!`,
       });
       
     } catch (error: any) {
@@ -905,11 +930,22 @@ Please generate this story with attention to quality, creativity, and narrative 
                         <SelectContent>
                           {Object.entries(availableModels).map(([key, value]) => (
                             <SelectItem key={key} value={value}>
-                              {key.replace(/_/g, ' ')}
+                              {modelDisplayNames[value] || key.replace(/_/g, ' ')}
                             </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
+                      {selectedModel === availableModels.GROQ && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          This model uses the API key from your .env.local file by default.
+                          {!isUsingCustomKey && (
+                            <> Consider using a <a 
+                                onClick={() => setIsUsingCustomKey(true)}
+                                className="text-primary hover:underline cursor-pointer"
+                              >custom API key</a> for personal use.</>
+                          )}
+                        </p>
+                      )}
                     </div>
                     
                     <div className="space-y-2">
@@ -951,14 +987,53 @@ Please generate this story with attention to quality, creativity, and narrative 
                             <Key className="h-3 w-3 mr-1" />
                             Groq API Key
                           </Label>
-                          <Input
-                            id="apiKey"
-                            type="password"
-                            placeholder="Enter your Groq API key"
-                            value={userApiKey}
-                            onChange={(e) => setUserApiKey(e.target.value)}
-                            disabled={isLoading}
-                          />
+                          <div className="flex space-x-2">
+                            <Input
+                              id="apiKey"
+                              type="password"
+                              placeholder="Enter your Groq API key"
+                              value={userApiKey}
+                              onChange={(e) => setUserApiKey(e.target.value)}
+                              disabled={isLoading}
+                              className="flex-1"
+                            />
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              disabled={!userApiKey || isLoading}
+                              onClick={async () => {
+                                try {
+                                  toast({
+                                    title: "Testing API Key",
+                                    description: "Please wait while we verify your API key...",
+                                  });
+                                  
+                                  const result = await testConnection(userApiKey, true);
+                                  
+                                  if (result.success) {
+                                    toast({
+                                      title: "API Key Valid",
+                                      description: `Successfully connected to ${result.model || 'Groq API'}`,
+                                    });
+                                  } else {
+                                    toast({
+                                      title: "API Key Invalid",
+                                      description: result.message,
+                                      variant: "destructive",
+                                    });
+                                  }
+                                } catch (error: any) {
+                                  toast({
+                                    title: "Test Failed",
+                                    description: error.message || "Could not test API key",
+                                    variant: "destructive",
+                                  });
+                                }
+                              }}
+                            >
+                              Test Key
+                            </Button>
+                          </div>
                           <p className="text-xs text-muted-foreground mt-1">
                             Using your own key helps with API limits and privacy. Get a free key at{" "}
                             <a 

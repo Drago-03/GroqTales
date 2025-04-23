@@ -7,6 +7,10 @@ type GroqModels = {
   [key: string]: string;
 };
 
+type ModelNames = {
+  [key: string]: string;
+};
+
 type GenerateOptions = {
   temperature?: number;
   max_tokens?: number;
@@ -19,7 +23,9 @@ type UseGroqResult = {
   analyze: (content: string, apiKey?: string) => Promise<any>;
   generateIdeas: (genre: string, theme?: string, length?: 'short' | 'medium' | 'long', apiKey?: string) => Promise<any[]>;
   improve: (content: string, focus?: string, apiKey?: string) => Promise<string>;
+  testConnection: (apiKey?: string, useSpecialModel?: boolean) => Promise<{success: boolean, message: string, model?: string}>;
   availableModels: GroqModels;
+  modelNames: ModelNames;
   defaultModel: string;
   isLoading: boolean;
   error: string | null;
@@ -33,6 +39,7 @@ export function useGroq(): UseGroqResult {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [availableModels, setAvailableModels] = useState<GroqModels>({});
+  const [modelNames, setModelNames] = useState<ModelNames>({});
   const [defaultModel, setDefaultModel] = useState<string>('');
 
   /**
@@ -51,9 +58,48 @@ export function useGroq(): UseGroqResult {
       const data = await response.json();
       setAvailableModels(data.models);
       setDefaultModel(data.default);
+      
+      // Set model names if provided
+      if (data.modelNames) {
+        setModelNames(data.modelNames);
+      }
     } catch (err: any) {
       setError(err.message || 'Failed to fetch models');
       console.error('Error fetching Groq models:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  /**
+   * Test connection to Groq API
+   */
+  const testConnection = useCallback(async (apiKey?: string, useSpecialModel = true): Promise<{success: boolean, message: string, model?: string}> => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const url = `/api/groq/models?action=test&special=${useSpecialModel}&apiKey=${apiKey || ''}`;
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Connection test failed');
+      }
+
+      const data = await response.json();
+      return {
+        success: data.success,
+        message: data.message || 'Connection successful',
+        model: data.model
+      };
+    } catch (err: any) {
+      setError(err.message || 'Connection test failed');
+      console.error('Error testing Groq connection:', err);
+      return {
+        success: false,
+        message: err.message || 'Connection test failed'
+      };
     } finally {
       setIsLoading(false);
     }
@@ -222,7 +268,9 @@ export function useGroq(): UseGroqResult {
     analyze,
     generateIdeas,
     improve,
+    testConnection,
     availableModels,
+    modelNames,
     defaultModel,
     isLoading,
     error,

@@ -25,6 +25,7 @@ import * as React from "react";
 import { AIStoryGenerator } from "@/components/ai-story-generator";
 import { TrendingStories } from "@/components/trending-stories";
 import { FeaturedCreators } from "@/components/featured-creators";
+import { Card, CardHeader, CardFooter } from "@/components/ui/card";
 
 // Animate in view component
 function AnimateInView({ 
@@ -271,6 +272,94 @@ export default function HomePage() {
                 <Link href="/stories">
                   <BookOpen className="mr-2 h-5 w-5" />
                   View All Stories
+                </Link>
+              </Button>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Trending NFTs */}
+      <motion.section 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={fadeIn}
+        className="py-16 px-4 sm:px-6 lg:px-8"
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl gradient-heading">
+              Trending NFTs
+            </h2>
+            <p className="mt-4 text-xl text-muted-foreground">
+              Discover the most popular NFT stories on GroqTales
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {[
+              { id: 'nft1', title: 'Cyber Samurai', price: '0.5 ETH', image: 'https://picsum.photos/seed/comicon1/800/600', genre: 'Sci-Fi' },
+              { id: 'nft2', title: 'Dragon Quest', price: '0.8 ETH', image: 'https://picsum.photos/seed/comicon2/800/600', genre: 'Fantasy' },
+              { id: 'nft3', title: 'Space Odyssey', price: '1.2 ETH', image: 'https://picsum.photos/seed/comicon3/800/600', genre: 'Sci-Fi' },
+              { id: 'nft4', title: 'ComicCon Hero', price: '0.9 ETH', image: 'https://picsum.photos/seed/comicon4/800/600', genre: 'Comic' }
+            ].map((nft, index) => (
+              <motion.div
+                key={nft.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                whileHover={{ 
+                  y: -5, 
+                  transition: { duration: 0.2 } 
+                }}
+                className="h-full"
+              >
+                <Card className="overflow-hidden transition-all duration-200 hover:shadow-md h-full">
+                  <div className="relative pt-[60%]">
+                    <img
+                      src={nft.image}
+                      alt={nft.title}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                    <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-xs font-medium flex items-center">
+                      <Sparkles className="h-3 w-3 mr-1 text-yellow-400" />
+                      {nft.price}
+                    </div>
+                  </div>
+                  <CardHeader className="p-4 pb-2">
+                    <h3 className="text-lg font-semibold mt-2 line-clamp-2">{nft.title}</h3>
+                    <p className="text-sm text-muted-foreground">Genre: {nft.genre}</p>
+                  </CardHeader>
+                  <CardFooter className="p-4 pt-0 flex justify-between">
+                    <Button variant="outline" size="sm" asChild>
+                      <Link href={`/nft-gallery/${nft.id}`}>
+                        View NFT
+                      </Link>
+                    </Button>
+                    <Button variant="default" size="sm" className="theme-gradient-bg text-white">
+                      Buy Now
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+          
+          <div className="mt-12 text-center">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Button 
+                asChild 
+                variant="outline" 
+                size="lg"
+                className="border-primary/20 hover:border-primary/50 transition-all duration-300"
+              >
+                <Link href="/nft-gallery">
+                  <BookOpen className="mr-2 h-5 w-5" />
+                  View All NFTs
                 </Link>
               </Button>
             </motion.div>

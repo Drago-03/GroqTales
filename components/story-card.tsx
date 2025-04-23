@@ -3,9 +3,11 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Heart, MessageSquare, Share2, Sparkles, PenSquare } from "lucide-react";
+import { Heart, MessageSquare, Share2, Sparkles, PenSquare, ArrowUpRight, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 interface StoryAuthor {
   name: string;
@@ -39,6 +41,7 @@ interface StoryCardProps {
 }
 
 export function StoryCard({ story, viewMode = "grid", hideLink = false, showCreateButton = false }: StoryCardProps) {
+  const router = useRouter();
   const isGrid = viewMode === "grid";
   
   // Handle different author data structures
@@ -59,6 +62,11 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
     window.location.href = `/create/ai-story?source=card&genre=${encodeURIComponent(genre)}&format=nft`;
   };
   
+  const handleViewNFT = () => {
+    // Navigate to story detail page
+    router.push(`/stories/${story.id}`);
+  };
+  
   // Create the card content
   const cardContent = (
     <>
@@ -66,7 +74,7 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
         <img
           src={imageUrl}
           alt={story.title}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-105"
         />
         {story.price && (
           <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-xs font-medium flex items-center">
@@ -79,6 +87,18 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
             Top 10
           </div>
         )}
+        
+        {/* View NFT Button */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black/40">
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-white text-black px-3 py-1.5 rounded-lg text-sm font-medium flex items-center"
+            onClick={handleViewNFT}
+          >
+            View NFT <ArrowUpRight className="h-3.5 w-3.5 ml-1" />
+          </motion.button>
+        </div>
       </div>
       <div className="flex-1">
         <CardHeader className="p-4 pb-2">
@@ -89,7 +109,7 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
             </Avatar>
             <p className="text-sm font-medium">{authorName}</p>
           </div>
-          <h3 className="text-lg font-semibold mt-2 line-clamp-2">{story.title}</h3>
+          <h3 className="text-lg font-semibold mt-2 line-clamp-2 group-hover:text-primary transition-colors duration-200">{story.title}</h3>
         </CardHeader>
         <CardContent className="p-4 pt-0">
           <p className="text-muted-foreground text-sm line-clamp-2">{storyContent}</p>
@@ -102,7 +122,7 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
             </div>
             {story.views && (
               <div className="flex items-center">
-                <span className="mr-1">👁️</span>
+                <Eye className="h-3.5 w-3.5 mr-1" />
                 {story.views}
               </div>
             )}
@@ -137,16 +157,21 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
   );
   
   return (
-    <Card className={cn(
-      "overflow-hidden transition-all duration-200 hover:shadow-md",
-      isGrid ? "h-full" : "flex gap-4"
-    )}>
-      {hideLink ? (
-        <div className="block">{cardContent}</div>
-      ) : (
-        <Link href={`/stories/${story.id}`} className="block">{cardContent}</Link>
-      )}
-    </Card>
+    <motion.div
+      whileHover={{ y: -5 }}
+      transition={{ duration: 0.2 }}
+    >
+      <Card className={cn(
+        "overflow-hidden transition-all duration-200 hover:shadow-md group",
+        isGrid ? "h-full" : "flex gap-4"
+      )}>
+        {hideLink ? (
+          <div className="block">{cardContent}</div>
+        ) : (
+          <div className="block cursor-pointer" onClick={handleViewNFT}>{cardContent}</div>
+        )}
+      </Card>
+    </motion.div>
   );
 }
 

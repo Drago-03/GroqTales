@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateStoryContent, analyzeStoryContent, generateStoryIdeas, improveStoryContent } from '@/lib/groq-service';
+import { generateStoryContent, analyzeStoryContent, generateStoryIdeas, improveStoryContent, testGroqConnection, testGroqSpecialModel } from '@/lib/groq-service';
 
 /**
  * @api {post} /api/groq/generate Generate content with Groq AI
@@ -63,14 +63,38 @@ export async function POST(request: NextRequest) {
 /**
  * @api {get} /api/groq/models Get available Groq AI models
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const { searchParams } = new URL(request.url);
+    const action = searchParams.get('action');
+    
+    // Handle test action
+    if (action === 'test') {
+      const useSpecialModel = searchParams.get('special') === 'true';
+      const apiKey = searchParams.get('apiKey') || undefined;
+      
+      const result = useSpecialModel 
+        ? await testGroqSpecialModel(apiKey)
+        : await testGroqConnection(apiKey);
+        
+      return NextResponse.json(result);
+    }
+    
+    // Default action: list models
     // Import dynamically to avoid exposing models in the client bundle
     const { GROQ_MODELS } = await import('@/lib/groq-service');
     
     return NextResponse.json({ 
       models: GROQ_MODELS,
-      default: GROQ_MODELS.LLAMA_3_70B
+      default: GROQ_MODELS.GROQ, // Use the special GROQ model as default
+      // Provide human-readable names for the models
+      modelNames: {
+        [GROQ_MODELS.LLAMA_3_70B]: "Llama 3 (70B)",
+        [GROQ_MODELS.LLAMA_4_SCOUT]: "Llama 4 Scout (17B)",
+        [GROQ_MODELS.MIXTRAL]: "Mixtral (8x7B)",
+        [GROQ_MODELS.GEMMA]: "Gemma (7B)",
+        [GROQ_MODELS.GROQ]: "Groq (Default API model)"
+      }
     });
   } catch (error: any) {
     console.error('Error fetching Groq models:', error);
