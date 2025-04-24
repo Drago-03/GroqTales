@@ -55,7 +55,7 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 
 ### Sponsor Technologies Used (if any):
 
-- [ ✅ ] **Groq:** _Used for AI-powered story and comic generation_  
+- [✅] **Groq:** _Used for AI-powered story and comic generation_  
 - [✅] **Monad:** _Implemented for NFT minting on the blockchain_  
 - [ ] **Fluvio:** _Real-time data handling_  
 - [ ] **Base:** _AgentKit / OnchainKit / Smart Wallet usage_  
@@ -75,6 +75,28 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 
 Add images, GIFs, or screenshots if helpful!
 
+**Screenshots of GroqTales Features:**
+- **Dashboard Overview 1**: A glimpse of the main dashboard interface.
+  ![Dashboard](public/Dashboard.png)
+- **Dashboard Overview 2**: Another view of the dashboard with different features highlighted.
+  ![Dashboard2](public/Dashboard2.png)
+- **Dashboard Overview 3**: Additional dashboard perspective showcasing user interactions.
+  ![Dashboard3](public/Dashboard3.png)
+- **Description Input**: Interface for entering story descriptions.
+  ![Description](public/Description.png)
+- **Story Generator Tool**: The main tool for generating AI stories.
+  ![Story Generator Tool](public/Story%20Generator%20tool.png)
+- **Story and Genre Type Selection**: Options for selecting story types and genres.
+  ![Story and Genre Type](public/Story%20and%20genre%20type.png)
+- **Generation Window and Advanced Options**: Interface showing story generation and advanced settings.
+  ![Generation Window](public/Generation%20window%20and%20advanced%20options.png)
+- **Define Outline for Story**: Tool to define the outline and structure of your story.
+  ![Define Outline](public/Define%20Outline%20for%20story.png)
+- **Genres Selection**: Interface for choosing genres for story customization.
+  ![Genres](public/Genres.png)
+- **Community Page**: A view of the community interaction page.
+  ![Community Page](public/Community%20Page.png)
+
 ---
 
 ## 📽️ Demo & Deliverables
@@ -86,8 +108,8 @@ Add images, GIFs, or screenshots if helpful!
 
 ## ✅ Tasks & Bonus Checklist
 
-- [ ✅ ] **All members of the team completed the mandatory task - Followed at least 2 of our social channels and filled the form** (Details in Participant Manual)  
-- [ ✅ ] **All members of the team completed Bonus Task 1 - Sharing of Badges and filled the form (2 points)**  (Details in Participant Manual)
+- [✅] **All members of the team completed the mandatory task - Followed at least 2 of our social channels and filled the form** (Details in Participant Manual)  
+- [✅] **All members of the team completed Bonus Task 1 - Sharing of Badges and filled the form (2 points)**  (Details in Participant Manual)
 - [✅] **All members of the team completed Bonus Task 2 - Signing up for Sprint.dev and filled the form (3 points)**  (Details in Participant Manual)
 
 ---
