@@ -1,8 +1,8 @@
 ![github-submission-banner](https://github.com/user-attachments/assets/a1493b84-e4e2-456e-a791-ce35ee2bcf2f)
 
-# 🚀 Project Title
+# 🚀 GroqTales
 
-> A one-line tagline or mission statement for your project.
+> AI-Powered Story Generation and NFT Minting Platform
 
 ---
 
@@ -17,8 +17,7 @@ Select the problem statement number and title from the official list given in Pa
 
 ## 🎯 Objective
 
-What problem does your project solve, and who does it serve?  
-Briefly describe the real-world use case and the value it provides.
+GroqTales aims to revolutionize storytelling by leveraging AI to generate unique stories and comics, which can be minted as NFTs on the Monad blockchain. This platform serves writers, artists, and blockchain enthusiasts by providing a creative tool to craft and own digital storytelling assets.
 
 ---
 
@@ -43,15 +42,15 @@ Briefly describe the real-world use case and the value it provides.
 ## 🛠️ Tech Stack
 
 ### Core Technologies Used:
-- Frontend:
-- Backend:
-- Database:
-- APIs:
-- Hosting:
+- Frontend: React, Next.js
+- Backend: Node.js
+- Database: MongoDB
+- APIs: Groq API for AI generation, Unsplash API for images
+- Hosting: Vercel
 
 ### Sponsor Technologies Used (if any):
-- [ ] **Groq:** _How you used Groq_  
-- [ ] **Monad:** _Your blockchain implementation_  
+- [✅] **Groq:** _Used for AI-powered story and comic generation_  
+- [✅] **Monad:** _Implemented for NFT minting on the blockchain_  
 - [ ] **Fluvio:** _Real-time data handling_  
 - [ ] **Base:** _AgentKit / OnchainKit / Smart Wallet usage_  
 - [ ] **Screenpipe:** _Screen-based analytics or workflows_  
@@ -63,10 +62,10 @@ Briefly describe the real-world use case and the value it provides.
 
 Highlight the most important features of your project:
 
-- ✅ Feature 1  
-- ✅ Feature 2  
-- ✅ Feature 3  
-- ✅ Feature 4  
+- ✅ AI-Generated Stories and Comics  
+- ✅ NFT Minting on Monad Blockchain  
+- ✅ Customizable Story Parameters (Genre, Characters, Plot, etc.)  
+- ✅ Wallet Connection for Publishing and Minting  
 
 Add images, GIFs, or screenshots if helpful!
 
@@ -92,8 +91,8 @@ Add images, GIFs, or screenshots if helpful!
 ## 🧪 How to Run the Project
 
 ### Requirements:
-- Node.js / Python / Docker / etc.
-- API Keys (if any)
+- Node.js
+- API Keys (Groq API for AI generation, optional)
 - .env file setup (if needed)
 
 ### Local Setup:
@@ -117,16 +116,16 @@ Provide any backend/frontend split or environment setup notes here.
 
 List improvements, extensions, or follow-up features:
 
-- 📈 More integrations  
-- 🛡️ Security enhancements  
-- 🌐 Localization / broader accessibility  
+- 📈 More AI model integrations  
+- 🛡️ Enhanced security for NFT ownership  
+- 🌐 Multilingual story generation and broader accessibility  
 
 ---
 
 ## 📎 Resources / Credits
 
-- APIs or datasets used  
-- Open source libraries or tools referenced  
+- APIs or datasets used: Groq API, Unsplash API  
+- Open source libraries or tools referenced: React, Next.js, Monad SDK  
 - Acknowledgements  
 
 ---
