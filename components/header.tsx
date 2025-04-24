@@ -157,24 +157,6 @@ export function Header() {
 
         <div className="flex items-center space-x-3">
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, duration: 0.3 }}
-          >
-            <Button 
-              variant="default" 
-              size="sm" 
-              className="theme-gradient-bg text-white border-0 hover:opacity-90 transition-all duration-300 shadow-md hover:shadow-lg"
-              onClick={handleCreateClick}
-            >
-              <PenSquare className="mr-2 h-4 w-4" />
-              Create Story
-            </Button>
-          </motion.div>
-          
-          <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.2 }}

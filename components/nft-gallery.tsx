@@ -12,6 +12,7 @@ interface Story {
   author: string;
   genre: string;
   imageUrl: string;
+  price: number;
 }
 
 export function NFTGallery() {
@@ -57,8 +58,9 @@ export function NFTGallery() {
             />
             <p className="line-clamp-3">{story.content}</p>
           </CardContent>
-          <CardFooter className="flex justify-between">
+          <CardFooter className="flex justify-between items-center">
             <span className="text-sm text-muted-foreground">By {story.author}</span>
+            <span className="text-sm font-medium">Price: {story.price} ETH</span>
             <Button variant="outline" size="sm">View Details</Button>
           </CardFooter>
         </Card>

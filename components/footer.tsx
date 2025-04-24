@@ -29,7 +29,7 @@ export function Footer() {
             </p>
             <p className="text-sm text-muted-foreground flex items-center">
               <span>In partnership with</span>
-              <Link href="https://indiehub.xyz" className="ml-1 font-medium gradient-heading flex items-center">
+              <Link href="https://indie-hub-landing-page-git-main-dragos-projects-f5e4e2da.vercel.app" className="ml-1 font-medium gradient-heading flex items-center">
                 Indie Hub <ExternalLink className="h-3 w-3 ml-1" />
               </Link>
             </p>

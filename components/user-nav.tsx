@@ -13,15 +13,46 @@ import { Wallet, User, Settings, LogOut } from "lucide-react";
 import Link from "next/link";
 import { useWeb3 } from "@/components/providers/web3-provider";
 import { LoadingAnimation } from "@/components/loading-animation";
+import { useToast } from "@/components/ui/use-toast";
 
 export function UserNav() {
   const { account, connectWallet, disconnectWallet, isConnecting } = useWeb3();
+  const { toast } = useToast();
 
   // Truncate wallet address for display
   const truncateAddress = (address: string) => {
     if (!address) return "";
     return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
   };
+
+  const handleConnectWallet = async () => {
+    console.log('Connect Wallet button clicked');
+    toast({
+      title: "Initiating Connection",
+      description: "Attempting to connect to your wallet...",
+      variant: "default",
+    });
+    try {
+      // Add a small delay to ensure UI updates are rendered before opening MetaMask popup
+      await new Promise(resolve => setTimeout(resolve, 100));
+      await connectWallet();
+      toast({
+        title: "Connection Successful",
+        description: "MetaMask wallet connected successfully.",
+        variant: "default",
+      });
+    } catch (error) {
+      console.error('Wallet connection failed:', error);
+      toast({
+        title: "Connection Failed",
+        description: "Could not connect to wallet. Please ensure MetaMask or another wallet extension is installed.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Access control based on wallet ID will be implemented in a separate component or hook
+  // to manage user history, generation limit, and minting features for specific wallet IDs.
 
   if (isConnecting) {
     return (
@@ -33,7 +64,7 @@ export function UserNav() {
 
   if (!account) {
     return (
-      <Button variant="outline" size="sm" onClick={connectWallet} className="hover:theme-gradient-bg hover:text-white hover:border-transparent transition-all duration-300">
+      <Button variant="outline" size="sm" onClick={handleConnectWallet} className="hover:theme-gradient-bg hover:text-white hover:border-transparent transition-all duration-300">
         <Wallet className="mr-2 h-4 w-4" />
         Connect Wallet
       </Button>
