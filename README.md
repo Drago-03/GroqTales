@@ -1,4 +1,4 @@
-![github-submission-banner](https://github.com/user-attachments/assets/a1493b84-e4e2-456e-a791-ce35ee2bcf2f)
+![github-submission-banner] (https://github.com/Drago-03/GroqTales/blob/5eba90e9deba5335bca2f43960391ceffd9916c7/public/GroqTales.png)
 
 # 🚀 GroqTales
 
