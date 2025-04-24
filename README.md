@@ -31,9 +31,9 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 
 ### Team Members:
   
-- Mantej Singh Arora [GitHub](https://github.com/mantej-arora) [LinkedIn](https://www.linkedin.com/in/mantej-singh-arora-b707101b0/)  
-- Fatima Kacchi [GitHub](https://github.com/fatima-kacchi) [LinkedIn](https://www.linkedin.com/in/fatima-kacchi/)  
-- Avya Giri [GitHub](https://github.com/avya-giri) [LinkedIn](https://www.linkedin.com/in/avya-giri/)  
+- Mantej Singh Arora [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/mantej-arora) [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mantej-singh-arora-b707101b0/)  
+- Fatima Kacchi [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/fatima-kacchi) [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/fatima-kacchi/)  
+- Avya Giri [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/avya-giri) [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/avya-giri/)  
 
 ### Your Approach:
 
@@ -55,7 +55,7 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 
 ### Sponsor Technologies Used (if any):
 
-- [✅] **Groq:** _Used for AI-powered story and comic generation_  
+- [ ✅ ] **Groq:** _Used for AI-powered story and comic generation_  
 - [✅] **Monad:** _Implemented for NFT minting on the blockchain_  
 - [ ] **Fluvio:** _Real-time data handling_  
 - [ ] **Base:** _AgentKit / OnchainKit / Smart Wallet usage_  
@@ -86,8 +86,8 @@ Add images, GIFs, or screenshots if helpful!
 
 ## ✅ Tasks & Bonus Checklist
 
-- [✅] **All members of the team completed the mandatory task - Followed at least 2 of our social channels and filled the form** (Details in Participant Manual)  
-- [✅] **All members of the team completed Bonus Task 1 - Sharing of Badges and filled the form (2 points)**  (Details in Participant Manual)
+- [ ✅ ] **All members of the team completed the mandatory task - Followed at least 2 of our social channels and filled the form** (Details in Participant Manual)  
+- [ ✅ ] **All members of the team completed Bonus Task 1 - Sharing of Badges and filled the form (2 points)**  (Details in Participant Manual)
 - [✅] **All members of the team completed Bonus Task 2 - Signing up for Sprint.dev and filled the form (3 points)**  (Details in Participant Manual)
 
 ---
@@ -164,6 +164,6 @@ List improvements, extensions, or follow-up features:
 
 ## 🏁 Final Words
 
-Our journey building GroqTales during this hackathon has been exhilarating. We faced challenges in integrating AI with blockchain technology, but the learning curve was incredibly rewarding as we mastered new tools and frameworks. The breakthrough of real-time story streaming and the pivot to include comic-style narratives were fun and pivotal moments for our team. We're proud to present a platform that empowers creators to not only craft unique stories but also own them as digital assets. A huge shout-out to our team for the sleepless nights and endless creativity, and to the mentors and peers who provided invaluable feedback. GroqTales is just the beginning of our vision to redefine digital storytelling!
+Our journey building GroqTales during this hackathon has been exhilarating. We faced challenges in integrating AI with blockchain technology, but the learning curve was incredibly rewarding as we mastered new tools and frameworks. The breakthrough of real-time story streaming and the pivot to include comic-style narratives were fun and pivotal moments for our team. We're proud to present a platform that empowers creators to not only craft unique stories but also own them as digital assets. A huge shout-out to our team for the sleepless nights and endless creativity, and to the mentors and peers who provided invaluable feedback. GroqTales is just the beginning of our vision to redefine digital storytelling! Created by [Indie Hub](https://indie-hub-landing-page-git-main-dragos-projects-f5e4e2da.vercel.app)
 
 ---
