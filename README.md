@@ -29,12 +29,14 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 ### Team Name:  
 `Indie Hub`
 
-### Team Members:  
+### Team Members:
+  
 - Mantej Singh Arora [GitHub](https://github.com/mantej-arora) [LinkedIn](https://www.linkedin.com/in/mantej-singh-arora-b707101b0/)  
 - Fatima Kacchi [GitHub](https://github.com/fatima-kacchi) [LinkedIn](https://www.linkedin.com/in/fatima-kacchi/)  
 - Avya Giri [GitHub](https://github.com/avya-giri) [LinkedIn](https://www.linkedin.com/in/avya-giri/)  
 
-### Your Approach:  
+### Your Approach:
+
 - **Why you chose this problem**: We chose this problem to merge the power of AI with blockchain technology, creating a unique platform for storytellers to not only generate creative content but also own and monetize it as NFTs. The intersection of AI and blockchain offers a novel solution to digital content ownership and creativity.
 - **Key challenges you addressed**: Integrating Groq AI for high-quality story generation, ensuring seamless NFT minting on the Monad blockchain, and designing an intuitive user interface for story customization and wallet connection were major challenges. We also focused on handling API rate limits and ensuring secure wallet interactions.
 - **Any pivots, brainstorms, or breakthroughs during hacking**: Initially, we focused solely on text stories, but during brainstorming, we pivoted to include comic-style stories with panel-by-panel breakdowns. A breakthrough came with implementing streaming responses from Groq API for real-time story generation feedback, enhancing user experience.
@@ -44,6 +46,7 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 ## 🛠️ Tech Stack
 
 ### Core Technologies Used:
+
 - Frontend: React, Next.js
 - Backend: Node.js
 - Database: MongoDB
@@ -51,18 +54,16 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 - Hosting: Vercel
 
 ### Sponsor Technologies Used (if any):
+
 - [✅] **Groq:** _Used for AI-powered story and comic generation_  
 - [✅] **Monad:** _Implemented for NFT minting on the blockchain_  
 - [ ] **Fluvio:** _Real-time data handling_  
 - [ ] **Base:** _AgentKit / OnchainKit / Smart Wallet usage_  
 - [ ] **Screenpipe:** _Screen-based analytics or workflows_  
 - [ ] **Stellar:** _Payments, identity, or token usage_
-*(Mark with [✅] if completed)*
 ---
 
 ## ✨ Key Features
-
-Highlight the most important features of your project:
 
 - **AI-Generated Stories and Comics**: Leverage Groq AI to create unique text stories and comic-style narratives with detailed prose or panel-by-panel breakdowns.
 - **NFT Minting on Monad Blockchain**: Mint your generated stories as NFTs on the Monad blockchain, ensuring ownership and potential monetization of digital content.
@@ -88,8 +89,6 @@ Add images, GIFs, or screenshots if helpful!
 - [✅] **All members of the team completed the mandatory task - Followed at least 2 of our social channels and filled the form** (Details in Participant Manual)  
 - [✅] **All members of the team completed Bonus Task 1 - Sharing of Badges and filled the form (2 points)**  (Details in Participant Manual)
 - [✅] **All members of the team completed Bonus Task 2 - Signing up for Sprint.dev and filled the form (3 points)**  (Details in Participant Manual)
-
-*(Mark with [✅] if completed)*
 
 ---
 
