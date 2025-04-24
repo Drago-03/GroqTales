@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
     }
     
     // Get the full details of recommended stories from database
-    const recommendedStories = [];
+    const recommendedStories: any[] = [];
     for (const id of recommendedIds.slice(0, limit)) {
       try {
         const story = dbStories.find(s => s._id.toString() === id);

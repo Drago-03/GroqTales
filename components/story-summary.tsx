@@ -136,11 +136,11 @@ export function StorySummary({
       },
       "mixed": { 
         color: "bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20", 
-        icon: null 
+        icon: <></>
       },
       "neutral": { 
         color: "bg-blue-500/10 text-blue-500 hover:bg-blue-500/20", 
-        icon: null 
+        icon: <></>
       }
     };
 

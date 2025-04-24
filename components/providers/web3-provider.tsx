@@ -55,6 +55,7 @@ const checkWalletInstallation = () => {
 };
 
 // Extend the window interface
+/*
 declare global {
   interface Window {
     ethereum?: {
@@ -65,6 +66,7 @@ declare global {
     };
   }
 }
+*/
 
 export function Web3Provider({ children }: { children: ReactNode }) {
   const [account, setAccount] = useState<string | null>(null);
