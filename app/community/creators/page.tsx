@@ -388,7 +388,7 @@ export default function CreatorsPage() {
           
           <div className="flex justify-between mt-6">
             <Button variant="outline" size="sm" asChild>
-              <Link href={`/profile/${creator.id}`}>
+              <Link href={`/community/creators/${creator.id}`}>
                 View Profile
                 <ChevronRight className="ml-1 h-4 w-4" />
               </Link>

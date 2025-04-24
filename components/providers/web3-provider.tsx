@@ -215,13 +215,36 @@ export function Web3Provider({ children }: { children: ReactNode }) {
   const connectWallet = async () => {
     if (!window.ethereum) {
       console.error('No ethereum wallet found');
+      toast({
+        title: "Wallet Not Found",
+        description: "No Ethereum wallet detected. Please install MetaMask or another compatible wallet extension.",
+        variant: "destructive",
+      });
       return;
     }
 
+    console.log('Attempting to connect wallet...');
     setIsConnecting(true);
     try {
+      if (window.ethereum.isMetaMask) {
+        console.log('MetaMask detected');
+        toast({
+          title: "MetaMask Detected",
+          description: "MetaMask extension found. Attempting to connect...",
+          variant: "default",
+        });
+      } else {
+        console.log('Non-MetaMask wallet detected');
+        toast({
+          title: "Wallet Detected",
+          description: "A non-MetaMask Ethereum wallet was found. Attempting to connect...",
+          variant: "default",
+        });
+      }
       const provider = new BrowserProvider(window.ethereum);
+      console.log('Requesting accounts from wallet...');
       const accounts = await provider.send('eth_requestAccounts', []);
+      console.log('Accounts received:', accounts);
       setAccount(accounts[0]);
       localStorage.setItem('walletConnected', 'true');
       
@@ -229,12 +252,32 @@ export function Web3Provider({ children }: { children: ReactNode }) {
       const network = await provider.getNetwork();
       setChainId(Number(network.chainId));
       
+      toast({
+        title: "Wallet Connected",
+        description: "Successfully connected to your wallet.",
+        variant: "default",
+      });
+      
       return accounts[0];
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to connect wallet:', error);
+      let errorMessage = 'Unknown error';
+      if (error.code === 4001) {
+        errorMessage = 'User rejected the connection request.';
+      } else if (error.code === -32002) {
+        errorMessage = 'Request already pending. Please check MetaMask.';
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      toast({
+        title: "Connection Error",
+        description: `Failed to connect: ${errorMessage}. Please try again or check your wallet settings.`,
+        variant: "destructive",
+      });
       throw error;
     } finally {
       setIsConnecting(false);
+      console.log('Connection attempt completed');
     }
   };
 
