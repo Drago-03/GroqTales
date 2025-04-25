@@ -1,7 +1,7 @@
-![github-submission-banner](https://github.com/user-attachments/assets/a1493b84-e4e2-456e-a791-ce35ee2bcf2f)
-<div align="center">
-  <img src="public/GroqTales.png" alt="GroqTales" />
-</div>
+- ![github-submission-banner](https://github.com/user-attachments/assets/a1493b84-e4e2-456e-a791-ce35ee2bcf2f)
+  <div align="center">
+    <img src="public/GroqTales.png" alt="GroqTales" />
+  </div>
 
 # 🚀 GroqTales
 
@@ -27,16 +27,14 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 ## 🧠 Team & Approach
 
 ### Team Name:  
-`Indie Hub`
+**Indie Hub**
 
-### Team Members:
-  
+### Team Members:  
 - Mantej Singh Arora [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/mantej-arora) [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mantej-singh-arora-b707101b0/)  
 - Fatima Kacchi [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/fatima-kacchi) [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/fatima-kacchi/)  
 - Avya Giri [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/avya-giri) [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/avya-giri/)  
 
-### Your Approach:
-
+### Your Approach:  
 - **Why you chose this problem**: We chose this problem to merge the power of AI with blockchain technology, creating a unique platform for storytellers to not only generate creative content but also own and monetize it as NFTs. The intersection of AI and blockchain offers a novel solution to digital content ownership and creativity.
 - **Key challenges you addressed**: Integrating Groq AI for high-quality story generation, ensuring seamless NFT minting on the Monad blockchain, and designing an intuitive user interface for story customization and wallet connection were major challenges. We also focused on handling API rate limits and ensuring secure wallet interactions.
 - **Any pivots, brainstorms, or breakthroughs during hacking**: Initially, we focused solely on text stories, but during brainstorming, we pivoted to include comic-style stories with panel-by-panel breakdowns. A breakthrough came with implementing streaming responses from Groq API for real-time story generation feedback, enhancing user experience.
@@ -46,21 +44,22 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 ## 🛠️ Tech Stack
 
 ### Core Technologies Used:
-
-- Frontend: React, Next.js
-- Backend: Node.js
-- Database: MongoDB
-- APIs: Groq API for AI generation, Unsplash API for images
-- Hosting: Vercel
+- **Frontend**: React, Next.js
+- **Backend**: Node.js
+- **Database**: MongoDB
+- **APIs**: Groq API for AI generation, Unsplash API for images
+- **Hosting**: Vercel
 
 ### Sponsor Technologies Used (if any):
+- [✅] **Groq**: *Used for AI-powered story and comic generation*  
+- [✅] **Monad**: *Implemented for NFT minting on the blockchain*  
+- [ ] **Fluvio**: *Real-time data handling*  
+- [ ] **Base**: *AgentKit / OnchainKit / Smart Wallet usage*  
+- [ ] **Screenpipe**: *Screen-based analytics or workflows*  
+- [ ] **Stellar**: *Payments, identity, or token usage*
 
-- [✅] **Groq:** _Used for AI-powered story and comic generation_  
-- [✅] **Monad:** _Implemented for NFT minting on the blockchain_  
-- [ ] **Fluvio:** _Real-time data handling_  
-- [ ] **Base:** _AgentKit / OnchainKit / Smart Wallet usage_  
-- [ ] **Screenpipe:** _Screen-based analytics or workflows_  
-- [ ] **Stellar:** _Payments, identity, or token usage_
+*Mark with [✅] if completed*
+
 ---
 
 ## ✨ Key Features
@@ -73,44 +72,44 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 - **Real-Time Story Streaming**: Experience real-time feedback during story generation with streaming responses from the Groq API.
 - **Story Preview and Editing**: Preview generated content, copy, download, or edit stories before finalizing or minting.
 
-Add images, GIFs, or screenshots if helpful!
-
 **Screenshots of GroqTales Features:**
-- **Dashboard Overview 1**: A glimpse of the main dashboard interface.
+- **Dashboard Overview 1**: A glimpse of the main dashboard interface.  
   ![Dashboard](public/Dashboard.png)
-- **Dashboard Overview 2**: Another view of the dashboard with different features highlighted.
+- **Dashboard Overview 2**: Another view of the dashboard with different features highlighted.  
   ![Dashboard2](public/Dashboard2.png)
-- **Dashboard Overview 3**: Additional dashboard perspective showcasing user interactions.
+- **Dashboard Overview 3**: Additional dashboard perspective showcasing user interactions.  
   ![Dashboard3](public/Dashboard3.png)
-- **Description Input**: Interface for entering story descriptions.
+- **Description Input**: Interface for entering story descriptions.  
   ![Description](public/Description.png)
-- **Story Generator Tool**: The main tool for generating AI stories.
+- **Story Generator Tool**: The main tool for generating AI stories.  
   ![Story Generator Tool](public/Story%20Generator%20tool.png)
-- **Story and Genre Type Selection**: Options for selecting story types and genres.
+- **Story and Genre Type Selection**: Options for selecting story types and genres.  
   ![Story and Genre Type](public/Story%20and%20genre%20type.png)
-- **Generation Window and Advanced Options**: Interface showing story generation and advanced settings.
+- **Generation Window and Advanced Options**: Interface showing story generation and advanced settings.  
   ![Generation Window](public/Generation%20window%20and%20advanced%20options.png)
-- **Define Outline for Story**: Tool to define the outline and structure of your story.
+- **Define Outline for Story**: Tool to define the outline and structure of your story.  
   ![Define Outline](public/Define%20Outline%20for%20story.png)
-- **Genres Selection**: Interface for choosing genres for story customization.
+- **Genres Selection**: Interface for choosing genres for story customization.  
   ![Genres](public/Genres.png)
-- **Community Page**: A view of the community interaction page.
+- **Community Page**: A view of the community interaction page.  
   ![Community Page](public/Community%20Page.png)
 
 ---
 
 ## 📽️ Demo & Deliverables
 
-- **Demo Video Link:** [Paste YouTube or Loom link here]  
-- **Pitch Deck / PPT Link:** [Paste Google Slides / PDF link here]  
+- **Demo Video Link**: [Paste YouTube or Loom link here]  
+- **Pitch Deck / PPT Link**: [Paste Google Slides / PDF link here]  
 
 ---
 
 ## ✅ Tasks & Bonus Checklist
 
 - [✅] **All members of the team completed the mandatory task - Followed at least 2 of our social channels and filled the form** (Details in Participant Manual)  
-- [✅] **All members of the team completed Bonus Task 1 - Sharing of Badges and filled the form (2 points)**  (Details in Participant Manual)
-- [✅] **All members of the team completed Bonus Task 2 - Signing up for Sprint.dev and filled the form (3 points)**  (Details in Participant Manual)
+- [✅] **All members of the team completed Bonus Task 1 - Sharing of Badges and filled the form (2 points)** (Details in Participant Manual)  
+- [✅] **All members of the team completed Bonus Task 2 - Signing up for Sprint.dev and filled the form (3 points)** (Details in Participant Manual)  
+
+*Mark with [✅] if completed*
 
 ---
 

@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
-import { Loader2, Sparkles, BookText, CopyCheck, Wallet, Key, Zap, Stars, Send, RefreshCw, Wand2, Type, Download, Copy, BookOpen, Rocket } from "lucide-react";
+import { Loader2, Sparkles, BookText, CopyCheck, Wallet, Key, Zap, Stars, Send, RefreshCw, Wand2, Type, Download, Copy, BookOpen, Rocket, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import {
   Accordion,
@@ -176,6 +176,9 @@ export function AIStoryGenerator({
   const [isMinting, setIsMinting] = useState(false);
   const [mintedNftUrl, setMintedNftUrl] = useState("");
   const [storyFormat, setStoryFormat] = useState(initialFormat);
+  const [currentPanelIndex, setCurrentPanelIndex] = useState(0);
+  const [panelImage, setPanelImage] = useState<string>('');
+  const [isLoadingImage, setIsLoadingImage] = useState<boolean>(true);
 
   // Story outline fields
   const [mainCharacters, setMainCharacters] = useState("");
@@ -284,6 +287,29 @@ export function AIStoryGenerator({
     }
   }, [monadError, toast]);
 
+  // Effect to load image for the current comic panel
+  useEffect(() => {
+    if (storyType === 'comic' && generatedContent) {
+      let panels;
+      try {
+        const parsedData = JSON.parse(generatedContent);
+        panels = parsedData.panels || parseComicPanelsFromText(generatedContent);
+      } catch (e) {
+        panels = parseComicPanelsFromText(generatedContent);
+      }
+      if (panels.length > 0 && currentPanelIndex < panels.length) {
+        const currentPanel = panels[currentPanelIndex];
+        const loadImage = async () => {
+          setIsLoadingImage(true);
+          const imageUrl = await generateImageWithImagen(currentPanel.caption);
+          setPanelImage(imageUrl);
+          setIsLoadingImage(false);
+        };
+        loadImage();
+      }
+    }
+  }, [currentPanelIndex, generatedContent, storyType]);
+
   // Constructs a well-engineered prompt based on user inputs
   const constructPrompt = () => {
     // Base prompt template with clear instructions for the AI
@@ -292,7 +318,7 @@ export function AIStoryGenerator({
 
 ## Story Parameters
 - Title: ${title || "[Generate an appropriate title]"}
-- Story Type: ${storyType === "comic" ? "Comic Style Story (formatted with panel-by-panel breakdowns and dialogue for a graphic novel style)" : "Text Story (traditional narrative text format with detailed prose)"}
+- Story Type: ${storyType === "comic" ? "Comic Style Story (formatted with panel-by-panel breakdowns and dialogue for a graphic novel style, strictly in comic format with dialogues as captions)" : "Text Story (traditional narrative text format with detailed prose)"}
 - Genres: ${selectedGenres.map(g => g.replace(/-/g, ' ')).join(", ") || "[Select appropriate genres if not specified]"}
 - Overview: ${overview || "[No overview provided, use creativity based on other inputs]"}
 - Creativity Level: ${temperature < 0.4 ? "Low (more predictable and structured)" : temperature > 0.7 ? "High (more creative and experimental)" : "Balanced (mix of structure and creativity)"}
@@ -371,7 +397,7 @@ ${prompt}
 - Begin with a captivating title if one wasn't provided
 `;
     if (storyType === "comic") {
-      engineeredPrompt += `- Structure the story in a comic book format with panel-by-panel descriptions and dialogue. Clearly label each panel (e.g., Panel 1, Panel 2) and describe the visual content and character dialogue or captions for each panel to create a graphic novel style.
+      engineeredPrompt += `- Structure the story in a comic book format with panel-by-panel descriptions and dialogue. Clearly label each panel (e.g., Panel 1, Panel 2) and describe the visual content and character dialogue or captions for each panel to create a graphic novel style. Ensure that captions are strictly dialogues.
 `;
     } else {
       engineeredPrompt += `- Structure the story with clear sections and paragraphs for readability. Focus on detailed prose and narrative depth to create an immersive reading experience.
@@ -424,7 +450,28 @@ Please generate this story with attention to quality, creativity, and narrative 
       const comicStoryText = await generate(constructPrompt(), selectedModel, { temperature: 0.7 });
       
       // Then parse the output to create a comic data structure
-      const panels = parseComicPanelsFromText(comicStoryText);
+      let panels = parseComicPanelsFromText(comicStoryText);
+      
+      // Ensure minimum 7 panels and maximum 20 panels
+      if (panels.length < 7) {
+        // If less than 7 panels, create additional placeholder panels
+        const additionalPanelsNeeded = 7 - panels.length;
+        for (let i = 0; i < additionalPanelsNeeded; i++) {
+          panels.push({
+            number: panels.length + 1,
+            caption: `Panel ${panels.length + 1} - Additional scene to be described...`,
+            dialogue: []
+          });
+        }
+      } else if (panels.length > 20) {
+        // If more than 20 panels, trim to 20
+        panels = panels.slice(0, 20);
+        // Renumber the panels to ensure consecutive numbering
+        panels = panels.map((panel, index) => ({
+          ...panel,
+          number: index + 1
+        }));
+      }
       
       // Format the result as JSON
       const comicData = {
@@ -836,7 +883,42 @@ Please generate this story with attention to quality, creativity, and narrative 
 
   // Replace the generateImageWithImagen function call with fetchUnsplashImage
   const generateImageWithImagen = async (prompt: string) => {
-    return await fetchUnsplashImage(prompt);
+    try {
+      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_IMAGEN_API_KEY;
+      if (!apiKey || apiKey === 'your_google_imagen_api_key_here') {
+        throw new Error('Google Imagen API key is not defined in environment variables');
+      }
+
+      console.log('Generating image for prompt:', prompt);
+      const comicStylePrompt = `Comic book style illustration depicting: ${prompt}. The scene should be vibrant, with bold lines and dynamic compositions typical of graphic novels. Focus on detailed character expressions and backgrounds that enhance the narrative.`;
+      const response = await fetch('https://api.google.com/imagen/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          prompt: comicStylePrompt,
+          model: 'imagen-3.0',
+          size: '512x512',
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to generate image with Google Imagen: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      if (data && data.imageUrl) {
+        return data.imageUrl;
+      } else {
+        throw new Error('No image URL returned from Google Imagen API');
+      }
+    } catch (error) {
+      console.error('Error generating image with Google Imagen:', error);
+      // Fallback to Unsplash image fetch
+      return await fetchUnsplashImage(prompt);
+    }
   };
 
   // Function to render the generated content
@@ -844,73 +926,136 @@ Please generate this story with attention to quality, creativity, and narrative 
     if (!generatedContent) return null;
 
     if (storyType === 'comic') {
-      const panels = parseComicPanelsFromText(generatedContent).map(panel => typeof panel === 'string' ? panel : JSON.stringify(panel));
+      let panels;
+      try {
+        const parsedData = JSON.parse(generatedContent);
+        panels = parsedData.panels || parseComicPanelsFromText(generatedContent);
+      } catch (e) {
+        panels = parseComicPanelsFromText(generatedContent);
+      }
+
+      const handleNextPanel = () => {
+        setCurrentPanelIndex((prevIndex) => Math.min(prevIndex + 1, panels.length - 1));
+      };
+
+      const handlePrevPanel = () => {
+        setCurrentPanelIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+      };
+
+      if (panels.length === 0) {
+        return <div className="text-center py-4">No comic panels generated.</div>;
+      }
+
+      const currentPanel = panels[currentPanelIndex];
+      // Ensure the image prompt is strictly comic style with detailed description
+      const comicStylePrompt = `Comic book style illustration depicting: ${currentPanel.caption}. The scene should be vibrant, with bold lines and dynamic compositions typical of graphic novels. Focus on detailed character expressions and backgrounds that enhance the narrative.`;
+
       return (
         <div className="comic-container mt-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 p-4 rounded-lg shadow-md">
-          <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">Comic Panels</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {panels.map((panel, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="comic-panel bg-white dark:bg-gray-700 p-3 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-              >
-                <div className="flex justify-between items-center mb-2">
-                  <h4 className="text-lg font-semibold text-gray-800 dark:text-white">Panel {index + 1}</h4>
-                  <div className="flex space-x-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => {
-                        navigator.clipboard.writeText(panel);
-                        toast({
-                          title: "Copied",
-                          description: "Panel text copied to clipboard",
-                        });
-                      }}
-                      className="hover:bg-gray-200 dark:hover:bg-gray-600"
-                    >
-                      <Copy className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => {
-                        const updatedPanel = window.prompt('Edit the panel description:', panel);
-                        if (updatedPanel && updatedPanel !== panel) {
-                          const updatedPanels = [...panels];
-                          updatedPanels[index] = updatedPanel;
-                          setGeneratedContent(updatedPanels.join('\n\n'));
-                          toast({
-                            title: "Updated",
-                            description: "Panel updated successfully",
-                          });
-                        }
-                      }}
-                      className="hover:bg-gray-200 dark:hover:bg-gray-600"
-                    >
-                      <Wand2 className="h-4 w-4" />
-                    </Button>
-                  </div>
+          <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">Comic Panels Presentation</h3>
+          <div className="comic-slide bg-white dark:bg-gray-700 p-3 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+            <div className="flex justify-between items-center mb-2">
+              <h4 className="text-lg font-semibold text-gray-800 dark:text-white">Panel {currentPanel.number}</h4>
+              <div className="flex space-x-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    navigator.clipboard.writeText(currentPanel.caption + '\n' + currentPanel.dialogue.map((d: {character: string; text: string}) => `${d.character}: ${d.text}`).join('\n'));
+                    toast({
+                      title: "Copied",
+                      description: "Panel text copied to clipboard",
+                    });
+                  }}
+                  className="hover:bg-gray-200 dark:hover:bg-gray-600"
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    const updatedPanel = window.prompt('Edit the panel description:', currentPanel.caption);
+                    if (updatedPanel && updatedPanel !== currentPanel.caption) {
+                      const updatedPanels = [...panels];
+                      updatedPanels[currentPanelIndex].caption = updatedPanel;
+                      setGeneratedContent(JSON.stringify({ title: title || extractTitleFromStory(generatedContent), panels: updatedPanels }));
+                      toast({
+                        title: "Updated",
+                        description: "Panel updated successfully",
+                      });
+                    }
+                  }}
+                  className="hover:bg-gray-200 dark:hover:bg-gray-600"
+                >
+                  <Wand2 className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+            <div className="panel-image-container mb-2" style={{ height: '300px', overflow: 'hidden' }}>
+              {isLoadingImage ? (
+                <div className="flex justify-center items-center h-full">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  <span className="ml-2">Loading image...</span>
                 </div>
-                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">{panel}</p>
-              </motion.div>
-            ))}
+              ) : (
+                <img src={panelImage} alt={`Panel ${currentPanel.number}`} className="w-full h-full object-cover rounded-lg" />
+              )}
+            </div>
+            <div className="dialogue-container space-y-2 mt-2">
+              {currentPanel.dialogue.map((dialogue: {character: string; text: string}, index: number) => (
+                <div key={index} className="dialogue bg-gray-100 dark:bg-gray-600 p-2 rounded-lg">
+                  <span className="font-bold text-gray-800 dark:text-white">{dialogue.character}: </span>
+                  <span className="text-gray-700 dark:text-gray-300">{dialogue.text}</span>
+                </div>
+              ))}
+              <div className="dialogue bg-gray-100 dark:bg-gray-600 p-2 rounded-lg">
+                <span className="font-bold text-gray-800 dark:text-white">Caption: </span>
+                <span className="text-gray-700 dark:text-gray-300">{currentPanel.caption}</span>
+              </div>
+            </div>
+          </div>
+          <div className="navigation-buttons flex justify-between mt-4">
+            <Button
+              variant="outline"
+              onClick={handlePrevPanel}
+              disabled={currentPanelIndex === 0}
+              className="hover:bg-gray-200 dark:hover:bg-gray-600"
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              onClick={handleNextPanel}
+              disabled={currentPanelIndex === panels.length - 1}
+              className="hover:bg-gray-200 dark:hover:bg-gray-600"
+            >
+              Next
+            </Button>
+          </div>
+          <div className="panel-indicator text-center mt-2 text-gray-600 dark:text-gray-400 text-sm">
+            Panel {currentPanelIndex + 1} of {panels.length}
           </div>
         </div>
       );
     }
 
     const extractedTitle = extractTitleFromStory(generatedContent);
+    // Remove the title from the content to prevent repetition
+    let displayContent = generatedContent;
+    if (extractedTitle && generatedContent.startsWith(extractedTitle)) {
+      displayContent = generatedContent.substring(extractedTitle.length).trim();
+    } else if (extractedTitle && generatedContent.startsWith(`# ${extractedTitle}`)) {
+      displayContent = generatedContent.substring(extractedTitle.length + 2).trim();
+    }
+
     return (
       <div className="mt-6 p-6 bg-card rounded-lg shadow-md border max-h-[60vh] overflow-y-auto">
         <h2 className="text-3xl font-bold mb-4 text-card-foreground">{title || extractedTitle || 'Untitled AI Story'}</h2>
         <p className="text-sm text-muted-foreground mb-4">Genre: {selectedGenres.join(', ') || 'Not specified'}</p>
         <div className="mb-4"></div>
-        <div className="whitespace-pre-line text-card-foreground">
-          {generatedContent}
+        <div className="prose dark:prose-invert max-w-none text-card-foreground">
+          {displayContent}
         </div>
         <div className="mt-4 flex justify-between items-center">
           <div className="flex gap-2">
@@ -1732,26 +1877,26 @@ Please generate this story with attention to quality, creativity, and narrative 
             <strong>Community:</strong> <a href="https://indie-hub-landing-page-git-main-dragos-projects-f5e4e2da.vercel.app" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Indie Hub</a>
           </p>
         </div>
-          <Button 
-            className="theme-gradient-bg mt-4 w-full"
-            onClick={() => {
-              // Set a navigation flag in localStorage
-              try {
-                const navData = { from: 'generator', timestamp: Date.now() };
-                localStorage.setItem('navigationData', JSON.stringify(navData));
-              } catch (e) {
-                console.error('Error storing navigation data:', e);
-              }
-              
-              // Use setTimeout to ensure reliable navigation
-              setTimeout(() => {
-                window.location.href = '/create/ai-story';
-              }, 100);
-            }}
-          >
-            <BookText className="mr-2 h-4 w-4" />
-            Create Full Story
-          </Button>
+        <Button 
+          className="theme-gradient-bg mt-4 w-full"
+          onClick={() => {
+            // Set a navigation flag in localStorage
+            try {
+              const navData = { from: 'generator', timestamp: Date.now() };
+              localStorage.setItem('navigationData', JSON.stringify(navData));
+            } catch (e) {
+              console.error('Error storing navigation data:', e);
+            }
+            
+            // Use setTimeout to ensure reliable navigation
+            setTimeout(() => {
+              window.location.href = '/create/ai-story';
+            }, 100);
+          }}
+        >
+          <BookText className="mr-2 h-4 w-4" />
+          Create Full Story
+        </Button>
       </CardFooter>
     </Card>
     </>
