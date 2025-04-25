@@ -11,10 +11,7 @@
 
 ## 📌 Problem Statement
 
-Select the problem statement number and title from the official list given in Participant Manual.
-
-**Example:**  
-**Problem Statement 7 – Transform the Future of Rural Commerce**
+**Problem Statement 1 – Weave AI Magic with Groq**
 
 ---
 
@@ -26,15 +23,18 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 
 ## 🧠 Team & Approach
 
-### Team Name:  
+### Team Name:
+
 **Indie Hub**
 
 ### Team Members:  
+
 - Mantej Singh Arora [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/mantej-arora) [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mantej-singh-arora-b707101b0/)  
 - Fatima Kacchi [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/fatima-kacchi) [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/fatima-kacchi/)  
 - Avya Giri [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/avya-giri) [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/avya-giri/)  
 
 ### Your Approach:  
+
 - **Why you chose this problem**: We chose this problem to merge the power of AI with blockchain technology, creating a unique platform for storytellers to not only generate creative content but also own and monetize it as NFTs. The intersection of AI and blockchain offers a novel solution to digital content ownership and creativity.
 - **Key challenges you addressed**: Integrating Groq AI for high-quality story generation, ensuring seamless NFT minting on the Monad blockchain, and designing an intuitive user interface for story customization and wallet connection were major challenges. We also focused on handling API rate limits and ensuring secure wallet interactions.
 - **Any pivots, brainstorms, or breakthroughs during hacking**: Initially, we focused solely on text stories, but during brainstorming, we pivoted to include comic-style stories with panel-by-panel breakdowns. A breakthrough came with implementing streaming responses from Groq API for real-time story generation feedback, enhancing user experience.
@@ -44,6 +44,7 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 ## 🛠️ Tech Stack
 
 ### Core Technologies Used:
+
 - **Frontend**: React, Next.js
 - **Backend**: Node.js
 - **Database**: MongoDB
@@ -51,14 +52,13 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 - **Hosting**: Vercel
 
 ### Sponsor Technologies Used (if any):
+
 - [✅] **Groq**: *Used for AI-powered story and comic generation*  
 - [✅] **Monad**: *Implemented for NFT minting on the blockchain*  
 - [ ] **Fluvio**: *Real-time data handling*  
 - [ ] **Base**: *AgentKit / OnchainKit / Smart Wallet usage*  
 - [ ] **Screenpipe**: *Screen-based analytics or workflows*  
 - [ ] **Stellar**: *Payments, identity, or token usage*
-
-*Mark with [✅] if completed*
 
 ---
 
@@ -109,19 +109,19 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 - [✅] **All members of the team completed Bonus Task 1 - Sharing of Badges and filled the form (2 points)** (Details in Participant Manual)  
 - [✅] **All members of the team completed Bonus Task 2 - Signing up for Sprint.dev and filled the form (3 points)** (Details in Participant Manual)  
 
-*Mark with [✅] if completed*
-
 ---
 
 ## 🧪 How to Run the Project
 
 ### Requirements:
+
 - **Node.js**: Version 16.x or higher for running the Next.js application.
 - **API Keys**: Groq API key for AI story generation (optional, but recommended for custom usage). Unsplash API key for image placeholders (optional).
 - **Wallet**: A crypto wallet (like MetaMask) installed and configured to connect to the Monad blockchain for NFT minting and story publishing.
 - **.env file setup**: Required for storing API keys and environment variables. Use the provided `.env.example` as a template.
 
 ### Local Setup:
+
 ```bash
 # Clone the repo
 git clone https://github.com/mantej-arora/GroqTales
@@ -153,8 +153,6 @@ npm run dev
 ---
 
 ## 🧬 Future Scope
-
-List improvements, extensions, or follow-up features:
 
 - **📈 More AI Model Integrations**: Incorporate additional AI models for diverse storytelling styles and capabilities, such as OpenAI's latest models or specialized creative writing AIs.
 - **🛡️ Enhanced Security for NFT Ownership**: Implement advanced encryption and multi-factor authentication for wallet interactions to ensure maximum security of digital assets.
