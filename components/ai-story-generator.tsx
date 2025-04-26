@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
-import { Loader2, Sparkles, BookText, CopyCheck, Wallet, Key, Zap, Stars, Send, RefreshCw, Wand2, Type, Download, Copy, BookOpen, Rocket, ChevronLeft, ChevronRight } from "lucide-react";
+import { Loader2, Sparkles, BookText, CopyCheck, Wallet, Key, Zap, Stars, Send, RefreshCw, Wand2, Type, Download, Copy, BookOpen, Rocket, ChevronLeft, ChevronRight, Layout } from "lucide-react";
 import Link from "next/link";
 import {
   Accordion,
@@ -170,7 +170,13 @@ export function AIStoryGenerator({
   const [selectedGenres, setSelectedGenres] = useState<string[]>([initialGenre]);
   const [storyType, setStoryType] = useState("text");
   const [overview, setOverview] = useState("");
-  const [generatedContent, setGeneratedContent] = useState<string | null>(null);
+  const [generatedContent, setGeneratedContent] = useState("");
+  const [generatedSummary, setGeneratedSummary] = useState("");
+  const [generatedAnalysis, setGeneratedAnalysis] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isSummarizing, setIsSummarizing] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isActionLoading, setIsActionLoading] = useState(false);
   const [selectedModel, setSelectedModel] = useState<string>(defaultModel || '');
   const [temperature, setTemperature] = useState(0.7);
   const [isMinting, setIsMinting] = useState(false);
@@ -193,7 +199,6 @@ export function AIStoryGenerator({
   const [showWelcomeAnimation, setShowWelcomeAnimation] = useState(showWelcome);
 
   // Add these state variables to your component
-  const [isActionLoading, setIsActionLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showOutput, setShowOutput] = useState(false);
   const [streaming, setStreaming] = useState<boolean>(false);
@@ -420,12 +425,12 @@ Please generate this story with attention to quality, creativity, and narrative 
     if (isGroqLoading || isActionLoading) return;
     setIsActionLoading(true);
     setError(null);
-    setGeneratedContent(null);
+    setGeneratedContent('');
 
     try {
       let result;
       if (storyType === 'comic') {
-        // Use Google Imagen API for comic style story
+        // Use Stability AI for comic style image generation along with Groq for narrative
         result = await generateComicStory();
       } else {
         const options: { temperature: number; apiKey?: string } = { temperature: temperature };
@@ -566,6 +571,7 @@ Please generate this story with attention to quality, creativity, and narrative 
   const handleGenerateAndMint = async () => {
     // Validate wallet connection for NFT minting
     if (storyFormat === 'nft' && !account) {
+      console.log('Wallet not connected for NFT minting');
       toast({
         title: "Wallet Required",
         description: "Please connect your wallet to mint stories as NFTs",
@@ -573,6 +579,9 @@ Please generate this story with attention to quality, creativity, and narrative 
       });
       return;
     }
+    // Log wallet and network status for debugging
+    console.log('Wallet connected:', !!account);
+    console.log('On Monad network:', isOnMonadNetwork);
 
     // At minimum, we need a genre or prompt
     if (!prompt && !plotOutline && !mainCharacters && !setting) {
@@ -602,10 +611,12 @@ Please generate this story with attention to quality, creativity, and narrative 
       // For NFT minting
       if (storyFormat === 'nft') {
         if (!account) {
+          console.log('Wallet connection required for NFT minting');
           throw new Error("Wallet connection required for NFT minting");
         }
         
         if (!isOnMonadNetwork) {
+          console.log('Not on Monad network');
           throw new Error("Please switch to the Monad network to mint NFTs");
         }
         
@@ -702,6 +713,7 @@ Please generate this story with attention to quality, creativity, and narrative 
     }
 
     if (!account) {
+      console.log('Wallet not connected for minting');
       toast({
         title: "Wallet Not Connected",
         description: "Please connect your wallet to " + (storyFormat === 'nft' ? "mint NFTs" : "publish stories"),
@@ -709,6 +721,8 @@ Please generate this story with attention to quality, creativity, and narrative 
       });
       return;
     }
+    // Log wallet status for debugging
+    console.log('Wallet connected for minting:', !!account);
 
     try {
       setIsMinting(true);
@@ -722,7 +736,7 @@ Please generate this story with attention to quality, creativity, and narrative 
         content: generatedContent,
         excerpt,
         author: "AI Generated",
-        authorAddress: account,
+        authorAddress: account, // Ensure the NFT is owned by the user's wallet address
         coverImage: `https://source.unsplash.com/random/800x600/?${selectedGenres.join(", ")}`,
         genre: selectedGenres.join(", "),
         createdAt: new Date().toISOString(),
@@ -744,6 +758,8 @@ Please generate this story with attention to quality, creativity, and narrative 
           return;
         }
         
+        // Note: Transaction fees for buying/selling NFTs should be handled in the backend/smart contract
+        // Ensure that the backend applies a fee during NFT transactions
         const result = await mintNFT(metadata);
         
         if (result) {
@@ -778,6 +794,43 @@ Please generate this story with attention to quality, creativity, and narrative 
     } finally {
       setIsMinting(false);
     }
+  };
+
+  // Function to generate story layouts as recommendations
+  const generateStoryLayout = async () => {
+    try {
+      const layoutPrompt = constructLayoutPrompt();
+      const layoutText = await generate(layoutPrompt, selectedModel, { temperature: 0.5 });
+      setGeneratedContent(layoutText);
+      setShowOutput(true);
+    } catch (error) {
+      console.error('Error generating story layout:', error);
+      setError('An error occurred while generating the story layout');
+    } finally {
+      setIsActionLoading(false);
+    }
+  };
+
+  // Constructs a prompt specifically for story layouts
+  const constructLayoutPrompt = () => {
+    return `
+# Story Layout Generator
+
+## Task
+Generate a structured story layout or outline based on the following parameters. Do not write a full story, but provide a clear structure with sections for introduction, main plot points, character development, and conclusion. Include placeholders for key scenes or events that the user can fill in.
+
+## Story Parameters
+- Genres: ${selectedGenres.map(g => g.replace(/-/g, ' ')).join(", ") || "[Select appropriate genres if not specified]"}
+- Story Type: ${storyType === "comic" ? "Comic Style Outline (formatted with panel-by-panel breakdowns and placeholder dialogue for a graphic novel style)" : "Text Story Outline (traditional narrative structure with key scenes and plot points)"}
+- Overview: ${overview || "[No overview provided, use creativity based on genres]"}
+
+## Instructions
+- Provide a title placeholder.
+- Outline the story in a clear, structured format with numbered sections or panels.
+- Include brief descriptions for each section or panel (2-3 sentences max).
+- Leave room for user customization by including placeholder text like '[User can describe a key event here]' or '[Add character dialogue]'.
+- Ensure the layout is genre-appropriate and engaging.
+`;
   };
 
   const isLoading = isGroqLoading || isMonadLoading || isMinting || isActionLoading;
@@ -884,38 +937,40 @@ Please generate this story with attention to quality, creativity, and narrative 
   // Replace the generateImageWithImagen function call with fetchUnsplashImage
   const generateImageWithImagen = async (prompt: string) => {
     try {
-      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_IMAGEN_API_KEY;
-      if (!apiKey || apiKey === 'your_google_imagen_api_key_here') {
-        throw new Error('Google Imagen API key is not defined in environment variables');
+      const apiKey = process.env.NEXT_PUBLIC_STABILITY_AI_API_KEY;
+      if (!apiKey || apiKey === 'your_stability_ai_api_key_here') {
+        throw new Error('Stability AI API key is not defined in environment variables');
       }
 
       console.log('Generating image for prompt:', prompt);
-      const comicStylePrompt = `Comic book style illustration depicting: ${prompt}. The scene should be vibrant, with bold lines and dynamic compositions typical of graphic novels. Focus on detailed character expressions and backgrounds that enhance the narrative.`;
-      const response = await fetch('https://api.google.com/imagen/generate', {
+      const comicStylePrompt = `Comic book style drawing depicting: ${prompt}. The scene MUST be illustrated with bold lines, vibrant colors, and a non-realistic, hand-drawn aesthetic typical of classic graphic novels. STRICTLY AVOID any photorealistic, 3D rendered, or realism styles; focus exclusively on a 2D comic art style with clear outlines, flat colors, and dynamic compositions that enhance the narrative. Ensure the image looks like it belongs in a traditional comic book.`;
+      const response = await fetch('https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
-          prompt: comicStylePrompt,
-          model: 'imagen-3.0',
-          size: '512x512',
+          text_prompts: [{ text: comicStylePrompt }],
+          cfg_scale: 7,
+          height: 512,
+          width: 512,
+          steps: 30,
         }),
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to generate image with Google Imagen: ${response.statusText}`);
+        throw new Error(`Failed to generate image with Stability AI: ${response.statusText}`);
       }
 
       const data = await response.json();
-      if (data && data.imageUrl) {
-        return data.imageUrl;
+      if (data && data.artifacts && data.artifacts.length > 0 && data.artifacts[0].base64) {
+        return `data:image/png;base64,${data.artifacts[0].base64}`;
       } else {
-        throw new Error('No image URL returned from Google Imagen API');
+        throw new Error('No image data returned from Stability AI API');
       }
     } catch (error) {
-      console.error('Error generating image with Google Imagen:', error);
+      console.error('Error generating image with Stability AI:', error);
       // Fallback to Unsplash image fetch
       return await fetchUnsplashImage(prompt);
     }
@@ -948,7 +1003,7 @@ Please generate this story with attention to quality, creativity, and narrative 
 
       const currentPanel = panels[currentPanelIndex];
       // Ensure the image prompt is strictly comic style with detailed description
-      const comicStylePrompt = `Comic book style illustration depicting: ${currentPanel.caption}. The scene should be vibrant, with bold lines and dynamic compositions typical of graphic novels. Focus on detailed character expressions and backgrounds that enhance the narrative.`;
+      const comicStylePrompt = `Comic book style drawing depicting: ${currentPanel.caption}. The scene should be illustrated with bold lines, vibrant colors, and a non-realistic, hand-drawn aesthetic typical of classic graphic novels. Avoid photorealistic or 3D rendered styles; focus on a 2D comic art style with clear outlines and dynamic compositions that enhance the narrative.`;
 
       return (
         <div className="comic-container mt-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 p-4 rounded-lg shadow-md">
@@ -1140,6 +1195,143 @@ Please generate this story with attention to quality, creativity, and narrative 
         setError(`Error: ${error.message}`);
       }
     };
+  };
+
+  // Add a new button or tab for generating story layouts
+  const renderControls = () => {
+    return (
+      <div className="flex flex-wrap gap-4 mb-6">
+        <Button 
+          onClick={handleGenerate} 
+          disabled={isGroqLoading || isActionLoading} 
+          className="bg-indigo-600 hover:bg-indigo-700 text-white"
+        >
+          {isActionLoading ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Generating...
+            </>
+          ) : (
+            "Generate Story"
+          )}
+        </Button>
+        <Button 
+          onClick={handleGenerateSummary} 
+          disabled={isGroqLoading || isActionLoading || !generatedContent} 
+          className="bg-blue-600 hover:bg-blue-700 text-white"
+        >
+          {isSummarizing ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Summarizing...
+            </>
+          ) : (
+            "Generate Summary"
+          )}
+        </Button>
+        <Button 
+          onClick={analyzeStory} 
+          disabled={isGroqLoading || isActionLoading || !generatedContent} 
+          className="bg-green-600 hover:bg-green-700 text-white"
+        >
+          {isAnalyzing ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Analyzing...
+            </>
+          ) : (
+            "Analyze Story"
+          )}
+        </Button>
+        <Button 
+          onClick={handleReset} 
+          variant="outline" 
+          disabled={isGroqLoading || isActionLoading}
+          className="border-gray-600 text-gray-600 hover:bg-gray-100"
+        >
+          Reset
+        </Button>
+        {account && (
+          <Button 
+            onClick={handleGenerateAndMint} 
+            disabled={isGroqLoading || isActionLoading} 
+            className="bg-purple-600 hover:bg-purple-700 text-white"
+          >
+            {isActionLoading ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Generating NFT...
+              </>
+            ) : (
+              "Generate NFT (Paid Feature)"
+            )}
+          </Button>
+        )}
+      </div>
+    );
+  };
+
+  const handleGenerateSummary = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!generatedContent) return;
+    setIsSummarizing(true);
+    try {
+      const summaryPrompt = constructSummaryPrompt();
+      const summary = await generate(summaryPrompt);
+      setGeneratedSummary(summary);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to generate summary. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSummarizing(false);
+    }
+  };
+
+  const analyzeStory = async () => {
+    if (!generatedContent) {
+      toast({
+        title: "No content to analyze",
+        description: "Please generate a story first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsAnalyzing(true);
+    try {
+      const analysisPrompt = constructAnalysisPrompt();
+      const analysis = await generate(analysisPrompt);
+      setGeneratedAnalysis(analysis);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to analyze story. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  const constructSummaryPrompt = () => {
+    return `You are a skilled storyteller tasked with summarizing a story. Your summary should capture the essence of the narrative in a concise yet engaging manner. Focus on the main plot points, key characters, and significant events. Avoid unnecessary details or tangents. Keep the summary under 200 words.\n\nStory to summarize:\n${generatedContent}\n\nSummary:`;
+  };
+
+  const constructAnalysisPrompt = () => {
+    return `You are a literary critic tasked with analyzing a story. Provide a detailed analysis that includes:\n- Identification of genre(s) and themes\n- Examination of character development and key character arcs\n- Assessment of narrative structure and pacing\n- Notable strengths in the storytelling\n- Suggestions for improvement or areas that could be expanded\n\nKeep your analysis clear, insightful, and under 400 words.\n\nStory to analyze:\n${generatedContent}\n\nAnalysis:`;
+  };
+
+  const handleReset = () => {
+    setGeneratedContent('');
+    setGeneratedSummary('');
+    setGeneratedAnalysis('');
+    setIsGenerating(false);
+    setIsSummarizing(false);
+    setIsAnalyzing(false);
+    setIsActionLoading(false);
   };
 
   return (
@@ -1554,65 +1746,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                     <LoadingStateIndicator message={null} />
                   ) : (
                     <div className="flex flex-col gap-4 mt-4">
-                      <div className="flex gap-4 justify-end">
-                <Button
-                  onClick={handleGenerate}
-                          disabled={isLoading || isGroqLoading}
-                          className="theme-gradient-bg text-white"
-                >
-                          {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Generating...
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="mr-2 h-4 w-4" />
-                              Generate for Free
-                    </>
-                  )}
-                </Button>
-                        
-                <Button
-                          onClick={() => {
-                            console.log('Generate for NFT button clicked');
-                            setStoryFormat('nft');
-                            handleGenerateAndMint();
-                          }}
-                  disabled={isGroqLoading || isMonadLoading || !account || !isOnMonadNetwork}
-                  className="theme-gradient-bg"
-                  title={!account ? "Connect wallet to mint NFT" : !isOnMonadNetwork ? "Switch to Monad network" : ""}
-                >
-                  {isGroqLoading || isMonadLoading ? (
-                                    <motion.div 
-                                      className="flex items-center space-x-2"
-                                      animate={{ y: [0, -2, 0] }}
-                                      transition={{ duration: 1, repeat: Infinity }}
-                                    >
-                                      <motion.div
-                                        animate={{ 
-                                          rotate: 360,
-                                          scale: [1, 1.1, 1]
-                                        }}
-                                        transition={{ 
-                                          rotate: { duration: 2, repeat: Infinity, ease: "linear" },
-                                          scale: { duration: 1, repeat: Infinity }
-                                        }}
-                                        className="relative"
-                                      >
-                                        <div className="absolute inset-0 bg-primary/30 rounded-full blur-sm"></div>
-                                        <Zap className="h-4 w-4 text-primary relative z-10" />
-                                      </motion.div>
-                                      <span>Creating Magic...</span>
-                                    </motion.div>
-                  ) : (
-                    <>
-                      <Wallet className="mr-2 h-4 w-4" />
-                              Generate for NFT
-                    </>
-                  )}
-                </Button>
-              </div>
+                      {renderControls()}
                       
                       {isGroqLoading && (
                         <motion.div 
