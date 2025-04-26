@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useWeb3 } from "@/components/providers/web3-provider";
 import { Loader2, AlertCircle } from "lucide-react";
-import { truncateAddress } from "@/lib/utils";
+import { truncateAddress } from "../lib/utils";
 import Link from "next/link";
 
 export function WalletConnect() {
