@@ -161,7 +161,7 @@ export function AIStoryGenerator({
 }) {
   const { generate, generateIdeas, availableModels, defaultModel, isLoading: isGroqLoading, error: groqError, fetchModels, modelNames, testConnection } = useGroq();
   const { mintNFT, generateAndMint, isLoading: isMonadLoading, networkInfo, error: monadError, isOnMonadNetwork, switchToMonadNetwork } = useMonad();
-  const { account } = useWeb3();
+  const { account, connectWallet } = useWeb3();
   const { toast } = useToast();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("generate");
@@ -174,6 +174,9 @@ export function AIStoryGenerator({
   const [generatedSummary, setGeneratedSummary] = useState("");
   const [generatedAnalysis, setGeneratedAnalysis] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isGeneratingNFT, setIsGeneratingNFT] = useState(false);
+  const [nftTokenId, setNFTTokenId] = useState<string>('');
+  const [nftTransactionHash, setNFTTransactionHash] = useState<string>('');
   const [isSummarizing, setIsSummarizing] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isActionLoading, setIsActionLoading] = useState(false);
@@ -1334,6 +1337,63 @@ Generate a structured story layout or outline based on the following parameters.
     setIsActionLoading(false);
   };
 
+  const handleGenerateNFT = async () => {
+    if (!account) {
+      toast({
+        title: "Wallet not connected",
+        description: "Please connect your wallet to generate an NFT.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!generatedContent) {
+      toast({
+        title: "No story generated",
+        description: "Please generate a story before creating an NFT.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setIsGeneratingNFT(true);
+    try {
+      const response = await fetch('/api/monad/mint', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          storyHash: `story-${Date.now()}`, // Placeholder for actual story hash
+          metadataURI: `metadata-${Date.now()}.json`, // Placeholder for actual metadata URI
+          userAddress: account,
+        }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        toast({
+          title: "NFT Minted",
+          description: `Your story NFT has been minted with token ID: ${data.tokenId}`,
+        });
+        setNFTTokenId(data.tokenId || '');
+        setNFTTransactionHash(data.transactionHash || '');
+      } else {
+        toast({
+          title: "Minting Failed",
+          description: data.error || "Failed to mint NFT. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error: any) {
+      console.error("Error minting NFT:", error);
+      toast({
+        title: "Error",
+        description: error.message || "An error occurred while minting the NFT.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingNFT(false);
+    }
+  };
+
   return (
     <>
       <WelcomeAnimation />
@@ -1781,24 +1841,21 @@ Generate a structured story layout or outline based on the following parameters.
                 <p className="text-muted-foreground mb-4">
                   You need to connect your wallet to mint your stories as NFTs on Monad blockchain
                 </p>
-                <Button className="theme-gradient-bg" onClick={() => {
-                  // Trigger wallet connection - this would typically be handled by the Web3 provider
-                  toast({
-                    title: "Connecting Wallet",
-                    description: "Please follow the prompts in your wallet extension to connect.",
-                  });
-                  // In a real implementation, this would call a function from useWeb3 hook to initiate connection
-                  // For now, we'll simulate it by setting a dummy account address
-                  setTimeout(() => {
+                <Button className="theme-gradient-bg" onClick={async () => {
+                  try {
                     toast({
-                      title: "Wallet Connected",
-                      description: "Your wallet has been successfully connected.",
+                      title: "Connecting Wallet",
+                      description: "Please approve the connection request in your wallet",
                     });
-                    // Simulate setting account address - in real implementation, this would be handled by useWeb3
-                    // We're directly modifying the account state here for simulation purposes
-                    // This is not ideal and should be replaced with proper Web3 connection in actual implementation
-                    // For the purpose of this simulation, we'll assume the toast is enough to show the intent
-                  }, 2000);
+                    await connectWallet();
+                  } catch (error: any) {
+                    console.error('Error connecting wallet:', error);
+                    toast({
+                      title: "Connection Failed",
+                      description: error.message || "Failed to connect wallet. Please try again.",
+                      variant: "destructive",
+                    });
+                  }
                 }}>
                   Connect Wallet
                 </Button>
@@ -1835,24 +1892,21 @@ Generate a structured story layout or outline based on the following parameters.
                 <p className="text-muted-foreground mb-4">
                   You need to connect your wallet to publish stories to the community
                 </p>
-                <Button className="theme-gradient-bg" onClick={() => {
-                  // Trigger wallet connection - this would typically be handled by the Web3 provider
-                  toast({
-                    title: "Connecting Wallet",
-                    description: "Please follow the prompts in your wallet extension to connect.",
-                  });
-                  // In a real implementation, this would call a function from useWeb3 hook to initiate connection
-                  // For now, we'll simulate it by setting a dummy account address
-                  setTimeout(() => {
+                <Button className="theme-gradient-bg" onClick={async () => {
+                  try {
                     toast({
-                      title: "Wallet Connected",
-                      description: "Your wallet has been successfully connected.",
+                      title: "Connecting Wallet",
+                      description: "Please approve the connection request in your wallet",
                     });
-                    // Simulate setting account address - in real implementation, this would be handled by useWeb3
-                    // We're directly modifying the account state here for simulation purposes
-                    // This is not ideal and should be replaced with proper Web3 connection in actual implementation
-                    // For the purpose of this simulation, we'll assume the toast is enough to show the intent
-                  }, 2000);
+                    await connectWallet();
+                  } catch (error: any) {
+                    console.error('Error connecting wallet:', error);
+                    toast({
+                      title: "Connection Failed",
+                      description: error.message || "Failed to connect wallet. Please try again.",
+                      variant: "destructive",
+                    });
+                  }
                 }}>
                   Connect Wallet
                 </Button>
