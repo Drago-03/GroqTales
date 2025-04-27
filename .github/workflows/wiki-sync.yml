@@ -16,4 +16,3 @@ jobs:
           source: wiki
           destination: wiki
           token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
