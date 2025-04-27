@@ -4,13 +4,16 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: { unoptimized: true },
+  reactStrictMode: true,
+  // Removed experimental.staticPageGenerationTimeout as it is not recognized in this version of Next.js
+  // For handling timeouts in static page generation, consider using ISR or SSR for problematic pages
+  // experimental: {
+  //   staticPageGenerationTimeout: 180, // Set to 180 seconds (3 minutes)
+  // },
   // Add metadataBase for production URLs
   async generateMetadata() {
-    // Use environment variable in production or fallback for development
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://groqtales.app';
-    
     return {
-      metadataBase: new URL(baseUrl),
+      metadataBase: process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000',
     };
   },
 };

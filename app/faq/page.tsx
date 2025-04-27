@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +9,15 @@ import { Button } from "@/components/ui/button";
 import { HelpCircle, Wallet, BookOpen, Coins, Shield, Users, PenSquare } from "lucide-react";
 import Link from "next/link";
 
-export default function FaqPage() {
+export default function FAQPage() {
+  return (
+    <Suspense fallback={<div>Loading FAQ page...</div>}>
+      <FAQContent />
+    </Suspense>
+  );
+}
+
+function FAQContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState(searchParams.get("category") || "general");

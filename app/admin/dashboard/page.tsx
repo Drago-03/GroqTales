@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -26,7 +26,15 @@ import { getAdminActions } from "@/lib/admin-service";
 import { VerifiedBadge } from "@/components/verified-badge";
 import { useToast } from "@/components/ui/use-toast";
 
-export default function AdminDashboard() {
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={<div>Loading dashboard...</div>}>
+      <DashboardContent />
+    </Suspense>
+  );
+}
+
+function DashboardContent() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [newPost, setNewPost] = useState("");

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,7 +19,15 @@ const MOCK_ADMIN = {
   password: "admin123"
 };
 
-export default function AdminLoginPage() {
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div>Loading login page...</div>}>
+      <LoginContent />
+    </Suspense>
+  );
+}
+
+function LoginContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<LoginForm>({
     employeeId: "",
