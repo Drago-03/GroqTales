@@ -85,7 +85,7 @@ export function WalletConnect() {
     <Button
       variant="outline"
       className="w-[200px]"
-      onClick={connectWallet}
+      onClick={(e) => connectWallet()}
     >
       Connect Wallet
     </Button>

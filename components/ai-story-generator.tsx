@@ -42,6 +42,14 @@ import {
 import { genres } from "@/components/genre-selector";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import Image from "next/image";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 function AnimatedSparkles() {
   return (
@@ -1366,6 +1374,40 @@ Generate a structured story layout or outline based on the following parameters.
     }
   };
 
+  // Add state and handler for wallet dialog
+  const [showWalletDialog, setShowWalletDialog] = useState(false);
+
+  const handleContinue = async () => {
+    if (!account) {
+      setShowWalletDialog(true);
+      return;
+    }
+    // ... existing code for handleContinue ...
+  };
+
+  const handleWalletConnect = async (walletType: string) => {
+    try {
+      toast({
+        title: "Connecting Wallet",
+        description: "Please approve the connection request in your wallet",
+      });
+      console.log(`Attempting to connect to ${walletType}`);
+      await connectWallet();
+      setShowWalletDialog(false);
+      toast({
+        title: "Wallet Connected",
+        description: `Successfully connected to ${walletType.charAt(0).toUpperCase() + walletType.slice(1)}`,
+      });
+    } catch (error: any) {
+      console.error('Error connecting wallet:', error);
+      toast({
+        title: "Connection Failed",
+        description: error.message || "Failed to connect wallet. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <>
       <WelcomeAnimation />
@@ -2059,6 +2101,37 @@ Generate a structured story layout or outline based on the following parameters.
         </Button>
       </CardFooter>
     </Card>
+
+    <Dialog open={showWalletDialog} onOpenChange={setShowWalletDialog}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Connect Your Wallet</DialogTitle>
+          <DialogDescription>
+            Connect a wallet to publish your NFT story. Choose an option below.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <Button variant="outline" className="w-full" onClick={() => handleWalletConnect('metamask')}>
+            <Image src="/wallet-logos/metamask.png" alt="MetaMask" width={24} height={24} className="mr-2" />
+            MetaMask
+          </Button>
+          <Button variant="outline" className="w-full" onClick={() => handleWalletConnect('walletconnect')}>
+            <Image src="/wallet-logos/walletconnect.png" alt="WalletConnect" width={24} height={24} className="mr-2" />
+            WalletConnect
+          </Button>
+          <Button variant="outline" className="w-full" onClick={() => handleWalletConnect('ledger')}>
+            <Image src="/wallet-logos/ledger.png" alt="Ledger" width={24} height={24} className="mr-2" />
+            Ledger Wallet
+          </Button>
+          <div className="text-center mt-4">
+            <p className="text-sm text-muted-foreground mb-2">Scan QR Code for mobile wallets</p>
+            <div className="flex justify-center">
+              <Image src="/qr-code-placeholder.png" alt="QR Code for Wallet Connection" width={150} height={150} />
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
     </>
   );
 } 
