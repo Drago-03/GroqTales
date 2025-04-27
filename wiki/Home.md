@@ -2,6 +2,8 @@
 
 GroqTales is an AI-powered Web3 storytelling platform that allows users to create, share, and monetize stories using blockchain technology and artificial intelligence. This wiki provides comprehensive documentation for users, developers, and contributors to understand, use, and contribute to GroqTales.
 
+**Note**: The content in this `wiki` folder serves as the source for the GroqTales Wiki. To view the Wiki on GitHub, click on the 'Wiki' tab in the repository. If you're a contributor, you can help sync this content to the GitHub Wiki by following the instructions in the [Contributing Guide](../CONTRIBUTING.md) or by manually copying the markdown files to the Wiki section.
+
 ## Table of Contents
 
 - [Getting Started](#getting-started)
@@ -50,6 +52,7 @@ Join the GroqTales community to connect with other users and creators:
 
 - [Discord](https://discord.gg/your-invite-link) - Chat with the community and get support.
 - [GitHub Discussions](https://github.com/Drago-03/GroqTales/discussions) - Ask questions and share ideas.
+- [Twitter](https://twitter.com/groqtales) - Follow us for updates and news.
 
 ## FAQ
 
