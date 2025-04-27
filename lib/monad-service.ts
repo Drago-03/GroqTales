@@ -227,22 +227,18 @@ export async function generateAndMintAIStory(
     
     // Extract a title from the first line if not provided
     let storyTitle = title;
-    if (!storyTitle) {
-      const firstLine = storyContent.split('\n')[0];
-      storyTitle = firstLine.replace(/^#\s+/, '').trim();
-      
-      // If we couldn't extract a good title, generate one
-      if (!storyTitle || storyTitle.length < 3 || storyTitle.length > 100) {
-        const titlePrompt = `Generate a creative, concise title for this story:\n\n${storyContent.substring(0, 500)}...`;
-        storyTitle = await generateStoryContent(
-          titlePrompt,
-          undefined,
-          { 
-            temperature: 0.7, 
-            max_tokens: 50,
-            apiKey // Pass the custom API key if provided
-          }
-        );
+    if (storyContent && storyContent.trim() !== '') {
+      // Extract title from content if not explicitly provided
+      if (!storyTitle) {
+        const firstLine = storyContent.split('\n')[0];
+        if (firstLine && firstLine.startsWith('# ')) {
+          storyTitle = firstLine.substring(2).trim();
+        } else if (firstLine) {
+          storyTitle = firstLine.trim();
+        }
+      }
+      // Clean the title if it exists
+      if (storyTitle) {
         storyTitle = storyTitle.replace(/["']/g, '').trim();
       }
     }

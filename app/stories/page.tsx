@@ -8,7 +8,19 @@ export const metadata = {
   description: "Learn how to create and share your own stories on GroqTales, the Web3 storytelling platform",
 };
 
+export const revalidate = process.env.NEXT_PUBLIC_BUILD_MODE === 'true' ? 10 : 3600;
+
 export default function StoriesPage() {
+  // Use mock data during build time to avoid database connections
+  if (process.env.NEXT_PUBLIC_BUILD_MODE === 'true') {
+    return (
+      <div className="flex flex-col gap-6 px-2 py-6 max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold">Stories</h1>
+        <p className="text-muted-foreground">Stories will be loaded dynamically after deployment.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="py-12 min-h-screen">
       <div className="container mx-auto px-4 max-w-5xl">

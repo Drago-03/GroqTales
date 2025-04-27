@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { JsonRpcProvider, Wallet, Contract } from "ethers";
-import { create } from 'ipfs-http-client';
+// Removed direct import of ipfs-http-client to avoid build-time Node.js module issues
+// import { create } from 'ipfs-http-client';
 
 // Environment variables for Ethereum Mainnet connection
 const ETHEREUM_RPC_URL = process.env.ETHEREUM_RPC_URL || "https://mainnet.infura.io/v3/80e1a002fae34ced944866a7b286884d";
@@ -14,9 +15,16 @@ const IPFS_GATEWAY = 'https://dweb.link';
 const IPFS_FALLBACK_GATEWAY = 'https://ipfs.io';
 const IPNS_PUBLISHING_KEY = 'self - k51qzi5uqu5dhindgjwye0f28c6zb6m06gl799ihzivn50kqkl8w0bomgz6rxc';
 
-// Connect to IPFS
-// Connection is made to the local IPFS node as per the provided configuration
-const ipfs = create({ host: '127.0.0.1', port: 5001, protocol: 'http' });
+// Function to dynamically initialize IPFS client only when needed
+async function getIpfsClient() {
+  try {
+    const { create } = await import('ipfs-http-client');
+    return create({ host: '127.0.0.1', port: 5001, protocol: 'http' });
+  } catch (error) {
+    console.error('Failed to load IPFS client:', error);
+    throw new Error('IPFS client initialization failed');
+  }
+}
 
 // ABI for StoryNFT contract - minimal subset needed for minting
 const CONTRACT_ABI = [
@@ -63,6 +71,15 @@ export async function POST(req: Request) {
     if (!PRIVATE_KEY || !CONTRACT_ADDRESS || ETHEREUM_RPC_URL.includes('example.com')) {
       console.error('Environment variables not properly configured for Ethereum connection');
       return NextResponse.json({ error: "Server configuration error. Please contact support." }, { status: 503 });
+    }
+
+    // Dynamically initialize IPFS client
+    let ipfs;
+    try {
+      ipfs = await getIpfsClient();
+    } catch (error) {
+      console.error('IPFS client initialization failed:', error);
+      return NextResponse.json({ error: "Failed to initialize IPFS client", success: false }, { status: 500 });
     }
 
     // Upload story content to IPFS

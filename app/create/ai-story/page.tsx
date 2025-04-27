@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AIStoryGenerator } from "@/components/ai-story-generator";
 import { Sparkles, BookText, Wallet, NetworkIcon, ArrowLeft } from "lucide-react";
@@ -10,6 +10,14 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 export default function AIStoryGeneratorPage() {
+  return (
+    <Suspense fallback={<div>Loading AI story page...</div>}>
+      <AIStoryContent />
+    </Suspense>
+  );
+}
+
+function AIStoryContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
