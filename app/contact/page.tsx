@@ -231,8 +231,8 @@ export default function ContactPage() {
                   <ContactInfo
                     icon={Mail}
                     title="Email"
-                    content="support@groqtales.com"
-                    link="mailto:support@groqtales.com"
+                    content="mantejarora@gmail.com"
+                    link="mailto:mantejarora@gmail.com"
                   />
                   <ContactInfo
                     icon={MessageSquare}
@@ -242,13 +242,13 @@ export default function ContactPage() {
                   <ContactInfo
                     icon={Phone}
                     title="Phone"
-                    content="+1 (555) 123-4567"
+                    content="+91-1234567890"
                     link="tel:+15551234567"
                   />
                   <ContactInfo
                     icon={MapPin}
                     title="Office"
-                    content="123 Innovation Drive, Tech Valley, CA 94043"
+                    content="Indie Hub, India"
                   />
                 </CardContent>
               </Card>
@@ -263,13 +263,13 @@ export default function ContactPage() {
                 <CardContent>
                   <div className="grid grid-cols-2 gap-4">
                     <Button variant="outline" className="w-full" asChild>
-                      <Link href="https://twitter.com/groqtales" target="_blank">
-                        <Twitter className="w-4 h-4 mr-2" />
-                        Twitter
+                      <Link href="https://github.com/Drago-03/" target="_blank">
+                        <Github className="w-4 h-4 mr-2" />
+                        Github
                       </Link>
                     </Button>
                     <Button variant="outline" className="w-full" asChild>
-                      <Link href="https://linkedin.com/company/groqtales" target="_blank">
+                      <Link href="https://www.linkedin.com/in/mantej-singh-arora/" target="_blank">
                         <Linkedin className="w-4 h-4 mr-2" />
                         LinkedIn
                       </Link>
