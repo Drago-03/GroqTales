@@ -83,8 +83,7 @@ export function Header() {
       { href: "/community", label: "Community Hub" },
       { href: "/community/creators", label: "Top Creators", icon: <Trophy className="h-4 w-4 mr-1.5" /> }
     ]},
-    { type: 'link', href: "/nft-gallery", label: "NFT Gallery" },
-    { type: 'link', href: "/story-tools", label: "AI Tools", icon: <FlaskConical className="h-4 w-4 mr-1.5" /> },
+    { type: 'link', href: "/nft-gallery", label: "NFT Gallery" }
   ];
 
   return (
@@ -156,14 +155,6 @@ export function Header() {
         </div>
 
         <div className="flex items-center space-x-3">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.2 }}
-          >
-            <ThemeToggle />
-          </motion.div>
-          
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}

@@ -101,18 +101,6 @@ export function Footer() {
                   FAQ
                 </Link>
               </li>
-              <li>
-                <Link href="/tutorials" className="text-sm hover:text-foreground transition-colors flex items-center">
-                  <GraduationCap className="h-4 w-4 mr-2 opacity-60" />
-                  Tutorials
-                </Link>
-              </li>
-              <li>
-                <Link href="/wallet-setup" className="text-sm hover:text-foreground transition-colors flex items-center">
-                  <Wallet className="h-4 w-4 mr-2 opacity-60" />
-                  Wallet Setup
-                </Link>
-              </li>
             </ul>
           </div>
 

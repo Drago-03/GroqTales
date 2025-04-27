@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AIStoryGenerator } from "@/components/ai-story-generator";
-import { Sparkles, BookText, Wallet, NetworkIcon, ArrowLeft } from "lucide-react";
+import { Sparkles, BookText, Wallet, NetworkIcon, ArrowLeft, PenSquare, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
@@ -166,6 +166,24 @@ function AIStoryContent() {
               <h3 className="font-medium">Mint</h3>
               <p className="text-sm text-muted-foreground">Create NFTs on Monad blockchain</p>
             </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-md mx-auto mb-8">
+            <Button size="lg" className="theme-gradient-bg text-white border-0 hover:opacity-90" 
+              onClick={() => {
+                // Direct navigation with URL parameters
+                window.location.href = `/create/ai-story?source=homepage&format=free`;
+              }}
+            >
+              <PenSquare className="mr-2 h-5 w-5" />
+              Create Story
+            </Button>
+            <Button size="lg" className="theme-gradient-bg text-white border-0 hover:opacity-90" asChild>
+              <Link href="/stories">
+                <BookOpen className="mr-2 h-5 w-5" />
+                Explore Stories
+              </Link>
+            </Button>
           </div>
         </div>
         

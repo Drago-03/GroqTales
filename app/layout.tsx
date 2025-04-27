@@ -10,6 +10,8 @@ import Script from "next/script";
 import fs from 'fs';
 import path from 'path';
 import ClientLayout from "@/components/client-layout";
+import Link from "next/link";
+import Image from "next/image";
 
 // Optimize font loading
 const inter = Inter({ 
@@ -77,8 +79,8 @@ export default function RootLayout({
           <QueryProvider>
             <ThemeProvider
               attribute="class"
-              defaultTheme="system"
-              enableSystem
+              defaultTheme="dark"
+              enableSystem={false}
               disableTransitionOnChange={false}
               storageKey="groqtales-theme"
             >
