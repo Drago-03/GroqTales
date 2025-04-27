@@ -1219,34 +1219,6 @@ Generate a structured story layout or outline based on the following parameters.
           )}
         </Button>
         <Button 
-          onClick={handleGenerateSummary} 
-          disabled={isGroqLoading || isActionLoading || !generatedContent} 
-          className="bg-blue-600 hover:bg-blue-700 text-white"
-        >
-          {isSummarizing ? (
-            <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Summarizing...
-            </>
-          ) : (
-            "Generate Summary"
-          )}
-        </Button>
-        <Button 
-          onClick={analyzeStory} 
-          disabled={isGroqLoading || isActionLoading || !generatedContent} 
-          className="bg-green-600 hover:bg-green-700 text-white"
-        >
-          {isAnalyzing ? (
-            <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Analyzing...
-            </>
-          ) : (
-            "Analyze Story"
-          )}
-        </Button>
-        <Button 
           onClick={handleReset} 
           variant="outline" 
           disabled={isGroqLoading || isActionLoading}

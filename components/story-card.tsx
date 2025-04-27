@@ -109,13 +109,13 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
             </Avatar>
             <p className="text-sm font-medium">{authorName}</p>
           </div>
-          <h3 className="text-lg font-semibold mt-2 line-clamp-2 group-hover:text-primary transition-colors duration-200">{story.title}</h3>
+          <h3 className="text-lg font-semibold mt-2 line-clamp-2 group-hover:text-amber-800 dark:group-hover:text-amber-300 text-gray-800 dark:text-white transition-colors duration-200">{story.title}</h3>
         </CardHeader>
         <CardContent className="p-4 pt-0">
-          <p className="text-muted-foreground text-sm line-clamp-2">{storyContent}</p>
+          <p className="text-gray-700 dark:text-muted-foreground text-sm line-clamp-2">{storyContent}</p>
         </CardContent>
         <CardFooter className="p-4 pt-0 flex justify-between">
-          <div className="flex space-x-4 text-sm text-muted-foreground">
+          <div className="flex space-x-4 text-sm text-gray-600 dark:text-muted-foreground">
             <div className="flex items-center">
               <Heart className="h-3.5 w-3.5 mr-1" />
               {story.likes || 0}
@@ -135,7 +135,7 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
           </div>
           <div className="flex items-center gap-2">
             {story.genre && (
-              <span className="text-xs bg-muted px-2 py-1 rounded-full">
+              <span className="text-xs bg-amber-100 dark:bg-muted px-2 py-1 rounded-full text-gray-800 dark:text-white">
                 {story.genre}
               </span>
             )}
@@ -158,7 +158,7 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
   
   return (
     <motion.div
-      whileHover={{ y: -5 }}
+      whileHover={{ y: -5, scale: 1.02, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
       transition={{ duration: 0.2 }}
     >
       <Card className={cn(
