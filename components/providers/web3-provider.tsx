@@ -11,7 +11,7 @@ const LoadingAnimation = lazy(() => import("@/components/loading-animation").the
 interface Web3ContextType {
   account: string | null;
   chainId: number | null;
-  connectWallet: () => Promise<void>;
+  connectWallet: (walletType?: string) => Promise<void>;
   disconnectWallet: () => void;
   isConnecting: boolean;
   switchNetwork: (chainId: number) => Promise<void>;
@@ -33,7 +33,12 @@ const Web3Context = createContext<Web3ContextType>({
 export const useWeb3 = () => useContext(Web3Context);
 
 // Constants
-const SUPPORTED_CHAIN_IDS = [1, 137]; // Ethereum Mainnet and Polygon
+const MONAD_CHAIN_ID = 10143; // 0x279f
+const MONAD_RPC_URL = 'https://testnet-rpc.monad.xyz';
+const MONAD_EXPLORER_URL = 'https://explorer.monad.xyz'; // Placeholder, replace with actual explorer URL if available
+
+// Update SUPPORTED_CHAIN_IDS to include Monad
+const SUPPORTED_CHAIN_IDS = [1, 137, MONAD_CHAIN_ID];
 const DEFAULT_CHAIN_ID = 1;
 const PUBLIC_ROUTES = ['/landing', '/community', '/explore', '/stories', '/about', '/privacy', '/terms', '/genres', '/nft-gallery'];
 
@@ -212,8 +217,8 @@ export function Web3Provider({ children }: { children: ReactNode }) {
     };
   }, [pathname, router, isPublicRoute, toast]);
 
-  const connectWallet = async () => {
-    if (!window.ethereum) {
+  const connectWallet = async (walletType?: string) => {
+    if (!window.ethereum && !walletType) {
       console.error('No ethereum wallet found');
       toast({
         title: "Wallet Not Found",
@@ -223,26 +228,63 @@ export function Web3Provider({ children }: { children: ReactNode }) {
       return;
     }
 
-    console.log('Attempting to connect wallet...');
+    console.log('Attempting to connect wallet...', walletType || 'default');
     setIsConnecting(true);
     try {
-      if (window.ethereum.isMetaMask) {
-        console.log('MetaMask detected');
+      let provider;
+      if (walletType === 'metamask' || !walletType) {
+        if (window.ethereum && window.ethereum.isMetaMask) {
+          console.log('MetaMask detected');
+          toast({
+            title: "MetaMask Detected",
+            description: "MetaMask extension found. Attempting to connect...",
+            variant: "default",
+          });
+          provider = new BrowserProvider(window.ethereum as any);
+        } else {
+          toast({
+            title: "MetaMask Not Found",
+            description: "MetaMask is not installed. Please install MetaMask to connect.",
+            variant: "destructive",
+          });
+          throw new Error('MetaMask not detected');
+        }
+      } else if (walletType === 'walletconnect') {
+        // Placeholder for WalletConnect integration using web3modal
+        console.log('WalletConnect selected');
         toast({
-          title: "MetaMask Detected",
-          description: "MetaMask extension found. Attempting to connect...",
+          title: "WalletConnect Selected",
+          description: "Please scan the QR code with your mobile wallet. (Integration coming soon)",
           variant: "default",
         });
+        // In a real implementation, web3modal would handle this
+        throw new Error('WalletConnect integration not implemented yet');
+      } else if (walletType === 'ledger') {
+        // Placeholder for Ledger integration
+        console.log('Ledger wallet selected');
+        toast({
+          title: "Ledger Wallet Selected",
+          description: "Please connect your Ledger device. (Integration coming soon)",
+          variant: "default",
+        });
+        // In a real implementation, web3modal or a specific library would handle this
+        throw new Error('Ledger integration not implemented yet');
       } else {
-        console.log('Non-MetaMask wallet detected');
+        console.log('Default wallet connection');
         toast({
-          title: "Wallet Detected",
-          description: "A non-MetaMask Ethereum wallet was found. Attempting to connect...",
+          title: "Default Wallet Connection",
+          description: "Attempting to connect with the default wallet provider...",
           variant: "default",
         });
+        provider = new BrowserProvider(window.ethereum as any);
       }
-      const provider = new BrowserProvider(window.ethereum);
+
       console.log('Requesting accounts from wallet...');
+      toast({
+        title: "Requesting Access",
+        description: "Please approve the connection request in your wallet.",
+        variant: "default",
+      });
       const accounts = await provider.send('eth_requestAccounts', []);
       console.log('Accounts received:', accounts);
       setAccount(accounts[0]);
@@ -250,7 +292,18 @@ export function Web3Provider({ children }: { children: ReactNode }) {
       
       // Get the current chain ID
       const network = await provider.getNetwork();
-      setChainId(Number(network.chainId));
+      const currentChainId = Number(network.chainId);
+      setChainId(currentChainId);
+      
+      // Bypass for Monad maintenance - always show Monad as active on frontend
+      if (currentChainId !== MONAD_CHAIN_ID) {
+        toast({
+          title: "Network Notice",
+          description: "Monad network is under maintenance. Operations will be simulated on Monad Testnet.",
+          variant: "default",
+        });
+        setChainId(MONAD_CHAIN_ID); // Simulate Monad on frontend
+      }
       
       toast({
         title: "Wallet Connected",
@@ -283,6 +336,38 @@ export function Web3Provider({ children }: { children: ReactNode }) {
 
   const switchNetwork = async (targetChainId: number) => {
     if (!window.ethereum) return;
+
+    if (targetChainId === MONAD_CHAIN_ID) {
+      try {
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [{
+            chainId: `0x${MONAD_CHAIN_ID.toString(16)}`,
+            chainName: 'Monad Testnet',
+            rpcUrls: [MONAD_RPC_URL],
+            blockExplorerUrls: [MONAD_EXPLORER_URL],
+            nativeCurrency: {
+              name: 'Monad',
+              symbol: 'MONAD',
+              decimals: 18
+            }
+          }]
+        });
+        setChainId(targetChainId);
+        toast({
+          title: "Network Switched",
+          description: "Successfully switched to Monad Testnet"
+        });
+      } catch (error) {
+        console.error('Failed to switch to Monad network:', error);
+        toast({
+          title: "Network Switch Failed",
+          description: "Could not switch to Monad Testnet",
+          variant: "destructive"
+        });
+      }
+      return;
+    }
 
     try {
       await window.ethereum.request({

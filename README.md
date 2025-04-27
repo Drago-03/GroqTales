@@ -25,12 +25,13 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 
 ### Team Name: **Indie Hub**
 
-### Team Members:
+### Team Members
+
 - Mantej Singh Arora [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Drago-03) [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mantej-singh-arora/)  
 - Fatima Kacchi [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Cyber-warrior-01) [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/fatima-kachhi-8985632a3/)  
 - Avya Giri [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Webwizzz22) [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/avya-giri/)  
 
-### Your Approach:  
+### Your Approach  
 
 - **Why you chose this problem**: We chose this problem to merge the power of AI with blockchain technology, creating a unique platform for storytellers to not only generate creative content but also own and monetize it as NFTs. The intersection of AI and blockchain offers a novel solution to digital content ownership and creativity.
 - **Key challenges you addressed**: Integrating Groq AI for high-quality story generation, ensuring seamless NFT minting on the Monad blockchain, and designing an intuitive user interface for story customization and wallet connection were major challenges. We also focused on handling API rate limits and ensuring secure wallet interactions.
@@ -40,7 +41,7 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 
 ## 🛠️ Tech Stack
 
-### Core Technologies Used:
+### Core Technologies Used
 
 - **Frontend**: React, Next.js
 - **Backend**: Node.js
@@ -48,7 +49,7 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 - **APIs**: Groq API for AI generation, Unsplash API for images
 - **Hosting**: Vercel
 
-### Sponsor Technologies Used (if any):
+### Sponsor Technologies Used (if any)
 
 - [✅] **Groq**: *Used for AI-powered story and comic generation*  
 - [✅] **Monad**: *Implemented for NFT minting on the blockchain*  
@@ -70,6 +71,7 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 - **Story Preview and Editing**: Preview generated content, copy, download, or edit stories before finalizing or minting.
 
 **Screenshots of GroqTales Features:**
+
 - **Dashboard Overview 1**: A glimpse of the main dashboard interface.  
   ![Dashboard](public/Dashboard.png)
 - **Dashboard Overview 2**: Another view of the dashboard with different features highlighted.  
@@ -109,14 +111,14 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 
 ## 🧪 How to Run the Project
 
-### Requirements:
+### Requirements
 
 - **Node.js**: Version 16.x or higher for running the Next.js application.
 - **API Keys**: Groq API key for AI story generation (optional, but recommended for custom usage). Unsplash API key for image placeholders (optional).
 - **Wallet**: A crypto wallet (like MetaMask) installed and configured to connect to the Monad blockchain for NFT minting and story publishing.
 - **.env file setup**: Required for storing API keys and environment variables. Use the provided `.env.example` as a template.
 
-### Local Setup:
+### Local Setup
 
 ```bash
 # Clone the repo
@@ -142,6 +144,7 @@ npm run dev
 ```
 
 **Additional Setup Notes**:
+
 - **Frontend/Backend Split**: The project uses Next.js for both frontend and backend (API routes). Ensure API routes in `pages/api/` are correctly configured if extending functionality.
 - **Wallet Connection**: To test NFT minting or story publishing, connect your wallet (e.g., MetaMask) and ensure it's set to the Monad network. The app will prompt for network switching if needed.
 - **Environment Variables**: All sensitive keys must be stored in `.env.local`. Do not commit this file to version control.
@@ -161,16 +164,16 @@ npm run dev
 
 ## 📎 Resources / Credits
 
-- **APIs or Datasets Used**: 
+- **APIs or Datasets Used**:
   - **Groq API**: For powering AI-driven story and comic generation with high-speed inference.
   - **Unsplash API**: For fetching relevant placeholder images based on story genres and themes.
-- **Open Source Libraries or Tools Referenced**: 
+- **Open Source Libraries or Tools Referenced**:
   - **React & Next.js**: For building a dynamic and performant frontend and backend.
   - **shadcn/ui**: For beautifully crafted UI components used throughout the application.
   - **Framer Motion**: For smooth animations enhancing user experience.
   - **Lucide React**: For providing a rich set of icons used in the interface.
   - **Monad SDK**: For seamless integration with the Monad blockchain for NFT minting.
-- **Acknowledgements**: 
+- **Acknowledgements**:
   - Thanks to the Groq team for providing cutting-edge AI inference capabilities.
   - Gratitude to the Monad blockchain community for their support in NFT integration.
   - Special mention to the hackathon organizers for the opportunity to build and showcase GroqTales.
