@@ -221,8 +221,8 @@ export function Web3Provider({ children }: { children: ReactNode }) {
     if (!window.ethereum && !walletType) {
       console.error('No ethereum wallet found');
       toast({
-        title: "Wallet Not Found",
-        description: "No Ethereum wallet detected. Please install MetaMask or another compatible wallet extension.",
+        title: "No Wallet Detected",
+        description: "We couldn\'t find an Ethereum wallet in your browser. Please install MetaMask or another compatible wallet extension to connect.",
         variant: "destructive",
       });
       return;
