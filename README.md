@@ -95,8 +95,7 @@ GroqTales aims to revolutionize storytelling by leveraging AI to generate unique
 
 ## 📽️ Demo & Deliverables
 
-- **Demo Video Link**: [Paste YouTube or Loom link here]  
-- **Pitch Deck / PPT Link**: [Paste Google Slides / PDF link here]  
+- **[GroqTales](https://groq-tales.vercel.app)**
 
 ---
 
