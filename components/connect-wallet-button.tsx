@@ -84,7 +84,7 @@ export function ConnectWalletButton() {
           variant={address ? "outline" : "default"}
           className="flex items-center"
           onClick={() => {
-            console.log("Connect Wallet button clicked");
+            console.log("Connect Wallet button clicked - Debug Log");
             setOpen(true);
           }}
         >
