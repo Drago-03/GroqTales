@@ -4,6 +4,7 @@ import { createContext, useContext, useState, useEffect, ReactNode, lazy, Suspen
 import { useRouter, usePathname } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { BrowserProvider } from "ethers";
+import axios from 'axios';
 
 // Lazy load heavy components
 const LoadingAnimation = lazy(() => import("@/components/loading-animation").then(mod => ({ default: mod.LoadingAnimation })));
@@ -17,6 +18,10 @@ interface Web3ContextType {
   switchNetwork: (chainId: number) => Promise<void>;
   isBrowserSupported: boolean;
   isWalletInstalled: boolean;
+  getNFTsForOwner: (owner: string) => Promise<any>;
+  getNFTMetadata: (contractAddress: string, tokenId: string) => Promise<any>;
+  getTokenBalances: (owner: string) => Promise<any>;
+  getTokenMetadata: (contractAddress: string) => Promise<any>;
 }
 
 const Web3Context = createContext<Web3ContextType>({
@@ -28,14 +33,20 @@ const Web3Context = createContext<Web3ContextType>({
   switchNetwork: async () => {},
   isBrowserSupported: true,
   isWalletInstalled: false,
+  getNFTsForOwner: async () => [],
+  getNFTMetadata: async () => ({}),
+  getTokenBalances: async () => ({}),
+  getTokenMetadata: async () => ({}),
 });
 
 export const useWeb3 = () => useContext(Web3Context);
 
 // Constants
 const MONAD_CHAIN_ID = 10143; // 0x279f
-const MONAD_RPC_URL = 'https://testnet-rpc.monad.xyz';
+const MONAD_RPC_URL = process.env.MONAD_RPC_URL || 'https://monad-testnet.g.alchemy.com/v2/tF_nnTXDR1ZAP6cejc5WWqsu5uMLdTgT';
 const MONAD_EXPLORER_URL = 'https://explorer.monad.xyz'; // Placeholder, replace with actual explorer URL if available
+const ALCHEMY_NFT_API_URL = process.env.NEXT_PUBLIC_ALCHEMY_NFT_API_URL || 'https://monad-testnet.g.alchemy.com/nft/v3/tF_nnTXDR1ZAP6cejc5WWqsu5uMLdTgT';
+const ALCHEMY_TOKEN_API_URL = process.env.NEXT_PUBLIC_ALCHEMY_TOKEN_API_URL || 'https://monad-testnet.g.alchemy.com/v2/tF_nnTXDR1ZAP6cejc5WWqsu5uMLdTgT';
 
 // Update SUPPORTED_CHAIN_IDS to include Monad
 const SUPPORTED_CHAIN_IDS = [1, 137, MONAD_CHAIN_ID];
@@ -57,6 +68,86 @@ const checkWalletInstallation = () => {
     typeof (window as any).coinbaseWallet !== 'undefined' ||
     typeof (window as any).walletConnect !== 'undefined'
   );
+};
+
+// Function to make blockchain requests using axios
+const makeBlockchainRequest = async (method: string, params: any[] = []) => {
+  try {
+    const response = await axios.post(MONAD_RPC_URL, {
+      jsonrpc: '2.0',
+      id: 1,
+      method,
+      params,
+    });
+    return response.data.result;
+  } catch (error) {
+    console.error('Blockchain request failed:', error);
+    throw error;
+  }
+};
+
+// Function to get NFTs for a specific owner using Alchemy NFT API
+const getNFTsForOwner = async (owner: string) => {
+  try {
+    const response = await axios.get(`${ALCHEMY_NFT_API_URL}/getNFTsForOwner`, {
+      params: {
+        owner,
+        withMetadata: true
+      }
+    });
+    return response.data.ownedNfts || [];
+  } catch (error) {
+    console.error('Failed to fetch NFTs for owner:', error);
+    throw error;
+  }
+};
+
+// Function to get NFT metadata using Alchemy NFT API
+const getNFTMetadata = async (contractAddress: string, tokenId: string) => {
+  try {
+    const response = await axios.get(`${ALCHEMY_NFT_API_URL}/getNFTMetadata`, {
+      params: {
+        contractAddress,
+        tokenId
+      }
+    });
+    return response.data || {};
+  } catch (error) {
+    console.error('Failed to fetch NFT metadata:', error);
+    throw error;
+  }
+};
+
+// Function to get token balances for a specific owner using Alchemy Token API
+const getTokenBalances = async (owner: string) => {
+  try {
+    const response = await axios.post(ALCHEMY_TOKEN_API_URL, {
+      jsonrpc: '2.0',
+      id: 1,
+      method: 'alchemy_getTokenBalances',
+      params: [owner]
+    });
+    return response.data.result || {};
+  } catch (error) {
+    console.error('Failed to fetch token balances:', error);
+    throw error;
+  }
+};
+
+// Function to get token metadata using Alchemy Token API
+const getTokenMetadata = async (contractAddress: string) => {
+  try {
+    const response = await axios.post(ALCHEMY_TOKEN_API_URL, {
+      jsonrpc: '2.0',
+      id: 1,
+      method: 'alchemy_getTokenMetadata',
+      params: [contractAddress]
+    });
+    return response.data.result || {};
+  } catch (error) {
+    console.error('Failed to fetch token metadata:', error);
+    throw error;
+  }
 };
 
 // Extend the window interface
@@ -452,6 +543,10 @@ export function Web3Provider({ children }: { children: ReactNode }) {
       switchNetwork,
       isBrowserSupported,
       isWalletInstalled,
+      getNFTsForOwner,
+      getNFTMetadata,
+      getTokenBalances,
+      getTokenMetadata
     }}>
       {children}
     </Web3Context.Provider>
