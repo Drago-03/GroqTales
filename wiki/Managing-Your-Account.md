@@ -15,6 +15,7 @@ Your GroqTales account is your gateway to exploring AI-generated storytelling an
 ---
 
 ## 🌟 Table of Contents
+
 - [Creating a GroqTales Account](#creating-a-groqtales-account)
 - [Connecting a Wallet](#connecting-a-wallet)
 - [Managing Account Settings](#managing-account-settings)
@@ -130,7 +131,7 @@ GroqTales operates on the Monad blockchain, and your connected wallet must be on
      2. Select "Add Network" or "Custom RPC" (on mobile, go to Settings > Networks).
      3. Enter the following details for Monad Testnet:
         - **Network Name**: Monad Testnet
-        - **New RPC URL**: https://testnet-rpc.monad.xyz
+        - **New RPC URL**: <https://testnet-rpc.monad.xyz>
         - **Chain ID**: 10143
         - **Currency Symbol**: MONAD
         - **Block Explorer URL**: (Leave blank or check [GitHub Discussions](https://github.com/Drago-03/GroqTales/discussions) for updates)
@@ -216,4 +217,4 @@ Congratulations on mastering the management of your GroqTales account! With your
 
 ---
 
-[Back to Top](#managing-your-account-on-groqtales-️) 
+[Back to Top](#managing-your-account-on-groqtales-️)

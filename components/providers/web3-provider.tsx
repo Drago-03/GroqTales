@@ -310,10 +310,10 @@ export function Web3Provider({ children }: { children: ReactNode }) {
 
   const connectWallet = async (walletType?: string) => {
     if (!window.ethereum && !walletType) {
-      console.error('No ethereum wallet found');
+      console.error('No Ethereum wallet found');
       toast({
         title: "No Wallet Detected",
-        description: "We couldn\'t find an Ethereum wallet in your browser. Please install MetaMask or another compatible wallet extension to connect.",
+        description: "We couldn't find an Ethereum wallet in your browser. Please install MetaMask or another compatible wallet extension to connect. Visit https://metamask.io/download/ to install MetaMask.",
         variant: "destructive",
       });
       return;
@@ -335,7 +335,7 @@ export function Web3Provider({ children }: { children: ReactNode }) {
         } else {
           toast({
             title: "MetaMask Not Found",
-            description: "MetaMask is not installed. Please install MetaMask to connect.",
+            description: "MetaMask is not installed. Please install MetaMask to connect. Visit https://metamask.io/download/ to download and install it.",
             variant: "destructive",
           });
           throw new Error('MetaMask not detected');
@@ -415,7 +415,7 @@ export function Web3Provider({ children }: { children: ReactNode }) {
       }
       toast({
         title: "Connection Error",
-        description: `Failed to connect: ${errorMessage}. Please try again or check your wallet settings.`,
+        description: `Failed to connect: ${errorMessage}. Please try again or check your wallet settings. If you don't have a wallet, install MetaMask at https://metamask.io/download/.`,
         variant: "destructive",
       });
       throw error;
