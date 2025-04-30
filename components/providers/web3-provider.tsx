@@ -22,6 +22,7 @@ interface Web3ContextType {
   disconnectWallet: () => void;
   switchToBaseNetwork: () => Promise<boolean>;
   switchToMonadNetwork: () => Promise<boolean>;
+  chainId: string | null;
   // NFT functions for Monad
   mintNFTOnMonad: (storyId: string, recipient: string) => Promise<{ tokenId: string; transactionHash: string }>;
   // NFT functions for Base
@@ -36,6 +37,7 @@ const Web3Context = createContext<Web3ContextType | undefined>(undefined);
 export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [account, setAccount] = useState<string | null>(null);
   const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
+  const [chainId, setChainId] = useState<string | null>(null);
   const { toast } = useToast();
 
   // Placeholder for Coinbase OnchainKit initialization
@@ -53,11 +55,16 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
           setAccount(accounts[0].address);
         }
 
+        // Get current chainId
+        const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
+        setChainId(currentChainId);
+
         window.ethereum.on("accountsChanged", (newAccounts: string[]) => {
           setAccount(newAccounts[0] || null);
         });
 
-        window.ethereum.on("chainChanged", () => {
+        window.ethereum.on("chainChanged", (newChainId: string) => {
+          setChainId(newChainId);
           window.location.reload();
         });
       } else {
@@ -245,6 +252,7 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
     disconnectWallet,
     switchToBaseNetwork,
     switchToMonadNetwork,
+    chainId,
     mintNFTOnMonad,
     mintNFTOnBase,
     buyNFTOnBase,
