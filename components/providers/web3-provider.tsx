@@ -5,6 +5,9 @@ import { useRouter, usePathname } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { BrowserProvider } from "ethers";
 import axios from 'axios';
+// Import Coinbase AgentKit and related modules
+import { AgentKit } from '@coinbase/agentkit';
+import { useOnchainKit } from '@coinbase/onchainkit';
 
 // Lazy load heavy components
 const LoadingAnimation = lazy(() => import("@/components/loading-animation").then(mod => ({ default: mod.LoadingAnimation })));
@@ -22,6 +25,10 @@ interface Web3ContextType {
   getNFTMetadata: (contractAddress: string, tokenId: string) => Promise<any>;
   getTokenBalances: (owner: string) => Promise<any>;
   getTokenMetadata: (contractAddress: string) => Promise<any>;
+  mintNFTOnBase: (storyData: any) => Promise<any>;
+  buyNFTOnBase: (tokenId: string, buyerAddress: string) => Promise<any>;
+  sellNFTOnBase: (tokenId: string, sellerAddress: string, price: string) => Promise<any>;
+  getNFTListings: () => Promise<any>;
 }
 
 const Web3Context = createContext<Web3ContextType>({
@@ -37,6 +44,10 @@ const Web3Context = createContext<Web3ContextType>({
   getNFTMetadata: async () => ({}),
   getTokenBalances: async () => ({}),
   getTokenMetadata: async () => ({}),
+  mintNFTOnBase: async () => ({}),
+  buyNFTOnBase: async () => ({}),
+  sellNFTOnBase: async () => ({}),
+  getNFTListings: async () => ([]),
 });
 
 export const useWeb3 = () => useContext(Web3Context);
@@ -47,9 +58,12 @@ const MONAD_RPC_URL = process.env.MONAD_RPC_URL || 'https://monad-testnet.g.alch
 const MONAD_EXPLORER_URL = 'https://explorer.monad.xyz'; // Placeholder, replace with actual explorer URL if available
 const ALCHEMY_NFT_API_URL = process.env.NEXT_PUBLIC_ALCHEMY_NFT_API_URL || 'https://monad-testnet.g.alchemy.com/nft/v3/tF_nnTXDR1ZAP6cejc5WWqsu5uMLdTgT';
 const ALCHEMY_TOKEN_API_URL = process.env.NEXT_PUBLIC_ALCHEMY_TOKEN_API_URL || 'https://monad-testnet.g.alchemy.com/v2/tF_nnTXDR1ZAP6cejc5WWqsu5uMLdTgT';
+const BASE_CHAIN_ID = parseInt(process.env.NEXT_PUBLIC_BASE_CHAIN_ID || '84532'); // Base Sepolia Testnet
+const BASE_RPC_URL = process.env.NEXT_PUBLIC_BASE_RPC_URL || 'https://base-sepolia.g.alchemy.com/v2/tF_nnTXDR1ZAP6cejc5WWqsu5uMLdTgT';
+const BASE_EXPLORER_URL = 'https://sepolia.basescan.org'; // Base Sepolia Testnet explorer
 
-// Update SUPPORTED_CHAIN_IDS to include Monad
-const SUPPORTED_CHAIN_IDS = [1, 137, MONAD_CHAIN_ID];
+// Update SUPPORTED_CHAIN_IDS to include Monad and Base
+const SUPPORTED_CHAIN_IDS = [1, 137, MONAD_CHAIN_ID, BASE_CHAIN_ID];
 const DEFAULT_CHAIN_ID = 1;
 const PUBLIC_ROUTES = ['/landing', '/community', '/explore', '/stories', '/about', '/privacy', '/terms', '/genres', '/nft-gallery'];
 
@@ -148,6 +162,120 @@ const getTokenMetadata = async (contractAddress: string) => {
     console.error('Failed to fetch token metadata:', error);
     throw error;
   }
+};
+
+// Function to mint NFT using Coinbase AgentKit on Base network
+const mintNFTOnBase = async (storyData: any) => {
+  try {
+    // Placeholder for AgentKit minting logic
+    // This would typically involve uploading metadata to IPFS and minting on Base
+    const metadata = {
+      title: storyData.title,
+      description: storyData.description || 'A unique story NFT from GroqTales',
+      content: storyData.content,
+      author: storyData.author || 'Anonymous',
+      genre: storyData.genre || 'Unknown',
+    };
+    // Assume upload to IPFS is handled by existing utility
+    const tokenURI = await uploadMetadataToIPFS(metadata);
+    // Placeholder result for minting (actual implementation depends on SDK)
+    const mockResult = {
+      tokenId: 'base-' + Math.floor(Math.random() * 10000).toString(),
+      transactionHash: '0xMockTransactionHashBase',
+    };
+    // Notification (assuming toast is defined elsewhere)
+    if (typeof window !== 'undefined') {
+      console.log(`Successfully minted NFT with Token ID: ${mockResult.tokenId}`);
+    }
+    return {
+      tokenId: mockResult.tokenId,
+      transactionHash: mockResult.transactionHash,
+      status: 'minted',
+      blockchain: 'Base Sepolia Testnet'
+    };
+  } catch (error: any) {
+    console.error('Failed to mint NFT on Base:', error);
+    if (typeof window !== 'undefined') {
+      console.error(`Failed to mint NFT on Base: ${error.message || 'Unknown error'}`);
+    }
+    throw error;
+  }
+};
+
+// Function to buy NFT using Coinbase AgentKit on Base network
+const buyNFTOnBase = async (tokenId: string, buyerAddress: string) => {
+  try {
+    // Placeholder for buying logic using AgentKit
+    const mockResult = {
+      transactionHash: '0xMockBuyTransactionHashBase',
+    };
+    if (typeof window !== 'undefined') {
+      console.log(`Successfully purchased NFT with Token ID: ${tokenId}`);
+    }
+    return {
+      tokenId: tokenId,
+      transactionHash: mockResult.transactionHash,
+      status: 'purchased',
+      blockchain: 'Base Sepolia Testnet'
+    };
+  } catch (error: any) {
+    console.error('Failed to buy NFT on Base:', error);
+    if (typeof window !== 'undefined') {
+      console.error(`Failed to buy NFT on Base: ${error.message || 'Unknown error'}`);
+    }
+    throw error;
+  }
+};
+
+// Function to sell NFT using Coinbase AgentKit on Base network
+const sellNFTOnBase = async (tokenId: string, sellerAddress: string, price: string) => {
+  try {
+    // Placeholder for selling logic using AgentKit
+    const mockResult = {
+      transactionHash: '0xMockSellTransactionHashBase',
+    };
+    if (typeof window !== 'undefined') {
+      console.log(`Successfully listed NFT with Token ID: ${tokenId} for ${price}`);
+    }
+    return {
+      tokenId: tokenId,
+      transactionHash: mockResult.transactionHash,
+      status: 'listed',
+      price: price,
+      blockchain: 'Base Sepolia Testnet'
+    };
+  } catch (error: any) {
+    console.error('Failed to sell NFT on Base:', error);
+    if (typeof window !== 'undefined') {
+      console.error(`Failed to list NFT for sale on Base: ${error.message || 'Unknown error'}`);
+    }
+    throw error;
+  }
+};
+
+// Function to get NFT listings on Base network
+const getNFTListings = async () => {
+  try {
+    // Placeholder for fetching NFT listings using AgentKit
+    const mockListings = [
+      { tokenId: 'base-1234', title: 'Mock Story 1', price: '0.01 ETH', seller: '0xMockSeller1', status: 'listed' },
+      { tokenId: 'base-5678', title: 'Mock Story 2', price: '0.02 ETH', seller: '0xMockSeller2', status: 'listed' },
+    ];
+    return mockListings;
+  } catch (error: any) {
+    console.error('Failed to fetch NFT listings on Base:', error);
+    if (typeof window !== 'undefined') {
+      console.error(`Failed to fetch NFT listings: ${error.message || 'Unknown error'}`);
+    }
+    throw error;
+  }
+};
+
+// Placeholder function for uploading metadata to IPFS
+const uploadMetadataToIPFS = async (metadata: any) => {
+  // Use existing IPFS upload logic from utils/ipfs.ts or similar
+  // This is a placeholder; replace with actual implementation
+  return `ipfs://mockCID/${JSON.stringify(metadata).substring(0, 10)}`;
 };
 
 // Extend the window interface
@@ -546,7 +674,11 @@ export function Web3Provider({ children }: { children: ReactNode }) {
       getNFTsForOwner,
       getNFTMetadata,
       getTokenBalances,
-      getTokenMetadata
+      getTokenMetadata,
+      mintNFTOnBase,
+      buyNFTOnBase,
+      sellNFTOnBase,
+      getNFTListings
     }}>
       {children}
     </Web3Context.Provider>
