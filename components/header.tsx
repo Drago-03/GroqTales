@@ -83,7 +83,8 @@ export function Header() {
       { href: "/community", label: "Community Hub" },
       { href: "/community/creators", label: "Top Creators", icon: <Trophy className="h-4 w-4 mr-1.5" /> }
     ]},
-    { type: 'link', href: "/nft-gallery", label: "NFT Gallery" }
+    { type: 'link', href: "/nft-gallery", label: "NFT Gallery" },
+    { type: 'link', href: "/nft-marketplace", label: "NFT Marketplace" }
   ];
 
   return (
