@@ -2,92 +2,53 @@
 
 import { Button } from "@/components/ui/button";
 import { useWeb3 } from "@/components/providers/web3-provider";
-import { Loader2, AlertCircle } from "lucide-react";
-import { truncateAddress } from "../lib/utils";
-import Link from "next/link";
+import { useToast } from "@/components/ui/use-toast";
+import { Wallet } from "lucide-react";
 
 export function WalletConnect() {
-  const { 
-    account, 
-    chainId, 
-    connectWallet, 
-    disconnectWallet, 
-    isConnecting,
-    isBrowserSupported,
-    isWalletInstalled
-  } = useWeb3();
+  const { account, connectWallet, disconnectWallet } = useWeb3();
+  const { toast } = useToast();
 
-  const getNetworkName = (chainId: number | null) => {
-    switch (chainId) {
-      case 1:
-        return "Ethereum";
-      case 137:
-        return "Polygon";
-      default:
-        return "Unsupported Network";
+  const truncateAddress = (address: string) => {
+    return address ? `${address.substring(0, 6)}...${address.substring(address.length - 4)}` : '';
+  };
+
+  const handleConnect = async () => {
+    try {
+      await connectWallet();
+    } catch (error) {
+      console.error('Failed to connect wallet:', error);
+      toast({
+        title: "Connection Failed",
+        description: "Could not connect wallet. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
-  if (!isBrowserSupported) {
+  if (!account) {
     return (
-      <div className="flex items-center gap-2">
-        <AlertCircle className="h-4 w-4 text-destructive" />
-        <Button
-          variant="outline"
-          className="text-destructive"
-          onClick={() => window.open('https://www.google.com/chrome', '_blank')}
-        >
-          Please Use Chrome/Firefox
-        </Button>
-      </div>
-    );
-  }
-
-  if (isConnecting) {
-    return (
-      <Button disabled variant="outline" className="w-[200px]">
-        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-        Connecting...
-      </Button>
-    );
-  }
-
-  if (account) {
-    return (
-      <div className="flex items-center gap-2">
-        <div className="text-sm text-muted-foreground">
-          {getNetworkName(chainId)}
-        </div>
-        <Button
-          variant="outline"
-          className="w-[200px]"
-          onClick={disconnectWallet}
-        >
-          {truncateAddress(account)}
-        </Button>
-      </div>
-    );
-  }
-
-  if (!isWalletInstalled) {
-    return (
-      <Button
-        variant="outline"
-        className="w-[200px]"
-        onClick={() => window.open('https://metamask.io/download/', '_blank')}
+      <Button 
+        variant="outline" 
+        size="sm" 
+        onClick={handleConnect} 
+        className="hover:theme-gradient-bg hover:text-white hover:border-transparent transition-all duration-300"
       >
-        Install Wallet
+        <Wallet className="mr-2 h-4 w-4" />
+        Connect Wallet
       </Button>
     );
   }
 
   return (
-    <Button
-      variant="outline"
-      className="w-[200px]"
-      onClick={(e) => connectWallet()}
+    <Button 
+      variant="outline" 
+      size="sm" 
+      onClick={disconnectWallet} 
+      className="hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400 transition-all duration-300"
     >
-      Connect Wallet
+      <Wallet className="mr-2 h-4 w-4" />
+      {truncateAddress(account)}
     </Button>
   );
 }
