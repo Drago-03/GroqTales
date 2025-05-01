@@ -9,8 +9,10 @@ import { useToast } from "@/components/ui/use-toast";
 import { base } from "viem/chains";
 
 // Constants for Monad (placeholder values)
+/*
 const MONAD_CHAIN_ID = "0x1"; // Replace with actual Monad chain ID
 const MONAD_RPC_URL = "https://monad-rpc-url.com"; // Replace with actual Monad RPC URL
+*/
 
 // Constants for Base network
 const BASE_CHAIN_ID = base.id;
@@ -21,12 +23,15 @@ interface Web3ContextType {
   connectWallet: () => Promise<void>;
   disconnectWallet: () => void;
   switchToBaseNetwork: () => Promise<boolean>;
-  switchToMonadNetwork: () => Promise<boolean>;
+  //switchToMonadNetwork: () => Promise<boolean>;
   chainId: string | null;
+  switchNetwork: (targetChainId: string) => Promise<boolean>;
   // NFT functions for Monad
-  mintNFTOnMonad: (storyId: string, recipient: string) => Promise<{ tokenId: string; transactionHash: string }>;
+  //mintNFTOnMonad: (storyId: string, recipient: string) => Promise<{ tokenId: string; transactionHash: string }>;
   // NFT functions for Base
-  mintNFTOnBase: (storyId: string, recipient: string) => Promise<{ tokenId: string; transactionHash: string }>;
+  mintNFTOnBase: (storyId: string, recipient: string) => Promise<{
+    metadata: any; tokenId: string; transactionHash: string 
+}>;
   buyNFTOnBase: (tokenId: string, buyer: string) => Promise<{ tokenId: string; transactionHash: string }>;
   sellNFTOnBase: (tokenId: string, seller: string, price: string) => Promise<{ tokenId: string; transactionHash: string }>;
   getNFTListings: () => Promise<any[]>;
@@ -143,7 +148,7 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const switchToMonadNetwork = async (): Promise<boolean> => {
+  const switchNetwork = async (targetChainId: string): Promise<boolean> => {
     if (!provider || !account) {
       toast({
         title: "Wallet Not Connected",
@@ -154,17 +159,25 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     try {
-      await provider.send("wallet_switchEthereumChain", [{ chainId: MONAD_CHAIN_ID }]);
-      toast({
-        title: "Network Switched",
-        description: "Successfully switched to Monad network.",
-      });
-      return true;
+      if (targetChainId === BASE_CHAIN_ID.toString()) {
+        return await switchToBaseNetwork();
+      /*
+      } else if (targetChainId === MONAD_CHAIN_ID) {
+        return await switchToMonadNetwork();
+      */
+      } else {
+        toast({
+          title: "Unsupported Network",
+          description: "The selected network is not supported.",
+          variant: "destructive",
+        });
+        return false;
+      }
     } catch (error) {
-      console.error("Failed to switch to Monad network:", error);
+      console.error("Failed to switch network:", error);
       toast({
         title: "Network Switch Failed",
-        description: "Failed to switch to Monad network. Please try manually through your wallet.",
+        description: "Failed to switch network. Please try manually through your wallet.",
         variant: "destructive",
       });
       return false;
@@ -172,6 +185,7 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // Placeholder for Monad NFT minting
+  /*
   const mintNFTOnMonad = async (storyId: string, recipient: string) => {
     if (!provider || !account) {
       throw new Error("Wallet not connected");
@@ -181,6 +195,7 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
     // Return dummy data for now
     return { tokenId: `monad-${storyId}`, transactionHash: "0x..." };
   };
+  */
 
   // NFT functions for Base using Coinbase OnchainKit (placeholders for now)
   const mintNFTOnBase = async (storyId: string, recipient: string) => {
@@ -251,10 +266,18 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
     connectWallet,
     disconnectWallet,
     switchToBaseNetwork,
-    switchToMonadNetwork,
+    //switchToMonadNetwork,
     chainId,
-    mintNFTOnMonad,
-    mintNFTOnBase,
+    switchNetwork,
+    //mintNFTOnMonad,
+    mintNFTOnBase: async (storyId: string, recipient: string) => {
+      const result = await mintNFTOnBase(storyId, recipient);
+      return {
+        metadata: {}, // Add empty metadata object
+        tokenId: result.tokenId,
+        transactionHash: result.transactionHash
+      };
+    },
     buyNFTOnBase,
     sellNFTOnBase,
     getNFTListings,

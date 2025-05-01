@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useWeb3 } from "@/components/providers/web3-provider";
-import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -27,7 +26,6 @@ interface NFT {
 
 export function NFTMarketplace() {
   const { account, connectWallet, buyNFTOnBase, sellNFTOnBase, getNFTListings } = useWeb3();
-  const { toast } = useToast();
   const [nfts, setNfts] = useState<NFT[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -45,79 +43,48 @@ export function NFTMarketplace() {
         setNfts(taleNFTs);
       } catch (error) {
         console.error('Failed to fetch NFT listings:', error);
-        toast({
-          title: "Error",
-          description: "Failed to load NFT listings. Please try again.",
-          variant: "destructive",
-        });
+        console.log('Error: Failed to load NFT listings. Please try again.');
       } finally {
         setLoading(false);
       }
     };
 
     fetchNFTs();
-  }, [getNFTListings, toast]);
+  }, [getNFTListings]);
 
   const handleConnectWallet = async () => {
     try {
       await connectWallet();
     } catch (error) {
       console.error('Failed to connect wallet:', error);
-      toast({
-        title: "Connection Failed",
-        description: "Could not connect wallet. Please try again.",
-        variant: "destructive",
-      });
+      console.log('Connection Failed: Could not connect wallet. Please try again.');
     }
   };
 
   const handleBuyNFT = async (nft: NFT) => {
     if (!account) {
-      toast({
-        title: "Wallet Not Connected",
-        description: "Please connect your wallet to buy NFTs.",
-        variant: "destructive",
-      });
+      console.log('Wallet Not Connected: Please connect your wallet to buy NFTs.');
       return;
     }
 
     try {
       const result = await buyNFTOnBase(nft.tokenId, account);
-      toast({
-        title: "Purchase Successful",
-        description: `Successfully purchased ${nft.title} (Token ID: ${result.tokenId}). Transaction: ${result.transactionHash}`,
-        variant: "default",
-      });
-      // Refresh listings after purchase
-      const listings = await getNFTListings();
-      setNfts(listings.filter((nft: NFT) => nft.status === 'listed' && nft.title.toLowerCase().includes('story')));
+      console.log(`Listing Successful: Successfully purchased ${nft.title} (Token ID: ${result.tokenId}). Transaction: ${result.transactionHash}`);
     } catch (error) {
       console.error('Failed to buy NFT:', error);
-      toast({
-        title: "Purchase Failed",
-        description: "Failed to purchase NFT. Please try again.",
-        variant: "destructive",
-      });
+      console.log('Purchase Failed: Failed to purchase NFT. Please try again.');
     }
   };
 
   const handleSellNFT = async () => {
     if (!account || !selectedNFT || !sellPrice) {
-      toast({
-        title: "Invalid Input",
-        description: "Please connect your wallet, select an NFT, and set a price to sell.",
-        variant: "destructive",
-      });
+      console.log('Invalid Input: Please connect your wallet, select an NFT, and set a price to sell.');
       return;
     }
 
     try {
       const result = await sellNFTOnBase(selectedNFT.tokenId, account, sellPrice);
-      toast({
-        title: "Listing Successful",
-        description: `Successfully listed ${selectedNFT.title} for ${sellPrice} ETH. Transaction: ${result.transactionHash}`,
-        variant: "default",
-      });
+      console.log(`Listing Successful: Successfully listed ${selectedNFT.title} for ${sellPrice} ETH. Transaction: ${result.transactionHash}`);
       // Refresh listings after listing
       const listings = await getNFTListings();
       setNfts(listings.filter((nft: NFT) => nft.status === 'listed' && nft.title.toLowerCase().includes('story')));
@@ -125,11 +92,7 @@ export function NFTMarketplace() {
       setSellPrice("");
     } catch (error) {
       console.error('Failed to sell NFT:', error);
-      toast({
-        title: "Listing Failed",
-        description: "Failed to list NFT for sale. Please try again.",
-        variant: "destructive",
-      });
+      console.log('Listing Failed: Failed to list NFT for sale. Please try again.');
     }
   };
 
