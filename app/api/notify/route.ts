@@ -10,11 +10,8 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { fid, notification } = body;
     
-    const result = await sendFrameNotification(
-      fid,
-      notification.title,
-      notification.body
-    );
+    // Explicitly pass arguments separately to match function signature
+    const result = await sendFrameNotification(fid, notification.title, notification.body);
     
     return NextResponse.json(result);
   } catch (error) {
