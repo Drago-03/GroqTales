@@ -8,15 +8,24 @@ export {};
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { fid, title, body: notificationBody } = body;
-    // Pass notification parameters as separate arguments
-    const result = await sendFrameNotification({ 
-      fid,
-      title,
-      body: notificationBody 
+    const { fid, notification } = body;
+    
+    // Explicitly pass arguments as an object with fid, title, body, and notificationDetails
+    const result = await sendFrameNotification({
+      fid: fid,
+      title: notification.title,
+      body: notification.body,
+      notificationDetails: notification.notificationDetails
     });
     
-    return NextResponse.json(result);
+    if (!result.success) {
+      return NextResponse.json(
+        { error: result.error || 'Failed to send notification' },
+        { status: 500 }
+      );
+    }
+    
+    return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     console.error('Error sending notification:', error);
     return NextResponse.json({ success: false, error: 'Failed to send notification' }, { status: 500 });
