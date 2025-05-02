@@ -8,28 +8,12 @@ import { toast } from '@/components/ui/use-toast';
  * @returns A promise with the result of the notification attempt
  */
 export async function sendFrameNotification(
-  recipientAddress: string,
-  title: string,
-  body: string
-): Promise<{ success: boolean; error?: string }> {
-  try {
-    // For now, we'll simulate sending a notification via toast
-    // In a real implementation, this would interact with a backend API
-    toast({
-      title: title,
-      description: body,
-      variant: 'default',
-    });
-    
-    console.log(`Sending notification to ${recipientAddress}: ${title} - ${body}`);
-    
-    // Return success for simulation
-    return { success: true };
-  } catch (error) {
-    console.error('Error sending notification:', error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Failed to send notification'
-    };
-  }
+  params: { fid: string; title: string; body: string; }): Promise<{ success: boolean; error?: string }> {
+  const { fid, title, body } = params;
+  // Implementation for sending notification to a specific FID
+  // This is a placeholder for actual notification logic
+  console.log(`Sending notification to FID: ${fid}, Title: ${title}, Body: ${body}`);
+  
+  // Return a mock response for now
+  return { success: true };
 } 
