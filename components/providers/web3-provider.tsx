@@ -9,6 +9,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { base } from "viem/chains";
 import { uploadToIPFS, getIPFSUrl } from '@/utils/ipfs';
 
+// Import Coinbase Wallet SDK
+import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
+
 // Constants for Monad (placeholder values)
 /*
 const MONAD_CHAIN_ID = "0x1"; // Replace with actual Monad chain ID
@@ -17,7 +20,16 @@ const MONAD_RPC_URL = "https://monad-rpc-url.com"; // Replace with actual Monad 
 
 // Constants for Base network
 const BASE_CHAIN_ID = base.id;
-const BASE_RPC_URL = "https://mainnet.base.org";
+const BASE_RPC_URL = process.env.NEXT_PUBLIC_COINBASE_MAINNET_RPC_ENDPOINT || "https://mainnet.base.org";
+
+// Initialize Coinbase Wallet SDK with environment variables
+const sdk = new CoinbaseWalletSDK({
+  appName: "GroqTales",
+  appChainIds: [BASE_CHAIN_ID]
+});
+
+// Make web3 provider
+const coinbaseProvider = sdk.makeWeb3Provider();
 
 interface Web3ContextType {
   account: string | null;
@@ -87,22 +99,27 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [toast]);
 
   const connectWallet = async () => {
-    if (!provider) {
+    if (!coinbaseProvider) {
+      console.error("No Coinbase provider found. Please ensure Coinbase Wallet SDK is properly initialized.");
       toast({
         title: "No Wallet Provider",
-        description: "No Ethereum wallet provider found. Please install MetaMask.",
+        description: "No Coinbase wallet provider found. Please install Coinbase Wallet.",
         variant: "destructive",
       });
       return;
     }
 
     try {
-      const accounts = await provider.send("eth_requestAccounts", []);
-      setAccount(accounts[0]);
-      toast({
-        title: "Wallet Connected",
-        description: `Successfully connected: ${accounts[0].substring(0, 6)}...${accounts[0].substring(accounts[0].length - 4)}`,
-      });
+      const addresses = await coinbaseProvider.request({ method: 'eth_requestAccounts' }) as string[];
+      if (addresses && addresses.length > 0) {
+        setAccount(addresses[0]);
+        toast({
+          title: "Wallet Connected",
+          description: `Successfully connected: ${addresses[0].substring(0, 6)}...${addresses[0].substring(addresses[0].length - 4)}`,
+        });
+      } else {
+        throw new Error("No accounts returned from Coinbase Wallet.");
+      }
     } catch (error) {
       console.error("Failed to connect wallet:", error);
       toast({
