@@ -4,9 +4,10 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { useToast } from "@/components/ui/use-toast";
 
-// Import Coinbase OnchainKit and related modules
+// Import Coinbase AgentKit and related modules
 // Removed problematic import for OnchainKit due to linter errors
 import { base } from "viem/chains";
+import { uploadToIPFS, getIPFSUrl } from '@/utils/ipfs';
 
 // Constants for Monad (placeholder values)
 /*
@@ -29,7 +30,7 @@ interface Web3ContextType {
   // NFT functions for Monad
   //mintNFTOnMonad: (storyId: string, recipient: string) => Promise<{ tokenId: string; transactionHash: string }>;
   // NFT functions for Base
-  mintNFTOnBase: (storyId: string, recipient: string) => Promise<{
+  mintNFTOnBase: (storyId: string, recipient: string, metadata?: any) => Promise<{
     metadata: any; tokenId: string; transactionHash: string 
 }>;
   buyNFTOnBase: (tokenId: string, buyer: string) => Promise<{ tokenId: string; transactionHash: string }>;
@@ -198,15 +199,27 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
   */
 
   // NFT functions for Base using Coinbase OnchainKit (placeholders for now)
-  const mintNFTOnBase = async (storyId: string, recipient: string) => {
+  const mintNFTOnBase = async (storyId: string, recipient: string, metadata?: any) => {
     if (!provider || !account) {
       throw new Error("Wallet not connected");
     }
     try {
       // Placeholder for OnchainKit minting on Base network
       console.log(`Minting NFT for story ${storyId} to ${recipient} on Base`);
-      // Return dummy data for now
-      return { tokenId: `base-${storyId}`, transactionHash: "0x..." };
+      // Upload metadata to IPFS
+      const metadataToUpload = metadata || {
+        title: `Story NFT ${storyId}`,
+        description: `An AI-generated story NFT with ID ${storyId}`,
+        content: `Content for story ${storyId}`,
+        createdAt: new Date().toISOString(),
+        genre: 'Fantasy',
+        author: recipient
+      };
+      const ipfsHash = await uploadToIPFS(JSON.stringify(metadataToUpload), { name: `story-${storyId}.json` });
+      const tokenURI = getIPFSUrl(ipfsHash);
+      console.log(`Metadata uploaded to IPFS with hash: ${ipfsHash}, URI: ${tokenURI}`);
+      // Return dummy data for now with metadata
+      return { tokenId: `base-${storyId}`, transactionHash: "0x...", metadata: metadataToUpload };
     } catch (error) {
       console.error("Failed to mint NFT on Base:", error);
       throw new Error("Failed to mint NFT on Base");
@@ -270,14 +283,7 @@ export const Web3Provider: React.FC<{ children: React.ReactNode }> = ({ children
     chainId,
     switchNetwork,
     //mintNFTOnMonad,
-    mintNFTOnBase: async (storyId: string, recipient: string) => {
-      const result = await mintNFTOnBase(storyId, recipient);
-      return {
-        metadata: {}, // Add empty metadata object
-        tokenId: result.tokenId,
-        transactionHash: result.transactionHash
-      };
-    },
+    mintNFTOnBase,
     buyNFTOnBase,
     sellNFTOnBase,
     getNFTListings,
