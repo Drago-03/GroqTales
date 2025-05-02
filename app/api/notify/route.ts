@@ -11,6 +11,7 @@ export async function POST(req: Request) {
     const { fid, notification } = body;
     
     // Explicitly pass arguments as an object with fid, title, body, and notificationDetails
+    // Updated on May 2, 2025, to force build recognition of changes
     const result = await sendFrameNotification({
       fid: fid,
       title: notification.title,
