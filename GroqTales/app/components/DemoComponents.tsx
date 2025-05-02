@@ -14,7 +14,7 @@ import {
   TransactionStatusAction,
   TransactionStatusLabel,
   TransactionStatus,
-} from "@coinbase/onchainkit/transaction";
+} from "@/lib/transaction-components";
 import { useNotification } from "@coinbase/onchainkit/minikit";
 
 type ButtonProps = {
