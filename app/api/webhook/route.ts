@@ -18,6 +18,7 @@ const deleteUserNotificationDetails = async (address: string) => {
 };
 
 // API route handler for webhook events
+// Updated on May 2, 2025, to force build recognition of changes - Revision 2
 export async function POST(req: Request) {
   try {
     const body = await req.json();

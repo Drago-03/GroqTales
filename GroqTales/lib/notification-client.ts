@@ -16,6 +16,13 @@ type SendFrameNotificationResult =
   | { state: "rate_limit" }
   | { state: "success" };
 
+export type SendFrameNotificationParams = {
+  fid: number;
+  title: string;
+  body: string;
+  notificationDetails?: FrameNotificationDetails | null;
+};
+
 export async function sendFrameNotification({
   fid,
   title,
