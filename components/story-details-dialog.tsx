@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Link from 'next/link';
 import {
   Dialog,
   DialogContent,
@@ -10,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Eye, MessageSquare, Share2, Wallet } from "lucide-react";
+import { Heart, Eye, MessageSquare, Share2, Wallet, ShoppingCart } from "lucide-react";
 import { useWeb3 } from "@/components/providers/web3-provider";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -41,9 +42,29 @@ export function StoryDetailsDialog({
         description: "Please connect your wallet to purchase this NFT",
         variant: "destructive",
       });
+      // Trigger wallet connection
+      document.getElementById("connect-wallet-button")?.click();
       return;
     }
-    onPurchase?.();
+    
+    toast({
+      title: "Processing Payment",
+      description: "Completing your purchase transaction...",
+    });
+    
+    // Simulate transaction processing
+    setTimeout(() => {
+      toast({
+        title: "Purchase Successful!",
+        description: `You now own "${story.title}"`,
+      });
+      
+      // Close current dialog
+      onClose();
+      
+      // Call the parent component's purchase handler
+      onPurchase?.();
+    }, 2000);
   };
 
   // Prevent dialog from closing when clicking inside
@@ -54,7 +75,7 @@ export function StoryDetailsDialog({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
-        className="max-w-3xl h-[90vh] flex flex-col overflow-hidden"
+        className="max-w-3xl h-[90vh] flex flex-col overflow-hidden top-0 translate-y-0 mt-4"
         onClick={handleContentClick}
       >
         <DialogHeader className="flex-shrink-0">
@@ -71,6 +92,14 @@ export function StoryDetailsDialog({
               alt={story.title}
               className="w-full h-full object-cover rounded-lg"
             />
+            
+            {/* Purchase Badge */}
+            {story.price && (
+              <div className="absolute top-4 right-4 bg-black/80 text-white px-3 py-1.5 rounded-full text-sm font-medium flex items-center">
+                <ShoppingCart className="h-3.5 w-3.5 mr-1.5 text-amber-400" />
+                {story.price}
+              </div>
+            )}
           </div>
 
           <div className="space-y-6">
@@ -87,14 +116,44 @@ export function StoryDetailsDialog({
                   </p>
                 </div>
               </div>
-              {story.genre && (
-                <Badge variant="secondary">{story.genre}</Badge>
-              )}
+              <div className="flex items-center gap-2">
+                {story.genre && (
+                  <Badge variant="secondary">{story.genre}</Badge>
+                )}
+              </div>
             </div>
 
             <div className="prose dark:prose-invert max-w-none">
               <p>{story.description || story.content}</p>
             </div>
+
+            {/* Purchase CTA */}
+            {story.price && (
+              <div className="p-4 bg-accent/20 rounded-lg border border-accent/30">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                  <div>
+                    <h3 className="font-semibold text-lg mb-1">Own this unique story as an NFT</h3>
+                    <p className="text-sm text-muted-foreground">Collect this story and get exclusive benefits from the author.</p>
+                  </div>
+                  <div className="flex gap-3">
+                    <Button 
+                      onClick={handlePurchase} 
+                      className="bg-amber-600 hover:bg-amber-700 text-white"
+                      size="lg"
+                    >
+                      <Wallet className="w-4 h-4 mr-2" />
+                      Buy for {story.price}
+                    </Button>
+                    <Link href="/nft-marketplace" passHref>
+                      <Button variant="outline" size="lg">
+                        <ShoppingCart className="w-4 h-4 mr-2" />
+                        Go to Marketplace
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="flex items-center justify-between pt-4 border-t">
               <div className="flex space-x-4">
@@ -116,12 +175,6 @@ export function StoryDetailsDialog({
                   <Eye className="w-4 h-4 inline mr-1" />
                   {story.views || 0} views
                 </div>
-                {story.price && (
-                  <Button onClick={handlePurchase} className="theme-gradient-bg">
-                    <Wallet className="w-4 h-4 mr-2" />
-                    Purchase for {story.price}
-                  </Button>
-                )}
               </div>
             </div>
           </div>

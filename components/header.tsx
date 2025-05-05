@@ -18,6 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { WalletConnect } from "@/components/wallet-connect";
 
 // Type definitions for nav items
 type NavSubItem = {
@@ -156,6 +157,18 @@ export function Header() {
         </div>
 
         <div className="flex items-center space-x-3">
+          <WalletConnect />
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="hidden md:flex hover:bg-primary hover:text-white hover:border-transparent transition-colors"
+            onClick={handleCreateClick}
+          >
+            <PenSquare className="h-4 w-4 mr-2" />
+            Create
+          </Button>
+          <ThemeToggle />
+          <UserNav />
         </div>
       </div>
 

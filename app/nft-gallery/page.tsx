@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Heart, Eye, ArrowUpRight, Star, BarChart3 } from "lucide-react";
+import { Heart, Eye, ArrowUpRight, Star, BarChart3, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
@@ -316,243 +316,241 @@ export default function NftGalleryPage() {
   };
 
   return (
-    <div className="py-12 min-h-screen">
-      <div className="container mx-auto px-4">
-        {/* Hero Section */}
-        <div className="mb-16 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 gradient-heading">NFT Story Gallery</h1>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-8">
-            Discover the most popular tokenized stories on GroqTales. These unique digital collectibles 
-            represent the future of storytelling in the Web3 era.
-          </p>
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">NFT Gallery</h1>
+          <p className="text-muted-foreground">Explore unique AI-generated story NFTs from our community</p>
         </div>
-
-        {/* Gallery Controls */}
-        <div className="mb-8 flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-4 md:mb-0">
-            <Tabs defaultValue="trending" value={activeTab} onValueChange={setActiveTab}>
-              <TabsList>
-                <TabsTrigger value="trending">Trending</TabsTrigger>
-                <TabsTrigger value="bestsellers">Best Sellers</TabsTrigger>
-                <TabsTrigger value="newest">Newest</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-          <div className="flex items-center gap-2">
-            <label htmlFor="genre-filter" className="text-sm text-muted-foreground">Filter by Genre:</label>
-            <select 
-              id="genre-filter"
-              name="genre-filter"
-              className="p-2 rounded-md border border-border bg-background text-sm"
-              aria-label="Filter stories by genre"
-              value={selectedGenre}
-              onChange={(e) => setSelectedGenre(e.target.value)}
-            >
-              <option value="all">All Genres</option>
-              {uniqueGenres.map(genre => (
-                <option key={genre} value={genre}>
-                  {genre.charAt(0).toUpperCase() + genre.slice(1)}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Featured Section */}
-        <div className="mb-16">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">
-              <span className="gradient-heading">
-                {activeTab === "trending" && "Top 10 Trending"}
-                {activeTab === "bestsellers" && "Top 10 Best Sellers"}
-                {activeTab === "newest" && "10 Newest"}
-              </span>
-              {selectedGenre !== "all" && (
-                <span className="gradient-heading"> in {selectedGenre.charAt(0).toUpperCase() + selectedGenre.slice(1)}</span>
-              )}
-              {" Stories"}
-            </h2>
-            <Button variant="outline" size="sm" className="gap-1">
-              View All <ArrowUpRight className="h-4 w-4" />
+        
+        <div className="flex flex-col sm:flex-row gap-3">
+          <Link href="/nft-marketplace" passHref>
+            <Button className="bg-amber-600 hover:bg-amber-700 text-white flex items-center gap-2">
+              <ShoppingCart className="h-4 w-4" />
+              Go to Marketplace
             </Button>
-          </div>
+          </Link>
+        </div>
+      </div>
+      
+      <Tabs defaultValue="top10" className="w-full mb-8">
+        <TabsList>
+          <TabsTrigger value="trending">Trending</TabsTrigger>
+          <TabsTrigger value="bestsellers">Best Sellers</TabsTrigger>
+          <TabsTrigger value="newest">Newest</TabsTrigger>
+        </TabsList>
+      </Tabs>
 
-          {featuredNFTs.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-              {featuredNFTs.map((nft) => (
-                <Card key={nft.id} className="bg-card border-border hover:shadow-md transition-shadow overflow-hidden">
-                  <div className="relative">
-                    <div className="aspect-[3/4] bg-muted relative overflow-hidden">
-                      {imageError[nft.id] ? (
-                        <div className="absolute inset-0 flex items-center justify-center bg-muted">
-                          <span className="text-muted-foreground text-sm">{nft.title}</span>
+      {/* Featured Section */}
+      <div className="mb-16">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold">
+            <span className="gradient-heading">
+              {activeTab === "trending" && "Top 10 Trending"}
+              {activeTab === "bestsellers" && "Top 10 Best Sellers"}
+              {activeTab === "newest" && "10 Newest"}
+            </span>
+            {selectedGenre !== "all" && (
+              <span className="gradient-heading"> in {selectedGenre.charAt(0).toUpperCase() + selectedGenre.slice(1)}</span>
+            )}
+            {" Stories"}
+          </h2>
+          <Button variant="outline" size="sm" className="gap-1">
+            View All <ArrowUpRight className="h-4 w-4" />
+          </Button>
+        </div>
+
+        {featuredNFTs.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+            {featuredNFTs.map((nft) => (
+              <Card key={nft.id} className="bg-card border-border hover:shadow-md transition-shadow overflow-hidden">
+                <div className="relative">
+                  <div className="aspect-[3/4] bg-muted relative overflow-hidden">
+                    {imageError[nft.id] ? (
+                      <div className="absolute inset-0 flex items-center justify-center bg-muted">
+                        <span className="text-muted-foreground text-sm">{nft.title}</span>
+                      </div>
+                    ) : (
+                      <Image
+                        src={nft.coverImage}
+                        alt={nft.title}
+                        fill
+                        className="object-cover"
+                        onError={() => handleImageError(nft.id)}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60" />
+                  </div>
+                  <Badge className="absolute top-2 right-2 bg-primary text-white">
+                    #{nft.id}
+                  </Badge>
+                </div>
+                <CardHeader className="p-4 pb-0">
+                  <div className="flex items-center gap-2 mb-2">
+                    {imageError[`avatar-${nft.id}`] ? (
+                      <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center">
+                        <span className="text-xs">{nft.author[0]}</span>
+                      </div>
+                    ) : (
+                      <Image
+                        src={nft.authorAvatar}
+                        alt={nft.author}
+                        width={24}
+                        height={24}
+                        className="rounded-full bg-muted"
+                        onError={() => handleImageError(Number(`avatar-${nft.id}`))}
+                      />
+                    )}
+                    <CardTitle className="text-base truncate">{nft.title}</CardTitle>
+                  </div>
+                  <CardDescription className="truncate">by {nft.author}</CardDescription>
+                </CardHeader>
+                <CardContent className="p-4 pt-2">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <Star className="h-4 w-4 text-yellow-500" />
+                      <span className="text-sm">{nft.genre}</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                      <Heart className="h-3 w-3" />
+                      <span>{nft.likes}</span>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="p-4 pt-0 border-t border-border flex justify-between items-center">
+                  <div className="flex items-center">
+                    <BarChart3 className="h-4 w-4 mr-1 text-primary" />
+                    <span className="text-sm font-medium">{nft.sales || 0} sales</span>
+                  </div>
+                  <Badge variant="outline" className="bg-primary/10 hover:bg-primary/20 text-primary">
+                    {nft.price}
+                  </Badge>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 text-muted-foreground">
+            No stories found for the selected genre.
+          </div>
+        )}
+      </div>
+
+      {/* Top 100 Ranking */}
+      <div>
+        <h2 className="text-2xl font-bold mb-6">
+          {selectedGenre === "all" ? "Top 100 NFT Stories" : `Top 100 ${selectedGenre.charAt(0).toUpperCase() + selectedGenre.slice(1)} Stories`}
+        </h2>
+        
+        <div className="overflow-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-muted/50">
+                <th className="p-3 text-left font-medium">Rank</th>
+                <th className="p-3 text-left font-medium">Story</th>
+                <th className="p-3 text-left font-medium">Creator</th>
+                <th className="p-3 text-left font-medium">Genre</th>
+                <th className="p-3 text-left font-medium">Price</th>
+                <th className="p-3 text-left font-medium">Sales</th>
+                <th className="p-3 text-left font-medium">Engagement</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filterByGenre(nftData).slice(0, 100).map((nft) => (
+                <tr key={nft.id} className={`border-b border-border hover:bg-muted/30 
+                  ${nft.isTop10 ? 'bg-gradient-to-r from-primary/5 to-transparent' : ''}`}>
+                  <td className="p-3">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center
+                      ${nft.isTop10 ? 'theme-gradient-bg text-white' : 'bg-muted/50'}`}>
+                      {nft.id}
+                    </div>
+                  </td>
+                  <td className="p-3">
+                    <div className="flex items-center gap-3">
+                      {imageError[`table-${nft.id}`] ? (
+                        <div className="w-10 h-10 rounded bg-muted flex items-center justify-center">
+                          <span className="text-xs text-muted-foreground">{nft.title[0]}</span>
                         </div>
                       ) : (
                         <Image
                           src={nft.coverImage}
                           alt={nft.title}
-                          fill
-                          className="object-cover"
-                          onError={() => handleImageError(nft.id)}
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          width={40}
+                          height={40}
+                          className="rounded bg-muted object-cover"
+                          onError={() => handleImageError(Number(`table-${nft.id}`))}
                         />
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60" />
-                    </div>
-                    <Badge className="absolute top-2 right-2 bg-primary text-white">
-                      #{nft.id}
-                    </Badge>
-                  </div>
-                  <CardHeader className="p-4 pb-0">
-                    <div className="flex items-center gap-2 mb-2">
-                      {imageError[`avatar-${nft.id}`] ? (
-                        <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center">
-                          <span className="text-xs">{nft.author[0]}</span>
+                      <div>
+                        <div className="font-medium">{nft.title}</div>
+                        <div className="text-xs text-muted-foreground truncate max-w-[200px]">
+                          {nft.description}
                         </div>
-                      ) : (
-                        <Image
-                          src={nft.authorAvatar}
-                          alt={nft.author}
-                          width={24}
-                          height={24}
-                          className="rounded-full bg-muted"
-                          onError={() => handleImageError(Number(`avatar-${nft.id}`))}
-                        />
-                      )}
-                      <CardTitle className="text-base truncate">{nft.title}</CardTitle>
-                    </div>
-                    <CardDescription className="truncate">by {nft.author}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="p-4 pt-2">
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-2">
-                        <Star className="h-4 w-4 text-yellow-500" />
-                        <span className="text-sm">{nft.genre}</span>
                       </div>
-                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                    </div>
+                  </td>
+                  <td className="p-3">{nft.author}</td>
+                  <td className="p-3">
+                    <Badge variant="outline">{nft.genre}</Badge>
+                  </td>
+                  <td className="p-3 font-medium">{nft.price}</td>
+                  <td className="p-3">{nft.sales || 0}</td>
+                  <td className="p-3">
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1">
                         <Heart className="h-3 w-3" />
-                        <span>{nft.likes}</span>
+                        <span className="text-sm">{nft.likes}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Eye className="h-3 w-3" />
+                        <span className="text-sm">{nft.views}</span>
                       </div>
                     </div>
-                  </CardContent>
-                  <CardFooter className="p-4 pt-0 border-t border-border flex justify-between items-center">
-                    <div className="flex items-center">
-                      <BarChart3 className="h-4 w-4 mr-1 text-primary" />
-                      <span className="text-sm font-medium">{nft.sales || 0} sales</span>
-                    </div>
-                    <Badge variant="outline" className="bg-primary/10 hover:bg-primary/20 text-primary">
-                      {nft.price}
-                    </Badge>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12 text-muted-foreground">
-              No stories found for the selected genre.
-            </div>
-          )}
-        </div>
-
-        {/* Top 100 Ranking */}
-        <div>
-          <h2 className="text-2xl font-bold mb-6">
-            {selectedGenre === "all" ? "Top 100 NFT Stories" : `Top 100 ${selectedGenre.charAt(0).toUpperCase() + selectedGenre.slice(1)} Stories`}
-          </h2>
-          
-          <div className="overflow-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-muted/50">
-                  <th className="p-3 text-left font-medium">Rank</th>
-                  <th className="p-3 text-left font-medium">Story</th>
-                  <th className="p-3 text-left font-medium">Creator</th>
-                  <th className="p-3 text-left font-medium">Genre</th>
-                  <th className="p-3 text-left font-medium">Price</th>
-                  <th className="p-3 text-left font-medium">Sales</th>
-                  <th className="p-3 text-left font-medium">Engagement</th>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {filterByGenre(nftData).slice(0, 100).map((nft) => (
-                  <tr key={nft.id} className={`border-b border-border hover:bg-muted/30 
-                    ${nft.isTop10 ? 'bg-gradient-to-r from-primary/5 to-transparent' : ''}`}>
-                    <td className="p-3">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center
-                        ${nft.isTop10 ? 'theme-gradient-bg text-white' : 'bg-muted/50'}`}>
-                        {nft.id}
-                      </div>
-                    </td>
-                    <td className="p-3">
-                      <div className="flex items-center gap-3">
-                        {imageError[`table-${nft.id}`] ? (
-                          <div className="w-10 h-10 rounded bg-muted flex items-center justify-center">
-                            <span className="text-xs text-muted-foreground">{nft.title[0]}</span>
-                          </div>
-                        ) : (
-                          <Image
-                            src={nft.coverImage}
-                            alt={nft.title}
-                            width={40}
-                            height={40}
-                            className="rounded bg-muted object-cover"
-                            onError={() => handleImageError(Number(`table-${nft.id}`))}
-                          />
-                        )}
-                        <div>
-                          <div className="font-medium">{nft.title}</div>
-                          <div className="text-xs text-muted-foreground truncate max-w-[200px]">
-                            {nft.description}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-3">{nft.author}</td>
-                    <td className="p-3">
-                      <Badge variant="outline">{nft.genre}</Badge>
-                    </td>
-                    <td className="p-3 font-medium">{nft.price}</td>
-                    <td className="p-3">{nft.sales || 0}</td>
-                    <td className="p-3">
-                      <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-1">
-                          <Heart className="h-3 w-3" />
-                          <span className="text-sm">{nft.likes}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Eye className="h-3 w-3" />
-                          <span className="text-sm">{nft.views}</span>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
+      </div>
 
-        {selectedStory && (
-          <>
-            <StoryDetailsDialog
-              isOpen={showDetailsDialog}
-              onClose={() => setShowDetailsDialog(false)}
-              story={selectedStory}
-              onPurchase={handlePurchase}
-              onComment={handleComment}
-              onLike={handleLike}
-            />
+      {selectedStory && (
+        <>
+          <StoryDetailsDialog
+            isOpen={showDetailsDialog}
+            onClose={() => setShowDetailsDialog(false)}
+            story={selectedStory}
+            onPurchase={handlePurchase}
+            onComment={handleComment}
+            onLike={handleLike}
+          />
 
-            <StoryCommentsDialog
-              isOpen={showCommentsDialog}
-              onClose={() => setShowCommentsDialog(false)}
-              storyTitle={selectedStory.title}
-              comments={[]}
-              onAddComment={() => {}}
-              isWalletConnected={!!account}
-            />
-          </>
-        )}
+          <StoryCommentsDialog
+            isOpen={showCommentsDialog}
+            onClose={() => setShowCommentsDialog(false)}
+            storyTitle={selectedStory.title}
+            comments={[]}
+            onAddComment={() => {}}
+            isWalletConnected={!!account}
+          />
+        </>
+      )}
+
+      {/* Marketplace CTA Section */}
+      <div className="mt-16 p-8 bg-gradient-to-r from-amber-100/30 to-amber-50/30 dark:from-amber-900/20 dark:to-amber-950/20 rounded-xl border border-amber-200/30 dark:border-amber-800/30">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="text-center md:text-left">
+            <h2 className="text-2xl font-bold mb-3">Ready to Buy or Sell NFTs?</h2>
+            <p className="text-muted-foreground max-w-2xl">Visit our NFT marketplace to buy unique story NFTs directly from creators or list your own stories as NFTs for sale.</p>
+          </div>
+          <Link href="/nft-marketplace" passHref>
+            <Button size="lg" className="bg-amber-600 hover:bg-amber-700 text-white flex items-center gap-2">
+              <ShoppingCart className="h-5 w-5" />
+              Go to NFT Marketplace
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );
