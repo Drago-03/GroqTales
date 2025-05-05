@@ -83,6 +83,12 @@ export function Footer() {
                   NFT Gallery
                 </Link>
               </li>
+              <li>
+                <Link href="/nft-marketplace" className="text-sm hover:text-foreground transition-colors flex items-center">
+                  <Wallet className="h-4 w-4 mr-2 opacity-60" />
+                  NFT Marketplace
+                </Link>
+              </li>
             </ul>
           </div>
 

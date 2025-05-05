@@ -1,11 +1,12 @@
 "use client";
 
 import { type ReactNode, useCallback, useMemo, useState } from "react";
-import { useAccount } from "wagmi";
+// yo fam, we need this for checking if the wallet is connected n stuff
+import { useAccount } from "wagmi"; 
 import {
-  Transaction,
-  TransactionButton,
-  TransactionToast,
+  Transaction, // fr fr this handles all our transaction logic
+  TransactionButton, // no cap, this button be handling our tx submissions
+  TransactionToast, // lowkey shows those sweet transaction notifications
   TransactionToastAction,
   TransactionToastIcon,
   TransactionToastLabel,
@@ -90,9 +91,9 @@ function Card({
       onClick();
     }
   };
-
   return (
     <div
+      role={onClick ? "button" : undefined}
       className={`bg-[var(--app-card-bg)] backdrop-blur-md rounded-xl shadow-lg border border-[var(--app-card-border)] overflow-hidden transition-all hover:shadow-xl ${className} ${onClick ? "cursor-pointer" : ""}`}
       onClick={onClick}
       onKeyDown={onClick ? handleKeyDown : undefined}
@@ -403,7 +404,7 @@ function TransactionCard() {
 
   const sendNotification = useNotification();
 
-  const handleSuccess = useCallback(async (response: TransactionResponse) => {
+  const handleSuccess = useCallback(async (response: typeof TransactionResponse) => {
     const transactionHash = response.transactionReceipts[0].transactionHash;
 
     console.log(`Transaction successful: ${transactionHash}`);
