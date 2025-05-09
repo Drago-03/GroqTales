@@ -16,6 +16,8 @@ const FloatingGithub = () => (
   </Link>
 );
 
+
+
 // Floating doodle elements
 const FloatingDoodles = () => (
   <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
