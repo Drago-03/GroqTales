@@ -32,6 +32,19 @@ const sdk = new CoinbaseWalletSDK({
 const coinbaseProvider = sdk.makeWeb3Provider();
 
 // Types
+interface NFT {
+  id: string;
+  tokenId: string;
+  title: string;
+  description: string;
+  price: string;
+  seller: string;
+  owner: string;
+  image: string;
+  metadata: any;
+  status: 'listed' | 'unlisted' | 'sold';
+}
+
 interface Web3ContextType {
   account: string | null;
   chainId: number | null;
@@ -43,6 +56,17 @@ interface Web3ContextType {
   networkName: string;
   ensName: string | null;
   switchNetwork: (chainId: number) => Promise<void>;
+  mintNFTOnBase: (metadata: any, recipient?: string) => Promise<{
+    tokenId: string;
+    transactionHash: string;
+    metadata: {
+      content: string;
+      [key: string]: any;
+    };
+  }>;
+  buyNFTOnBase: (tokenId: string, price: string) => Promise<{ transactionHash: string; tokenId: string }>;
+  sellNFTOnBase: (tokenId: string, price: string) => Promise<{ transactionHash: string }>;
+  getNFTListings: () => Promise<NFT[]>;
 }
 
 // Create context with default values
@@ -57,6 +81,14 @@ const Web3Context = createContext<Web3ContextType>({
   networkName: "",
   ensName: null,
   switchNetwork: async () => {},
+  mintNFTOnBase: async () => ({
+    tokenId: "",
+    transactionHash: "",
+    metadata: { content: "" }
+  }),
+  buyNFTOnBase: async () => ({ transactionHash: "", tokenId: "" }),
+  sellNFTOnBase: async () => ({ transactionHash: "" }),
+  getNFTListings: async () => [],
 });
 
 // Networks mapping
@@ -191,6 +223,141 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // Add mintNFTOnBase function
+  const mintNFTOnBase = async (metadata: any, recipient?: string) => {
+    if (!account) {
+      throw new Error("Wallet not connected");
+    }
+
+    if (chainId !== BASE_CHAIN_ID) {
+      await switchNetwork(BASE_CHAIN_ID);
+    }
+
+    try {
+      // Upload metadata to IPFS
+      const ipfsHash = await uploadToIPFS(metadata);
+      const tokenURI = getIPFSUrl(ipfsHash);
+
+      // Mock minting for now - in production, this would interact with your smart contract
+      const mockTokenId = `0x${Math.floor(Math.random() * 1000000).toString(16)}`;
+      const mockTxHash = `0x${Array.from({length: 64}, () => Math.floor(Math.random() * 16).toString(16)).join('')}`;
+
+      toast({
+        title: "NFT Minted Successfully",
+        description: `Your NFT has been minted on Base with token ID ${mockTokenId}`,
+      });
+
+      return {
+        tokenId: mockTokenId,
+        transactionHash: mockTxHash,
+        metadata: {
+          ...metadata,
+          content: metadata.content || metadata.description || "",
+        }
+      };
+    } catch (error: any) {
+      toast({
+        title: "Minting Failed",
+        description: error.message || "Failed to mint NFT",
+        variant: "destructive",
+      });
+      throw error;
+    }
+  };
+
+  // Add buyNFTOnBase function
+  const buyNFTOnBase = async (tokenId: string, price: string) => {
+    if (!account) {
+      throw new Error("Wallet not connected");
+    }
+
+    if (chainId !== BASE_CHAIN_ID) {
+      await switchNetwork(BASE_CHAIN_ID);
+    }
+
+    try {
+      // Mock buying for now - in production, this would interact with your smart contract
+      const mockTxHash = `0x${Array.from({length: 64}, () => Math.floor(Math.random() * 16).toString(16)).join('')}`;
+
+      toast({
+        title: "NFT Purchased Successfully",
+        description: `You have purchased NFT #${tokenId} for ${price}`,
+      });
+
+      return { transactionHash: mockTxHash, tokenId };
+    } catch (error: any) {
+      toast({
+        title: "Purchase Failed",
+        description: error.message || "Failed to purchase NFT",
+        variant: "destructive",
+      });
+      throw error;
+    }
+  };
+
+  // Add sellNFTOnBase function
+  const sellNFTOnBase = async (tokenId: string, price: string) => {
+    if (!account) {
+      throw new Error("Wallet not connected");
+    }
+
+    if (chainId !== BASE_CHAIN_ID) {
+      await switchNetwork(BASE_CHAIN_ID);
+    }
+
+    try {
+      // Mock selling for now - in production, this would interact with your smart contract
+      const mockTxHash = `0x${Array.from({length: 64}, () => Math.floor(Math.random() * 16).toString(16)).join('')}`;
+
+      toast({
+        title: "NFT Listed Successfully",
+        description: `Your NFT #${tokenId} has been listed for ${price}`,
+      });
+
+      return { transactionHash: mockTxHash };
+    } catch (error: any) {
+      toast({
+        title: "Listing Failed",
+        description: error.message || "Failed to list NFT",
+        variant: "destructive",
+      });
+      throw error;
+    }
+  };
+
+  // Add getNFTListings function
+  const getNFTListings = async () => {
+    try {
+      // Mock NFT listings for now - in production, this would fetch from your smart contract
+      const mockNFTs: NFT[] = Array.from({ length: 10 }, (_, i) => ({
+        id: `${i + 1}`,
+        tokenId: `0x${Math.floor(Math.random() * 1000000).toString(16)}`,
+        title: `NFT #${i + 1}`,
+        description: `This is a mock NFT #${i + 1}`,
+        price: `${(Math.random() * 2 + 0.1).toFixed(3)} ETH`,
+        seller: `0x${Array.from({length: 40}, () => Math.floor(Math.random() * 16).toString(16)).join('')}`,
+        owner: `0x${Array.from({length: 40}, () => Math.floor(Math.random() * 16).toString(16)).join('')}`,
+        image: `https://picsum.photos/seed/${i}/400/400`,
+        status: Math.random() > 0.3 ? 'listed' : (Math.random() > 0.5 ? 'unlisted' : 'sold'),
+        metadata: {
+          attributes: [
+            { trait_type: "Type", value: Math.random() > 0.5 ? "Comic" : "Text" },
+            { trait_type: "Rarity", value: ["Common", "Uncommon", "Rare", "Legendary"][Math.floor(Math.random() * 4)] }
+          ]
+        }
+      }));
+
+      return mockNFTs;
+    } catch (error: any) {
+      toast({
+        title: "Failed to Load NFTs",
+        description: error.message || "Failed to fetch NFT listings",
+        variant: "destructive",
+      });
+      throw error;
+    }
+  };
+
   // Check for existing connection on mount
   useEffect(() => {
     const checkConnection = async () => {
@@ -273,6 +440,10 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
     networkName,
     ensName,
     switchNetwork,
+    mintNFTOnBase,
+    buyNFTOnBase,
+    sellNFTOnBase,
+    getNFTListings,
   };
 
   return <Web3Context.Provider value={value}>{children}</Web3Context.Provider>;

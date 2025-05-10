@@ -15,7 +15,7 @@ export async function getUserNotificationDetails(
     return null;
   }
 
-  return await redis.get<FrameNotificationDetails>(
+  return await redis.get(
     getUserNotificationDetailsKey(fid),
   );
 }

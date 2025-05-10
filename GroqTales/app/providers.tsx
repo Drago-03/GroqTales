@@ -1,24 +1,19 @@
 "use client";
 
 import { type ReactNode } from "react";
-import { base } from "wagmi/chains";
-import { MiniKitProvider } from "@coinbase/onchainkit/minikit";
+// removed actual import - we're using our mock instead
+// import { MiniKitProvider } from "@coinbase/onchainkit/minikit";
+
+// Let's make our own provider that's just a wrapper for now
+// This way we don't need the actual MiniKit provider
+function MockMiniKitProvider({ children }: { children: ReactNode }) {
+  return <>{children}</>;
+}
 
 export function Providers(props: { children: ReactNode }) {
   return (
-    <MiniKitProvider
-      apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
-      chain={base}
-      config={{
-        appearance: {
-          mode: "auto",
-          theme: "mini-app-theme",
-          name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME,
-          logo: process.env.NEXT_PUBLIC_ICON_URL,
-        },
-      }}
-    >
+    <MockMiniKitProvider>
       {props.children}
-    </MiniKitProvider>
+    </MockMiniKitProvider>
   );
 }

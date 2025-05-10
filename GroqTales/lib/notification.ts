@@ -15,9 +15,8 @@ export async function getUserNotificationDetails(
     return null;
   }
 
-  return await redis.get<FrameNotificationDetails>(
-    getUserNotificationDetailsKey(fid),
-  );
+  const result = await redis.get(getUserNotificationDetailsKey(fid));
+  return result as FrameNotificationDetails | null;
 }
 
 export async function setUserNotificationDetails(

@@ -4,20 +4,20 @@ import {
   useMiniKit,
   useAddFrame,
   useOpenUrl,
-} from "@coinbase/onchainkit/minikit";
+} from "@/lib/mini-kit-mock";
 import {
   Name,
   Identity,
   Address,
   Avatar,
   EthBalance,
-} from "@coinbase/onchainkit/identity";
+} from "@/lib/onchainkit-identity-mock";
 import {
   ConnectWallet,
   Wallet,
   WalletDropdown,
   WalletDropdownDisconnect,
-} from "@coinbase/onchainkit/wallet";
+} from "@/lib/onchainkit-wallet-mock";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { Button } from "./components/DemoComponents";
 import { Icon } from "./components/DemoComponents";
