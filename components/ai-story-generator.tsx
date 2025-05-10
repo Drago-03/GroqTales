@@ -305,7 +305,8 @@ export function AIStoryGenerator({
         const currentPanel = panels[currentPanelIndex];
         const loadImage = async () => {
           setIsLoadingImage(true);
-          const imageUrl = await generateImageWithImagen(currentPanel.caption);
+          // Placeholder for image generation function
+          const imageUrl = 'https://via.placeholder.com/800x400?text=Comic+Panel';
           setPanelImage(imageUrl);
           setIsLoadingImage(false);
         };
@@ -568,28 +569,46 @@ Please generate this story with attention to quality, creativity, and narrative 
 
   // Handle generating a story and minting it as an NFT in one step
   const handleGenerateAndMint = async () => {
-    // Validate wallet connection for NFT minting
-    if (storyFormat === 'nft' && !account) {
-      console.log('Wallet not connected for NFT minting');
+    if (!account) {
       toast({
-        title: "Wallet Required",
-        description: "Please connect your wallet to mint stories as NFTs",
+        title: "Wallet Not Connected",
+        description: "Please connect your wallet to generate and mint an NFT.",
         variant: "destructive",
       });
       return;
     }
-    // Log wallet and network status for debugging
-    console.log('Wallet connected:', !!account);
 
-    // At minimum, we need a genre or prompt
-    if (!prompt && !plotOutline && !mainCharacters && !setting) {
+    // Check if the network is Monad Testnet
+    if (typeof window !== 'undefined' && window.ethereum) {
+      try {
+        const network = await window.ethereum.request({ method: 'eth_chainId' });
+        if (network !== '0x27cf') { // Monad Testnet Chain ID
+          toast({
+            title: "Wrong Network",
+            description: "Please switch to Monad Testnet to mint NFTs.",
+            variant: "destructive",
+          });
+          return;
+        }
+      } catch (error) {
+        console.error("Error checking network:", error);
+        toast({
+          title: "Network Check Failed",
+          description: "Could not verify network. Please ensure you're on Monad Testnet.",
+          variant: "destructive",
+        });
+        return;
+      }
+    } else {
       toast({
-        title: "Input Required",
-        description: "Please provide at least a brief story idea or outline",
+        title: "Wallet Not Detected",
+        description: "Please ensure your wallet extension is installed and active.",
         variant: "destructive",
       });
       return;
     }
+
+    setIsActionLoading(true);
 
     try {
       const engineeredPrompt = constructPrompt();
@@ -632,63 +651,16 @@ Please generate this story with attention to quality, creativity, and narrative 
           title: "NFT Minted Successfully",
           description: `Your story "${result.metadata.title}" has been minted as NFT #${result.tokenId}`,
         });
-      } 
-      // For free story publishing
-      else {
-        // Just generate the story
-        const modelToUse = selectedModel || defaultModel || availableModels.LLAMA_3_70B || 'llama-3.3-70b-versatile';
-        const content = await generate(
-          engineeredPrompt,
-          modelToUse,
-          { 
-            temperature, 
-            system_prompt: "You are an expert creative writer with a talent for crafting engaging stories.",
-            max_tokens: 2500,
-            apiKey: apiKeyToUse
-          }
-        );
-        
-        if (!content || content.trim() === '') {
-          throw new Error("Empty response received from Groq API");
-        }
-        
-        // Set generated content
-        setGeneratedContent(content);
-        
-        // Simulate publishing (in a real app, you would save to database here)
-        setTimeout(() => {
-          // Create a mock URL for the published story
-          const mockStoryId = `story-${Date.now().toString(36)}`;
-          setMintedNftUrl(`/stories/${mockStoryId}`);
-          setActiveTab("mint");
-          
-          toast({
-            title: "Story Published Successfully",
-            description: "Your story has been published and is now available to readers",
-          });
-        }, 1000);
       }
-    } catch (error: any) {
-      console.error("Error in generate and mint:", error);
-      
-      // Determine appropriate error message
-      let errorMessage = "Failed to process your request. Please try again.";
-      
-      if (error.message && error.message.includes("API key")) {
-        errorMessage = "Invalid or missing Groq API key. Please check your API key.";
-      } else if (error.message && error.message.includes("wallet")) {
-        errorMessage = "Wallet connection issue. Please reconnect your wallet and try again.";
-      } else if (error.message && error.message.includes("network")) {
-        errorMessage = "Network error. Please check your connection to the Monad network.";
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
-      
+    } catch (error) {
+      console.error(error);
       toast({
-        title: "Process Failed",
-        description: errorMessage,
+        title: "Error",
+        description: error instanceof Error ? error.message : "An error occurred. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsActionLoading(false);
     }
   };
 
@@ -696,43 +668,29 @@ Please generate this story with attention to quality, creativity, and narrative 
   const handleMintNFT = async () => {
     if (!account) {
       toast({
-        title: "Not Connected",
-        description: "Please connect your wallet first.",
+        title: "Wallet Not Connected",
+        description: "Please connect your wallet to mint an NFT.",
         variant: "destructive",
       });
       return;
     }
+
     setIsMinting(true);
     try {
-      // Prepare NFT metadata
-      const nftMetadata = {
-        name: title || 'AI Generated Story NFT',
-        description: overview || generatedSummary || 'An AI-generated story turned into a unique NFT.',
-        // Comment out the metadata property as it might not be needed or defined
-        // metadata: {
-        //   story: generatedContent,
-        //   genre: selectedGenres.join(', '),
-        //   createdAt: new Date().toISOString(),
-        // },
-      };
-      // Call mintNFTOnBase with the correct number of arguments
-      const result = await mintNFTOnBase(nftMetadata.name, nftMetadata.description);
-      if (result && result.tokenId && result.transactionHash) {
-        setNFTTokenId(result.tokenId);
-        setNFTTransactionHash(result.transactionHash);
+      // Placeholder for actual minting logic
+      toast({
+        title: "Minting NFT",
+        description: "Please wait while we process your NFT...",
+      });
+      // Add actual minting logic here once implemented
+      // For now, we'll simulate a successful minting
+      setTimeout(() => {
         toast({
           title: "NFT Minted Successfully",
-          description: `Your story has been minted as an NFT with Token ID: ${result.tokenId}`,
+          description: "Your story has been minted as an NFT.",
         });
-        // Navigate to the success page with query parameters
-        router.push(`/nft-success?tokenId=${result.tokenId}&txHash=${result.transactionHash}`);
-      } else {
-        toast({
-          title: "Minting Failed",
-          description: "Failed to retrieve Token ID or Transaction Hash.",
-          variant: "destructive",
-        });
-      }
+        setMintedNftUrl(`/nft-gallery/simulated-id`);
+      }, 2000);
     } catch (error) {
       console.error("Error minting NFT:", error);
       toast({
@@ -745,1335 +703,720 @@ Please generate this story with attention to quality, creativity, and narrative 
     }
   };
 
-  // Function to generate story layouts as recommendations
-  const generateStoryLayout = async () => {
-    try {
-      const layoutPrompt = constructLayoutPrompt();
-      const layoutText = await generate(layoutPrompt, selectedModel, { temperature: 0.5 });
-      setGeneratedContent(layoutText);
-      setShowOutput(true);
-    } catch (error) {
-      console.error('Error generating story layout:', error);
-      setError('An error occurred while generating the story layout');
-    } finally {
-      setIsActionLoading(false);
-    }
-  };
-
-  // Constructs a prompt specifically for story layouts
-  const constructLayoutPrompt = () => {
-    return `
-# Story Layout Generator
-
-## Task
-Generate a structured story layout or outline based on the following parameters. Do not write a full story, but provide a clear structure with sections for introduction, main plot points, character development, and conclusion. Include placeholders for key scenes or events that the user can fill in.
-
-## Story Parameters
-- Genres: ${selectedGenres.map(g => g.replace(/-/g, ' ')).join(", ") || "[Select appropriate genres if not specified]"}
-- Story Type: ${storyType === "comic" ? "Comic Style Outline (formatted with panel-by-panel breakdowns and placeholder dialogue for a graphic novel style)" : "Text Story Outline (traditional narrative structure with key scenes and plot points)"}
-- Overview: ${overview || "[No overview provided, use creativity based on genres]"}
-
-## Instructions
-- Provide a title placeholder.
-- Outline the story in a clear, structured format with numbered sections or panels.
-- Include brief descriptions for each section or panel (2-3 sentences max).
-- Leave room for user customization by including placeholder text like '[User can describe a key event here]' or '[Add character dialogue]'.
-- Ensure the layout is genre-appropriate and engaging.
-`;
-  };
-
-  const isLoading = isGroqLoading || isMinting || isActionLoading;
-
-  // Add this welcome animation component
-  const WelcomeAnimation = () => {
-    // Local state to ensure animation completes
-    const [animating, setAnimating] = useState(true);
-    
-    // Use useEffect to control animation timing
-    useEffect(() => {
-      if (!showWelcomeAnimation) return;
-      
-      // Start animation
-      setAnimating(true);
-      
-      // Set timer to end animation
-      const timer = setTimeout(() => {
-        setAnimating(false);
-      }, 2800); // Slightly less than the parent timeout
-      
-      return () => clearTimeout(timer);
-    }, [showWelcomeAnimation]);
-    
-    if (!showWelcomeAnimation || !animating) return null;
-
-  return (
-      <motion.div
-        className="fixed inset-0 flex items-center justify-center z-50 bg-background/90 backdrop-blur-md"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <motion.div
-          className="text-center p-8 bg-card/80 rounded-xl shadow-lg border border-primary/20"
-          initial={{ scale: 0.8, y: 20 }}
-          animate={{ scale: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <motion.div
-            animate={{ 
-              scale: [1, 1.2, 1],
-              rotate: [0, 10, -10, 0]
-            }}
-            transition={{ duration: 1.5, times: [0, 0.4, 0.8, 1] }}
-            className="mx-auto mb-4"
-          >
-            <Sparkles className="h-20 w-20 text-primary" />
-          </motion.div>
-          <motion.h2 
-            className="text-3xl font-bold mb-2"
-            animate={{ opacity: [0, 1] }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            Let's Create Your Story!
-          </motion.h2>
-          <motion.p
-            className="text-lg text-muted-foreground mb-4"
-            animate={{ opacity: [0, 1] }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-          >
-            Fill in the details below to begin your creative journey
-          </motion.p>
-          <motion.div
-            className="w-12 h-1 bg-primary mx-auto rounded-full"
-            animate={{ width: [0, 100, 0] }}
-            transition={{ duration: 3, ease: "easeInOut" }}
-          />
-        </motion.div>
-      </motion.div>
-    );
-  };
-
-  // Function to fetch images from Unsplash as placeholders
-  const fetchUnsplashImage = async (prompt: string) => {
-    try {
-      const apiKey = process.env.NEXT_PUBLIC_UNSPLASH_API_KEY;
-      if (!apiKey || apiKey === 'your_unsplash_api_key_here') {
-        throw new Error('Unsplash API key is not defined in environment variables');
-      }
-
-      console.log('Fetching image for prompt:', prompt);
-      const query = encodeURIComponent(prompt.split(' ').slice(0, 3).join(' '));
-      const response = await fetch(`https://api.unsplash.com/search/photos?query=${query}&per_page=1&client_id=${apiKey}`);
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch image from Unsplash: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      if (data.results && data.results.length > 0) {
-        return data.results[0].urls.regular;
-      } else {
-        throw new Error('No image found on Unsplash for the given query');
-      }
-    } catch (error) {
-      console.error('Error fetching image from Unsplash:', error);
-      // Return a placeholder image URL as fallback
-      return 'https://via.placeholder.com/800x400?text=AI+Generated+Image+Failed';
-    }
-  };
-
-  // Replace the generateImageWithImagen function call with fetchUnsplashImage
-  const generateImageWithImagen = async (prompt: string) => {
-    try {
-      const apiKey = process.env.NEXT_PUBLIC_STABILITY_AI_API_KEY;
-      if (!apiKey || apiKey === 'your_stability_ai_api_key_here') {
-        throw new Error('Stability AI API key is not defined in environment variables');
-      }
-
-      console.log('Generating image for prompt:', prompt);
-      const comicStylePrompt = `Comic book style drawing depicting: ${prompt}. The scene MUST be illustrated with bold lines, vibrant colors, and a non-realistic, hand-drawn aesthetic typical of classic graphic novels. STRICTLY AVOID any photorealistic, 3D rendered, or realism styles; focus exclusively on a 2D comic art style with clear outlines, flat colors, and dynamic compositions that enhance the narrative. Ensure the image looks like it belongs in a traditional comic book.`;
-      const response = await fetch('https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          text_prompts: [{ text: comicStylePrompt }],
-          cfg_scale: 7,
-          height: 512,
-          width: 512,
-          steps: 30,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to generate image with Stability AI: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      if (data && data.artifacts && data.artifacts.length > 0 && data.artifacts[0].base64) {
-        return `data:image/png;base64,${data.artifacts[0].base64}`;
-      } else {
-        throw new Error('No image data returned from Stability AI API');
-      }
-    } catch (error) {
-      console.error('Error generating image with Stability AI:', error);
-      // Fallback to Unsplash image fetch
-      return await fetchUnsplashImage(prompt);
-    }
-  };
-
-  // Function to render the generated content
-  const renderGeneratedContent = () => {
-    if (!generatedContent) return null;
-
-    if (storyType === 'comic') {
-      let panels;
-      try {
-        const parsedData = JSON.parse(generatedContent);
-        panels = parsedData.panels || parseComicPanelsFromText(generatedContent);
-      } catch (e) {
-        panels = parseComicPanelsFromText(generatedContent);
-      }
-
-      const handleNextPanel = () => {
-        setCurrentPanelIndex((prevIndex) => Math.min(prevIndex + 1, panels.length - 1));
-      };
-
-      const handlePrevPanel = () => {
-        setCurrentPanelIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-      };
-
-      if (panels.length === 0) {
-        return <div className="text-center py-4">No comic panels generated.</div>;
-      }
-
-      const currentPanel = panels[currentPanelIndex];
-      // Ensure the image prompt is strictly comic style with detailed description
-      const comicStylePrompt = `Comic book style drawing depicting: ${currentPanel.caption}. The scene should be illustrated with bold lines, vibrant colors, and a non-realistic, hand-drawn aesthetic typical of classic graphic novels. Avoid photorealistic or 3D rendered styles; focus on a 2D comic art style with clear outlines and dynamic compositions that enhance the narrative.`;
-
-      return (
-        <div className="comic-container mt-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 p-4 rounded-lg shadow-md">
-          <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white">Comic Panels Presentation</h3>
-          <div className="comic-slide bg-white dark:bg-gray-700 p-3 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-            <div className="flex justify-between items-center mb-2">
-              <h4 className="text-lg font-semibold text-gray-800 dark:text-white">Panel {currentPanel.number}</h4>
-              <div className="flex space-x-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    navigator.clipboard.writeText(currentPanel.caption + '\n' + currentPanel.dialogue.map((d: {character: string; text: string}) => `${d.character}: ${d.text}`).join('\n'));
-                    toast({
-                      title: "Copied",
-                      description: "Panel text copied to clipboard",
-                    });
-                  }}
-                  className="hover:bg-gray-200 dark:hover:bg-gray-600"
-                >
-                  <Copy className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    const updatedPanel = window.prompt('Edit the panel description:', currentPanel.caption);
-                    if (updatedPanel && updatedPanel !== currentPanel.caption) {
-                      const updatedPanels = [...panels];
-                      updatedPanels[currentPanelIndex].caption = updatedPanel;
-                      setGeneratedContent(JSON.stringify({ title: title || extractTitleFromStory(generatedContent), panels: updatedPanels }));
-                      toast({
-                        title: "Updated",
-                        description: "Panel updated successfully",
-                      });
-                    }
-                  }}
-                  className="hover:bg-gray-200 dark:hover:bg-gray-600"
-                >
-                  <Wand2 className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-            <div className="panel-image-container mb-2" style={{ height: '300px', overflow: 'hidden' }}>
-              {isLoadingImage ? (
-                <div className="flex justify-center items-center h-full">
-                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                  <span className="ml-2">Loading image...</span>
-                </div>
-              ) : (
-                <img src={panelImage} alt={`Panel ${currentPanel.number}`} className="w-full h-full object-cover rounded-lg" />
-              )}
-            </div>
-            <div className="dialogue-container space-y-2 mt-2">
-              {currentPanel.dialogue.map((dialogue: {character: string; text: string}, index: number) => (
-                <div key={index} className="dialogue bg-gray-100 dark:bg-gray-600 p-2 rounded-lg">
-                  <span className="font-bold text-gray-800 dark:text-white">{dialogue.character}: </span>
-                  <span className="text-gray-700 dark:text-gray-300">{dialogue.text}</span>
-                </div>
-              ))}
-              <div className="dialogue bg-gray-100 dark:bg-gray-600 p-2 rounded-lg">
-                <span className="font-bold text-gray-800 dark:text-white">Caption: </span>
-                <span className="text-gray-700 dark:text-gray-300">{currentPanel.caption}</span>
-              </div>
-            </div>
-          </div>
-          <div className="navigation-buttons flex justify-between mt-4">
-            <Button
-              variant="outline"
-              onClick={handlePrevPanel}
-              disabled={currentPanelIndex === 0}
-              className="hover:bg-gray-200 dark:hover:bg-gray-600"
-            >
-              Previous
-            </Button>
-            <Button
-              variant="outline"
-              onClick={handleNextPanel}
-              disabled={currentPanelIndex === panels.length - 1}
-              className="hover:bg-gray-200 dark:hover:bg-gray-600"
-            >
-              Next
-            </Button>
-          </div>
-          <div className="panel-indicator text-center mt-2 text-gray-600 dark:text-gray-400 text-sm">
-            Panel {currentPanelIndex + 1} of {panels.length}
-          </div>
-        </div>
-      );
-    }
-
-    const extractedTitle = extractTitleFromStory(generatedContent);
-    // Remove the title from the content to prevent repetition
-    let displayContent = generatedContent;
-    if (extractedTitle && generatedContent.startsWith(extractedTitle)) {
-      displayContent = generatedContent.substring(extractedTitle.length).trim();
-    } else if (extractedTitle && generatedContent.startsWith(`# ${extractedTitle}`)) {
-      displayContent = generatedContent.substring(extractedTitle.length + 2).trim();
-    }
-
-    return (
-      <div className="mt-6 p-6 bg-card rounded-lg shadow-md border max-h-[60vh] overflow-y-auto">
-        <h2 className="text-3xl font-bold mb-4 text-card-foreground">{title || extractedTitle || 'Untitled AI Story'}</h2>
-        <p className="text-sm text-muted-foreground mb-4">Genre: {selectedGenres.join(', ') || 'Not specified'}</p>
-        <div className="mb-4"></div>
-        <div className="prose dark:prose-invert max-w-none text-card-foreground">
-          {displayContent}
-        </div>
-        <div className="mt-4 flex justify-between items-center">
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={() => alert('Copy functionality will be implemented soon.')} className="hover:theme-gradient-bg hover:text-white transition-all duration-300">
-              <Copy className="h-4 w-4 mr-2" />
-              Copy
-            </Button>
-            <Button variant="outline" onClick={() => alert('Download functionality will be implemented soon.')} className="hover:theme-gradient-bg hover:text-white transition-all duration-300">
-              <Download className="h-4 w-4 mr-2" />
-              Download
-            </Button>
-          </div>
-          {storyType === 'nft' && (
-            <Button 
-              className="theme-gradient-bg text-white border-0 hover:opacity-90 transition-all duration-300" 
-              onClick={() => alert('Mint NFT functionality will be implemented soon.')} 
-              disabled={false}
-            >
-              <Sparkles className="h-4 w-4 mr-2" />
-              Mint as NFT
-            </Button>
-          )}
-        </div>
-      </div>
-    );
-  };
-
-  // Configure stream handlers for the story generation
-  const setupStreamHandlers = () => {
-    const onChunk = async (chunk: string, modelOutput: any) => {
-      if (streaming) {
-        setGeneratedContent((prevContent) => (prevContent ?? '') + chunk);
-      }
-      
-      tempGeneratedContent += chunk;
-      
-      // If we're using LLaMa 3 (Groq) and stream was just completed
-      if (modelOutput && modelOutput.complete) {
-        // Wait a moment for async state updates
-        await new Promise(resolve => setTimeout(resolve, 300));
-        
-        if (storyType === 'comic') {
-          try {
-            const comicPanels = parseComicPanelsFromText(tempGeneratedContent);
-            const comicData = {
-              title: title || extractTitleFromStory(tempGeneratedContent),
-              panels: comicPanels
-            };
-            
-            // Replace the generated content with structured comic data
-            setGeneratedContent(JSON.stringify(comicData));
-            
-            // Save the comic JSON in addition to the raw markdown
-            // Note: saveContent function doesn't exist in the current implementation
-            // This section can be removed or implemented if needed
-          } catch (e) {
-            console.error('Failed to process comic panels:', e);
-          }
-        }
-      }
-    };
-
-    return {
-      onStart: () => {
-        console.log('Stream started');
-        setStreaming(true);
-        setIsActionLoading(false);
-        tempGeneratedContent = '';
-      },
-      onChunk,
-      onComplete: (modelOutput: any) => {
-        console.log('Stream completed');
-        setStreaming(false);
-      },
-      onToken: (token: any, modelOutput: any) => {
-        // Optional: Process individual tokens
-      },
-      onError: (error: Error) => {
-        console.error('Stream error:', error);
-        setStreaming(false);
-        setIsActionLoading(false);
-        setError(`Error: ${error.message}`);
-      }
-    };
-  };
-
-  // Add a new button or tab for generating story layouts
-  const renderControls = () => {
-    return (
-      <div className="flex flex-wrap gap-4 mb-6">
-        <Button 
-          onClick={handleGenerate} 
-          disabled={isGroqLoading || isActionLoading} 
-          className="bg-indigo-600 hover:bg-indigo-700 text-white"
-        >
-          {isActionLoading ? (
-            <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Generating...
-            </>
-          ) : (
-            "Generate Story"
-          )}
-        </Button>
-        <Button 
-          onClick={handleReset} 
-          variant="outline" 
-          disabled={isGroqLoading || isActionLoading}
-          className="border-gray-600 text-gray-600 hover:bg-gray-100"
-        >
-          Reset
-        </Button>
-        {account && (
-          <Button 
-            onClick={handleGenerateAndMint} 
-            disabled={isGroqLoading || isActionLoading} 
-            className="bg-purple-600 hover:bg-purple-700 text-white"
-          >
-            {isActionLoading ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Generating NFT...
-              </>
-            ) : (
-              "Generate NFT (Paid Feature)"
-            )}
-          </Button>
-        )}
-      </div>
-    );
-  };
-
-  const handleGenerateSummary = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (!generatedContent) return;
-    setIsSummarizing(true);
-    try {
-      const summaryPrompt = constructSummaryPrompt();
-      const summary = await generate(summaryPrompt);
-      setGeneratedSummary(summary);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to generate summary. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSummarizing(false);
-    }
-  };
-
-  const analyzeStory = async () => {
-    if (!generatedContent) {
-      toast({
-        title: "No content to analyze",
-        description: "Please generate a story first.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsAnalyzing(true);
-    try {
-      const analysisPrompt = constructAnalysisPrompt();
-      const analysis = await generate(analysisPrompt);
-      setGeneratedAnalysis(analysis);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to analyze story. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsAnalyzing(false);
-    }
-  };
-
-  const constructSummaryPrompt = () => {
-    return `You are a skilled storyteller tasked with summarizing a story. Your summary should capture the essence of the narrative in a concise yet engaging manner. Focus on the main plot points, key characters, and significant events. Avoid unnecessary details or tangents. Keep the summary under 200 words.\n\nStory to summarize:\n${generatedContent}\n\nSummary:`;
-  };
-
-  const constructAnalysisPrompt = () => {
-    return `You are a literary critic tasked with analyzing a story. Provide a detailed analysis that includes:\n- Identification of genre(s) and themes\n- Examination of character development and key character arcs\n- Assessment of narrative structure and pacing\n- Notable strengths in the storytelling\n- Suggestions for improvement or areas that could be expanded\n\nKeep your analysis clear, insightful, and under 400 words.\n\nStory to analyze:\n${generatedContent}\n\nAnalysis:`;
-  };
-
-  const handleReset = () => {
-    setGeneratedContent('');
-    setGeneratedSummary('');
-    setGeneratedAnalysis('');
-    setIsGenerating(false);
-    setIsSummarizing(false);
-    setIsAnalyzing(false);
-    setIsActionLoading(false);
-  };
-
-  const handleGenerateNFT = async () => {
-    if (!account) {
-      toast({
-        title: "Wallet not connected",
-        description: "Please connect your wallet to generate an NFT.",
-        variant: "destructive",
-      });
-      return;
-    }
-    if (!generatedContent) {
-      toast({
-        title: "No story generated",
-        description: "Please generate a story before creating an NFT.",
-        variant: "destructive",
-      });
-      return;
-    }
-    setIsGeneratingNFT(true);
-    try {
-      const response = await fetch('/api/monad/mint', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          storyHash: `story-${Date.now()}`, // Placeholder for actual story hash
-          metadataURI: `metadata-${Date.now()}.json`, // Placeholder for actual metadata URI
-          userAddress: account,
-        }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        toast({
-          title: "NFT Minted",
-          description: `Your story NFT has been minted with token ID: ${data.tokenId}`,
-        });
-        setNFTTokenId(data.tokenId || '');
-        setNFTTransactionHash(data.transactionHash || '');
-      } else {
-        toast({
-          title: "Minting Failed",
-          description: data.error || "Failed to mint NFT. Please try again.",
-          variant: "destructive",
-        });
-      }
-    } catch (error: any) {
-      console.error("Error minting NFT:", error);
-      toast({
-        title: "Error",
-        description: error.message || "An error occurred while minting the NFT.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsGeneratingNFT(false);
-    }
-  };
-
-  // Add state and handler for wallet dialog
-  const [showWalletDialog, setShowWalletDialog] = useState(false);
-
-  const handleContinue = async () => {
-    if (!account) {
-      setShowWalletDialog(true);
-      return;
-    }
-    // ... existing code for handleContinue ...
-  };
-
-  const handleWalletConnect = async (walletType: string) => {
-    try {
-      toast({
-        title: "Connecting Wallet",
-        description: "Please approve the connection request in your wallet",
-      });
-      console.log(`Attempting to connect to ${walletType}`);
-      await connectWallet();
-      setShowWalletDialog(false);
-      toast({
-        title: "Wallet Connected",
-        description: `Successfully connected to ${walletType.charAt(0).toUpperCase() + walletType.slice(1)}`,
-      });
-    } catch (error: any) {
-      console.error('Error connecting wallet:', error);
-      toast({
-        title: "Connection Failed",
-        description: error.message || "Failed to connect wallet. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
-
   function switchToMonadNetwork(event: React.MouseEvent<HTMLButtonElement>): void {
     throw new Error("Function not implemented.");
   }
 
   return (
-    <>
-      <WelcomeAnimation />
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="flex items-center">
-          <Sparkles className="h-5 w-5 mr-2 text-primary" />
-          AI Story Generator
-        </CardTitle>
-        <CardDescription>
-          Generate stories with Groq AI and mint them as NFTs on Monad blockchain
-        </CardDescription>
-      </CardHeader>
-      
-      <CardContent>
-        <Tabs defaultValue="generate" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="generate">Generate Story</TabsTrigger>
-            <TabsTrigger value="mint">{storyFormat === 'nft' ? 'Mint as NFT' : 'Publish Story'}</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="generate" className="space-y-4 mt-4">
-            <div className="p-4 border rounded-md bg-blue-50 dark:bg-blue-950/40 mb-4">
-              <h3 className="text-sm font-semibold mb-1 flex items-center">
-                <Sparkles className="h-4 w-4 text-blue-500 mr-2" />
-                Create a High-Quality AI Story
-              </h3>
-              <p className="text-xs text-muted-foreground">
-                Fill out the sections below to provide details for your story. The more information you provide, the better the AI can craft a quality story tailored to your vision.
-              </p>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="title">Story Title (Optional)</Label>
-              <Input
-                id="title"
-                placeholder="Enter a title or leave blank for AI to generate one"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                disabled={isLoading}
-              />
-            </div>
-            
-            <div className="space-y-2">
-                <Label>Story Type</Label>
-                <div className="grid grid-cols-2 gap-2">
-                  <Button
-                    variant={storyType === "text" ? "default" : "outline"}
-                    onClick={() => setStoryType("text")}
-                    className={storyType === "text" ? "bg-primary text-white" : "text-primary"}
-                  >
-                    Text Story
-                  </Button>
-                  <Button
-                    variant={storyType === "comic" ? "default" : "outline"}
-                    onClick={() => setStoryType("comic")}
-                    className={storyType === "comic" ? "bg-primary text-white" : "text-primary"}
-                  >
-                    Comic
-                  </Button>
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="overview">Story Overview</Label>
-                <Textarea
-                  id="overview"
-                  placeholder="Enter a brief overview or summary of your story"
-                  value={overview}
-                  onChange={(e) => setOverview(e.target.value)}
-                  disabled={isLoading}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label>Genres (Select one or more)</Label>
-                <div className="grid grid-cols-2 gap-2">
-                  {genres.map((g) => (
-                    <label key={g.slug} className="flex items-center space-x-2">
-                      <input 
-                        type="checkbox"
-                        checked={selectedGenres.includes(g.slug)}
-                        onChange={(e) => {
-                          if(e.target.checked) {
-                            setSelectedGenres(prev => [...prev, g.slug]);
-                          } else {
-                            setSelectedGenres(prev => prev.filter(s => s !== g.slug));
-                          }
+    <div className="max-w-4xl mx-auto p-6">
+      <Card className="border-0 shadow-none bg-background/50 backdrop-blur-sm mb-6">
+        <CardHeader>
+          <CardTitle className="text-3xl font-bold text-center bg-gradient-to-r from-primary via-blue-500 to-purple-500 bg-clip-text text-transparent mb-2">AI Story Generator</CardTitle>
+          <CardDescription className="text-center text-lg max-w-2xl mx-auto mb-4">Create unique stories with the power of AI. Choose your genre, set your preferences, and let the magic happen.</CardDescription>
+        </CardHeader>
+      </Card>
+
+      <Tabs defaultValue="generate" value={activeTab} onValueChange={setActiveTab} className="mb-6">
+        <TabsList className="grid w-full grid-cols-2 mb-4">
+          <TabsTrigger value="generate">Generate Story</TabsTrigger>
+          <TabsTrigger value="nft">Mint NFT</TabsTrigger>
+        </TabsList>
+        <TabsContent value="generate" className="space-y-6 mt-0">
+          <Card className="border-0 shadow-md overflow-hidden bg-background/80 backdrop-blur-sm mb-6">
+            <CardHeader className="border-b border-border/30 pb-2 mb-4">
+              <CardTitle className="text-xl text-center text-primary mb-2">Story Parameters</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6 mb-4 pb-0">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="genre" className="pl-1">Genre</Label>
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    {genres.slice(0, 5).map((genre) => (
+                      <Button
+                        key={genre.slug}
+                        variant={selectedGenres.includes(genre.slug) ? "default" : "outline"}
+                        size="sm"
+                        className={`rounded-full ${selectedGenres.includes(genre.slug) ? 'bg-primary text-white' : 'border-border/50 text-foreground/80 hover:bg-muted/80'}`}
+                        onClick={() => {
+                          setSelectedGenres((prev) => {
+                            if (prev.includes(genre.slug)) {
+                              return prev.filter((g) => g !== genre.slug);
+                            } else if (prev.length < 3) {
+                              return [...prev, genre.slug];
+                            } else {
+                              return [genre.slug];
+                            }
+                          });
                         }}
-                      />
-                      <span>{g.name}</span>
-                    </label>
-                  ))}
-                </div>
-            </div>
-            
-            <div className="border rounded-md p-4 bg-muted/10 space-y-4">
-              <h3 className="font-medium text-sm">Story Outline</h3>
-              
-              <div className="space-y-2">
-                <Label htmlFor="characters">
-                  Main Characters
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger className="ml-2 cursor-help">ⓘ</TooltipTrigger>
-                      <TooltipContent>
-                        <p className="w-80 text-xs">Describe the main characters of your story: their names, personalities, goals, and relationships.</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </Label>
-                <Textarea
-                  id="characters"
-                  placeholder="Describe the main characters of your story (e.g., names, personalities, motivations, relationships)"
-                  className="min-h-20"
-                  value={mainCharacters}
-                  onChange={(e) => setMainCharacters(e.target.value)}
-                  disabled={isLoading}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="setting">
-                  World & Setting
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger className="ml-2 cursor-help">ⓘ</TooltipTrigger>
-                      <TooltipContent>
-                        <p className="w-80 text-xs">Describe the world, time period, and locations where your story takes place.</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </Label>
-                <Textarea
-                  id="setting"
-                  placeholder="Describe the world, time period, and locations where your story takes place"
-                  className="min-h-20"
-                  value={setting}
-                  onChange={(e) => setSetting(e.target.value)}
-                  disabled={isLoading}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="plot">
-                  Plot Outline
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger className="ml-2 cursor-help">ⓘ</TooltipTrigger>
-                      <TooltipContent>
-                        <p className="w-80 text-xs">Describe the main events, conflicts, and resolution of your story.</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </Label>
-                <Textarea
-                  id="plot"
-                  placeholder="Describe the main events, conflicts, and resolution of your story"
-                  className="min-h-20"
-                  value={plotOutline}
-                  onChange={(e) => setPlotOutline(e.target.value)}
-                  disabled={isLoading}
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="themes">
-                  Themes & Motifs
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger className="ml-2 cursor-help">ⓘ</TooltipTrigger>
-                      <TooltipContent>
-                        <p className="w-80 text-xs">Describe key themes, motifs, or messages you want the story to explore.</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </Label>
-                <Textarea
-                  id="themes"
-                  placeholder="Describe key themes, motifs, or messages you want the story to explore"
-                  className="min-h-20"
-                  value={themes}
-                  onChange={(e) => setThemes(e.target.value)}
-                  disabled={isLoading}
-                />
-              </div>
-            </div>
-            
-            <div className="space-y-2 mt-4">
-              <Label htmlFor="prompt">Additional Details & Instructions</Label>
-              <Textarea
-                id="prompt"
-                placeholder="Add any additional details, specific instructions, or elements you want the AI to include in your story..."
-                className="min-h-24"
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                disabled={isLoading}
-              />
-            </div>
-            
-            <div className="border p-4 rounded-md bg-muted/20 mt-2">
-              <div className="flex items-center mb-2">
-                <Label className="flex items-center space-x-2 text-sm cursor-pointer">
-                  <input 
-                    type="checkbox"
-                    checked={showAdvancedOptions}
-                    onChange={() => setShowAdvancedOptions(!showAdvancedOptions)}
-                    className="rounded border-gray-300"
-                    aria-label="Show Advanced Options"
-                    title="Show Advanced Options"
-                  />
-                  <span>Show Advanced Options</span>
-                </Label>
-              </div>
-              
-              {showAdvancedOptions && (
-                <div className="space-y-4 mt-4">
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <Label htmlFor="temperature">Creativity Level: {temperature}</Label>
-                      <span className="text-xs text-muted-foreground">
-                        {temperature < 0.4 ? "More predictable" : temperature > 0.7 ? "More creative" : "Balanced"}
-                      </span>
-                    </div>
-                    <Input
-                      id="temperature"
-                      type="range"
-                      min="0.1"
-                      max="1.0"
-                      step="0.1"
-                      value={temperature}
-                      onChange={(e) => setTemperature(parseFloat(e.target.value))}
-                      disabled={isLoading}
-                    />
+                      >
+                        {genre.name}
+                      </Button>
+                    ))}
                   </div>
+                </div>
+
+                <div className="space-y-2 mb-4">
+                  <Label htmlFor="prompt" className="pl-1">Story Prompt (optional)</Label>
+                  <Textarea
+                    id="prompt"
+                    placeholder="Enter a brief idea or theme for your story..."
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
+                    className="rounded-md border-border/50 bg-muted/50 focus-visible:ring-primary/30 min-h-[80px] mb-2"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-0 shadow-md overflow-hidden bg-background/80 backdrop-blur-sm mb-6">
+            <CardHeader className="border-b border-border/30 pb-2 mb-4">
+              <CardTitle className="text-xl text-center text-primary mb-2">Story Outline</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6 mb-4 pb-0">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="characters">
+                    Main Characters
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger className="ml-2 cursor-help">ⓘ</TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-80 text-xs">Describe the main characters of your story: their names, personalities, goals, and relationships.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </Label>
+                  <Textarea
+                    id="characters"
+                    placeholder="Describe the main characters of your story (e.g., names, personalities, motivations, relationships)"
+                    className="min-h-20"
+                    value={mainCharacters}
+                    onChange={(e) => setMainCharacters(e.target.value)}
+                    disabled={isGroqLoading || isActionLoading}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="setting">
+                    World & Setting
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger className="ml-2 cursor-help">ⓘ</TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-80 text-xs">Describe the world, time period, and locations where your story takes place.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </Label>
+                  <Textarea
+                    id="setting"
+                    placeholder="Describe the world, time period, and locations where your story takes place"
+                    className="min-h-20"
+                    value={setting}
+                    onChange={(e) => setSetting(e.target.value)}
+                    disabled={isGroqLoading || isActionLoading}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="plot">
+                    Plot Outline
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger className="ml-2 cursor-help">ⓘ</TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-80 text-xs">Describe the main events, conflicts, and resolution of your story.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </Label>
+                  <Textarea
+                    id="plot"
+                    placeholder="Describe the main events, conflicts, and resolution of your story"
+                    className="min-h-20"
+                    value={plotOutline}
+                    onChange={(e) => setPlotOutline(e.target.value)}
+                    disabled={isGroqLoading || isActionLoading}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="themes">
+                    Themes & Motifs
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger className="ml-2 cursor-help">ⓘ</TooltipTrigger>
+                        <TooltipContent>
+                          <p className="w-80 text-xs">Describe key themes, motifs, or messages you want the story to explore.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </Label>
+                  <Textarea
+                    id="themes"
+                    placeholder="Describe key themes, motifs, or messages you want the story to explore"
+                    className="min-h-20"
+                    value={themes}
+                    onChange={(e) => setThemes(e.target.value)}
+                    disabled={isGroqLoading || isActionLoading}
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-0 shadow-md overflow-hidden bg-background/80 backdrop-blur-sm mb-6">
+            <CardHeader className="border-b border-border/30 pb-2 mb-4">
+              <CardTitle className="text-xl text-center text-primary mb-2">Story Details</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6 mb-4 pb-0">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="title">Story Title (Optional)</Label>
+                  <Input
+                    id="title"
+                    placeholder="Enter a title or leave blank for AI to generate one"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    disabled={isGroqLoading || isActionLoading}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label>Story Type</Label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      variant={storyType === "text" ? "default" : "outline"}
+                      onClick={() => setStoryType("text")}
+                      className={storyType === "text" ? "bg-primary text-white" : "text-primary"}
+                    >
+                      Text Story
+                    </Button>
+                    <Button
+                      variant={storyType === "comic" ? "default" : "outline"}
+                      onClick={() => setStoryType("comic")}
+                      className={storyType === "comic" ? "bg-primary text-white" : "text-primary"}
+                    >
+                      Comic
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="overview">Story Overview</Label>
+                  <Textarea
+                    id="overview"
+                    placeholder="Enter a brief overview or summary of your story"
+                    value={overview}
+                    onChange={(e) => setOverview(e.target.value)}
+                    disabled={isGroqLoading || isActionLoading}
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-0 shadow-md overflow-hidden bg-background/80 backdrop-blur-sm mb-6">
+            <CardHeader className="border-b border-border/30 pb-2 mb-4">
+              <CardTitle className="text-xl text-center text-primary mb-2">Creativity Settings</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6 mb-4 pb-0">
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <Label htmlFor="temperature">Creativity Level: {temperature}</Label>
+                    <span className="text-xs text-muted-foreground">
+                      {temperature < 0.4 ? "More predictable" : temperature > 0.7 ? "More creative" : "Balanced"}
+                    </span>
+                  </div>
+                  <Input
+                    id="temperature"
+                    type="range"
+                    min="0.1"
+                    max="1.0"
+                    step="0.1"
+                    value={temperature}
+                    onChange={(e) => setTemperature(parseFloat(e.target.value))}
+                    disabled={isGroqLoading || isActionLoading}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label className="flex items-center" htmlFor="useCustomKey">
+                    <input 
+                      id="useCustomKey"
+                      type="checkbox"
+                      checked={isUsingCustomKey}
+                      onChange={() => setIsUsingCustomKey(!isUsingCustomKey)}
+                      title="Use Custom Key"
+                      placeholder="Use Custom Key"
+                      className="mr-2 rounded border-gray-300"
+                    />
+                    Use my Groq API key
+                  </Label>
                   
-                  <div className="space-y-2">
-                    <Label className="flex items-center" htmlFor="useCustomKey">
-                      <input 
-                        id="useCustomKey"
-                        type="checkbox"
-                        checked={isUsingCustomKey}
-                        onChange={() => setIsUsingCustomKey(!isUsingCustomKey)}
-                        title="Use Custom Key"
-                        placeholder="Use Custom Key"
-                        className="mr-2 rounded border-gray-300"
-                      />
-                      Use my Groq API key
-                    </Label>
-                    
-                    {isUsingCustomKey && (
-                      <div className="pt-2">
-                        <Label htmlFor="apiKey" className="flex items-center text-sm mb-1">
-                          <Key className="h-3 w-3 mr-1" />
-                          Groq API Key
-                        </Label>
+                  {isUsingCustomKey && (
+                    <div className="pt-2">
+                      <Label htmlFor="apiKey" className="flex items-center text-sm mb-1">
+                        <Key className="h-3 w-3 mr-1" />
+                        Groq API Key
+                      </Label>
                           <div className="flex space-x-2">
-                        <Input
-                          id="apiKey"
-                          type="password"
-                          placeholder="Enter your Groq API key"
-                          value={userApiKey}
-                          onChange={(e) => setUserApiKey(e.target.value)}
-                          disabled={isLoading}
-                              className="flex-1"
-                            />
-                            <Button 
-                              variant="outline" 
-                              size="sm"
-                              disabled={!userApiKey || isLoading}
-                              onClick={async () => {
-                                try {
+                      <Input
+                        id="apiKey"
+                        type="password"
+                        placeholder="Enter your Groq API key"
+                        value={userApiKey}
+                        onChange={(e) => setUserApiKey(e.target.value)}
+                        disabled={isGroqLoading || isActionLoading}
+                            className="flex-1"
+                          />
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            disabled={!userApiKey || isGroqLoading || isActionLoading}
+                            onClick={async () => {
+                              try {
+                                toast({
+                                  title: "Testing API Key",
+                                  description: "Please wait while we verify your API key...",
+                                });
+                                
+                                const result = await testConnection(userApiKey, true);
+                                
+                                if (result.success) {
                                   toast({
-                                    title: "Testing API Key",
-                                    description: "Please wait while we verify your API key...",
+                                    title: "API Key Valid",
+                                    description: `Successfully connected to ${result.model || 'Groq API'}`,
                                   });
-                                  
-                                  const result = await testConnection(userApiKey, true);
-                                  
-                                  if (result.success) {
-                                    toast({
-                                      title: "API Key Valid",
-                                      description: `Successfully connected to ${result.model || 'Groq API'}`,
-                                    });
-                                  } else {
-                                    toast({
-                                      title: "API Key Invalid",
-                                      description: result.message,
-                                      variant: "destructive",
-                                    });
-                                  }
-                                } catch (error: any) {
+                                } else {
                                   toast({
-                                    title: "Test Failed",
-                                    description: error.message || "Could not test API key",
+                                    title: "API Key Invalid",
+                                    description: result.message,
                                     variant: "destructive",
                                   });
                                 }
-                              }}
-                            >
-                              Test Key
-                            </Button>
-                          </div>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Using your own key helps with API limits and privacy. Get a free key at{" "}
-                          <a 
-                            href="https://console.groq.com/keys" 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="text-primary hover:underline"
+                              } catch (error: any) {
+                                toast({
+                                  title: "Test Failed",
+                                  description: error.message || "Could not test API key",
+                                  variant: "destructive",
+                                });
+                              }
+                            }}
                           >
-                            console.groq.com
-                          </a>
-                        </p>
-                      </div>
-                    )}
-                  </div>
+                            Test Key
+                          </Button>
+                        </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Using your own key helps with API limits and privacy. Get a free key at{" "}
+                        <a 
+                          href="https://console.groq.com/keys" 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-primary hover:underline"
+                        >
+                          console.groq.com
+                        </a>
+                      </p>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-            
-            {generatedContent ? (
-                <motion.div 
-                  className="mt-6 border rounded-xl p-6 bg-gradient-to-br from-background via-background/95 to-primary/5 shadow-lg overflow-hidden"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
+              </div>
+            </CardContent>
+            <CardFooter className="flex flex-col gap-4 mt-4 px-6 pb-6">
+              <div className="flex flex-row justify-center gap-4 w-full">
+                <Button
+                  onClick={handleGenerate}
+                  disabled={isGroqLoading || isActionLoading}
+                  className="flex-1 theme-gradient-bg rounded-full text-white font-semibold py-3 text-lg hover:scale-105 transition-transform duration-300 shadow-lg"
                 >
-                  <div className="flex justify-between items-center mb-4">
-                    <motion.h3 
-                      className="font-medium text-xl text-primary flex items-center"
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.2, duration: 0.4 }}
-                    >
-                      <Sparkles className="h-5 w-5 mr-2 text-amber-500" />
-                      Generated {storyType === "comic" ? "Comic Style Story" : "Text Story"}
-                    </motion.h3>
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.3, duration: 0.4 }}
-                    >
+                  {isGroqLoading || isActionLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Generating...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="mr-2 h-5 w-5" />
+                      Generate Story
+                    </>
+                  )}
+                </Button>
+                <Button
+                  onClick={handleGenerateAndMint}
+                  disabled={isGroqLoading || isActionLoading || !account}
+                  className="flex-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 rounded-full text-white font-semibold py-3 text-lg hover:scale-105 transition-transform duration-300 shadow-lg"
+                >
+                  {isGroqLoading || isActionLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Generating NFT...
+                    </>
+                  ) : (
+                    <>
+                      <Stars className="mr-2 h-5 w-5" />
+                      Generate NFT
+                    </>
+                  )}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setPrompt('');
+                    setTitle('');
+                    setMainCharacters('');
+                    setPlotOutline('');
+                    setSetting('');
+                    setThemes('');
+                    setGeneratedContent('');
+                  }}
+                  disabled={isGroqLoading || isActionLoading}
+                  className="flex-1 border-2 border-blue-400 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 rounded-full font-semibold py-3 text-lg hover:scale-105 transition-transform duration-300 shadow-lg hover:bg-gradient-to-r hover:from-blue-200 hover:to-blue-300"
+                >
+                  <RefreshCw className="mr-2 h-5 w-5" />
+                  Reset
+                </Button>
+              </div>
+              {isGroqLoading && (
+                <motion.div 
+                  className="relative w-full h-2 bg-muted/30 rounded-full overflow-hidden mt-2"
+                >
+                  <motion.div 
+                    className="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-primary/60 via-blue-400/60 to-primary/60"
+                    animate={{ 
+                      x: ["-100%", "100%"],
+                      backgroundPosition: ["0% 0%", "100% 0%"] 
+                    }}
+                    transition={{ 
+                      duration: 2, 
+                      repeat: Infinity,
+                      ease: "easeInOut" 
+                    }}
+                    style={{ backgroundSize: "200% 100%" }}
+                  />
+                </motion.div>
+              )}
+            </CardFooter>
+          </Card>
+
+          {generatedContent ? (
+            <motion.div 
+              className="mt-6 border rounded-xl p-6 bg-gradient-to-br from-background via-background/95 to-primary/5 shadow-lg overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+              <div className="flex justify-between items-center mb-4">
+                <motion.h3 
+                  className="font-medium text-xl text-primary flex items-center"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2, duration: 0.4 }}
+                >
+                  <Sparkles className="h-5 w-5 mr-2 text-amber-500" />
+                  Generated {storyType === "comic" ? "Comic Style Story" : "Text Story"}
+                </motion.h3>
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3, duration: 0.4 }}
+                >
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => {
                       setActiveTab("mint");
                     }}
-                        className="hover:bg-primary/10 border-primary/30 text-primary"
+                    className="hover:bg-primary/10 border-primary/30 text-primary"
                   >
                     {storyFormat === 'nft' ? 'Continue to NFT' : 'Continue to Publish'}
                   </Button>
-                    </motion.div>
-                </div>
-                  <motion.div 
-                    className="bg-gradient-to-r from-primary/10 via-amber-500/5 to-primary/10 p-1 rounded-lg overflow-hidden relative"
-                    initial={{ scale: 0.98, opacity: 0.8 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/10 to-transparent opacity-30"></div>
-                    <div className="prose prose-lg dark:prose-invert max-h-96 overflow-y-auto p-6 bg-background rounded-md relative z-10">
-                      {renderGeneratedContent()}
-                </div>
-                  </motion.div>
-                  <motion.div 
-                    className="mt-4 flex justify-end gap-3"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6, duration: 0.5 }}
-                  >
-                <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => {
-                        navigator.clipboard.writeText(generatedContent);
-                        toast({
-                          title: "Copied",
-                          description: "Story copied to clipboard",
-                        });
-                      }}
-                      className="text-primary hover:bg-primary/5 border-primary/20"
-                    >
-                      <Copy className="mr-2 h-4 w-4" />
-                      Copy Story
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => {
-                        const element = document.createElement('a');
-                        const file = new Blob([generatedContent], { type: 'text/plain' });
-                        element.href = URL.createObjectURL(file);
-                        element.download = `${title || 'Untitled_Story'}.md`;
-                        document.body.appendChild(element);
-                        element.click();
-                        document.body.removeChild(element);
-                      }}
-                      className="text-primary hover:bg-primary/5 border-primary/20"
-                    >
-                      <Download className="mr-2 h-4 w-4" />
-                      Download
-                    </Button>
-                  </motion.div>
                 </motion.div>
+              </div>
+              <motion.div 
+                className="bg-gradient-to-r from-primary/10 via-amber-500/5 to-primary/10 p-1 rounded-lg overflow-hidden relative"
+                initial={{ scale: 0.98, opacity: 0.8 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/10 to-transparent opacity-30"></div>
+                <div className="prose prose-lg dark:prose-invert max-h-96 overflow-y-auto p-6 bg-background rounded-md relative z-10">
+                  {generatedContent ? <div dangerouslySetInnerHTML={{ __html: generatedContent }} /> : <p>No content generated yet.</p>}
+                </div>
+              </motion.div>
+              <motion.div 
+                className="mt-4 flex justify-end gap-3"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+              >
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    navigator.clipboard.writeText(generatedContent);
+                    toast({
+                      title: "Copied",
+                      description: "Story copied to clipboard",
+                    });
+                  }}
+                  className="text-primary hover:bg-primary/5 border-primary/20"
+                >
+                  <Copy className="mr-2 h-4 w-4" />
+                  Copy Story
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    const element = document.createElement('a');
+                    const file = new Blob([generatedContent], { type: 'text/plain' });
+                    element.href = URL.createObjectURL(file);
+                    element.download = `${title || 'Untitled_Story'}.md`;
+                    document.body.appendChild(element);
+                    element.click();
+                    document.body.removeChild(element);
+                  }}
+                  className="text-primary hover:bg-primary/5 border-primary/20"
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  Download
+                </Button>
+              </motion.div>
+            </motion.div>
+          ) : (
+            <>
+              {isGroqLoading ? (
+                <LoadingStateIndicator message={null} />
               ) : (
-                <>
-                  {isGroqLoading ? (
-                    <LoadingStateIndicator message={null} />
-                  ) : (
-                    <div className="flex flex-col gap-4 mt-4">
-                      {renderControls()}
-                      
-                      {isGroqLoading && (
-                        <motion.div 
-                          className="relative w-full h-2 bg-muted/30 rounded-full overflow-hidden mt-2"
-                        >
-                          <motion.div 
-                            className="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-primary/60 via-blue-400/60 to-primary/60"
-                            animate={{ 
-                              x: ["-100%", "100%"],
-                              backgroundPosition: ["0% 0%", "100% 0%"] 
-                            }}
-                            transition={{ 
-                              duration: 2, 
-                              repeat: Infinity,
-                              ease: "easeInOut" 
-                            }}
-                            style={{ backgroundSize: "200% 100%" }}
-                          />
-                        </motion.div>
-                      )}
-                    </div>
-                  )}
-                </>
-            )}
-          </TabsContent>
-          
-          <TabsContent value="mint" className="space-y-4 mt-4">
-            {!account && storyFormat === 'nft' ? (
-              <div className="text-center py-8">
-                <Wallet className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium mb-2">Connect Wallet to Mint NFTs</h3>
-                <p className="text-muted-foreground mb-4">
-                  You need to connect your wallet to mint your stories as NFTs on Monad blockchain
-                </p>
-                <Button className="theme-gradient-bg" onClick={async () => {
-                  try {
-                    toast({
-                      title: "Connecting Wallet",
-                      description: "Please approve the connection request in your wallet",
-                    });
-                    await connectWallet();
-                  } catch (error: any) {
-                    console.error('Error connecting wallet:', error);
-                    toast({
-                      title: "Connection Failed",
-                      description: error.message || "Failed to connect wallet. Please try again.",
-                      variant: "destructive",
-                    });
-                  }
-                }}>
-                  Connect Wallet
-                </Button>
-              </div>
-            ) : !isMinting && storyFormat === 'nft' ? (
-              <div className="text-center py-8">
-                <Wallet className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium mb-2">Switch to Monad Network</h3>
-                <p className="text-muted-foreground mb-4">
-                  You need to switch to the Monad network to mint NFTs
-                </p>
-                <Button 
-                  onClick={switchToMonadNetwork}
-                  className="theme-gradient-bg"
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Switching...
-                    </>
-                  ) : (
-                    <>
-                      <Wallet className="mr-2 h-4 w-4" />
-                      Switch to Monad
-                    </>
-                  )}
-                </Button>
-              </div>
-            ) : !account && storyFormat !== 'nft' ? (
-              <div className="text-center py-8">
-                <Wallet className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium mb-2">Connect Wallet to Publish Stories</h3>
-                <p className="text-muted-foreground mb-4">
-                  You need to connect your wallet to publish stories to the community
-                </p>
-                <Button className="theme-gradient-bg" onClick={async () => {
-                  try {
-                    toast({
-                      title: "Connecting Wallet",
-                      description: "Please approve the connection request in your wallet",
-                    });
-                    await connectWallet();
-                  } catch (error: any) {
-                    console.error('Error connecting wallet:', error);
-                    toast({
-                      title: "Connection Failed",
-                      description: error.message || "Failed to connect wallet. Please try again.",
-                      variant: "destructive",
-                    });
-                  }
-                }}>
-                  Connect Wallet
-                </Button>
-              </div>
-            ) : !generatedContent ? (
-              <div className="text-center py-8">
-                <BookText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-lg font-medium mb-2">No Story Generated Yet</h3>
-                <p className="text-muted-foreground mb-4">
-                  Generate a story first before {storyFormat === 'nft' ? 'minting it as an NFT' : 'publishing it'}
-                </p>
-                <Button 
-                  onClick={() => setActiveTab("generate")}
-                  className="theme-gradient-bg"
-                >
-                  Go to Story Generator
-                </Button>
-              </div>
-            ) : mintedNftUrl ? (
-              <div className="text-center py-8">
-                <CopyCheck className="h-12 w-12 mx-auto text-primary mb-4" />
-                <h3 className="text-lg font-medium mb-2">
-                  {storyFormat === 'nft' ? 'NFT Minted Successfully!' : 'Story Published Successfully!'}
-                </h3>
-                <p className="text-muted-foreground mb-4">
-                  {storyFormat === 'nft' 
-                    ? 'Your story has been successfully minted as an NFT on the Monad blockchain'
-                    : 'Your story has been successfully published and is now available to readers'}
-                </p>
-                <div className="flex justify-center gap-4">
-                    <Button 
-                      className="theme-gradient-bg"
-                      onClick={() => {
-                        // Set a navigation flag in localStorage
-                        try {
-                          const navData = { 
-                            from: 'generator', 
-                            destination: 'nft-view',
-                            timestamp: Date.now() 
-                          };
-                          localStorage.setItem('navigationData', JSON.stringify(navData));
-                        } catch (e) {
-                          console.error('Error storing navigation data:', e);
-                        }
-                        
-                        // Use setTimeout to ensure reliable navigation
-                        setTimeout(() => {
-                          window.location.href = mintedNftUrl;
-                        }, 100);
-                      }}
-                    >
-                      {storyFormat === 'nft' ? 'View Your NFT' : 'View Your Story'}
-                  </Button>
-                  <Button
-                    variant="outline"
+                <div className="flex flex-col gap-4 mt-4">
+                  {/* No buttons here as they have been moved to Creativity Settings */}
+                </div>
+              )}
+            </>
+          )}
+        </TabsContent>
+        
+        <TabsContent value="nft" className="space-y-4 mt-4">
+          {!account && storyFormat === 'nft' ? (
+            <div className="text-center py-8">
+              <Wallet className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+              <h3 className="text-lg font-medium mb-2">Connect Wallet to Mint NFTs</h3>
+              <p className="text-muted-foreground mb-4">
+                You need to connect your wallet to mint your stories as NFTs on Monad blockchain
+              </p>
+              <Button className="theme-gradient-bg" onClick={async () => {
+                try {
+                  toast({
+                    title: "Connecting Wallet",
+                    description: "Please approve the connection request in your wallet",
+                  });
+                  await connectWallet();
+                } catch (error: any) {
+                  console.error('Error connecting wallet:', error);
+                  toast({
+                    title: "Connection Failed",
+                    description: error.message || "Failed to connect wallet. Please try again.",
+                    variant: "destructive",
+                  });
+                }
+              }}>
+                Connect Wallet
+              </Button>
+            </div>
+          ) : !isMinting && storyFormat === 'nft' ? (
+            <div className="text-center py-8">
+              <Wallet className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+              <h3 className="text-lg font-medium mb-2">Switch to Monad Network</h3>
+              <p className="text-muted-foreground mb-4">
+                You need to switch to the Monad network to mint NFTs
+              </p>
+              <Button 
+                onClick={switchToMonadNetwork}
+                className="theme-gradient-bg"
+                disabled={isGroqLoading || isActionLoading}
+              >
+                {isGroqLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Switching...
+                  </>
+                ) : (
+                  <>
+                    <Wallet className="mr-2 h-4 w-4" />
+                    Switch to Monad
+                  </>
+                )}
+              </Button>
+            </div>
+          ) : !account && storyFormat !== 'nft' ? (
+            <div className="text-center py-8">
+              <Wallet className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+              <h3 className="text-lg font-medium mb-2">Connect Wallet to Publish Stories</h3>
+              <p className="text-muted-foreground mb-4">
+                You need to connect your wallet to publish stories to the community
+              </p>
+              <Button className="theme-gradient-bg" onClick={async () => {
+                try {
+                  toast({
+                    title: "Connecting Wallet",
+                    description: "Please approve the connection request in your wallet",
+                  });
+                  await connectWallet();
+                } catch (error: any) {
+                  console.error('Error connecting wallet:', error);
+                  toast({
+                    title: "Connection Failed",
+                    description: error.message || "Failed to connect wallet. Please try again.",
+                    variant: "destructive",
+                  });
+                }
+              }}>
+                Connect Wallet
+              </Button>
+            </div>
+          ) : !generatedContent ? (
+            <div className="text-center py-8">
+              <BookText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+              <h3 className="text-lg font-medium mb-2">No Story Generated Yet</h3>
+              <p className="text-muted-foreground mb-4">
+                Generate a story first before {storyFormat === 'nft' ? 'minting it as an NFT' : 'publishing it'}
+              </p>
+              <Button 
+                onClick={() => setActiveTab("generate")}
+                className="theme-gradient-bg"
+              >
+                Go to Story Generator
+              </Button>
+            </div>
+          ) : mintedNftUrl ? (
+            <div className="text-center py-8">
+              <CopyCheck className="h-12 w-12 mx-auto text-primary mb-4" />
+              <h3 className="text-lg font-medium mb-2">
+                {storyFormat === 'nft' ? 'NFT Minted Successfully!' : 'Story Published Successfully!'}
+              </h3>
+              <p className="text-muted-foreground mb-4">
+                {storyFormat === 'nft' 
+                  ? 'Your story has been successfully minted as an NFT on the Monad blockchain'
+                  : 'Your story has been successfully published and is now available to readers'}
+              </p>
+              <div className="flex justify-center gap-4">
+                  <Button 
+                    className="theme-gradient-bg"
                     onClick={() => {
-                      setPrompt("");
-                      setTitle("");
-                      setMainCharacters("");
-                      setPlotOutline("");
-                      setSetting("");
-                      setThemes("");
-                      setGeneratedContent("");
-                      setMintedNftUrl("");
-                      setActiveTab("generate");
+                      // Set a navigation flag in localStorage
+                      try {
+                        const navData = { 
+                          from: 'generator', 
+                          destination: 'nft-view',
+                          timestamp: Date.now() 
+                        };
+                        localStorage.setItem('navigationData', JSON.stringify(navData));
+                      } catch (e) {
+                        console.error('Error storing navigation data:', e);
+                      }
+                      
+                      // Use setTimeout to ensure reliable navigation
+                      setTimeout(() => {
+                        window.location.href = mintedNftUrl;
+                      }, 100);
                     }}
                   >
-                    Create Another
-                  </Button>
+                    {storyFormat === 'nft' ? 'View Your NFT' : 'View Your Story'}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setPrompt("");
+                    setTitle("");
+                    setMainCharacters("");
+                    setPlotOutline("");
+                    setSetting("");
+                    setThemes("");
+                    setGeneratedContent("");
+                    setMintedNftUrl("");
+                    setActiveTab("generate");
+                  }}
+                >
+                  Create Another
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="p-4 border rounded-md">
+                <h3 className="font-medium mb-2">Story Preview</h3>
+                <h4 className="text-lg font-bold">{title || "Untitled AI Story"}</h4>
+                <p className="text-sm text-muted-foreground mb-2">
+                    Genres: {selectedGenres.map(g => g.charAt(0).toUpperCase() + g.slice(1).replace('-', ' ')).join(", ")}
+                </p>
+                <div className="prose prose-sm max-h-40 overflow-y-auto">
+                  {generatedContent.substring(0, 300)}...
                 </div>
               </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="p-4 border rounded-md">
-                  <h3 className="font-medium mb-2">Story Preview</h3>
-                  <h4 className="text-lg font-bold">{title || "Untitled AI Story"}</h4>
-                  <p className="text-sm text-muted-foreground mb-2">
-                      Genres: {selectedGenres.map(g => g.charAt(0).toUpperCase() + g.slice(1).replace('-', ' ')).join(", ")}
-                  </p>
-                  <div className="prose prose-sm max-h-40 overflow-y-auto">
-                    {generatedContent.substring(0, 300)}...
-                  </div>
-                </div>
-                
-                <Button
-                  onClick={handleMintNFT}
-                  disabled={isLoading}
-                  className="w-full theme-gradient-bg"
-                >
-                  {isMinting ? (
-                      <motion.div 
-                        className="flex items-center justify-center space-x-2"
+              
+              <Button
+                onClick={handleMintNFT}
+                disabled={isGroqLoading || isActionLoading}
+                className="w-full theme-gradient-bg"
+              >
+                {isMinting ? (
+                    <motion.div 
+                      className="flex items-center justify-center space-x-2"
+                      animate={{ 
+                        scale: [1, 1.03, 1],
+                      }}
+                      transition={{ 
+                        duration: 1.5, 
+                        repeat: Infinity,
+                        repeatType: "reverse" 
+                      }}
+                    >
+                      <motion.div
                         animate={{ 
-                          scale: [1, 1.03, 1],
+                          rotate: 360,
                         }}
                         transition={{ 
                           duration: 1.5, 
+                          repeat: Infinity, 
+                          ease: "linear" 
+                        }}
+                        className="relative"
+                      >
+                        <CopyCheck className="h-4 w-4 text-white" />
+                      </motion.div>
+                      <motion.span
+                        animate={{
+                          opacity: [0.7, 1],
+                        }}
+                        transition={{
+                          duration: 0.8,
                           repeat: Infinity,
-                          repeatType: "reverse" 
+                          repeatType: "reverse"
                         }}
                       >
-                        <motion.div
-                          animate={{ 
-                            rotate: 360,
-                          }}
-                          transition={{ 
-                            duration: 1.5, 
-                            repeat: Infinity, 
-                            ease: "linear" 
-                          }}
-                          className="relative"
-                        >
-                          <CopyCheck className="h-4 w-4 text-white" />
-                        </motion.div>
-                        <motion.span
-                          animate={{
-                            opacity: [0.7, 1],
-                          }}
-                          transition={{
-                            duration: 0.8,
-                            repeat: Infinity,
-                            repeatType: "reverse"
-                          }}
-                        >
-                      {storyFormat === 'nft' ? 'Minting NFT...' : 'Publishing...'}
-                        </motion.span>
-                      </motion.div>
-                  ) : (
-                    <>
-                      <CopyCheck className="mr-2 h-4 w-4" />
-                      {storyFormat === 'nft' ? 'Mint as NFT' : 'Publish Story'}
-                    </>
-                  )}
-                </Button>
-                
-                <div className="text-xs text-muted-foreground">
-                  {storyFormat === 'nft' 
-                    ? 'By minting this NFT, you confirm that you have the rights to this content and agree to the terms of service.'
-                    : 'By publishing this story, you confirm that you have the rights to this content and agree to the terms of service.'}
-                </div>
+                    {storyFormat === 'nft' ? 'Minting NFT...' : 'Publishing...'}
+                      </motion.span>
+                    </motion.div>
+                ) : (
+                  <>
+                    <CopyCheck className="mr-2 h-4 w-4" />
+                    {storyFormat === 'nft' ? 'Mint as NFT' : 'Publish Story'}
+                  </>
+                )}
+              </Button>
+              
+              <div className="text-xs text-muted-foreground">
+                {storyFormat === 'nft' 
+                  ? 'By minting this NFT, you confirm that you have the rights to this content and agree to the terms of service.'
+                  : 'By publishing this story, you confirm that you have the rights to this content and agree to the terms of service.'}
               </div>
-            )}
-          </TabsContent>
-        </Tabs>
-      </CardContent>
-      
-      <CardFooter className="flex flex-col items-start border-t pt-4">
-        <div className="text-xs text-muted-foreground">
-          <p className="mb-1">
-            <strong>Powered by:</strong> Groq AI + Monad Blockchain
-          </p>
-          <p>
-            <strong>Network:</strong> {"Monad Testnet" /* Placeholder since networkInfo is not defined */}
-          </p>
-          <p>
-            <strong>Community:</strong> <a href="https://indie-hub-landing-page-git-main-dragos-projects-f5e4e2da.vercel.app" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Indie Hub</a>
-          </p>
-        </div>
-        <Button 
-          className="theme-gradient-bg mt-4 w-full"
-          onClick={() => {
-            // Set a navigation flag in localStorage
-            try {
-              const navData = { from: 'generator', timestamp: Date.now() };
-              localStorage.setItem('navigationData', JSON.stringify(navData));
-            } catch (e) {
-              console.error('Error storing navigation data:', e);
-            }
-            
-            // Use setTimeout to ensure reliable navigation
-            setTimeout(() => {
-              window.location.href = '/create/ai-story';
-            }, 100);
-          }}
-        >
-          <BookText className="mr-2 h-4 w-4" />
-          Create Full Story
-        </Button>
-      </CardFooter>
-    </Card>
-
-    <Dialog open={showWalletDialog} onOpenChange={setShowWalletDialog}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Connect Your Wallet</DialogTitle>
-          <DialogDescription>
-            Connect a wallet to publish your NFT story. Choose an option below.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <Button variant="outline" className="w-full" onClick={() => handleWalletConnect('metamask')}>
-            <Image src="/wallet-logos/metamask.png" alt="MetaMask" width={24} height={24} className="mr-2" />
-            MetaMask
-          </Button>
-          <Button variant="outline" className="w-full" onClick={() => handleWalletConnect('walletconnect')}>
-            <Image src="/wallet-logos/walletconnect.png" alt="WalletConnect" width={24} height={24} className="mr-2" />
-            WalletConnect
-          </Button>
-          <Button variant="outline" className="w-full" onClick={() => handleWalletConnect('ledger')}>
-            <Image src="/wallet-logos/ledger.png" alt="Ledger" width={24} height={24} className="mr-2" />
-            Ledger Wallet
-          </Button>
-          <div className="text-center mt-4">
-            <p className="text-sm text-muted-foreground mb-2">Scan QR Code for mobile wallets</p>
-            <div className="flex justify-center">
-              <Image src="/qr-code-placeholder.png" alt="QR Code for Wallet Connection" width={150} height={150} />
             </div>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
-    </>
+          )}
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 } 

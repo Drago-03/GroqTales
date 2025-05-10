@@ -68,8 +68,8 @@ export function NFTMarketplace() {
     }
 
     try {
-      const result = await buyNFTOnBase(nft.tokenId, account);
-      console.log(`Listing Successful: Successfully purchased ${nft.title} (Token ID: ${result.tokenId}). Transaction: ${result.transactionHash}`);
+      const result = await buyNFTOnBase(nft.tokenId, nft.price);
+      console.log(`Purchase Successful: Successfully purchased ${nft.title} (Token ID: ${result.tokenId}). Transaction: ${result.transactionHash}`);
     } catch (error) {
       console.error('Failed to buy NFT:', error);
       console.log('Purchase Failed: Failed to purchase NFT. Please try again.');
@@ -83,7 +83,7 @@ export function NFTMarketplace() {
     }
 
     try {
-      const result = await sellNFTOnBase(selectedNFT.tokenId, account, sellPrice);
+      const result = await sellNFTOnBase(selectedNFT.tokenId, sellPrice);
       console.log(`Listing Successful: Successfully listed ${selectedNFT.title} for ${sellPrice} ETH. Transaction: ${result.transactionHash}`);
       // Refresh listings after listing
       const listings = await getNFTListings();

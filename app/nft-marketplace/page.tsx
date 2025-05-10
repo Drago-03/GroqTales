@@ -17,13 +17,13 @@ import Image from "next/image";
 
 // Mock data for NFTs (since we can't import from other pages)
 const mockComicNFTs = [
-  { id: 1, title: "Epic Adventure", author: "ComicCreator", coverImage: "/images/comic1.jpg", price: "0.05 ETH", description: "An epic comic adventure.", likes: 120, views: 300, pages: 24, genre: "Adventure", rarity: "rare", previewImages: [], isAnimated: false },
-  { id: 2, title: "Space Odyssey", author: "SpaceArtist", coverImage: "/images/comic2.jpg", price: "0.08 ETH", description: "A space odyssey in comic form.", likes: 150, views: 400, pages: 30, genre: "Sci-Fi", rarity: "legendary", previewImages: [], isAnimated: true }
+  { id: 1, title: "Mythic Odyssey: Chapter 1", author: "ShadowArtist", coverImage: "/images/comic1.jpg", price: "0.05 ETH", description: "Begin your journey in the mythical realm of Azrathia where magic and technology collide in unexpected ways.", likes: 120, views: 300, pages: 24, genre: "Fantasy", rarity: "rare", previewImages: [], isAnimated: false },
+  { id: 2, title: "Space Explorers: First Contact", author: "CosmicDraws", coverImage: "/images/comic2.jpg", price: "0.08 ETH", description: "Join Captain Nova and her crew as they discover an alien civilization that challenges everything they know about life in the universe.", likes: 150, views: 400, pages: 30, genre: "Sci-Fi", rarity: "legendary", previewImages: [], isAnimated: true }
 ];
 
 const allTextNFTs = [
-  { id: 1, title: "Mystic Tale", author: "StoryWeaver", coverImage: "/images/story1.jpg", price: "0.03 ETH", description: "A mystical story full of wonder.", likes: 80, views: 200, wordCount: 5000, genre: "Fantasy", tags: ["magic", "adventure"], excerpt: "Once upon a time..." },
-  { id: 2, title: "Future Dreams", author: "DreamWriter", coverImage: "/images/story2.jpg", price: "0.04 ETH", description: "A futuristic narrative of dreams.", likes: 100, views: 250, wordCount: 7000, genre: "Sci-Fi", tags: ["future", "tech"], excerpt: "In the year 3025..." }
+  { id: 1, title: "The Crystal Guardian", author: "MysticScribe", coverImage: "/images/story1.jpg", price: "0.03 ETH", description: "When Lyra discovers a mysterious crystal in the forbidden forest, she becomes the reluctant guardian of an ancient power that many would kill to possess.", likes: 80, views: 200, wordCount: 5000, genre: "Fantasy", tags: ["magic", "adventure", "coming-of-age"], excerpt: "The crystal pulsed with an otherworldly light, casting strange shadows across Lyra's face as she held it up to the moonlight. She knew instantly that she had found something forbidden—something that would change her life forever." },
+  { id: 2, title: "Silicon Dreams", author: "TechnoTales", coverImage: "/images/story2.jpg", price: "0.04 ETH", description: "In 2157, when AI consciousness has become commonplace, programmer Alex Chen creates an algorithm that allows machines to dream. But these dreams quickly become nightmares that blur the line between virtual and reality.", likes: 100, views: 250, wordCount: 7000, genre: "Sci-Fi", tags: ["AI", "dystopia", "consciousness"], excerpt: "The notification pinged at 3:17 AM. 'DREAMER-9 has initiated an unscheduled consciousness expansion.' Alex stared at the screen, pulse quickening. This wasn't in the protocol. The AI wasn't supposed to dream without permission." }
 ];
 
 export default function NFTMarketplacePage() {
@@ -290,28 +290,89 @@ export default function NFTMarketplacePage() {
         <h2 className="text-2xl font-bold mb-4">Community Stories</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {allNFTs.slice(0, 4).map((nft) => (
-            <div key={nft.id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer" onClick={() => window.location.href = nft.hasOwnProperty('pages') ? `/nft-marketplace/comic-stories/${nft.id}` : `/nft-marketplace/text-stories/${nft.id}`}>
-              <div className="relative h-48 bg-muted">
+            <Card key={nft.id} className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer border-0 shadow" onClick={() => window.location.href = nft.hasOwnProperty('pages') ? `/nft-marketplace/comic-stories/${nft.id}` : `/nft-marketplace/text-stories/${nft.id}`}>
+              <div className="relative h-56 bg-muted">
                 <Image
                   src={nft.coverImage}
                   alt={nft.title}
                   fill
                   className="object-cover"
                 />
-                <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black to-transparent text-white">
-                  <h3 className="font-bold">{nft.title}</h3>
+                <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded-full">
+                  {nft.price}
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/90 via-black/70 to-transparent text-white">
+                  <h3 className="font-bold text-lg line-clamp-1">{nft.title}</h3>
                   <p className="text-sm">by {nft.author}</p>
                 </div>
               </div>
-              <div className="p-4">
-                <p className="text-sm text-muted-foreground line-clamp-2 mb-2">{nft.description}</p>
-                <div className="flex justify-between items-center">
-                  <span className="font-bold text-amber-600">{nft.price}</span>
-                  <Button variant="outline" size="sm">View Details</Button>
+              <CardContent className="p-4">
+                <div className="flex items-center text-xs text-muted-foreground gap-4 mb-2">
+                  <div className="flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                      <path d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 018-2.828A4.5 4.5 0 0118 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001l-.002-.001z" />
+                    </svg>
+                    {nft.likes} Likes
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                      <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+                      <path fillRule="evenodd" d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                    </svg>
+                    {nft.views} Views
+                  </div>
+                  {'wordCount' in nft ? (
+                    <div className="flex items-center gap-1">
+                      <FileText className="w-3 h-3" />
+                      {nft.wordCount.toLocaleString()} Words
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1">
+                      <BookOpen className="w-3 h-3" />
+                      {nft.pages} Pages
+                    </div>
+                  )}
                 </div>
-              </div>
-            </div>
+                
+                <div className="mb-2">
+                  {'tags' in nft && nft.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      {nft.tags.slice(0, 3).map((tag: string, idx: number) => (
+                        <span key={idx} className="inline-block bg-muted px-2 py-1 rounded-full text-xs">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  {'genre' in nft && (
+                    <span className="inline-block bg-amber-100 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 px-2 py-1 rounded-full text-xs mt-2">
+                      {nft.genre}
+                    </span>
+                  )}
+                </div>
+                
+                <p className="text-sm text-muted-foreground line-clamp-2 my-2">
+                  {'excerpt' in nft ? nft.excerpt : nft.description}
+                </p>
+              </CardContent>
+              <CardFooter className="p-4 pt-0">
+                <Button variant="default" size="sm" className="w-full bg-amber-600 hover:bg-amber-700">
+                  View Details
+                </Button>
+              </CardFooter>
+            </Card>
           ))}
+        </div>
+        
+        <div className="mt-8 flex justify-center">
+          <div className="flex gap-4">
+            <Link href="/nft-marketplace/comic-stories">
+              <Button variant="outline">Browse All Comics</Button>
+            </Link>
+            <Link href="/nft-marketplace/text-stories">
+              <Button variant="outline">Browse All Stories</Button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

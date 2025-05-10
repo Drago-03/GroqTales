@@ -2,7 +2,7 @@
 
 import { type ReactNode, useCallback, useMemo, useState } from "react";
 // yo fam, we need this for checking if the wallet is connected n stuff
-import { useAccount } from "wagmi"; 
+import { useAccount } from "@/lib/wagmi-mock";
 import {
   Transaction, // fr fr this handles all our transaction logic
   TransactionButton, // no cap, this button be handling our tx submissions
@@ -16,7 +16,7 @@ import {
   TransactionStatusLabel,
   TransactionStatus,
 } from "@/lib/transaction-components";
-import { useNotification } from "@coinbase/onchainkit/minikit";
+import { useNotification } from "@/lib/mini-kit-mock";
 
 type ButtonProps = {
   children: ReactNode;
@@ -98,7 +98,6 @@ function Card({
       onClick={onClick}
       onKeyDown={onClick ? handleKeyDown : undefined}
       tabIndex={onClick ? 0 : undefined}
-      role={onClick ? "button" : undefined}
     >
       {title && (
         <div className="px-5 py-3 border-b border-[var(--app-card-border)]">
@@ -404,7 +403,7 @@ function TransactionCard() {
 
   const sendNotification = useNotification();
 
-  const handleSuccess = useCallback(async (response: typeof TransactionResponse) => {
+  const handleSuccess = useCallback(async (response: { transactionReceipts: { transactionHash: string }[] }) => {
     const transactionHash = response.transactionReceipts[0].transactionHash;
 
     console.log(`Transaction successful: ${transactionHash}`);
@@ -436,7 +435,7 @@ function TransactionCard() {
             <Transaction
               calls={calls}
               onSuccess={handleSuccess}
-              onError={(error: TransactionError) =>
+              onError={(error: { message: string; code?: number }) =>
                 console.error("Transaction failed:", error)
               }
             >
