@@ -80,9 +80,9 @@ export function Header() {
 
   const navItems: NavItem[] = [
     { type: 'link', href: "/genres", label: "Genres" },
-    { type: "dropdown", label: "Community", icon: <Users className="h-4 w-4 mr-1.5" />, items: [
+    { type: "dropdown", label: "Community", icon: <Users className="h-4 w-4 mr-1.5 colorful-icon" />, items: [
       { href: "/community", label: "Community Hub" },
-      { href: "/community/creators", label: "Top Creators", icon: <Trophy className="h-4 w-4 mr-1.5" /> }
+      { href: "/community/creators", label: "Top Creators", icon: <Trophy className="h-4 w-4 mr-1.5 colorful-icon" /> }
     ]},
     { type: 'link', href: "/nft-gallery", label: "NFT Gallery" },
     { type: 'link', href: "/nft-marketplace", label: "NFT Marketplace" }
@@ -94,21 +94,22 @@ export function Header() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       className={cn(
-        "border-b backdrop-blur-sm bg-background/90 sticky top-0 z-50 transition-all duration-300",
-        scrolled && "shadow-md"
+        "border-b border-white/5 backdrop-blur-[12px] sticky top-0 z-50 transition-all duration-300 comic-text",
+        "bg-background/25",
+        scrolled && "shadow-lg shadow-black/5 bg-background/30"
       )}
     >
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <div className="flex items-center">
-          <Link href="/" className="flex items-center space-x-2 mr-8 group">
+          <Link href="/" className="flex items-center space-x-2 mr-6 group relative">
             <motion.div 
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              className="w-10 h-10 rounded-full theme-gradient-bg flex items-center justify-center"
+              className="w-9 h-9 rounded-full bg-primary/20 backdrop-blur-sm flex items-center justify-center doodle-wiggle"
             >
-              <BookOpen className="w-5 h-5 text-white" />
+              <BookOpen className="w-5 h-5 text-primary" />
             </motion.div>
-            <span className="text-xl font-bold gradient-heading">GroqTales</span>
+            <span className="text-xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent doodle-heading comic-text-bold">GroqTales</span>
           </Link>
           
           <nav className="hidden md:flex items-center space-x-2">
@@ -119,21 +120,21 @@ export function Header() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 + 0.1, duration: 0.2 }}
                 whileHover={{ scale: 1.03 }}
-                className="inline-flex items-center"
+                className="inline-flex items-center comic-text"
               >
                 {item.type === "dropdown" ? (
                   <DropdownMenu>
-                    <DropdownMenuTrigger className={`px-4 py-2 text-sm rounded-md transition-all duration-200 flex items-center ${isActive('/community')} hover:scale-105`}>
+                    <DropdownMenuTrigger className={`px-4 py-2 text-sm rounded-md transition-all duration-200 flex items-center text-foreground/90 hover:text-foreground hover:bg-white/5 backdrop-blur-sm comic-pop comic-text`}>
                       {item.icon}
                       {item.label}
                       <ChevronDown className="ml-1 h-3 w-3" />
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
+                    <DropdownMenuContent className="bg-background/70 backdrop-blur-lg border-white/10">
                       {item.items?.map((subItem) => (
                         <DropdownMenuItem key={subItem.href} asChild>
                           <Link 
                             href={subItem.href} 
-                            className="flex items-center w-full"
+                            className="flex items-center w-full text-foreground/90 hover:text-foreground hover:bg-white/5 comic-text"
                           >
                             {subItem.icon && subItem.icon}
                             {subItem.label}
@@ -145,7 +146,7 @@ export function Header() {
                 ) : item.href ? (
                   <Link 
                     href={item.href} 
-                    className={`px-4 py-2 text-sm rounded-md transition-all duration-200 flex items-center ${isActive(item.href)} hover:scale-105`}
+                    className={`px-4 py-2 text-sm rounded-md transition-all duration-200 flex items-center text-foreground/90 hover:text-foreground hover:bg-white/5 backdrop-blur-sm comic-pop comic-text`}
                   >
                     {item.icon}
                     {item.label}
@@ -161,7 +162,7 @@ export function Header() {
           <Button 
             variant="outline" 
             size="sm" 
-            className="hidden md:flex hover:bg-primary hover:text-white hover:border-transparent transition-colors"
+            className="hidden md:flex bg-primary/20 hover:bg-primary/30 text-primary backdrop-blur-sm comic-pop comic-text-bold border-white/10"
             onClick={handleCreateClick}
           >
             <PenSquare className="h-4 w-4 mr-2" />

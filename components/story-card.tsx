@@ -160,6 +160,7 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
     <motion.div
       whileHover={{ y: -5, scale: 1.02, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
       transition={{ duration: 0.2 }}
+      className="nft-pulse"
     >
       <Card className={cn(
         "overflow-hidden transition-all duration-200 hover:shadow-md group",

@@ -12,6 +12,8 @@ import path from 'path';
 import ClientLayout from "@/components/client-layout";
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
+import { AnimatedLayout } from "@/components/layout/animated-layout";
 
 // Optimize font loading
 const inter = Inter({ 
@@ -35,9 +37,9 @@ const getQuickBootScript = () => {
 // Quick boot script to prevent flashing and improve initial load
 const quickBootScript = getQuickBootScript();
 
-export const metadata = {
-  title: "GroqTales - AI-Powered Web3 Storytelling Platform",
-  description: "Create and share AI-generated stories powered by blockchain technology",
+export const metadata: Metadata = {
+  title: "GroqTales - AI-Generated Story NFTs",
+  description: "Create, mint, and share AI-generated stories as NFTs on the Monad blockchain.",
   // Performance-focused metadata
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
@@ -52,9 +54,9 @@ export const metadata = {
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -84,14 +86,16 @@ export default function RootLayout({
               disableTransitionOnChange={false}
               storageKey="groqtales-theme"
             >
-              <ClientLayout>
-                <div className="min-h-screen bg-background flex flex-col">
-                  <Header />
-                  <main className="container mx-auto px-4 py-6 flex-grow">{children}</main>
-                  <Footer />
-                </div>
-                <Toaster />
-              </ClientLayout>
+              <AnimatedLayout>
+                <ClientLayout>
+                  <div className="min-h-screen bg-background flex flex-col">
+                    <Header />
+                    <main className="container mx-auto px-4 py-6 flex-grow">{children}</main>
+                    <Footer />
+                  </div>
+                </ClientLayout>
+              </AnimatedLayout>
+              <Toaster />
             </ThemeProvider>
           </QueryProvider>
         </Web3Provider>
