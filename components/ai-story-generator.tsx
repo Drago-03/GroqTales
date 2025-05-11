@@ -7,6 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { StoryButton, NFTButton, PrimaryAnimatedButton } from "@/components/ui/animated-button";
 import {
   Select,
   SelectContent,
@@ -578,36 +579,7 @@ Please generate this story with attention to quality, creativity, and narrative 
       return;
     }
 
-    // Check if the network is Monad Testnet
-    if (typeof window !== 'undefined' && window.ethereum) {
-      try {
-        const network = await window.ethereum.request({ method: 'eth_chainId' });
-        if (network !== '0x27cf') { // Monad Testnet Chain ID
-          toast({
-            title: "Wrong Network",
-            description: "Please switch to Monad Testnet to mint NFTs.",
-            variant: "destructive",
-          });
-          return;
-        }
-      } catch (error) {
-        console.error("Error checking network:", error);
-        toast({
-          title: "Network Check Failed",
-          description: "Could not verify network. Please ensure you're on Monad Testnet.",
-          variant: "destructive",
-        });
-        return;
-      }
-    } else {
-      toast({
-        title: "Wallet Not Detected",
-        description: "Please ensure your wallet extension is installed and active.",
-        variant: "destructive",
-      });
-      return;
-    }
-
+    // No need to check for specific network - the mintNFTOnBase function will handle switching
     setIsActionLoading(true);
 
     try {
@@ -615,45 +587,93 @@ Please generate this story with attention to quality, creativity, and narrative 
       
       // Show a progress toast
       toast({
-        title: `Generating${storyFormat === 'nft' ? ' and Minting' : ' and Publishing'}`,
-        description: "Please wait while we process your request...",
+        title: "Generating Story",
+        description: "Creating your unique story with AI...",
       });
 
-      // Prepare options for generation and minting
-      let apiKeyToUse = undefined;
+      // Prepare options for generation
+      const options: { temperature: number; apiKey?: string } = { temperature: temperature };
       if (isUsingCustomKey && userApiKey) {
-        apiKeyToUse = userApiKey;
+        options.apiKey = userApiKey;
       }
 
-      // For NFT minting
-      if (storyFormat === 'nft') {
-        if (!account) {
-          console.log('Wallet connection required for NFT minting');
-          throw new Error("Wallet connection required for NFT minting");
+      // First generate the story content
+      let storyContent;
+      try {
+        if (storyType === 'comic') {
+          // Use comic generation logic
+          storyContent = await generateComicStory();
+        } else {
+          // Use regular text story generation
+          storyContent = await generate(engineeredPrompt, selectedModel, options);
         }
+      } catch (genError) {
+        console.error("Story generation error:", genError);
+        throw new Error(`Failed to generate story: ${genError instanceof Error ? genError.message : "Unknown error"}`);
+      }
+
+      if (!storyContent) {
+        throw new Error("Failed to generate story content");
+      }
+
+      // Extract title from the generated content
+      const storyTitle = title || extractTitleFromStory(storyContent);
+      
+      // Set the generated content
+      setGeneratedContent(storyContent);
+      
+      // Show minting toast
+      toast({
+        title: "Story Generated!",
+        description: "Now minting your story as an NFT...",
+      });
+
+      // For NFT minting
+      try {
+        // Prepare NFT metadata
+        const nftMetadata = {
+          title: storyTitle,
+          description: `A ${selectedGenres.join(", ")} story created with GroqTales`,
+          content: storyContent,
+          creator: account,
+          createdAt: new Date().toISOString(),
+          genres: selectedGenres,
+          storyType: storyType,
+          model: selectedModel
+        };
         
-        // Call generate and mint
+        // Call mint with the generated content
         const result = await mintNFTOnBase(
-          engineeredPrompt,
-          account || '0x0' // Using account as recipient string instead of object
+          nftMetadata,
+          account
         );
         
         if (!result) {
-          throw new Error("Failed to generate and mint NFT");
+          throw new Error("Failed to mint NFT");
         }
         
-        // Set generated content and minted NFT URL
-        setGeneratedContent(result.metadata.content);
+        // Store the token ID and transaction hash
+        setNFTTokenId(result.tokenId);
+        setNFTTransactionHash(result.transactionHash);
+        
+        // Set minted NFT URL
         setMintedNftUrl(`/nft-gallery/${result.tokenId}`);
         setActiveTab("mint");
         
         toast({
-          title: "NFT Minted Successfully",
-          description: `Your story "${result.metadata.title}" has been minted as NFT #${result.tokenId}`,
+          title: "NFT Minted Successfully! 🎉",
+          description: `Your story "${storyTitle}" has been minted as NFT #${result.tokenId}`,
         });
+      } catch (mintError) {
+        console.error("NFT minting error:", mintError);
+        
+        // Still show the generated content even if minting fails
+        setActiveTab("generate");
+        
+        throw new Error(`Story generated successfully, but minting failed: ${mintError instanceof Error ? mintError.message : "Unknown error"}`);
       }
     } catch (error) {
-      console.error(error);
+      console.error("Generate and mint error:", error);
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "An error occurred. Please try again.",
@@ -675,22 +695,68 @@ Please generate this story with attention to quality, creativity, and narrative 
       return;
     }
 
+    // Check if we have generated content
+    if (!generatedContent) {
+      toast({
+        title: "No Content",
+        description: "Please generate a story first before minting.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsMinting(true);
     try {
-      // Placeholder for actual minting logic
+      toast({
+        title: "Preparing NFT",
+        description: "Processing your story for minting...",
+      });
+      
+      // Extract title from the generated content if not set
+      const storyTitle = title || extractTitleFromStory(generatedContent);
+      
+      // Prepare NFT metadata
+      const nftMetadata = {
+        title: storyTitle,
+        description: `A ${selectedGenres.join(", ")} story created with GroqTales`,
+        content: generatedContent,
+        creator: account,
+        createdAt: new Date().toISOString(),
+        genres: selectedGenres,
+        storyType: storyType,
+        model: selectedModel || "unknown"
+      };
+      
       toast({
         title: "Minting NFT",
-        description: "Please wait while we process your NFT...",
+        description: "Uploading to IPFS and minting on blockchain...",
       });
-      // Add actual minting logic here once implemented
-      // For now, we'll simulate a successful minting
-      setTimeout(() => {
-        toast({
-          title: "NFT Minted Successfully",
-          description: "Your story has been minted as an NFT.",
-        });
-        setMintedNftUrl(`/nft-gallery/simulated-id`);
-      }, 2000);
+      
+      // Call mint with the generated content
+      const result = await mintNFTOnBase(
+        nftMetadata,
+        account
+      );
+      
+      if (!result) {
+        throw new Error("Failed to mint NFT");
+      }
+      
+      // Store the token ID and transaction hash
+      setNFTTokenId(result.tokenId);
+      setNFTTransactionHash(result.transactionHash);
+      
+      // Set minted NFT URL
+      setMintedNftUrl(`/nft-gallery/${result.tokenId}`);
+      
+      toast({
+        title: "NFT Minted Successfully! 🎉",
+        description: `Your story "${storyTitle}" has been minted as NFT #${result.tokenId}`,
+      });
+      
+      // Add a small delay before showing success state
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
     } catch (error) {
       console.error("Error minting NFT:", error);
       toast({
@@ -704,7 +770,71 @@ Please generate this story with attention to quality, creativity, and narrative 
   };
 
   function switchToMonadNetwork(event: React.MouseEvent<HTMLButtonElement>): void {
-    throw new Error("Function not implemented.");
+    event.preventDefault();
+    
+    // Monad Testnet Chain ID and parameters
+    const MONAD_CHAIN_ID = '0x27cf'; // 10191 in decimal
+    const MONAD_CHAIN_PARAMS = {
+      chainId: MONAD_CHAIN_ID,
+      chainName: 'Monad Testnet',
+      nativeCurrency: {
+        name: 'Monad',
+        symbol: 'MONAD',
+        decimals: 18
+      },
+      rpcUrls: ['https://testnet-rpc.monad.xyz'],
+      blockExplorerUrls: ['https://explorer.monad.xyz/']
+    };
+    
+    // Check if ethereum is available in window
+    if (typeof window === 'undefined' || !window.ethereum) {
+      toast({
+        title: "No Wallet Detected",
+        description: "Please install a Web3 wallet like MetaMask to continue.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    setIsActionLoading(true);
+    
+    // Create a safe reference to window.ethereum
+    const ethereum = window.ethereum;
+    
+    // First try to switch to the network
+    ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: MONAD_CHAIN_ID }]
+    }).catch((switchError: any) => {
+      // If the network doesn't exist in the wallet, add it
+      if (switchError.code === 4902) {
+        ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [MONAD_CHAIN_PARAMS]
+        }).then(() => {
+          toast({
+            title: "Network Added",
+            description: "Monad Testnet has been added to your wallet."
+          });
+        }).catch((addError: any) => {
+          console.error("Error adding network:", addError);
+          toast({
+            title: "Network Addition Failed",
+            description: "Failed to add Monad Testnet to your wallet.",
+            variant: "destructive"
+          });
+        });
+      } else {
+        console.error("Error switching network:", switchError);
+        toast({
+          title: "Network Switch Failed",
+          description: "Failed to switch to Monad Testnet.",
+          variant: "destructive"
+        });
+      }
+    }).finally(() => {
+      setIsActionLoading(false);
+    });
   }
 
   return (
@@ -1027,10 +1157,10 @@ Please generate this story with attention to quality, creativity, and narrative 
             </CardContent>
             <CardFooter className="flex flex-col gap-4 mt-4 px-6 pb-6">
               <div className="flex flex-row justify-center gap-4 w-full">
-                <Button
+                <StoryButton
                   onClick={handleGenerate}
                   disabled={isGroqLoading || isActionLoading}
-                  className="flex-1 theme-gradient-bg rounded-full text-white font-semibold py-3 text-lg hover:scale-105 transition-transform duration-300 shadow-lg"
+                  className="flex-1 text-lg"
                 >
                   {isGroqLoading || isActionLoading ? (
                     <>
@@ -1038,16 +1168,13 @@ Please generate this story with attention to quality, creativity, and narrative 
                       Generating...
                     </>
                   ) : (
-                    <>
-                      <Sparkles className="mr-2 h-5 w-5" />
-                      Generate Story
-                    </>
+                    "Generate Story"
                   )}
-                </Button>
-                <Button
+                </StoryButton>
+                <NFTButton
                   onClick={handleGenerateAndMint}
-                  disabled={isGroqLoading || isActionLoading || !account}
-                  className="flex-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 rounded-full text-white font-semibold py-3 text-lg hover:scale-105 transition-transform duration-300 shadow-lg"
+                  disabled={isGroqLoading || isActionLoading}
+                  className="flex-1 text-lg"
                 >
                   {isGroqLoading || isActionLoading ? (
                     <>
@@ -1055,12 +1182,9 @@ Please generate this story with attention to quality, creativity, and narrative 
                       Generating NFT...
                     </>
                   ) : (
-                    <>
-                      <Stars className="mr-2 h-5 w-5" />
-                      Generate NFT
-                    </>
+                    "Generate NFT"
                   )}
-                </Button>
+                </NFTButton>
                 <Button
                   variant="outline"
                   onClick={() => {
@@ -1303,8 +1427,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                   : 'Your story has been successfully published and is now available to readers'}
               </p>
               <div className="flex justify-center gap-4">
-                  <Button 
-                    className="theme-gradient-bg"
+                  <PrimaryAnimatedButton 
                     onClick={() => {
                       // Set a navigation flag in localStorage
                       try {
@@ -1325,7 +1448,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                     }}
                   >
                     {storyFormat === 'nft' ? 'View Your NFT' : 'View Your Story'}
-                </Button>
+                  </PrimaryAnimatedButton>
                 <Button
                   variant="outline"
                   onClick={() => {
@@ -1357,22 +1480,15 @@ Please generate this story with attention to quality, creativity, and narrative 
                 </div>
               </div>
               
-              <Button
+              <NFTButton
                 onClick={handleMintNFT}
-                disabled={isGroqLoading || isActionLoading}
-                className="w-full theme-gradient-bg"
+                disabled={isMinting}
+                className="w-full"
+                animationType="pulse"
               >
                 {isMinting ? (
                     <motion.div 
                       className="flex items-center justify-center space-x-2"
-                      animate={{ 
-                        scale: [1, 1.03, 1],
-                      }}
-                      transition={{ 
-                        duration: 1.5, 
-                        repeat: Infinity,
-                        repeatType: "reverse" 
-                      }}
                     >
                       <motion.div
                         animate={{ 
@@ -1387,26 +1503,14 @@ Please generate this story with attention to quality, creativity, and narrative 
                       >
                         <CopyCheck className="h-4 w-4 text-white" />
                       </motion.div>
-                      <motion.span
-                        animate={{
-                          opacity: [0.7, 1],
-                        }}
-                        transition={{
-                          duration: 0.8,
-                          repeat: Infinity,
-                          repeatType: "reverse"
-                        }}
-                      >
-                    {storyFormat === 'nft' ? 'Minting NFT...' : 'Publishing...'}
-                      </motion.span>
+                      <span>
+                        {storyFormat === 'nft' ? 'Minting NFT...' : 'Publishing...'}
+                      </span>
                     </motion.div>
                 ) : (
-                  <>
-                    <CopyCheck className="mr-2 h-4 w-4" />
-                    {storyFormat === 'nft' ? 'Mint as NFT' : 'Publish Story'}
-                  </>
+                  storyFormat === 'nft' ? 'Mint as NFT' : 'Publish Story'
                 )}
-              </Button>
+              </NFTButton>
               
               <div className="text-xs text-muted-foreground">
                 {storyFormat === 'nft' 

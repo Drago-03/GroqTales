@@ -82,7 +82,7 @@ export function ConnectWalletButton() {
         <Button
           disabled={isSigningIn}
           variant={address ? "outline" : "default"}
-          className="flex items-center"
+          className="flex items-center button-pop"
           onClick={() => {
             console.log("Connect Wallet button clicked - Debug Log");
             setOpen(true);
@@ -114,7 +114,7 @@ export function ConnectWalletButton() {
           <Button
             disabled={!availableConnectors['metaMask']}
             onClick={() => handleConnect('metaMask')}
-            className="flex items-center justify-center gap-2"
+            className="flex items-center justify-center gap-2 button-pop"
           >
             <Wallet className="h-5 w-5" />
             Connect MetaMask
@@ -123,7 +123,7 @@ export function ConnectWalletButton() {
             disabled={!availableConnectors['walletConnect']}
             onClick={() => handleConnect('walletConnect')}
             variant="outline"
-            className="flex items-center justify-center gap-2"
+            className="flex items-center justify-center gap-2 button-pop"
           >
             <QrCode className="h-5 w-5" />
             Connect WalletConnect
@@ -132,7 +132,7 @@ export function ConnectWalletButton() {
             disabled={!availableConnectors['ledger']}
             onClick={() => handleConnect('ledger')}
             variant="outline"
-            className="flex items-center justify-center gap-2"
+            className="flex items-center justify-center gap-2 button-pop"
           >
             <Lock className="h-5 w-5" />
             Connect Ledger

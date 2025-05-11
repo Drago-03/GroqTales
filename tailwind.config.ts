@@ -22,7 +22,8 @@ const config: Config = {
       backgroundImage: {
         'community-pattern': 'radial-gradient(circle at 50% 50%, rgba(var(--primary), 0.08) 1px, transparent 1px), radial-gradient(circle at 100% 100%, rgba(var(--primary), 0.08) 1px, transparent 1px)',
         'hero-gradient': 'linear-gradient(to right bottom, rgba(var(--primary), 0.1), transparent)',
-        'card-gradient': 'linear-gradient(to right bottom, rgba(var(--primary), 0.05), transparent)'
+        'card-gradient': 'linear-gradient(to right bottom, rgba(var(--primary), 0.05), transparent)',
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },
       backgroundSize: {
         'community-pattern': '40px 40px',

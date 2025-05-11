@@ -3,11 +3,11 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { useToast } from "@/components/ui/use-toast";
+import { uploadToIPFS, getIPFSUrl, getIPFSFallbackUrls } from "@/utils/ipfs";
 
 // Import Coinbase AgentKit and related modules
 // Removed problematic import for OnchainKit due to linter errors
 import { base } from "viem/chains";
-import { uploadToIPFS, getIPFSUrl } from '@/utils/ipfs';
 
 // Import Coinbase Wallet SDK
 import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
@@ -63,6 +63,9 @@ interface Web3ContextType {
       content: string;
       [key: string]: any;
     };
+    ipfsHash: string;
+    tokenURI: string;
+    fallbackUrls: string[];
   }>;
   buyNFTOnBase: (tokenId: string, price: string) => Promise<{ transactionHash: string; tokenId: string }>;
   sellNFTOnBase: (tokenId: string, price: string) => Promise<{ transactionHash: string }>;
@@ -84,7 +87,10 @@ const Web3Context = createContext<Web3ContextType>({
   mintNFTOnBase: async () => ({
     tokenId: "",
     transactionHash: "",
-    metadata: { content: "" }
+    metadata: { content: "" },
+    ipfsHash: "",
+    tokenURI: "",
+    fallbackUrls: []
   }),
   buyNFTOnBase: async () => ({ transactionHash: "", tokenId: "" }),
   sellNFTOnBase: async () => ({ transactionHash: "" }),
@@ -234,31 +240,59 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
     }
 
     try {
-      // Upload metadata to IPFS
-      const ipfsHash = await uploadToIPFS(metadata);
+      console.log('Starting NFT minting process with metadata:', metadata);
+      
+      // Add timestamp to metadata
+      const metadataWithTimestamp = {
+        ...metadata,
+        createdAt: new Date().toISOString(),
+        creator: recipient || account
+      };
+      
+      // Upload metadata to IPFS - directly upload the object
+      console.log('Uploading metadata to IPFS...');
+      const ipfsHash = await uploadToIPFS(metadataWithTimestamp, { 
+        name: `GroqTales-${metadata.title || 'Story'}-Metadata` 
+      });
+      
+      if (!ipfsHash) {
+        throw new Error("Failed to upload metadata to IPFS");
+      }
+      
+      console.log('Metadata uploaded successfully with hash:', ipfsHash);
       const tokenURI = getIPFSUrl(ipfsHash);
-
+      console.log('Token URI:', tokenURI);
+      
+      // Get fallback URLs for the frontend
+      const fallbackUrls = getIPFSFallbackUrls(ipfsHash);
+      
+      // In a production environment, this would call the contract
+      // For now, we're using a mock implementation
+      console.log('Minting NFT with token URI:', tokenURI);
+      
       // Mock minting for now - in production, this would interact with your smart contract
       const mockTokenId = `0x${Math.floor(Math.random() * 1000000).toString(16)}`;
       const mockTxHash = `0x${Array.from({length: 64}, () => Math.floor(Math.random() * 16).toString(16)).join('')}`;
 
+      // Show success message
       toast({
-        title: "NFT Minted Successfully",
-        description: `Your NFT has been minted on Base with token ID ${mockTokenId}`,
+        title: "NFT Minted Successfully! 🔥",
+        description: `Your story "${metadata.title || 'Untitled'}" is now an NFT with ID ${mockTokenId}`,
       });
 
       return {
         tokenId: mockTokenId,
         transactionHash: mockTxHash,
-        metadata: {
-          ...metadata,
-          content: metadata.content || metadata.description || "",
-        }
+        metadata: metadataWithTimestamp,
+        ipfsHash,
+        tokenURI,
+        fallbackUrls
       };
     } catch (error: any) {
+      console.error("Error minting NFT:", error);
       toast({
         title: "Minting Failed",
-        description: error.message || "Failed to mint NFT",
+        description: error.message || "Failed to mint NFT. Please try again.",
         variant: "destructive",
       });
       throw error;
