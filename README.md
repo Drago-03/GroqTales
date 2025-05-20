@@ -1,8 +1,3 @@
-- ![github-submission-banner](https://github.com/user-attachments/assets/a1493b84-e4e2-456e-a791-ce35ee2bcf2f)
-  <div align="center">
-    <img src="public/GroqTales.png" alt="GroqTales" />
-  </div>
-
 # 🚀 GroqTales
 
 > AI-Powered Story Generation and NFT Minting Platform
