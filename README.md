@@ -11,6 +11,7 @@
 ---
 
 
+
 ## 🎯 Objective
 
 GroqTales aims to revolutionize storytelling by leveraging AI to generate unique stories and comics, which can be minted as NFTs on the Monad blockchain. This platform serves writers, artists, and blockchain enthusiasts by providing a creative tool to craft and own digital storytelling assets.
