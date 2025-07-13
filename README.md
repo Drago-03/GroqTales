@@ -85,11 +85,11 @@ GroqTales is community-powered—we want your help to shape it!
 
 ## Roadmap
 
-[] AI visuals: integrate Stable Diffusion/DALL·E for comic panels
-[] Multilingual story generation
-[] Native marketplace: trade and discover story‑NFTs
-[] Mobile support
-[] Enhanced wallet security & decentralized data storage
+- AI visuals: integrate Stable Diffusion/DALL·E for comic panels
+- Multilingual story generation
+- Native marketplace: trade and discover story‑NFTs
+- Mobile support
+- Enhanced wallet security & decentralized data storage
 
 ## Join Us
 
