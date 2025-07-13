@@ -49,10 +49,15 @@
 
 ```bash
 git clone https://github.com/Drago-03/GroqTales
+
 cd GroqTales
+
 npm install
+
 cp .env.example .env.local
+
 # Add GROQ_API_KEY, UNSPLASH key, Monad network if needed
+
 npm run dev
 ```
 1. Visit http://localhost:3000
