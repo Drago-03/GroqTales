@@ -6,6 +6,9 @@ import React from 'react';
 
 import { Button } from '@/components/ui/button';
 
+/**
+ * Renders a placeholder page for text story details, displaying the story ID from the route and a message indicating the page is under development.
+ */
 export default function TextStoryDetailPage() {
   const params = useParams();
   const router = useRouter();

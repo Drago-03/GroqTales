@@ -14,6 +14,18 @@ type CardProps = {
   onClick?: () => void;
 };
 
+/**
+ * Renders a styled card component that can be either static or interactive.
+ *
+ * If an `onClick` handler is provided, the card is rendered as a button and supports keyboard activation via Enter or Space. Optionally displays a title and always renders its children within a padded container.
+ *
+ * @param title - Optional card header text
+ * @param children - Content to display inside the card
+ * @param className - Additional CSS classes for custom styling
+ * @param onClick - Optional click handler to make the card interactive
+ *
+ * @returns The rendered card element
+ */
 function Card({
   title,
   children,

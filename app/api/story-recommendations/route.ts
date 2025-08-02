@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { find, findOne, createObjectId } from '@/lib/db';
 import { generateStoryContent, GROQ_MODELS } from '@/lib/groq-service';
+/**
+ * Handles POST requests to generate story recommendations based on provided criteria.
+ *
+ * Accepts a JSON body with a required `storyId` and at least one of `content`, `keywords`, or `genre`. Retrieves published stories from the database (excluding the specified story), and if enough stories are available, uses an AI model to recommend the most relevant ones. Falls back to random selection if AI recommendations are unavailable or insufficient. Returns a JSON response with the recommended stories and the method used ("ai" or "random").
+ */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

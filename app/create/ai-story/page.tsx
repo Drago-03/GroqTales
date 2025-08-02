@@ -18,6 +18,9 @@ import AIStoryGenerator from '@/components/ai-story-generator';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 
+/**
+ * Renders the AI Story Generator page, displaying a suspense fallback while loading the main content.
+ */
 export default function AIStoryGeneratorPage() {
   return (
     <Suspense fallback={<div>Loading AI story page...</div>}>
@@ -25,6 +28,11 @@ export default function AIStoryGeneratorPage() {
     </Suspense>
   );
 }
+/**
+ * Renders the main content for the AI Story Generator page, handling navigation context, user onboarding, and initial story creation setup.
+ *
+ * Reads URL parameters to determine the user's navigation source, preferred genre, and story format, storing this information in localStorage for persistence. Displays contextual toast notifications based on navigation origin and provides navigation controls to return to the appropriate previous page. Presents feature highlights, action buttons for story creation and exploration, and integrates the AI story generation component with initial settings. Includes an informational section explaining the AI Story Generator and NFT minting process.
+ */
 function AIStoryContent() {
   const router = useRouter();
   const searchParams = useSearchParams();

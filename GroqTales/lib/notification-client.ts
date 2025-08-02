@@ -23,6 +23,17 @@ export type SendFrameNotificationParams = {
   notificationDetails?: FrameNotificationDetails | null;
 };
 
+/**
+ * Sends a notification to a Farcaster user via the Frame SDK.
+ *
+ * Attempts to deliver a notification with the specified title and body to the user identified by `fid`. If notification details are not provided, they are retrieved automatically. Returns a result indicating success, rate limiting, missing token, or error.
+ *
+ * @param fid - The Farcaster user ID to notify
+ * @param title - The notification title
+ * @param body - The notification body content
+ * @param notificationDetails - Optional notification delivery details; if omitted, they are fetched for the user
+ * @returns The result of the notification attempt, indicating success, error, rate limiting, or missing token
+ */
 export async function sendFrameNotification({
   fid,
   title,

@@ -130,6 +130,11 @@ const StoryCard = ({ story }: any) => (
   </Card>
 );
 
+/**
+ * Renders the user profile page with profile information, statistics, and tabs for stories, saved stories, and activity.
+ *
+ * Displays the user's avatar, name, badges, and bio, along with an overview of story, follower, view, and like counts. Provides tabbed navigation to view the user's stories, saved stories, and a placeholder for recent activity.
+ */
 export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">

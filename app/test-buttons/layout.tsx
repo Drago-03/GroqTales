@@ -4,6 +4,13 @@ import React from 'react';
 
 import { Button } from '@/components/ui/button';
 
+/**
+ * Provides a layout with a navigation header and content area for button testing pages.
+ *
+ * Renders a header with a "Back to Home" button and a title, followed by a main section displaying the provided children.
+ *
+ * @param children - The content to display within the main area of the layout
+ */
 export default function TestButtonsLayout({
   children,
 }: {

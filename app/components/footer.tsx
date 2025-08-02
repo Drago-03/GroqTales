@@ -4,6 +4,11 @@ import { Github } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
+/**
+ * Renders the footer section of the GroqTales website with links to resources, legal information, contact options, and an about section.
+ *
+ * The footer includes navigation links, a brief platform description, a GitHub link, and contact information, organized into four columns for easy access.
+ */
 export function Footer() {
   return (
     <footer className="border-t bg-background/80 backdrop-blur-sm">

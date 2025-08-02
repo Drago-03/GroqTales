@@ -28,6 +28,15 @@ interface PageHeaderProps {
     | 'heart'
     | null;
 }
+/**
+ * Renders a page header with an optional icon and description.
+ *
+ * Displays the provided title prominently, with an optional icon and description beneath the title if specified.
+ *
+ * @param title - The main header text to display
+ * @param description - Optional subtext or description shown below the title
+ * @param icon - Optional icon name to display next to the title; supported values include 'book', 'shopping-cart', 'users', 'bookmark', 'library', 'settings', 'help', 'newspaper', 'chart', 'heart'
+ */
 export function PageHeader({ title, description, icon }: PageHeaderProps) {
   const getIcon = () => {
     switch (icon) {

@@ -21,6 +21,11 @@ import React, { useState, useEffect } from 'react';
 import { LoadingAnimation } from '@/components/loading-animation';
 import { Button } from '@/components/ui/button';
 
+/**
+ * Renders the landing page for the GroqTales decentralized storytelling platform.
+ *
+ * Displays an animated loading screen on initial load, then presents the main landing content with hero section, wallet connection logic, feature highlights, and animated UI elements. Handles MetaMask wallet connection and redirects authenticated users to the home page.
+ */
 export default function LandingPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);

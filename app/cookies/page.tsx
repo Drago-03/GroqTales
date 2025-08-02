@@ -38,6 +38,11 @@ const CookieSection = ({ icon: Icon, title, children }: any) => (
   </Card>
 );
 
+/**
+ * Renders the Cookie Policy page with detailed information about cookies, their types, data protection practices, and user preferences.
+ *
+ * Displays multiple informational sections, decorative background elements, and navigation links to related policies and contact options.
+ */
 export default function CookiePolicyPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">

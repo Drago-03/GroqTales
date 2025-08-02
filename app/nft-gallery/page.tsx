@@ -95,6 +95,13 @@ const featuredNFTs: NFTStory[] = [
   },
 ];
 
+/**
+ * Returns a predefined array of additional NFT story objects with detailed metadata.
+ *
+ * Each NFT story includes information such as id, title, author, cover image, price, likes, views, genre, sales, description, and rarity.
+ *
+ * @returns An array of NFTStory objects representing additional NFT stories for the gallery.
+ */
 function generateAdditionalNFTs(): NFTStory[] {
   const stableNFTs: NFTStory[] = [
     {
@@ -242,6 +249,15 @@ function generateAdditionalNFTs(): NFTStory[] {
   return stableNFTs;
 }
 
+/**
+ * Displays an animated card for an NFT story with interactive like and purchase actions.
+ *
+ * Shows the NFT's cover image, title, author, description, genre, price, and statistics such as likes, views, and sales. Renders badges for top ranking and rarity, and provides "Like" and "Buy Now" buttons that trigger the supplied callbacks with the NFT's id.
+ *
+ * @param nft - The NFT story object to display
+ * @param onLike - Callback invoked when the like button is clicked, receiving the NFT id
+ * @param onPurchase - Callback invoked when the buy button is clicked, receiving the NFT id
+ */
 function NFTCard({
   nft,
   onLike,
@@ -357,6 +373,13 @@ function NFTCard({
   );
 }
 
+/**
+ * Displays the NFT Story Gallery page with interactive search, filtering, sorting, and wallet-enabled actions.
+ *
+ * Users can browse, search, and filter NFT stories by genre, sort them by likes, price, or recency, and interact with each NFT by liking or purchasing, provided their wallet is connected. The gallery loads featured and additional NFTs, manages state for user interactions, and provides animated UI feedback and toast notifications for actions and errors.
+ *
+ * @returns The rendered NFT gallery page component.
+ */
 export default function NFTGalleryPage() {
   const [nfts, setNfts] = useState<NFTStory[]>([]);
   const [searchTerm, setSearchTerm] = useState('');

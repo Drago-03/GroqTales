@@ -7,6 +7,11 @@ import { getStoryNFT, mintStoryNFT, StoryMetadata } from '@/lib/monad-service';
 const MINTER_PRIVATE_KEY =
   process.env.MINTER_PRIVATE_KEY ||
   '0x0000000000000000000000000000000000000000000000000000000000000000';
+/**
+ * Handles POST requests for minting or fetching Monad NFTs.
+ *
+ * Accepts a JSON body with an `action` field specifying either `"mint"` or `"fetch"`. For `"mint"`, requires `metadata` and `ownerAddress` to mint a new NFT. For `"fetch"`, requires `tokenId` to retrieve NFT details. Returns appropriate JSON responses for success or error conditions.
+ */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -73,6 +78,11 @@ export async function POST(request: NextRequest) {
   }
 }
 
+/**
+ * Handles GET requests to provide static information about the Monad Testnet network.
+ *
+ * @returns A JSON response containing network details such as name, chain ID, RPC URL, and currency.
+ */
 export async function GET() {
   try {
     return NextResponse.json({

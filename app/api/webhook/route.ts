@@ -14,7 +14,11 @@ const deleteUserNotificationDetails = async (address: string) => {
   // Mock implementation
 };
 // API route handler for webhook events
-// Updated on May 2, 2025, to force build recognition of changes - Revision 2
+/**
+ * Handles POST requests to process incoming webhook events.
+ *
+ * Parses the request body as JSON, logs the received payload, and returns a success response. If an error occurs during processing, returns a failure response with HTTP status 500.
+ */
 export async function POST(req: Request) {
   try {
     const body = await req.json();

@@ -92,6 +92,11 @@ const ContactInfo = ({ icon: Icon, title, content, link }: any) => (
   </div>
 );
 
+/**
+ * Renders the contact page with a contact form, contact information, and social media links.
+ *
+ * Displays a form for users to send messages, including validation and submission feedback. Also provides contact details and links to GitHub and LinkedIn profiles.
+ */
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);

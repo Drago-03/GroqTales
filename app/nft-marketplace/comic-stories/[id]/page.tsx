@@ -6,6 +6,9 @@ import React from 'react';
 
 import { Button } from '@/components/ui/button';
 
+/**
+ * Renders a placeholder page for comic story details, displaying the comic ID from the route and a message indicating the page is under development.
+ */
 export default function ComicStoryDetailPage() {
   const params = useParams();
   const router = useRouter();

@@ -29,6 +29,11 @@ import {
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+/**
+ * Renders the FAQ page with a suspense boundary for asynchronous loading.
+ *
+ * Displays the main FAQ content, showing a loading message until the content is ready.
+ */
 export default function FAQPage() {
   return (
     <Suspense fallback={<div>Loading FAQ page...</div>}>
@@ -36,6 +41,11 @@ export default function FAQPage() {
     </Suspense>
   );
 }
+/**
+ * Renders the main FAQ content for GroqTales, providing categorized questions and answers with deep linking, smooth scrolling, and tab navigation.
+ *
+ * The component synchronizes the active FAQ category and selected question with URL parameters, enabling direct linking and browser navigation. Users can browse FAQs by category, use quick links to jump to specific questions, and access support resources if needed.
+ */
 function FAQContent() {
   const router = useRouter();
   const searchParams = useSearchParams();

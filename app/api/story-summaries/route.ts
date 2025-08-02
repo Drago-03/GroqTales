@@ -11,6 +11,13 @@ import {
 } from '@/lib/db';
 import { generateStoryContent, GROQ_MODELS } from '@/lib/groq-service';
 const COLLECTION_NAME = 'story_summaries';
+/**
+ * Creates a new AI-generated summary for a story and stores it in the database.
+ *
+ * Validates the presence of `storyId` and `content` in the request body. If a summary for the given story already exists, returns a 409 conflict with the existing summary. Otherwise, generates a summary, key points, sentiment, and keywords using an AI model, stores the result, and returns the newly created summary.
+ *
+ * @returns A JSON response containing the stored summary on success, or an error message with the appropriate HTTP status code on failure.
+ */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -102,6 +109,12 @@ export async function POST(request: NextRequest) {
   }
 }
 
+/**
+ * Handles GET requests to retrieve story summaries, optionally filtered by `storyId`.
+ *
+ * If a `storyId` query parameter is provided, returns summaries matching that ID; otherwise, returns all summaries.
+ * Responds with a JSON object containing a `success` flag and the list of summaries.
+ */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -124,6 +137,11 @@ export async function GET(request: NextRequest) {
   }
 }
 
+/**
+ * Updates an existing story summary by ID, either by regenerating it using AI analysis of new content or by applying manual updates to summary fields.
+ *
+ * If `regenerate` is true and new `content` is provided, the summary and related fields are regenerated using the specified AI model. Alternatively, manual updates to `summary`, `keyPoints`, `sentiment`, or `keywords` can be applied. Returns the updated summary or an error if the summary is not found or input is invalid.
+ */
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
@@ -230,6 +248,11 @@ export async function PUT(request: NextRequest) {
   }
 }
 
+/**
+ * Deletes a story summary by its ID.
+ *
+ * Expects an `id` query parameter specifying the summary to delete. Returns a success message if the summary is deleted, or an error if the ID is missing or the summary does not exist.
+ */
 export async function DELETE(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);

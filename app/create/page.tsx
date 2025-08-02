@@ -110,6 +110,13 @@ interface StoryMetadata {
   createdAt: string;
   ipfsHash: string;
 }
+/**
+ * Renders the story creation page, allowing authenticated users to compose, preview, and publish a story with optional NFT minting and IPFS storage.
+ *
+ * Handles user authentication, session validation, form state, IPFS uploads, NFT creation, and backend saving. Provides user feedback through toasts and manages navigation on success or error.
+ *
+ * Redirects unauthenticated or invalid sessions to the home page and displays appropriate error messages.
+ */
 export default function CreateStoryPage() {
   const router = useRouter();
   const { account } = useWeb3();

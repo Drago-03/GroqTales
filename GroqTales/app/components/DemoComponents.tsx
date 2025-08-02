@@ -29,6 +29,18 @@ type ButtonProps = {
   icon?: ReactNode;
 };
 
+/**
+ * Renders a customizable button with support for different visual variants, sizes, optional icon, and disabled state.
+ *
+ * @param children - The button label or content to display
+ * @param variant - Visual style of the button ("primary", "secondary", "outline", or "ghost")
+ * @param size - Size of the button ("sm", "md", or "lg")
+ * @param className - Additional CSS classes to apply
+ * @param onClick - Click event handler
+ * @param disabled - Whether the button is disabled
+ * @param type - Button type attribute ("button", "submit", or "reset")
+ * @param icon - Optional icon element to display before the label
+ */
 export function Button({
   children,
   variant = "primary",
@@ -79,6 +91,16 @@ type CardProps = {
   onClick?: () => void;
 };
 
+/**
+ * Renders a styled card container with optional title and content.
+ *
+ * If an `onClick` handler is provided, the card becomes keyboard accessible and interactive.
+ *
+ * @param title - Optional title displayed at the top of the card
+ * @param children - Content to be rendered inside the card
+ * @param className - Additional CSS classes for custom styling
+ * @param onClick - Optional click handler to make the card interactive
+ */
 function Card({ title, children, className = "", onClick }: CardProps) {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (onClick && (e.key === "Enter" || e.key === " ")) {
@@ -180,6 +202,14 @@ type IconProps = {
   className?: string;
 };
 
+/**
+ * Renders a scalable SVG icon based on the specified name and size.
+ *
+ * @param name - The icon to display ("heart", "star", "check", "plus", or "arrow-right")
+ * @param size - The icon size ("sm", "md", or "lg"); defaults to "md"
+ * @param className - Additional CSS classes to apply to the icon container
+ * @returns A React element containing the requested SVG icon
+ */
 export function Icon({ name, size = "md", className = "" }: IconProps) {
   const sizeClasses = {
     sm: "w-4 h-4",
@@ -280,6 +310,11 @@ type Todo = {
   completed: boolean;
 };
 
+/**
+ * Renders an interactive todo list with add, toggle, and delete functionality.
+ *
+ * Users can add new tasks, mark them as completed or incomplete, and remove tasks from the list. The component maintains its own state and displays todos within a styled card.
+ */
 function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([
     { id: 1, text: "Learn about MiniKit", completed: false },
@@ -381,6 +416,11 @@ function TodoList() {
   );
 }
 
+/**
+ * Renders a card that allows the user to send a sample transaction to their own wallet address if connected.
+ *
+ * If a wallet is connected, displays a transaction UI for sending 0 ETH to the user's address and shows a notification upon success. If no wallet is connected, prompts the user to connect their wallet.
+ */
 function TransactionCard() {
   const { address } = useAccount();
 

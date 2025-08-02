@@ -51,6 +51,14 @@ interface Comment {
   likes: number;
   isVerified?: boolean;
 }
+/**
+ * Renders a detailed story page with voting, commenting, sharing, creator profile, NFT details, and related stories.
+ *
+ * Displays the selected story's information, allows users to upvote or downvote, add and like comments, and share the story. Shows creator and NFT details in a sidebar, and lists similar stories below. Handles loading and not found states, and provides UI feedback for user actions.
+ *
+ * @param params - Route parameters containing the story ID to display
+ * @returns The complete story page UI for the given story ID
+ */
 export default function StoryPage({ params }: { params: { id: string } }) {
   // State
   const [story, setStory] = useState<any>(null);

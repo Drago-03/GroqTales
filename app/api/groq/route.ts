@@ -8,6 +8,11 @@ import {
   testGroqConnection,
   testGroqSpecialModel,
 } from '@/lib/groq-service';
+/**
+ * Handles POST requests for story-related operations such as generation, analysis, idea suggestion, and content improvement.
+ *
+ * Determines the requested action from the request body and delegates to the appropriate service function. Returns a JSON response with the result or an error message if required parameters are missing or an error occurs.
+ */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -82,6 +87,13 @@ export async function POST(request: NextRequest) {
   }
 }
 
+/**
+ * Handles GET requests for Groq API route, supporting connection tests and model listing.
+ *
+ * If the `action` query parameter is `'test'`, performs a Groq connection test using the provided `apiKey` and optionally a special model, returning the test result as JSON. Otherwise, returns a JSON object listing available Groq models, the default model, and their human-readable names.
+ *
+ * Returns a 500 error response if an exception occurs.
+ */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);

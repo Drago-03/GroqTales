@@ -18,6 +18,13 @@ const ALLOWED_WALLETS = {
   minting: ['0x1234567890abcdef1234567890abcdef12345678'],
 };
 
+/**
+ * Determines feature access for the connected wallet and returns access flags for history, generation, and minting features.
+ *
+ * Displays a toast notification indicating whether the connected wallet has access to any special features.
+ *
+ * @returns An object with boolean properties: `hasHistoryAccess`, `hasGenerationAccess`, and `hasMintingAccess`
+ */
 export function AccessControl() {
   const { account } = useWeb3();
   const { toast } = useToast();

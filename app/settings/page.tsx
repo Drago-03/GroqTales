@@ -22,6 +22,11 @@ import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 
+/**
+ * Renders the user settings page with tabbed sections for profile, account, notifications, wallet, appearance, and privacy preferences.
+ *
+ * Provides a multi-tabbed interface for users to view and update their personal information, account security, notification preferences, wallet settings, appearance customization, and privacy controls.
+ */
 export default function SettingsPage() {
   return (
     <div className="container mx-auto py-10">

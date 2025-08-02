@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { generateStoryContent, GROQ_MODELS } from '@/lib/groq-service';
+/**
+ * Handles POST requests for literary analysis of story content based on a specified analysis type.
+ *
+ * Accepts a JSON body containing story content, title, genre, analysis type, model, and API key. Returns a structured analysis in JSON format when possible, or raw text if parsing fails. Responds with appropriate error messages for missing content or invalid analysis types.
+ */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

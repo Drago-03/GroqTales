@@ -44,8 +44,13 @@ const LENGTH_OPTIONS = [
 ]
 
 /**
- * AI Story Generator Backup Component
- * Provides a clean interface for generating AI-powered stories with customizable parameters
+ * Renders a user interface for generating personalized AI-powered stories based on customizable parameters.
+ *
+ * Users can select genre, theme, length, tone, characters, and setting to generate a mock story. The component validates required fields, simulates asynchronous story generation, and displays the result with animated transitions. Optional callbacks and custom styling are supported.
+ *
+ * @param onStoryGenerated - Optional callback invoked with the generated story string when story generation completes
+ * @param className - Optional CSS class names for custom styling
+ * @returns A React element containing the story generator form and generated story display
  */
 export default function AIStoryGeneratorBackup({ onStoryGenerated, className = '' }: StoryGeneratorProps) {
   const [isGenerating, setIsGenerating] = useState(false)

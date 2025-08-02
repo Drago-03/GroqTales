@@ -26,7 +26,13 @@ const CONTRACT_ABI = [
   'event StoryMinted(uint256 indexed tokenId)',
 ];
 
-// Mock IPFS client function for build compatibility
+/**
+ * Returns a mock IPFS client that simulates basic IPFS operations for build-time compatibility.
+ *
+ * The mock client provides asynchronous `add`, `pin.add`, and `name.publish` methods that return fixed mock hashes or objects, allowing code that depends on IPFS functionality to run without requiring the actual IPFS client or network access.
+ *
+ * @returns An object with mock implementations of IPFS client methods.
+ */
 async function getIpfsClient() {
   // Return a mock client that simulates IPFS operations
   return {
@@ -43,7 +49,13 @@ async function getIpfsClient() {
   };
 }
 
-// Function to dynamically initialize IPFS client only when needed
+/**
+ * Handles POST requests to mint a new NFT on Ethereum Mainnet with story content and metadata stored on IPFS.
+ *
+ * Validates the request payload, uploads the provided story content and metadata to IPFS, and mints an NFT referencing these IPFS CIDs using a configured smart contract. Returns a JSON response containing minting status, token ID, transaction hash, and IPFS gateway URLs for accessing the uploaded content.
+ *
+ * Returns HTTP 400 for missing parameters, 503 for misconfigured environment variables, and 500 for IPFS or minting errors.
+ */
 export async function POST(req: Request) {
   try {
     const { storyContent, metadata, userAddress } = await req.json();
