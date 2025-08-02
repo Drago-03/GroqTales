@@ -151,7 +151,8 @@ const mockComicNFTs: ComicNFT[] = [
 }
 ];
 
-// Generate more comic NFTs for demonstration generateMoreComicNFTs(count: number): ComicNFT[] {
+// Generate more comic NFTs for demonstration
+function generateMoreComicNFTs(count: number): ComicNFT[] {
   const genres = ["Sci-Fi", "Fantasy", "Cyberpunk", "Mystery", "Action", "Horror", "Comedy", "Romance"];
   const rarities: Array<ComicNFT["rarity"]> = ["common", "uncommon", "rare", "legendary"];
 

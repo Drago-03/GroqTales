@@ -5,7 +5,7 @@ import React from "react";
 
 import { useState } from "react";
 import { StorySummary } from "@/components/story-summary";
-import { StoryAnalysis } from "@/components/story-analysis";
+import StoryAnalysis from "@/components/story-analysis";
 import { StoryRecommendations } from "@/components/story-recommendations";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

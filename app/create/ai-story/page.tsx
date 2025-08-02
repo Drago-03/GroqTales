@@ -5,7 +5,7 @@ import React from "react";
 
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { AIStoryGenerator } from "@/components/ai-story-generator";
+import AIStoryGenerator from "@/components/ai-story-generator";
 import { Sparkles, BookText, Wallet, NetworkIcon, ArrowLeft, PenSquare, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";

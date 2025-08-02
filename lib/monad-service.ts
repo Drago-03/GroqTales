@@ -95,8 +95,7 @@ export async function getStoryNFT(tokenId: string): Promise<MintedNFT | null> {
 }
 /**
  * Generates an AI story with Groq and mints it as an NFT
- * 
-
+ */
 export async function generateAndMintAIStory(
   prompt: string,
   authorAddress: string,
@@ -175,5 +174,51 @@ export async function generateAndMintAIStory(
   } catch (error) {
     console.error("Error in generateAndMintAIStory:", error);
     throw error;
+  }
 }
+
+/**
+ * Mint a story NFT on the Monad blockchain
+ */
+export async function mintStoryNFT(metadata: any, authorAddress: string, signer?: any) {
+  try {
+    return {
+      success: true,
+      message: 'NFT minting placeholder - implementation needed',
+      tokenId: '1',
+      transactionHash: '0x123...'
+    };
+  } catch (error) {
+    console.error('Error minting story NFT:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+}
+
+/**
+ * Get story NFT details from the blockchain
+ */
+export async function getStoryNFT(tokenId: string) {
+  try {
+    return {
+      success: true,
+      message: 'NFT retrieval placeholder - implementation needed',
+      nft: {
+        tokenId,
+        owner: '0x123...',
+        metadata: {
+          title: 'Placeholder Story',
+          description: 'Placeholder description'
+        }
+      }
+    };
+  } catch (error) {
+    console.error('Error getting story NFT:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
 }

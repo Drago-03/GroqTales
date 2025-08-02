@@ -38,7 +38,18 @@ interface ComicNFTDetailDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onPurchase: () => void;
-}}
+}
+
+export function ComicNFTDetailDialog({ comic, isOpen, onClose, onPurchase }: ComicNFTDetailDialogProps) {
+  const [currentPreviewImage, setCurrentPreviewImage] = useState(0);
+  const { account } = useWeb3();
+  const { toast } = useToast();
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-6xl w-full h-[90vh] p-0 overflow-hidden">
+        <div className="flex h-full">
+          {/* Image Preview Section */}
           <div className="md:w-1/2 bg-black relative">
             <AnimatePresence mode="wait">
               <motion.div

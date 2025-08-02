@@ -1,6 +1,6 @@
-import React from "react";
-'use client';
+"use client";
 
+import React from "react";
 import { useToast } from '@/hooks/use-toast';
 import {
   Toast,
@@ -14,7 +14,7 @@ import {
   export function Toaster() {
   const { toasts } = useToast();
 
-  function return(
+  return (
     <ToastProvider>
       {toasts.map(function ({ id, title, description, action, ...props }) {
         return (

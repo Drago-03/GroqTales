@@ -25,7 +25,33 @@ interface NFT {
   author?: string;
   likes?: number;
   views?: number;
-}}
+}
+
+const NFTMarketplace: React.FC = () => {
+  const [selectedNFT, setSelectedNFT] = useState<NFT | null>(null);
+  const [sellPrice, setSellPrice] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const account = "0x1234567890abcdef"; // Mock account for placeholder
+
+  const handleSellNFT = async () => {
+    if (!selectedNFT || !sellPrice) return;
+    
+    setIsLoading(true);
+    try {
+      // Mock sell NFT logic - replace with actual implementation
+      console.log(`Selling NFT ${selectedNFT.tokenId} for ${sellPrice} ETH`);
+      // Reset form
+      setSelectedNFT(null);
+      setSellPrice('');
+    } catch (error) {
+      console.error('Error selling NFT:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="nft-marketplace">
       {selectedNFT && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <Card className="w-full max-w-md bg-white dark:bg-gray-900 border rounded-xl shadow-2xl">

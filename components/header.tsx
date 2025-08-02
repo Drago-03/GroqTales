@@ -21,7 +21,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { WalletConnect } from "@/components/wallet-connect";
+import WalletConnect from "@/components/wallet-connect";
 
 // Type definitions for nav items
 type NavSubItem = {

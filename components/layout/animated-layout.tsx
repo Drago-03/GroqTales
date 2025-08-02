@@ -11,7 +11,12 @@ interface AnimatedLayoutProps {
   children: ReactNode;
   disableAnimation?: boolean;
   className?: string;
-}}
+}
+
+export function AnimatedLayout({ children, disableAnimation = false, className }: AnimatedLayoutProps) {
+  return (
+    <div className={cn("relative min-h-screen overflow-hidden", className)}>
+      {/* Galaxy background */}
       {!disableAnimation && <GalaxyBackground />}
 
       {/* Overlay to ensure content readability */}

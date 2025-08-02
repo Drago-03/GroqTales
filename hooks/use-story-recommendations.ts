@@ -24,6 +24,7 @@ interface UseStoryRecommendationsResult {
 
   /**
    * Get recommendations based on a story's characteristics
+   */
 
   const getRecommendations = async (options: RecommendationOptions): Promise<any[]> => {
     const { storyId, content, keywords, genre, limit = 5, model, apiKey } = options;

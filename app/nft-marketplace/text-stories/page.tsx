@@ -150,7 +150,8 @@ const textNFTs: TextNFT[] = [
 }
 ];
 
-// Generate more text NFTs for demonstration generateMoreTextNFTs(count: number): TextNFT[] {
+// Generate more text NFTs for demonstration
+function generateMoreTextNFTs(count: number): TextNFT[] {
   const genres = ["Mystery", "Sci-Fi", "Fantasy", "Cyberpunk", "Historical Fiction", "Philosophy", "Romance", "Horror", "Thriller"];
 
   return Array.from({ length: count }, (_, index) => {
@@ -186,7 +187,9 @@ interface TextNFTDetailDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onPurchase: (story: TextNFT) => void;
-} TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDetailDialogProps) {
+}
+
+function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDetailDialogProps) {
   const { account } = useWeb3();
   const { toast } = useToast();
 

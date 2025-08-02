@@ -12,7 +12,7 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    '@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended',
     'next/core-web-vitals',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',

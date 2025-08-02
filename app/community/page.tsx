@@ -6,8 +6,8 @@ import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CommunityFeed } from "@/components/community-feed";
-import { LoadingScreen } from "@/components/loading-screen";
+import CommunityFeed from "@/components/community-feed";
+import LoadingScreen from "@/components/loading-screen";
 import { motion } from "framer-motion";
 
 export default function CommunityPage() {

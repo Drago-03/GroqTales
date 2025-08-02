@@ -49,25 +49,44 @@ function DashboardContent() {
     // Check if authentication is directly from URL token (most reliable method)
     if (sessionToken) {
       try {
+        // Decode and validate the session token
+        const decodedToken = JSON.parse(atob(sessionToken));
+        const { employeeId, timestamp, signature } = decodedToken;
+        
+        // Basic validation
+        if (!employeeId || !timestamp || !signature) {
+          console.log("Invalid session token structure");
+          router.push('/admin/login');
+          return;
+        }
+        
+        // Check if token is expired (24 hours)
+        const now = Date.now();
+        const isExpired = (now - timestamp) > (24 * 60 * 60 * 1000);
+        
+        if (isExpired) {
+          console.log("Session token expired");
+          router.push('/admin/login');
+          return;
+        }
+        
+        // Store valid session data
         if (typeof window !== 'undefined') {
-          // Store the session token for future use
           localStorage.setItem('adminSession', 'true');
-          localStorage.setItem('adminSessionToken', sessionToken);
-          localStorage.setItem('adminSessionTimestamp', Date.now().toString());
-
-          // Set a direct cookie that doesn't require JavaScript
-          if (typeof document !== 'undefined') {
-            document.cookie = `adminSessionActive=true; path=/; max-age=${60 * 60 * 24}`; // 24 hours
-}
-}
-        // Authentication successful, stop loading
+          localStorage.setItem('employeeId', employeeId);
+          localStorage.setItem('adminSessionTimestamp', now.toString());
+          document.cookie = "adminSessionActive=true; path=/; max-age=86400"; // 24 hours
+        }
+        
         setIsLoading(false);
         return;
       } catch (error) {
-        console.error("Failed to store session token:", error);
-        // Continue with other authentication methods
-}
-}
+        console.error("Error validating session token:", error);
+        router.push('/admin/login');
+        return;
+      }
+    }
+    
     // Check existing authentication methods
     try {
       if (typeof window !== 'undefined') {
@@ -87,13 +106,15 @@ function DashboardContent() {
             console.log("No valid admin session found, redirecting to login");
             router.push('/admin/login');
             return;
-}
-}
+          }
+        }
+        
         // Session exists and is valid, refresh it
         localStorage.setItem('adminSessionTimestamp', now.toString());
         if (typeof document !== 'undefined') {
           document.cookie = "adminSessionActive=true; path=/; max-age=86400"; // 24 hours
-}
+        }
+        
         // Set up periodic session refresh without depending on React state
         const intervalId = window.setInterval(() => {
           try {
@@ -101,12 +122,12 @@ function DashboardContent() {
               localStorage.setItem('adminSessionTimestamp', Date.now().toString());
               if (typeof document !== 'undefined') {
                 document.cookie = "adminSessionActive=true; path=/; max-age=86400";
-}
-}
+              }
+            }
           } catch (error) {
             console.error("Error refreshing session:", error);
             // Not critical, will try again next interval
-}
+          }
         }, 15 * 60 * 1000); // 15 minutes
 
         setIsLoading(false);
@@ -116,12 +137,14 @@ function DashboardContent() {
       } else {
         // SSR case - just set loading to false to avoid infinite loading
         setIsLoading(false);
-}
+        return;
+      }
     } catch (error) {
       console.error("Error checking admin authentication:", error);
       setAuthError("Authentication error. Please try logging in again.");
       setIsLoading(false);
-}
+      return;
+    }
   }, [router, sessionToken]);
 
   const handleLogout = () => {

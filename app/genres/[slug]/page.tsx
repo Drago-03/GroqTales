@@ -6,7 +6,9 @@ import { getGenreBySlug } from '@/components/genre-selector';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import StoryCard from '@/components/story-card';
-import { fetchPopularStoriesByGenre } from '@/lib/mock-data'; GenrePage({ params }: { params: { slug: string } }) {
+import { fetchPopularStoriesByGenre } from '@/lib/mock-data';
+
+function GenrePage({ params }: { params: { slug: string } }) {
   const genre = getGenreBySlug(params.slug);
 
   if (!genre) {

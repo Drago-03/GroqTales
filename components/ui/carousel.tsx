@@ -1,6 +1,6 @@
-import React from "react";
-'use client';
+"use client";
 
+import React from "react";
 import * as React from 'react';
 import useEmblaCarousel, {
   type UseEmblaCarouselType,

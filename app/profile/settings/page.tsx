@@ -86,7 +86,9 @@ export default function SettingsPage() {
     resolver: zodResolver(profileFormSchema),
     defaultValues,
     mode: "onChange",
-  }); onSubmit(data: ProfileFormValues) {
+  });
+
+  const onSubmit = (data: ProfileFormValues) => {
     // In a real app, this would save the data to the server
     console.log(data);
     // Show success message or redirect

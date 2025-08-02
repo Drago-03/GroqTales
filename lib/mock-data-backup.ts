@@ -1,6 +1,5 @@
 /**
  * Mock data generation for stories and NFTs
- */
 
 // Generate mock NFT stories data
 export const generateNftEntries = (count: number) => {
@@ -75,12 +74,12 @@ export const topNftStories = [
     description: "A family moves into a historic home only to discover the walls hold secrets of past residents who never truly left.",
     isTop10: true,
     sales: 76
-  }
+}
 ];
 
 /**
  * Fetches a story by its ID
- */
+
 export function fetchStoryById(id: string, limit?: number, relatedStories?: boolean): any {
   // Combine top stories with generated stories
   const allStories = [...topNftStories, ...generateNftEntries(90)];
@@ -94,15 +93,13 @@ export function fetchStoryById(id: string, limit?: number, relatedStories?: bool
     return allStories
       .filter(s => s.genre === story.genre && s.id !== id)
       .slice(0, limit || 4);
-  }
-  
+}
   // Otherwise return the specific story
   return allStories.find(story => story.id === id);
 }
-
 /**
  * Fetches popular stories by genre
- */
+
 export function fetchPopularStoriesByGenre(genre: string, limit: number = 8): any[] {
   // Combine top stories with generated stories
   const allStories = [...topNftStories, ...generateNftEntries(90)];
