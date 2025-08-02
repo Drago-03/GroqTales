@@ -7,6 +7,25 @@
 import { ethers } from 'ethers';
 import { GROQ_MODELS } from './groq-service';
 
+// Story metadata interface for NFT minting
+export interface StoryMetadata {
+  title: string;
+  content: string;
+  genre: string;
+  author: string;
+  timestamp: number;
+  aiModel?: string;
+  tags?: string[];
+}
+
+// Minted NFT result interface
+export interface MintedNFT {
+  tokenId: string;
+  contractAddress: string;
+  transactionHash: string;
+  metadata: StoryMetadata;
+}
+
 // NFT Contract ABI - simplified for this example
 const NFT_CONTRACT_ABI = [
   " mint(address to, string memory tokenURI) external returns (uint256)",

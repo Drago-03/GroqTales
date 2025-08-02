@@ -79,10 +79,11 @@ jobs:
           
           # Process license report (simplified check)
           if grep -q "UNLICENSED" licenses.json; then
-            echo "⚠️ Found UNLICENSED packages - updating to MIT license"
-            # Update package.json to ensure proper license
-            npm pkg set license="MIT"
-            COMPLIANCE_ISSUES=0
+            echo "❌ Found UNLICENSED packages - license compliance failed"
+            echo "Please review and update the following packages with proper licenses:"
+            grep -n "UNLICENSED" licenses.json || true
+            echo "compliance_status=failed" >> $GITHUB_OUTPUT
+            exit 1
           fi
           
           if [ $COMPLIANCE_ISSUES -eq 0 ]; then

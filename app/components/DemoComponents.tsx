@@ -12,7 +12,9 @@ type CardProps = {
   children: ReactNode;
   className?: string;
   onClick?: () => void;
-} Card({
+};
+
+function Card({
   title,
   children,
   className = "",

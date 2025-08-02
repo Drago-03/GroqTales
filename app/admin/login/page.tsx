@@ -138,6 +138,12 @@ function LoginContent() {
 
   // Function to set up a robust admin session
   const setupAdminSession = (employeeId: string, sessionToken: string) => {
+    // SSR guard - ensure we're running on client side
+    if (typeof window === 'undefined') {
+      console.warn('setupAdminSession called on server side, skipping');
+      return;
+    }
+
     try {
       // Try multiple storage methods for better resilience
 

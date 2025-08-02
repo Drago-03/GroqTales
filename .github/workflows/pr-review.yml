@@ -38,7 +38,7 @@ jobs:
       - name: CodeQL Analysis
         uses: github/codeql-action/init@v3
         with:
-          languages: javascript, typescript
+          languages: [javascript, typescript]
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
@@ -73,7 +73,7 @@ jobs:
         run: npm run test:coverage
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
@@ -190,11 +190,11 @@ jobs:
             **Status:** ${status ? '✅ All checks passed' : '❌ Some checks failed'}
             
             ### Check Results:
-            - **Security Scan:** ${{ needs.security-scan.result === 'success' && '✅' || '❌' }} ${{ needs.security-scan.result }}
-            - **Code Quality:** ${{ needs.code-quality.result === 'success' && '✅' || '❌' }} ${{ needs.code-quality.result }}
-            - **Build Verification:** ${{ needs.build-verification.result === 'success' && '✅' || '❌' }} ${{ needs.build-verification.result }}
-            - **AI Code Review:** ${{ needs.ai-code-review.result === 'success' && '✅' || '❌' }} ${{ needs.ai-code-review.result }}
-            - **Performance Analysis:** ${{ needs.performance-analysis.result === 'success' && '✅' || '❌' }} ${{ needs.performance-analysis.result }}
+            - **Security Scan:** ${{ needs.security-scan.result == 'success' && '✅' || '❌' }} ${{ needs.security-scan.result }}
+            - **Code Quality:** ${{ needs.code-quality.result == 'success' && '✅' || '❌' }} ${{ needs.code-quality.result }}
+            - **Build Verification:** ${{ needs.build-verification.result == 'success' && '✅' || '❌' }} ${{ needs.build-verification.result }}
+            - **AI Code Review:** ${{ needs.ai-code-review.result == 'success' && '✅' || '❌' }} ${{ needs.ai-code-review.result }}
+            - **Performance Analysis:** ${{ needs.performance-analysis.result == 'success' && '✅' || '❌' }} ${{ needs.performance-analysis.result }}
             
             ${status ? 
               '🎉 **This PR is ready for human review!**' : 

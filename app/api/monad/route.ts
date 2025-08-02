@@ -19,6 +19,14 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           );
         }
+        // Check MONAD_RPC_URL before provider creation
+        if (!process.env.MONAD_RPC_URL) {
+          return NextResponse.json(
+            { error: 'MONAD_RPC_URL environment variable is not configured' },
+            { status: 500 }
+          );
+        }
+
         // Wallet that will sign the transaction - server side
         const provider = new ethers.JsonRpcProvider(process.env.MONAD_RPC_URL);
         const signer = new ethers.Wallet(MINTER_PRIVATE_KEY, provider);

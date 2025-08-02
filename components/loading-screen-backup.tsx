@@ -12,6 +12,21 @@ interface LoadingScreenProps {
   fullScreen?: boolean;
   size?: "sm" | "md" | "lg";
 }
+
+export default function LoadingScreenBackup({ 
+  message = "Loading...", 
+  fullScreen = true, 
+  size = "md" 
+}: LoadingScreenProps) {
+  const currentSize = {
+    sm: { container: "w-8 h-8", icon: "w-4 h-4", text: "text-sm" },
+    md: { container: "w-12 h-12", icon: "w-6 h-6", text: "text-base" },
+    lg: { container: "w-16 h-16", icon: "w-8 h-8", text: "text-lg" }
+  }[size];
+
+  return (
+    <div className={`${fullScreen ? 'fixed inset-0 z-50' : 'relative'} bg-background/80 backdrop-blur-sm flex items-center justify-center`}>
+      <div className="relative">
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.div 
             animate={{ 
@@ -121,7 +136,5 @@ interface LoadingScreenProps {
         </div>
       )}
     </div>
-    </ClientOnly>
   );
-}
-export default LoadingScreen; 
+} 

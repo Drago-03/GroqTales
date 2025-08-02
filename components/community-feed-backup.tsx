@@ -147,7 +147,7 @@ const dummyUsers = [
   { id: 10, name: "Ava Rodriguez", avatar: "https://images.unsplash.com/photo-1542080681-b52d485c3763?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" }
 ];
 
-function function PostActions({  post, onVote, onCommentClick  }: {  post: CommunityPost, onVote: (postId: string, vote: 'up'  * 'down'  * null) => void, onCommentClick: (postId: string) => void  }) {
+function PostActions({ post, onVote, onCommentClick }: { post: CommunityPost, onVote: (postId: string, vote: 'up' | 'down' | null) => void, onCommentClick: (postId: string) => void }) {
   return (
     <div className="flex items-center justify-between text-muted-foreground pt-3 border-t">
       <div className="flex items-center space-x-2">
@@ -186,7 +186,7 @@ function function PostActions({  post, onVote, onCommentClick  }: {  post: Commu
     </div>
   );
 }
-function function PostCard({  post, onVote, onCommentClick  }: {  post: CommunityPost, onVote: (postId: string, vote: 'up'  * 'down'  * null) => void, onCommentClick: (postId: string) => void  }) {
+function PostCard({ post, onVote, onCommentClick }: { post: CommunityPost, onVote: (postId: string, vote: 'up' | 'down' | null) => void, onCommentClick: (postId: string) => void }) {
   return (
     <Card className="overflow-hidden hover:border-primary/20 transition-all duration-200 bg-gradient-to-br from-background via-background to-background/80">
       <CardHeader className="p-4 pb-0 flex flex-row items-start justify-between space-y-0">
@@ -379,8 +379,8 @@ function getCommentsByTag(tag: string) {
   let comments = generalComments;
   if (tag.toLowerCase().includes('sci')) comments = sciFiComments;
   if (tag.toLowerCase().includes('web3')) comments = web3Comments;
-  if (tag.toLowerCase().includes('indie')  *  * tag.toLowerCase().includes('creator')) comments = indieComments;
-  if (tag.toLowerCase().includes('fantasy')  *  * tag.toLowerCase().includes('world')) comments = fantasyComments;
+  if (tag.toLowerCase().includes('indie') || tag.toLowerCase().includes('creator')) comments = indieComments;
+  if (tag.toLowerCase().includes('fantasy') || tag.toLowerCase().includes('world')) comments = fantasyComments;
   if (tag.toLowerCase().includes('nft')) comments = nftComments;
 
   return comments;
@@ -390,6 +390,58 @@ function getCommentsByTag(tag: string) {
 function getRandomComment(tag: string) {
   const comments = getCommentsByTag(tag);
   return comments[Math.floor(Math.random() * comments.length)];
+}
+
+function CommunityFeed() {
+  const [posts, setPosts] = useState<CommunityPost[]>(dummyPosts);
+  const [selectedTab, setSelectedTab] = useState('all');
+  const [showCreatePost, setShowCreatePost] = useState(false);
+
+  const handleVote = (postId: string, vote: 'up' | 'down' | null) => {
+    setPosts(prevPosts => 
+      prevPosts.map(post => 
+        post.id === postId 
+          ? { ...post, userVote: vote }
+          : post
+      )
+    );
+  };
+
+  const handleCommentClick = (postId: string) => {
+    console.log('Comment clicked for post:', postId);
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold">Community Feed</h1>
+        <Button onClick={() => setShowCreatePost(!showCreatePost)}>
+          Create Post
+        </Button>
+      </div>
+      
+      {showCreatePost && <CreatePostForm />}
+      
+      <Tabs value={selectedTab} onValueChange={setSelectedTab}>
+        <TabsList>
+          <TabsTrigger value="all">All Posts</TabsTrigger>
+          <TabsTrigger value="stories">Stories</TabsTrigger>
+          <TabsTrigger value="discussions">Discussions</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value={selectedTab} className="space-y-4">
+          {posts.map(post => (
+            <PostCard 
+              key={post.id} 
+              post={post} 
+              onVote={handleVote}
+              onCommentClick={handleCommentClick}
+            />
+          ))}
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
 }
 
 export default CommunityFeed;

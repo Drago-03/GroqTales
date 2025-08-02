@@ -96,36 +96,150 @@ const featuredNFTs: NFTStory[] = [
 ];
 
 function generateAdditionalNFTs(): NFTStory[] {
-  const genres = [
-    'Fantasy',
-    'Sci-Fi',
-    'Mystery',
-    'Romance',
-    'Thriller',
-    'Horror',
-    'Adventure',
-  ];
-  const rarities: NFTStory['rarity'][] = [
-    'Common',
-    'Rare',
-    'Epic',
-    'Legendary',
+  const stableNFTs: NFTStory[] = [
+    {
+      id: 'nft-4',
+      title: 'The Crystal Prophecy',
+      author: 'Marcus Brightwater',
+      authorAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Marcus&backgroundColor=e0f2fe',
+      coverImage: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=1200&fit=crop&q=80',
+      price: '1.8 ETH',
+      likes: 456,
+      views: 2340,
+      genre: 'Fantasy',
+      sales: 23,
+      description: 'A mystical tale of ancient prophecies and crystal magic that spans across realms.',
+      rarity: 'Epic',
+    },
+    {
+      id: 'nft-5',
+      title: 'Neon Shadows',
+      author: 'Zara Cyberpunk',
+      authorAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Zara&backgroundColor=fef3c7',
+      coverImage: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=1200&fit=crop&q=80',
+      price: '2.3 ETH',
+      likes: 789,
+      views: 4567,
+      genre: 'Sci-Fi',
+      sales: 34,
+      description: 'A cyberpunk thriller set in the neon-lit streets of Neo Tokyo.',
+      rarity: 'Legendary',
+    },
+    {
+      id: 'nft-6',
+      title: 'The Vanishing Act',
+      author: 'Detective Holmes',
+      authorAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Holmes&backgroundColor=f3e8ff',
+      coverImage: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=1200&fit=crop&q=80',
+      price: '1.5 ETH',
+      likes: 234,
+      views: 1890,
+      genre: 'Mystery',
+      sales: 12,
+      description: 'A gripping mystery about a magician who disappears during his greatest trick.',
+      rarity: 'Rare',
+    },
+    {
+      id: 'nft-7',
+      title: 'Hearts in Harmony',
+      author: 'Isabella Rose',
+      authorAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Isabella&backgroundColor=fce7f3',
+      coverImage: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&h=1200&fit=crop&q=80',
+      price: '1.2 ETH',
+      likes: 567,
+      views: 3210,
+      genre: 'Romance',
+      sales: 45,
+      description: 'A heartwarming romance between two musicians from different worlds.',
+      rarity: 'Common',
+    },
+    {
+      id: 'nft-8',
+      title: 'The Silent Stalker',
+      author: 'Victor Darkwood',
+      authorAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Victor&backgroundColor=f1f5f9',
+      coverImage: 'https://images.unsplash.com/photo-1520637836862-4d197d17c90a?w=800&h=1200&fit=crop&q=80',
+      price: '2.7 ETH',
+      likes: 345,
+      views: 2876,
+      genre: 'Thriller',
+      sales: 18,
+      description: 'A psychological thriller about a predator who hunts in complete silence.',
+      rarity: 'Epic',
+    },
+    {
+      id: 'nft-9',
+      title: 'Midnight Terrors',
+      author: 'Raven Blackthorne',
+      authorAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Raven&backgroundColor=fef2f2',
+      coverImage: 'https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=800&h=1200&fit=crop&q=80',
+      price: '1.9 ETH',
+      likes: 432,
+      views: 3456,
+      genre: 'Horror',
+      sales: 27,
+      description: 'A spine-chilling horror story that will haunt your dreams.',
+      rarity: 'Rare',
+    },
+    {
+      id: 'nft-10',
+      title: 'Quest for the Golden Compass',
+      author: 'Captain Adventure',
+      authorAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Captain&backgroundColor=ecfdf5',
+      coverImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=1200&fit=crop&q=80',
+      price: '2.1 ETH',
+      likes: 678,
+      views: 4321,
+      genre: 'Adventure',
+      sales: 31,
+      description: 'An epic adventure across uncharted seas in search of legendary treasure.',
+      rarity: 'Legendary',
+    },
+    {
+      id: 'nft-11',
+      title: 'The Enchanted Forest',
+      author: 'Luna Moonwhisper',
+      authorAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Luna&backgroundColor=f0fdf4',
+      coverImage: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=1200&fit=crop&q=80',
+      price: '1.6 ETH',
+      likes: 523,
+      views: 2987,
+      genre: 'Fantasy',
+      sales: 19,
+      description: 'A magical journey through an enchanted forest filled with mystical creatures.',
+      rarity: 'Epic',
+    },
+    {
+      id: 'nft-12',
+      title: 'Digital Dreams',
+      author: 'Neo Matrix',
+      authorAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Neo&backgroundColor=eff6ff',
+      coverImage: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=1200&fit=crop&q=80',
+      price: '2.4 ETH',
+      likes: 712,
+      views: 5432,
+      genre: 'Sci-Fi',
+      sales: 42,
+      description: 'A futuristic tale of consciousness uploaded to the digital realm.',
+      rarity: 'Legendary',
+    },
+    {
+      id: 'nft-13',
+      title: 'The Missing Heiress',
+      author: 'Sherlock Modern',
+      authorAvatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Sherlock&backgroundColor=fefce8',
+      coverImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=1200&fit=crop&q=80',
+      price: '1.7 ETH',
+      likes: 389,
+      views: 2654,
+      genre: 'Mystery',
+      sales: 25,
+      description: 'A modern mystery about a wealthy heiress who vanishes without a trace.',
+      rarity: 'Rare',
+    }
   ];
 
-  return Array.from({ length: 20 }, (_, index) => ({
-    id: `nft-${index + 4}`,
-    title: `Story Collection #${index + 4}`,
-    author: `Author ${index + 4}`,
-    authorAvatar: `https://api.dicebear.com/7.x/bottts/svg?seed=Author${index + 4}&backgroundColor=f0f9ff`,
-    coverImage: `https://images.unsplash.com/photo-${1500000000000 + index * 1000000}?w=800&h=1200&fit=crop&q=80`,
-    price: `${(Math.random() * 3 + 0.5).toFixed(1)} ETH`,
-    likes: Math.floor(Math.random() * 1000) + 100,
-    views: Math.floor(Math.random() * 10000) + 1000,
-    genre: genres[Math.floor(Math.random() * genres.length)],
-    sales: Math.floor(Math.random() * 100) + 10,
-    description: `A captivating ${genres[Math.floor(Math.random() * genres.length)].toLowerCase()} story that will keep you on the edge of your seat.`,
-    rarity: rarities[Math.floor(Math.random() * rarities.length)],
-  }));
+  return stableNFTs;
 }
 
 function NFTCard({
@@ -263,7 +377,7 @@ export default function NFTGalleryPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleLike = (id: string) => {
+  const handleLike = async (id: string) => {
     if (!connected) {
       toast({
         title: 'Connect Wallet',
@@ -273,19 +387,36 @@ export default function NFTGalleryPage() {
       return;
     }
 
-    setNfts((prev) =>
-      prev.map((nft) =>
-        nft.id === id ? { ...nft, likes: nft.likes + 1 } : nft
-      )
-    );
+    try {
+      // Check if wallet is still connected
+      if (!account) {
+        throw new Error('Wallet disconnected');
+      }
 
-    toast({
-      title: 'Liked!',
-      description: 'You liked this story',
-    });
+      // Simulate blockchain interaction
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      setNfts((prev) =>
+        prev.map((nft) =>
+          nft.id === id ? { ...nft, likes: nft.likes + 1 } : nft
+        )
+      );
+
+      toast({
+        title: 'Liked!',
+        description: 'You successfully liked this story',
+      });
+    } catch (error) {
+      console.error('Like error:', error);
+      toast({
+        title: 'Like Failed',
+        description: error instanceof Error ? error.message : 'Failed to like story. Please try again.',
+        variant: 'destructive',
+      });
+    }
   };
 
-  const handlePurchase = (id: string) => {
+  const handlePurchase = async (id: string) => {
     if (!connected) {
       toast({
         title: 'Connect Wallet',
@@ -295,10 +426,47 @@ export default function NFTGalleryPage() {
       return;
     }
 
-    toast({
-      title: 'Purchase Initiated',
-      description: 'Starting the NFT purchase process...',
-    });
+    try {
+      // Check if wallet is still connected
+      if (!account) {
+        throw new Error('Wallet disconnected');
+      }
+
+      // Find the NFT to get price info
+      const nft = nfts.find(n => n.id === id);
+      if (!nft) {
+        throw new Error('NFT not found');
+      }
+
+      toast({
+        title: 'Purchase Initiated',
+        description: `Starting purchase of "${nft.title}" for ${nft.price}...`,
+      });
+
+      // Simulate blockchain transaction
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Simulate transaction success
+      toast({
+        title: 'Purchase Successful!',
+        description: `You successfully purchased "${nft.title}" for ${nft.price}`,
+      });
+
+      // Update sales count
+      setNfts((prev) =>
+        prev.map((nft) =>
+          nft.id === id ? { ...nft, sales: (nft.sales || 0) + 1 } : nft
+        )
+      );
+
+    } catch (error) {
+      console.error('Purchase error:', error);
+      toast({
+        title: 'Purchase Failed',
+        description: error instanceof Error ? error.message : 'Failed to complete purchase. Please try again.',
+        variant: 'destructive',
+      });
+    }
   };
 
   const filteredNFTs = nfts.filter((nft) => {
@@ -372,6 +540,7 @@ export default function NFTGalleryPage() {
               value={selectedGenre}
               onChange={(e) => setSelectedGenre(e.target.value)}
               className="px-3 py-2 border border-input bg-background rounded-md text-sm"
+              aria-label="Filter by genre"
             >
               {genres.map((genre) => (
                 <option key={genre} value={genre}>
@@ -386,6 +555,7 @@ export default function NFTGalleryPage() {
                 setSortBy(e.target.value as 'price' | 'likes' | 'recent')
               }
               className="px-3 py-2 border border-input bg-background rounded-md text-sm"
+              aria-label="Sort NFTs by"
             >
               <option value="likes">Most Liked</option>
               <option value="price">Highest Price</option>
