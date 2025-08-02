@@ -1,5 +1,3 @@
-/**
-
 import type { FrameNotificationDetails } from "@farcaster/frame-sdk";
 import { redis } from "./redis";
 

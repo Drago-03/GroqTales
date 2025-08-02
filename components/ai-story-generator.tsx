@@ -155,7 +155,9 @@ function LoadingStateIndicator({  message  }: {  message: string | null  }) {
       </div>
     </motion.div>
   );
-} switchToMonadNetwork(event: React.MouseEvent<HTMLButtonElement>): void {
+}
+
+function switchToMonadNetwork(event: React.MouseEvent<HTMLButtonElement>): void {
     event.preventDefault();
 
     // Monad Testnet Chain ID and parameters

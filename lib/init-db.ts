@@ -1,5 +1,3 @@
-/**
-
 import { getDb } from './db';
 
 async function initializeDatabase() {

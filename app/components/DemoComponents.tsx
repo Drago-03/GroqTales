@@ -1,7 +1,7 @@
-import React from "react";
-/**
-
 "use client";
+
+import React from "react";
+
 
 import { type ReactNode, useCallback, useMemo, useState } from "react";
 // yo fam, we need this for checking if the wallet is connected n stuff

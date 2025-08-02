@@ -1,5 +1,3 @@
-/**
-
 import { NextResponse } from 'next/server';
 import type { ApiResponse, ApiError, PaginationMetadata } from '@/types/api';
 import { AppError, ErrorHandler } from './errors';

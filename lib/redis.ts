@@ -1,5 +1,3 @@
-/**
-
 // Yo, we don't have the actual Redis module, so let's fake it
 // This is a mock implementation of the Redis client
 

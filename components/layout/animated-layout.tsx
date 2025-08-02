@@ -1,5 +1,7 @@
-import React from "react";
 "use client";
+
+import React from "react";
+
 
 import { ReactNode } from "react";
 import { GalaxyBackground } from "@/components/galaxy-background";

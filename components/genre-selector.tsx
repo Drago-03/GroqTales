@@ -1,6 +1,3 @@
-import React from "react";
-/**
-
 "use client";
 
 import * as React from "react";
@@ -104,10 +101,9 @@ export const genres: Genre[] = [
 }
 ];
 
-  /**
-   * Retrieves genrebyslug data
-   * 
-
+/**
+ * Retrieves genre by slug data
+ */
 export function getGenreBySlug(slug: string): Genre | undefined {
   return genres.find(genre => genre.slug === slug);
 }

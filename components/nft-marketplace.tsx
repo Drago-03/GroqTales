@@ -1,5 +1,7 @@
-import React from "react";
 "use client";
+
+import React from "react";
+
 
 import { useState, useEffect } from "react";
 import { useWeb3 } from "@/components/providers/web3-provider";

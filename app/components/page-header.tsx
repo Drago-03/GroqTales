@@ -1,6 +1,4 @@
 import React from "react";
-/**
-
 import { BookOpen, ShoppingCart, Users, Bookmark, Library, Settings, HelpCircle, Newspaper, BarChart3, Heart } from "lucide-react";
 
 interface PageHeaderProps {

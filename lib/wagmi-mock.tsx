@@ -1,5 +1,3 @@
-/**
-
 "use client";
 
 // Mock implementation of useAccount from wagmi

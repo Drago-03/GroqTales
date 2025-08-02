@@ -1,7 +1,7 @@
-import React from "react";
-/**
-
 "use client";
+
+import React from "react";
+
 
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

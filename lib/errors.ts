@@ -1,6 +1,4 @@
 /**
-
-/**
  * Custom error classes for different error types
 
 export class AppError extends Error {
@@ -10,7 +8,7 @@ export class AppError extends Error {
   public readonly timestamp: Date;
   public readonly details?: Record<string, unknown> | undefined;
 
-  constructor(
+  function constructor(
     message: string,
     code: string,
     statusCode: number = 500,
@@ -29,47 +27,47 @@ export class AppError extends Error {
 }
 }
 export class ValidationError extends AppError {
-  constructor(message: string, details?: Record<string, unknown>) {
+  function constructor(message: string, details?: Record<string, unknown>) {
     super(message, 'VALIDATION_ERROR', 400, true, details);
 }
 }
 export class AuthenticationError extends AppError {
-  constructor(message: string = 'Authentication required') {
+  function constructor(message: string = 'Authentication required') {
     super(message, 'AUTHENTICATION_ERROR', 401);
 }
 }
 export class AuthorizationError extends AppError {
-  constructor(message: string = 'Insufficient permissions') {
+  function constructor(message: string = 'Insufficient permissions') {
     super(message, 'AUTHORIZATION_ERROR', 403);
 }
 }
 export class NotFoundError extends AppError {
-  constructor(resource: string = 'Resource') {
+  function constructor(resource: string = 'Resource') {
     super(`${resource} not found`, 'NOT_FOUND_ERROR', 404);
 }
 }
 export class ConflictError extends AppError {
-  constructor(message: string) {
+  function constructor(message: string) {
     super(message, 'CONFLICT_ERROR', 409);
 }
 }
 export class DatabaseError extends AppError {
-  constructor(message: string, details?: Record<string, unknown>) {
+  function constructor(message: string, details?: Record<string, unknown>) {
     super(message, 'DATABASE_ERROR', 500, true, details);
 }
 }
 export class ExternalServiceError extends AppError {
-  constructor(service: string, message: string) {
+  function constructor(service: string, message: string) {
     super(`${service}: ${message}`, 'EXTERNAL_SERVICE_ERROR', 502);
 }
 }
 export class BlockchainError extends AppError {
-  constructor(message: string, details?: Record<string, unknown>) {
+  function constructor(message: string, details?: Record<string, unknown>) {
     super(message, 'BLOCKCHAIN_ERROR', 500, true, details);
 }
 }
 export class IPFSError extends AppError {
-  constructor(message: string) {
+  function constructor(message: string) {
     super(message, 'IPFS_ERROR', 500);
 }
 }

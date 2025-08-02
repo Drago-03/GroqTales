@@ -1,5 +1,3 @@
-/**
-
 import { getDb, insertOne, findOne } from './db';
 
 async function testConnection() {

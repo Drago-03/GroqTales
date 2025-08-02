@@ -1,8 +1,5 @@
 "use client";
 
-import React from "react";
-
-
 import * as React from "react";
 import { useState } from "react";
 import Link from "next/link";
@@ -388,9 +385,9 @@ function getCommentsByTag(tag: string) {
 
   return comments;
 }
-// Helper to
 
-   */ to generate random comment text based on post tags function getRandomComment(tag: string) {
+// Helper function to generate random comment text based on post tags
+function getRandomComment(tag: string) {
   const comments = getCommentsByTag(tag);
   return comments[Math.floor(Math.random() * comments.length)];
 }

@@ -1,5 +1,3 @@
-/**
-
 import { useAccount, useConnect, useDisconnect, useSignMessage } from 'wagmi';
 import { SiweMessage } from 'siwe';
 import { useState } from 'react';

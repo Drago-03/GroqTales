@@ -1,7 +1,7 @@
-import React from "react";
-/**
-
 "use client";
+
+import React from "react";
+
 
 import { AIStoryGenerator } from "@/components/ai-story-generator";
 

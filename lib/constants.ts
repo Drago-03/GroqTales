@@ -1,6 +1,4 @@
 /**
-
-/**
  * Application metadata
 
 export const APP_CONFIG = {

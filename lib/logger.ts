@@ -1,5 +1,3 @@
-/**
-
 export enum LogLevel {
   ERROR = 0,
   WARN = 1,
@@ -35,7 +33,7 @@ export class Logger {
   private config: LoggerConfig;
   private context?: string;
 
-  constructor(config: Partial<LoggerConfig> = {}, context?: string) {
+  function constructor(config: Partial<LoggerConfig> = {}, context?: string) {
     this.config = {
       level: LogLevel.INFO,
       enableConsole: true,
@@ -299,7 +297,7 @@ export class Logger {
 export class RequestLogger {
   private logger: Logger;
 
-  constructor(logger: Logger) {
+  function constructor(logger: Logger) {
     this.logger = logger;
 }
   /**

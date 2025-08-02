@@ -1,5 +1,3 @@
-/**
-
 "use client";
 
 // just some fire mock components for identity stuff

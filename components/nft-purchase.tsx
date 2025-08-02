@@ -1,7 +1,7 @@
-import React from "react";
-/**
-
 "use client";
+
+import React from "react";
+
 
 import { useWeb3Auth } from "@/hooks/use-web3-auth";
 import { Button } from "@/components/ui/button";
