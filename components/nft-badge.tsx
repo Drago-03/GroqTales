@@ -1,25 +1,12 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.nft-badge.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
 import { Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 
-  /**
-   * Implements NFTBadge functionality
-   * 
-   * @function NFTBadge
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function NFTBadge({ level }: { level: number }) {
+  export function NFTBadge({ level }: { level: number }) {
   const badgeColors = [
     "from-yellow-400 to-yellow-600", // Bronze
     "from-gray-400 to-gray-600",     // Silver
@@ -48,4 +35,4 @@ export function NFTBadge({ level }: { level: number }) {
       {badgeText[index]}
     </motion.div>
   );
-} 
+}

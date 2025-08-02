@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
@@ -9,28 +10,13 @@ import { Button } from "@/components/ui/button";
 import { HelpCircle, Wallet, BookOpen, Coins, Shield, Users, PenSquare } from "lucide-react";
 import Link from "next/link";
 
-export default   /**
-   * Implements FAQPage functionality
-   * 
-   * @function FAQPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function FAQPage() {
+export default function FAQPage() {
   return (
     <Suspense fallback={<div>Loading FAQ page...</div>}>
       <FAQContent />
     </Suspense>
   );
 }
-
-  /**
-   * Implements FAQContent functionality
-   * 
-   * @function FAQContent
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
 function FAQContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -45,7 +31,7 @@ function FAQContent() {
     const faqItem = searchParams.get("faq");
     if (faqItem) {
       params.set("faq", faqItem);
-    }
+}
     router.push(`/faq?${params.toString()}`);
   };
 
@@ -53,11 +39,10 @@ function FAQContent() {
   useEffect(() => {
     const faqItem = searchParams.get("faq");
     const category = searchParams.get("category");
-    
+
     if (category) {
       setActiveTab(category);
-    }
-
+}
     if (faqItem) {
       setTimeout(() => {
         const element = document.getElementById(faqItem);
@@ -66,10 +51,10 @@ function FAQContent() {
           const accordionTrigger = element.querySelector("[data-state]") as HTMLElement;
           if (accordionTrigger && accordionTrigger.getAttribute("data-state") === "closed") {
             accordionTrigger.click();
-          }
-        }
+}
+}
       }, 100); // Small delay to ensure DOM is ready
-    }
+}
   }, [searchParams]);
 
   // Handle link clicks
@@ -378,4 +363,4 @@ function FAQContent() {
       </div>
     </div>
   );
-} 
+}

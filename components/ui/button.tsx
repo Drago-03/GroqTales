@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.ui.button.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
@@ -38,7 +33,7 @@ const buttonVariants = cva(
       variant: 'default',
       size: 'default',
     },
-  }
+}
 );
 
 export interface ButtonProps
@@ -46,7 +41,6 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
-
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
@@ -57,7 +51,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  }
+}
 );
 Button.displayName = 'Button';
 

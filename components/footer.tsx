@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.footer.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -17,15 +12,7 @@ import {
 } from "lucide-react";
 import { AdminLoginModal } from "./admin-login-modal";
 
-  /**
-   * Implements Footer functionality
-   * 
-   * @function Footer
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function Footer() {
+  export function Footer() {
   const currentYear = new Date().getFullYear();
   const [showAdminModal, setShowAdminModal] = useState(false);
 
@@ -166,7 +153,7 @@ export function Footer() {
           </div>
         </div>
       </div>
-      
+
       <AdminLoginModal open={showAdminModal} onOpenChange={setShowAdminModal} />
     </footer>
   );

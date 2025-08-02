@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import { useState, useEffect, useCallback } from "react";
 import { useGroq } from "@/hooks/use-groq";
 import { useWeb3 } from "@/components/providers/web3-provider";
@@ -51,14 +51,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-  /**
-   * Implements AnimatedSparkles functionality
-   * 
-   * @function AnimatedSparkles
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
 function AnimatedSparkles() {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -97,16 +89,7 @@ function AnimatedSparkles() {
     </div>
   );
 }
-
-  /**
-   * Implements LoadingStateIndicator functionality
-   * 
-   * @function LoadingStateIndicator
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-function LoadingStateIndicator({ message }: { message: string | null }) {
+function LoadingStateIndicator({  message  }: {  message: string | null  }) {
   const messages = ["Generating story", "Creating worlds", "Crafting characters", "Building plot", "Finalizing details"];
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -125,7 +108,7 @@ function LoadingStateIndicator({ message }: { message: string | null }) {
       transition={{ duration: 0.5 }}
     >
       <AnimatedSparkles />
-      
+
       <div className="flex items-center justify-center mb-4">
         <motion.div
           animate={{ rotate: 360, scale: [1, 1.1, 1] }}
@@ -139,7 +122,7 @@ function LoadingStateIndicator({ message }: { message: string | null }) {
           <Sparkles className="h-10 w-10 text-primary relative z-10" />
         </motion.div>
       </div>
-      
+
       <motion.h3 
         className="text-lg font-medium text-center mb-2"
         animate={{ opacity: [0.7, 1] }}
@@ -147,7 +130,7 @@ function LoadingStateIndicator({ message }: { message: string | null }) {
       >
         {message || messages[currentIndex]}
       </motion.h3>
-      
+
       <motion.p
         className="text-sm text-muted-foreground text-center mb-4"
         initial={{ opacity: 0 }}
@@ -156,7 +139,7 @@ function LoadingStateIndicator({ message }: { message: string | null }) {
       >
         Crafting a unique story tailored to your request...
       </motion.p>
-      
+
       <div className="w-full h-2 bg-muted/50 rounded-full overflow-hidden">
         <motion.div 
           className="h-full bg-gradient-to-r from-primary via-blue-400 to-primary"
@@ -172,660 +155,9 @@ function LoadingStateIndicator({ message }: { message: string | null }) {
       </div>
     </motion.div>
   );
-}
-
-  /**
-   * Implements AIStoryGenerator functionality
-   * 
-   * @function AIStoryGenerator
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function AIStoryGenerator({ 
-  initialGenre = 'fantasy', 
-  initialFormat = 'free',
-  showWelcome = false
-}: { 
-  initialGenre?: string; 
-  initialFormat?: string; 
-  showWelcome?: boolean;
-}) {
-  const { generate, generateIdeas, availableModels, defaultModel, isLoading: isGroqLoading, error: groqError, fetchModels, modelNames, testConnection } = useGroq();
-  const { connectWallet, account, mintNFTOnBase } = useWeb3();
-  const { toast } = useToast();
-  const router = useRouter();
-  const [activeTab, setActiveTab] = useState("generate");
-  const [prompt, setPrompt] = useState("");
-  const [title, setTitle] = useState("");
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([initialGenre]);
-  const [storyType, setStoryType] = useState("text");
-  const [overview, setOverview] = useState("");
-  const [generatedContent, setGeneratedContent] = useState("");
-  const [generatedSummary, setGeneratedSummary] = useState("");
-  const [generatedAnalysis, setGeneratedAnalysis] = useState("");
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [isGeneratingNFT, setIsGeneratingNFT] = useState(false);
-  const [nftTokenId, setNFTTokenId] = useState<string>('');
-  const [nftTransactionHash, setNFTTransactionHash] = useState<string>('');
-  const [isSummarizing, setIsSummarizing] = useState(false);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [isActionLoading, setIsActionLoading] = useState(false);
-  const [selectedModel, setSelectedModel] = useState<string>(defaultModel || '');
-  const [temperature, setTemperature] = useState(0.7);
-  const [isMinting, setIsMinting] = useState(false);
-  const [mintedNftUrl, setMintedNftUrl] = useState("");
-  const [storyFormat, setStoryFormat] = useState(initialFormat);
-  const [currentPanelIndex, setCurrentPanelIndex] = useState(0);
-  const [panelImage, setPanelImage] = useState<string>('');
-  const [isLoadingImage, setIsLoadingImage] = useState<boolean>(true);
-
-  // Story outline fields
-  const [mainCharacters, setMainCharacters] = useState("");
-  const [plotOutline, setPlotOutline] = useState("");
-  const [setting, setSetting] = useState("");
-  const [themes, setThemes] = useState("");
-  const [userApiKey, setUserApiKey] = useState<string>("");
-  const [isUsingCustomKey, setIsUsingCustomKey] = useState<boolean>(false);
-  const [showAdvancedOptions, setShowAdvancedOptions] = useState(true);
-
-  // Add this state variable near the other state declarations
-  const [showWelcomeAnimation, setShowWelcomeAnimation] = useState(showWelcome);
-
-  // Add these state variables to your component
-  const [error, setError] = useState<string | null>(null);
-  const [showOutput, setShowOutput] = useState(false);
-  const [streaming, setStreaming] = useState<boolean>(false);
-
-  // Temporary variable to accumulate content during streaming
-  let tempGeneratedContent = '';
-
-  // Model names for display
-  const modelDisplayNames: Record<string, string> = {
-    [availableModels.OPENAI || 'openai']: "ChatGPT (OpenAI)",
-    [availableModels.GROQ || 'groq']: "Llama 3.1 (via Groq)"
-  };
-
-  // Fetch models function (mock for now)
-  const fetchAvailableModels = useCallback(async () => {
-    // In a real app, this would fetch from an API
-    // For now, we just use the existing available models
-    // No action needed as availableModels is already defined
-  }, []);
-
-  // Set default model when available
-  useEffect(() => {
-    if (defaultModel) {
-      setSelectedModel(defaultModel);
-    } else {
-      // Fallback to a known valid model if defaultModel is not set
-      setSelectedModel(availableModels.LLAMA_3_70B || 'llama-3.3-70b-versatile');
-    }
-  }, [defaultModel, availableModels]);
-
-  // Remove the old useEffect for localStorage and replace with URL parameter check
-  useEffect(() => {
-    // Check URL parameters for navigation source
-    if (typeof window !== 'undefined') {
-      const urlParams = new URLSearchParams(window.location.search);
-      const source = urlParams.get('source');
-      const format = urlParams.get('format');
-      
-      // If user came from homepage or another source that sets this parameter
-      if (source === 'home') {
-        setShowWelcomeAnimation(true);
-        
-        // Auto-select format if provided in URL parameters
-        if (format === 'nft') {
-          setStoryFormat('nft');
-        } else if (format === 'free') {
-          setStoryFormat('free');
-        }
-        
-        // Clear welcome animation after delay
-        const timer = setTimeout(() => {
-          setShowWelcomeAnimation(false);
-        }, 3000);
-        
-        return () => clearTimeout(timer);
-      }
-    }
-  }, []);
-  
-  // useEffect to handle page visibility changes
-  useEffect(() => {
-    if (typeof document === 'undefined') return;
-    
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible' && !isGroqLoading) {
-        // Refresh models when user returns to the page
-        fetchAvailableModels();
-      }
-    };
-    
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, [isGroqLoading, fetchAvailableModels]);
-
-  // Show errors as toasts
-  useEffect(() => {
-    if (groqError) {
-      toast({
-        title: "Groq Error",
-        description: groqError,
-        variant: "destructive",
-      });
-    }
-  }, [groqError, toast]);
-
-  // Effect to load image for the current comic panel
-  useEffect(() => {
-    if (storyType === 'comic' && generatedContent) {
-      let panels;
-      try {
-        const parsedData = JSON.parse(generatedContent);
-        panels = parsedData.panels || parseComicPanelsFromText(generatedContent);
-      } catch (e) {
-        panels = parseComicPanelsFromText(generatedContent);
-      }
-      if (panels.length > 0 && currentPanelIndex < panels.length) {
-        const currentPanel = panels[currentPanelIndex];
-        const loadImage = async () => {
-          setIsLoadingImage(true);
-          // Placeholder for image generation   /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
- function
-          const imageUrl = 'https://via.placeholder.com/800x400?text=Comic+Panel';
-          setPanelImage(imageUrl);
-          setIsLoadingImage(false);
-        };
-        loadImage();
-      }
-    }
-  }, [currentPanelIndex, generatedContent, storyType]);
-
-  // Constructs a well-engineered prompt based on user inputs
-  const constructPrompt = () => {
-    // Base prompt template with clear instructions for the AI
-    let engineeredPrompt = `
-# Creative Writing Task: Generate a Compelling Story
-
-## Story Parameters
-- Title: ${title || "[Generate an appropriate title]"}
-- Story Type: ${storyType === "comic" ? "Comic Style Story (formatted with panel-by-panel breakdowns and dialogue for a graphic novel style, strictly in comic format with dialogues as captions)" : "Text Story (traditional narrative text format with detailed prose)"}
-- Genres: ${selectedGenres.map(g => g.replace(/-/g, ' ')).join(", ") || "[Select appropriate genres if not specified]"}
-- Overview: ${overview || "[No overview provided, use creativity based on other inputs]"}
-- Creativity Level: ${temperature < 0.4 ? "Low (more predictable and structured)" : temperature > 0.7 ? "High (more creative and experimental)" : "Balanced (mix of structure and creativity)"}
-
-## Detailed Story Elements
-`;
-
-    // Add character details if provided
-    if (mainCharacters.trim()) {
-      engineeredPrompt += `
-### Main Characters
-${mainCharacters}
-`;
-    } else {
-      engineeredPrompt += `
-### Main Characters
-[Not specified, create compelling characters based on genre and overview]
-`;
-    }
-
-    // Add setting details if provided
-    if (setting.trim()) {
-      engineeredPrompt += `
-### World & Setting
-${setting}
-`;
-    } else {
-      engineeredPrompt += `
-### World & Setting
-[Not specified, develop a fitting setting based on genre and other inputs]
-`;
-    }
-
-    // Add plot outline if provided
-    if (plotOutline.trim()) {
-      engineeredPrompt += `
-### Plot Outline
-${plotOutline}
-`;
-    } else {
-      engineeredPrompt += `
-### Plot Outline
-[Not specified, craft an engaging plot based on provided elements]
-`;
-    }
-
-    // Add themes if provided
-    if (themes.trim()) {
-      engineeredPrompt += `
-### Themes & Motifs to Explore
-${themes}
-`;
-    } else {
-      engineeredPrompt += `
-### Themes & Motifs to Explore
-[Not specified, incorporate relevant themes based on genre and story context]
-`;
-    }
-
-    // Add user's specific prompt/request if provided
-    if (prompt.trim()) {
-      engineeredPrompt += `
-### Additional Details & Specific Instructions
-${prompt}
-`;
-    } else {
-      engineeredPrompt += `
-### Additional Details & Specific Instructions
-[No additional instructions provided, use best judgment for story enhancement]
-`;
-    }
-
-    // Add specific instructions about formatting and structure based on story type
-    engineeredPrompt += `
-## Output Format & Guidelines
-- Begin with a captivating title if one wasn't provided
-`;
-    if (storyType === "comic") {
-      engineeredPrompt += `- Structure the story in a comic book format with panel-by-panel descriptions and dialogue. Clearly label each panel (e.g., Panel 1, Panel 2) and describe the visual content and character dialogue or captions for each panel to create a graphic novel style. Ensure that captions are strictly dialogues.
-`;
-    } else {
-      engineeredPrompt += `- Structure the story with clear sections and paragraphs for readability. Focus on detailed prose and narrative depth to create an immersive reading experience.
-`;
-    }
-    engineeredPrompt += `- Include rich descriptions and vivid dialogue to enhance immersion
-- Develop characters with depth, motivation, and distinct personalities
-- Maintain an engaging narrative arc with a clear beginning, middle, and conclusion
-- Aim for a cohesive story of approximately 1000-1500 words
-
-Please generate this story with attention to quality, creativity, and narrative coherence. Adjust the style based on the specified creativity level and ensure all provided elements are cohesively integrated into the final output.
-`;
-
-    return engineeredPrompt;
-  };
-
-  // Handle generating a story with Groq
-  const handleGenerate = async () => {
-    console.log('Generate button clicked');
-    if (isGroqLoading || isActionLoading) return;
-    setIsActionLoading(true);
-    setError(null);
-    setGeneratedContent('');
-
-    try {
-      let result;
-      if (storyType === 'comic') {
-        // Use Stability AI for comic style image generation along with Groq for narrative
-        result = await generateComicStory();
-      } else {
-        const options: { temperature: number; apiKey?: string } = { temperature: temperature };
-        if (isUsingCustomKey && userApiKey) {
-          options.apiKey = userApiKey;
-        }
-        result = await generate(constructPrompt(), selectedModel, options);
-      }
-      setGeneratedContent(result);
-      setShowOutput(true);
-    } catch (err: any) {
-      setError(err.message || 'An error occurred while generating the story');
-      console.error('Generation error:', err);
-    } finally {
-      setIsActionLoading(false);
-    }
-  };
-
-  const generateComicStory = async () => {
-    try {
-      // First, generate comic narrative with Groq
-      const comicStoryText = await generate(constructPrompt(), selectedModel, { temperature: 0.7 });
-      
-      // Then parse the output to create a comic data structure
-      let panels = parseComicPanelsFromText(comicStoryText);
-      
-      // Ensure minimum 7 panels and maximum 20 panels
-      if (panels.length < 7) {
-        // If less than 7 panels, create additional placeholder panels
-        const additionalPanelsNeeded = 7 - panels.length;
-        for (let i = 0; i < additionalPanelsNeeded; i++) {
-          panels.push({
-            number: panels.length + 1,
-            caption: `Panel ${panels.length + 1} - Additional scene to be described...`,
-            dialogue: []
-          });
-        }
-      } else if (panels.length > 20) {
-        // If more than 20 panels, trim to 20
-        panels = panels.slice(0, 20);
-        // Renumber the panels to ensure consecutive numbering
-        panels = panels.map((panel, index) => ({
-          ...panel,
-          number: index + 1
-        }));
-      }
-      
-      // Format the result as JSON
-      const comicData = {
-        title: title || extractTitleFromStory(comicStoryText),
-        panels: panels
-      };
-      
-      return JSON.stringify(comicData, null, 2);
-    } catch (error) {
-      console.error('Error generating comic story:', error);
-      throw error;
-    }
-  };
-
-  // Helper   /**
-   * Implements to functionality
-   * 
-   * @function to
-   * @returns {void|Promise<void>} Function return value
-   */
- function to parse comic panels from text
-  const parseComicPanelsFromText = (text: string) => {
-    const lines = text.split('\n');
-    const panels: Array<{
-      number: number;
-      caption: string;
-      dialogue: Array<{character: string; text: string}>;
-    }> = [];
-    let currentPanel: {
-      number: number;
-      caption: string;
-      dialogue: Array<{character: string; text: string}>;
-    } | null = null;
-    
-    for (const line of lines) {
-      // Look for panel markers like "Panel 1:" or "PANEL 1:"
-      const panelMatch = line.match(/^(?:panel|PANEL)\s*(\d+)[:.\-]?\s*(.*)/i);
-      
-      if (panelMatch) {
-        if (currentPanel) {
-          panels.push(currentPanel);
-        }
-        
-        currentPanel = {
-          number: parseInt(panelMatch[1]),
-          caption: panelMatch[2] || "",
-          dialogue: []
-        };
-      } 
-      // If we're in a panel and find dialogue
-      else if (currentPanel && line.trim() && !line.startsWith('#')) {
-        // If line has character speaking format like "Character: Dialogue"
-        const dialogueMatch = line.match(/^([^:]+):\s*(.+)/);
-        
-        if (dialogueMatch) {
-          currentPanel.dialogue.push({
-            character: dialogueMatch[1].trim(),
-            text: dialogueMatch[2].trim()
-          });
-        } 
-        // Otherwise add to caption if it's meaningful content
-        else if (line.trim().length > 3 && !line.startsWith('-')) {
-          currentPanel.caption += " " + line.trim();
-        }
-      }
-    }
-    
-    // Add the last panel
-    if (currentPanel) {
-      panels.push(currentPanel);
-    }
-    
-    // If no panels were found, create some based on text chunks
-    if (panels.length === 0) {
-      const chunks = text.split('\n\n').filter((chunk: string) => chunk.trim().length > 0);
-      for (let i = 0; i < Math.min(chunks.length, 4); i++) {
-        panels.push({
-          number: i + 1,
-          caption: chunks[i],
-          dialogue: []
-        });
-      }
-    }
-    
-    return panels;
-  };
-
-  // Extract title from story if none provided
-  const extractTitleFromStory = (text: string) => {
-    const firstLine = text.split('\n')[0];
-    if (firstLine.startsWith('# ')) {
-      return firstLine.substring(2).trim();
-    }
-    return "Comic Story";
-  };
-
-  // Handle generating a story and minting it as an NFT in one step
-  const handleGenerateAndMint = async () => {
-    if (!account) {
-      toast({
-        title: "Wallet Not Connected",
-        description: "Please connect your wallet to generate and mint an NFT.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // No need to check for specific network - the mintNFTOnBase   /**
-   * Implements will functionality
-   * 
-   * @function will
-   * @returns {void|Promise<void>} Function return value
-   */
- function will handle switching
-    setIsActionLoading(true);
-
-    try {
-      const engineeredPrompt = constructPrompt();
-      
-      // Show a progress toast
-      toast({
-        title: "Generating Story",
-        description: "Creating your unique story with AI...",
-      });
-
-      // Prepare options for generation
-      const options: { temperature: number; apiKey?: string } = { temperature: temperature };
-      if (isUsingCustomKey && userApiKey) {
-        options.apiKey = userApiKey;
-      }
-
-      // First generate the story content
-      let storyContent;
-      try {
-        if (storyType === 'comic') {
-          // Use comic generation logic
-          storyContent = await generateComicStory();
-        } else {
-          // Use regular text story generation
-          storyContent = await generate(engineeredPrompt, selectedModel, options);
-        }
-      } catch (genError) {
-        console.error("Story generation error:", genError);
-        throw new Error(`Failed to generate story: ${genError instanceof Error ? genError.message : "Unknown error"}`);
-      }
-
-      if (!storyContent) {
-        throw new Error("Failed to generate story content");
-      }
-
-      // Extract title from the generated content
-      const storyTitle = title || extractTitleFromStory(storyContent);
-      
-      // Set the generated content
-      setGeneratedContent(storyContent);
-      
-      // Show minting toast
-      toast({
-        title: "Story Generated!",
-        description: "Now minting your story as an NFT...",
-      });
-
-      // For NFT minting
-      try {
-        // Prepare NFT metadata
-        const nftMetadata = {
-          title: storyTitle,
-          description: `A ${selectedGenres.join(", ")} story created with GroqTales`,
-          content: storyContent,
-          creator: account,
-          createdAt: new Date().toISOString(),
-          genres: selectedGenres,
-          storyType: storyType,
-          model: selectedModel
-        };
-        
-        // Call mint with the generated content
-        const result = await mintNFTOnBase(
-          nftMetadata,
-          account
-        );
-        
-        if (!result) {
-          throw new Error("Failed to mint NFT");
-        }
-        
-        // Store the token ID and transaction hash
-        setNFTTokenId(result.tokenId);
-        setNFTTransactionHash(result.transactionHash);
-        
-        // Set minted NFT URL
-        setMintedNftUrl(`/nft-gallery/${result.tokenId}`);
-        setActiveTab("mint");
-        
-        toast({
-          title: "NFT Minted Successfully! 🎉",
-          description: `Your story "${storyTitle}" has been minted as NFT #${result.tokenId}`,
-        });
-      } catch (mintError) {
-        console.error("NFT minting error:", mintError);
-        
-        // Still show the generated content even if minting fails
-        setActiveTab("generate");
-        
-        throw new Error(`Story generated successfully, but minting failed: ${mintError instanceof Error ? mintError.message : "Unknown error"}`);
-      }
-    } catch (error) {
-      console.error("Generate and mint error:", error);
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "An error occurred. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsActionLoading(false);
-    }
-  };
-
-  // Handle minting the generated story as an NFT
-  const handleMintNFT = async () => {
-    if (!account) {
-      toast({
-        title: "Wallet Not Connected",
-        description: "Please connect your wallet to mint an NFT.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Check if we have generated content
-    if (!generatedContent) {
-      toast({
-        title: "No Content",
-        description: "Please generate a story first before minting.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsMinting(true);
-    try {
-      toast({
-        title: "Preparing NFT",
-        description: "Processing your story for minting...",
-      });
-      
-      // Extract title from the generated content if not set
-      const storyTitle = title || extractTitleFromStory(generatedContent);
-      
-      // Prepare NFT metadata
-      const nftMetadata = {
-        title: storyTitle,
-        description: `A ${selectedGenres.join(", ")} story created with GroqTales`,
-        content: generatedContent,
-        creator: account,
-        createdAt: new Date().toISOString(),
-        genres: selectedGenres,
-        storyType: storyType,
-        model: selectedModel || "unknown"
-      };
-      
-      toast({
-        title: "Minting NFT",
-        description: "Uploading to IPFS and minting on blockchain...",
-      });
-      
-      // Call mint with the generated content
-      const result = await mintNFTOnBase(
-        nftMetadata,
-        account
-      );
-      
-      if (!result) {
-        throw new Error("Failed to mint NFT");
-      }
-      
-      // Store the token ID and transaction hash
-      setNFTTokenId(result.tokenId);
-      setNFTTransactionHash(result.transactionHash);
-      
-      // Set minted NFT URL
-      setMintedNftUrl(`/nft-gallery/${result.tokenId}`);
-      
-      toast({
-        title: "NFT Minted Successfully! 🎉",
-        description: `Your story "${storyTitle}" has been minted as NFT #${result.tokenId}`,
-      });
-      
-      // Add a small delay before showing success state
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-    } catch (error) {
-      console.error("Error minting NFT:", error);
-      toast({
-        title: "Minting Error",
-        description: error instanceof Error ? error.message : "An error occurred while minting your NFT. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsMinting(false);
-    }
-  };
-
-    /**
-   * Implements switchToMonadNetwork functionality
-   * 
-   * @function switchToMonadNetwork
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-  function switchToMonadNetwork(event: React.MouseEvent<HTMLButtonElement>): void {
+} switchToMonadNetwork(event: React.MouseEvent<HTMLButtonElement>): void {
     event.preventDefault();
-    
+
     // Monad Testnet Chain ID and parameters
     const MONAD_CHAIN_ID = '0x27cf'; // 10191 in decimal
     const MONAD_CHAIN_PARAMS = {
@@ -839,7 +171,7 @@ Please generate this story with attention to quality, creativity, and narrative 
       rpcUrls: ['https://testnet-rpc.monad.xyz'],
       blockExplorerUrls: ['https://explorer.monad.xyz/']
     };
-    
+
     // Check if ethereum is available in window
     if (typeof window === 'undefined' || !window.ethereum) {
       toast({
@@ -848,13 +180,12 @@ Please generate this story with attention to quality, creativity, and narrative 
         variant: "destructive"
       });
       return;
-    }
-    
+}
     setIsActionLoading(true);
-    
+
     // Create a safe reference to window.ethereum
     const ethereum = window.ethereum;
-    
+
     // First try to switch to the network
     ethereum.request({
       method: 'wallet_switchEthereumChain',
@@ -885,12 +216,11 @@ Please generate this story with attention to quality, creativity, and narrative 
           description: "Failed to switch to Monad Testnet.",
           variant: "destructive"
         });
-      }
+}
     }).finally(() => {
       setIsActionLoading(false);
     });
-  }
-
+}
   return (
     <div className="max-w-4xl mx-auto p-6">
       <Card className="border-0 shadow-none bg-background/50 backdrop-blur-sm mb-6">
@@ -929,7 +259,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                               return [...prev, genre.slug];
                             } else {
                               return [genre.slug];
-                            }
+}
                           });
                         }}
                       >
@@ -980,7 +310,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                     disabled={isGroqLoading || isActionLoading}
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="setting">
                     World & Setting
@@ -1002,7 +332,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                     disabled={isGroqLoading || isActionLoading}
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="plot">
                     Plot Outline
@@ -1024,7 +354,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                     disabled={isGroqLoading || isActionLoading}
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="themes">
                     Themes & Motifs
@@ -1066,7 +396,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                     disabled={isGroqLoading || isActionLoading}
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label>Story Type</Label>
                   <div className="grid grid-cols-2 gap-2">
@@ -1086,7 +416,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                     </Button>
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="overview">Story Overview</Label>
                   <Textarea
@@ -1125,7 +455,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                     disabled={isGroqLoading || isActionLoading}
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label className="flex items-center" htmlFor="useCustomKey">
                     <input 
@@ -1139,7 +469,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                     />
                     Use my Groq API key
                   </Label>
-                  
+
                   {isUsingCustomKey && (
                     <div className="pt-2">
                       <Label htmlFor="apiKey" className="flex items-center text-sm mb-1">
@@ -1166,9 +496,9 @@ Please generate this story with attention to quality, creativity, and narrative 
                                   title: "Testing API Key",
                                   description: "Please wait while we verify your API key...",
                                 });
-                                
+
                                 const result = await testConnection(userApiKey, true);
-                                
+
                                 if (result.success) {
                                   toast({
                                     title: "API Key Valid",
@@ -1180,14 +510,14 @@ Please generate this story with attention to quality, creativity, and narrative 
                                     description: result.message,
                                     variant: "destructive",
                                   });
-                                }
+}
                               } catch (error: any) {
                                 toast({
                                   title: "Test Failed",
                                   description: error.message || "Could not test API key",
                                   variant: "destructive",
                                 });
-                              }
+}
                             }}
                           >
                             Test Key
@@ -1340,7 +670,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                         title: "Copied",
                         description: "Story copied to clipboard",
                       });
-                    }
+}
                   }}
                   className="text-primary hover:bg-primary/5 border-primary/20"
                 >
@@ -1359,7 +689,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                       document.body.appendChild(element);
                       element.click();
                       document.body.removeChild(element);
-                    }
+}
                   }}
                   className="text-primary hover:bg-primary/5 border-primary/20"
                 >
@@ -1380,7 +710,7 @@ Please generate this story with attention to quality, creativity, and narrative 
             </>
           )}
         </TabsContent>
-        
+
         <TabsContent value="nft" className="space-y-4 mt-4">
           {!account && storyFormat === 'nft' ? (
             <div className="text-center py-8">
@@ -1403,7 +733,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                     description: error.message || "Failed to connect wallet. Please try again.",
                     variant: "destructive",
                   });
-                }
+}
               }}>
                 Connect Wallet
               </Button>
@@ -1454,7 +784,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                     description: error.message || "Failed to connect wallet. Please try again.",
                     variant: "destructive",
                   });
-                }
+}
               }}>
                 Connect Wallet
               </Button>
@@ -1496,16 +826,15 @@ Please generate this story with attention to quality, creativity, and narrative 
                             timestamp: Date.now() 
                           };
                           localStorage.setItem('navigationData', JSON.stringify(navData));
-                        }
+}
                       } catch (e) {
                         console.error('Error storing navigation data:', e);
-                      }
-                      
+}
                       // Use setTimeout to ensure reliable navigation
                       setTimeout(() => {
                         if (typeof window !== 'undefined') {
                           window.location.href = mintedNftUrl;
-                        }
+}
                       }, 100);
                     }}
                   >
@@ -1541,7 +870,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                   {generatedContent.substring(0, 300)}...
                 </div>
               </div>
-              
+
               <NFTButton
                 onClick={handleMintNFT}
                 disabled={isMinting}
@@ -1573,7 +902,7 @@ Please generate this story with attention to quality, creativity, and narrative 
                   storyFormat === 'nft' ? 'Mint as NFT' : 'Publish Story'
                 )}
               </NFTButton>
-              
+
               <div className="text-xs text-muted-foreground">
                 {storyFormat === 'nft' 
                   ? 'By minting this NFT, you confirm that you have the rights to this content and agree to the terms of service.'
@@ -1585,4 +914,4 @@ Please generate this story with attention to quality, creativity, and narrative 
       </Tabs>
     </div>
   );
-} 
+}

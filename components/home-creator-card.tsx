@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.home-creator-card.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -20,16 +15,7 @@ interface CreatorCardProps {
     profileUrl: string;
   };
 }
-
-  /**
-   * Implements CreatorCard functionality
-   * 
-   * @function CreatorCard
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function CreatorCard({ creator }: CreatorCardProps) {
+  export function CreatorCard({ creator }: CreatorCardProps) {
   const router = useRouter();
 
   const handleClick = () => {
@@ -52,4 +38,4 @@ export function CreatorCard({ creator }: CreatorCardProps) {
       </CardFooter>
     </Card>
   );
-} 
+}

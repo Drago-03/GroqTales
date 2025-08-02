@@ -1,7 +1,4 @@
 /**
- * @fileoverview API response helpers and utilities
- * @description Professional API response handling for enterprise applications
- */
 
 import { NextResponse } from 'next/server';
 import type { ApiResponse, ApiError, PaginationMetadata } from '@/types/api';
@@ -10,11 +7,11 @@ import { logger } from './logger';
 
 /**
  * API response builder utility
- */
+
 export class ResponseBuilder {
   /**
    * Create a successful response
-   */
+
   static success<T>(
     data: T,
     message?: string,
@@ -33,11 +30,10 @@ export class ResponseBuilder {
     };
 
     return NextResponse.json(response, { status: statusCode });
-  }
-
+}
   /**
    * Create an error response
-   */
+
   static error(
     error: string | Error | AppError,
     statusCode?: number,
@@ -72,8 +68,7 @@ export class ResponseBuilder {
         ...(details && { details }),
       };
       responseStatusCode = statusCode || 400;
-    }
-
+}
     const response: ApiResponse<never> = {
       success: false,
       error: apiError,
@@ -88,108 +83,96 @@ export class ResponseBuilder {
       ErrorHandler.logError(error);
     } else {
       logger.error('API Error', new Error(String(error)));
-    }
-
+}
     return NextResponse.json(response, { status: responseStatusCode });
-  }
-
+}
   /**
    * Create a paginated response
-   */
+
   static paginated<T>(
     data: T[],
     pagination: PaginationMetadata,
     message?: string
   ): NextResponse<ApiResponse<T[]>> {
     return this.success(data, message, pagination);
-  }
-
+}
   /**
    * Create a created response (201)
-   */
+
   static created<T>(
     data: T,
     message?: string
   ): NextResponse<ApiResponse<T>> {
     return this.success(data, message || 'Resource created successfully', undefined, 201);
-  }
-
+}
   /**
    * Create a no content response (204)
-   */
+
   static noContent(): NextResponse {
     return new NextResponse(null, { status: 204 });
-  }
-
+}
   /**
    * Create a not found response (404)
-   */
+
   static notFound(message: string = 'Resource not found'): NextResponse<ApiResponse<never>> {
     return this.error(message, 404);
-  }
-
+}
   /**
    * Create an unauthorized response (401)
-   */
+
   static unauthorized(message: string = 'Authentication required'): NextResponse<ApiResponse<never>> {
     return this.error(message, 401);
-  }
-
+}
   /**
    * Create a forbidden response (403)
-   */
+
   static forbidden(message: string = 'Insufficient permissions'): NextResponse<ApiResponse<never>> {
     return this.error(message, 403);
-  }
-
+}
   /**
    * Create a validation error response (400)
-   */
+
   static validationError(
     message: string = 'Validation failed',
     details?: Record<string, unknown>
   ): NextResponse<ApiResponse<never>> {
     return this.error(message, 400, details);
-  }
-
+}
   /**
    * Create a conflict response (409)
-   */
+
   static conflict(message: string = 'Resource conflict'): NextResponse<ApiResponse<never>> {
     return this.error(message, 409);
-  }
-
+}
   /**
    * Create a rate limit response (429)
-   */
+
   static rateLimited(
     message: string = 'Rate limit exceeded',
     retryAfter?: number
   ): NextResponse<ApiResponse<never>> {
     const response = this.error(message, 429);
-    
+
     if (retryAfter) {
       response.headers.set('Retry-After', retryAfter.toString());
-    }
-    
-    return response;
-  }
 }
-
+    return response;
+}
+}
 /**
  * Pagination helper utilities
- */
+
 export class PaginationHelper {
   /**
    * Calculate pagination metadata
-   */
+
   static calculatePagination(
     page: number,
     limit: number,
     total: number
   ): PaginationMetadata {
     const totalPages = Math.ceil(total / limit);
-    
+
     return {
       page,
       limit,
@@ -200,11 +183,10 @@ export class PaginationHelper {
       ...(page < totalPages && { nextPage: page + 1 }),
       ...(page > 1 && { prevPage: page - 1 }),
     };
-  }
-
+}
   /**
    * Parse pagination parameters from request
-   */
+
   static parsePaginationParams(searchParams: URLSearchParams): {
     page: number;
     limit: number;
@@ -215,12 +197,11 @@ export class PaginationHelper {
     const offset = (page - 1) * limit;
 
     return { page, limit, offset };
-  }
 }
-
+}
 /**
  * API route handler wrapper with error handling
- */
+
 export function withErrorHandling<T extends any[], R>(
   handler: (...args: T) => Promise<R>
 ) {
@@ -229,21 +210,19 @@ export function withErrorHandling<T extends any[], R>(
       return await handler(...args);
     } catch (error) {
       logger.error('API Route Error', error as Error);
-      
+
       if (error instanceof AppError) {
         return ResponseBuilder.error(error);
-      }
-      
+}
       return ResponseBuilder.error(
         error instanceof Error ? error : new Error('Unknown error occurred')
       );
-    }
+}
   };
 }
-
 /**
  * Async handler wrapper for API routes
- */
+
 export function asyncHandler<T extends any[], R>(
   fn: (...args: T) => Promise<R>
 ) {
@@ -253,14 +232,13 @@ export function asyncHandler<T extends any[], R>(
     });
   };
 }
-
 /**
  * Request validation middleware
- */
+
 export class RequestValidator {
   /**
    * Validate required fields in request body
-   */
+
   static validateRequired(
     body: Record<string, unknown>,
     requiredFields: string[]
@@ -279,12 +257,11 @@ export class RequestValidator {
         true,
         { missingFields: missing }
       );
-    }
-  }
-
+}
+}
   /**
    * Validate field types
-   */
+
   static validateTypes(
     data: Record<string, unknown>,
     schema: Record<string, 'string' | 'number' | 'boolean' | 'object' | 'array'>
@@ -293,11 +270,10 @@ export class RequestValidator {
 
     for (const [field, expectedType] of Object.entries(schema)) {
       const value = data[field];
-      
+
       if (value === undefined || value === null) {
         continue; // Skip undefined/null values
-      }
-
+}
       let isValidType = false;
 
       switch (expectedType) {
@@ -316,13 +292,11 @@ export class RequestValidator {
         case 'array':
           isValidType = Array.isArray(value);
           break;
-      }
-
+}
       if (!isValidType) {
         errors.push(`Field '${field}' must be of type ${expectedType}`);
-      }
-    }
-
+}
+}
     if (errors.length > 0) {
       throw new AppError(
         'Type validation failed',
@@ -331,12 +305,11 @@ export class RequestValidator {
         true,
         { typeErrors: errors }
       );
-    }
-  }
-
+}
+}
   /**
    * Validate string length
-   */
+
   static validateStringLength(
     data: Record<string, unknown>,
     rules: Record<string, { min?: number; max?: number }>
@@ -345,20 +318,17 @@ export class RequestValidator {
 
     for (const [field, rule] of Object.entries(rules)) {
       const value = data[field];
-      
+
       if (typeof value !== 'string') {
         continue; // Skip non-string values
-      }
-
+}
       if (rule.min !== undefined && value.length < rule.min) {
         errors.push(`Field '${field}' must be at least ${rule.min} characters long`);
-      }
-
+}
       if (rule.max !== undefined && value.length > rule.max) {
         errors.push(`Field '${field}' must not exceed ${rule.max} characters`);
-      }
-    }
-
+}
+}
     if (errors.length > 0) {
       throw new AppError(
         'String length validation failed',
@@ -367,19 +337,18 @@ export class RequestValidator {
         true,
         { lengthErrors: errors }
       );
-    }
-  }
 }
-
+}
+}
 /**
  * Rate limiting utilities
- */
+
 export class RateLimiter {
   private static requests = new Map<string, { count: number; resetTime: number }>();
 
   /**
    * Check rate limit for a given identifier
-   */
+
   static checkRateLimit(
     identifier: string,
     maxRequests: number = 100,
@@ -397,46 +366,42 @@ export class RateLimiter {
         count: 1,
         resetTime: now + windowMs,
       });
-      
+
       return {
         allowed: true,
         remaining: maxRequests - 1,
         resetTime: now + windowMs,
       };
-    }
-
+}
     if (userLimit.count >= maxRequests) {
       return {
         allowed: false,
         remaining: 0,
         resetTime: userLimit.resetTime,
       };
-    }
-
+}
     // Increment count
     userLimit.count++;
-    
+
     return {
       allowed: true,
       remaining: maxRequests - userLimit.count,
       resetTime: userLimit.resetTime,
     };
-  }
-
+}
   /**
    * Clean up expired rate limit entries
-   */
+
   private static cleanup(): void {
     const now = Date.now();
-    
+
     for (const [key, value] of this.requests.entries()) {
       if (now > value.resetTime) {
         this.requests.delete(key);
-      }
-    }
-  }
 }
-
+}
+}
+}
 export default {
   ResponseBuilder,
   PaginationHelper,

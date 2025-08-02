@@ -1,20 +1,6 @@
 /**
- * @fileoverview Core application functionality
- * @module lib.test-db.ts
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 import { getDb, insertOne, findOne } from './db';
-
-  /**
-   * Implements testConnection functionality
-   * 
-   * @function testConnection
-   * @returns {void|Promise<void>} Function return value
-   */
-
 
 async function testConnection() {
   try {
@@ -45,12 +31,10 @@ async function testConnection() {
   } catch (error) {
     console.error('Database test failed:', error);
     throw error;
-  }
 }
-
+}
 // Run the test if this file is executed directly
 if (require.main === module) {
   testConnection().catch(console.error);
 }
-
 export default testConnection; 

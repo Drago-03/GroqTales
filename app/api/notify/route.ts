@@ -1,10 +1,4 @@
 /**
- * @fileoverview Core application functionality
- * @module app.api.notify.route.ts
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 import { NextResponse } from 'next/server';
 
@@ -12,12 +6,6 @@ import { NextResponse } from 'next/server';
 export {};
 
 // API route handler for sending notifications
-  /**
-   * Implements POST functionality
-   * 
-   * @function POST
-   * @returns {void|Promise<void>} Function return value
-   */
 
 export async function POST(req: Request) {
   try {
@@ -26,5 +14,5 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error('Error in notification route:', error);
     return NextResponse.json({ success: false, error: 'Failed to process notification' }, { status: 500 });
-  }
-} 
+}
+}

@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.story-feed.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -138,18 +133,10 @@ const communityStories: Story[] = [
     likes: 301,
     comments: 42,
     isNft: false
-  }
+}
 ];
 
-  /**
-   * Implements StoryCard functionality
-   * 
-   * @function StoryCard
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function StoryCard({ story }: { story: Story }) {
+  export function StoryCard({ story }: { story: Story }) {
   return (
     <div className="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
       <div className="relative h-48 w-full">
@@ -175,7 +162,7 @@ export function StoryCard({ story }: { story: Story }) {
       <div className="p-4">
         <h3 className="font-bold text-lg truncate">{story.title}</h3>
         <p className="text-muted-foreground text-sm mt-2 line-clamp-2">{story.excerpt}</p>
-        
+
         <div className="flex items-center mt-4 justify-between">
           <div className="flex items-center space-x-2">
             <Avatar className="h-8 w-8">
@@ -189,7 +176,7 @@ export function StoryCard({ story }: { story: Story }) {
               </p>
             </div>
           </div>
-          
+
           <div className="flex items-center space-x-2 text-muted-foreground">
             <Button variant="ghost" size="icon" className="h-8 w-8">
               <Heart className="h-4 w-4" />
@@ -213,16 +200,7 @@ export function StoryCard({ story }: { story: Story }) {
     </div>
   );
 }
-
-  /**
-   * Implements StoryFeed functionality
-   * 
-   * @function StoryFeed
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function StoryFeed() {
+  export function StoryFeed() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">

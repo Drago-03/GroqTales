@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.story-summary.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -26,16 +21,7 @@ interface StorySummaryProps {
   apiKey?: string;
   className?: string;
 }
-
-  /**
-   * Implements StorySummary functionality
-   * 
-   * @function StorySummary
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function StorySummary({ 
+  export function StorySummary({ 
   storyId,
   content,
   title = "Story Summary",
@@ -52,7 +38,7 @@ export function StorySummary({
   useEffect(() => {
     if (storyId) {
       loadSummary();
-    }
+}
   }, [storyId]);
 
   const loadSummary = async () => {
@@ -61,13 +47,13 @@ export function StorySummary({
       setSummary(result);
       if (onSummaryGenerated) {
         onSummaryGenerated(result);
-      }
-    }
+}
+}
   };
 
   const handleGenerateSummary = async () => {
     const result = await generateSummary(storyId, content, undefined, apiKey);
-    
+
     if (result) {
       setSummary(result);
       toast({
@@ -75,29 +61,29 @@ export function StorySummary({
         description: "The AI summary has been created successfully.",
         variant: "default",
       });
-      
+
       if (onSummaryGenerated) {
         onSummaryGenerated(result);
-      }
+}
     } else if (error) {
       toast({
         title: "Error",
         description: error,
         variant: "destructive",
       });
-    }
+}
   };
 
   const handleRegenerate = async () => {
     if (!summary || !summary._id) return;
-    
+
     const result = await updateSummary(
       summary._id.toString(),
       {},
       true,
       content
     );
-    
+
     if (result) {
       setSummary(result);
       toast({
@@ -105,24 +91,24 @@ export function StorySummary({
         description: "The AI summary has been regenerated successfully.",
         variant: "default",
       });
-      
+
       if (onSummaryGenerated) {
         onSummaryGenerated(result);
-      }
+}
     } else if (error) {
       toast({
         title: "Error",
         description: error,
         variant: "destructive",
       });
-    }
+}
   };
 
   const handleDelete = async () => {
     if (!summary || !summary._id) return;
-    
+
     const success = await deleteSummary(summary._id.toString());
-    
+
     if (success) {
       setSummary(null);
       toast({
@@ -136,7 +122,7 @@ export function StorySummary({
         description: error,
         variant: "destructive",
       });
-    }
+}
   };
 
   // Render sentiment badge with appropriate color
@@ -144,10 +130,6 @@ export function StorySummary({
       /**
    * sentimentMap React component
    * 
-   * @component
-   * @param {Object} props - Component props
-   * @returns {JSX.Element} Rendered component
-   */
 
     const sentimentMap: Record<string, { color: string, icon: JSX.Element }> = {
       "positive": { 
@@ -165,7 +147,7 @@ export function StorySummary({
       "neutral": { 
         color: "bg-blue-500/10 text-blue-500 hover:bg-blue-500/20", 
         icon: <></>
-      }
+}
     };
 
     const { color, icon } = sentimentMap[sentiment.toLowerCase()] || 
@@ -215,13 +197,13 @@ export function StorySummary({
               <TabsTrigger value="keyPoints">Key Points</TabsTrigger>
               <TabsTrigger value="keywords">Keywords</TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="summary" className="mt-4">
               <div className="whitespace-pre-line">
                 {summary.summary}
               </div>
             </TabsContent>
-            
+
             <TabsContent value="keyPoints" className="mt-4">
               <ul className="space-y-2 pl-5 list-disc">
                 {summary.keyPoints.map((point: string, index: number) => (
@@ -229,7 +211,7 @@ export function StorySummary({
                 ))}
               </ul>
             </TabsContent>
-            
+
             <TabsContent value="keywords" className="mt-4">
               <div className="flex flex-wrap gap-2">
                 {summary.keywords.map((keyword: string, index: number) => (
@@ -240,7 +222,7 @@ export function StorySummary({
           </Tabs>
         )}
       </CardContent>
-      
+
       {summary && (
         <CardFooter className="flex justify-between">
           <div className="text-xs text-muted-foreground">
@@ -271,4 +253,4 @@ export function StorySummary({
       )}
     </Card>
   );
-} 
+}

@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.ui.form.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 'use client';
 
@@ -58,8 +53,7 @@ const useFormField = () => {
 
   if (!fieldContext) {
     throw new Error('useFormField should be used within <FormField>');
-  }
-
+}
   const { id } = itemContext;
 
   return {
@@ -126,7 +120,7 @@ const FormControl = React.forwardRef<
         !error
           ? `${formDescriptionId}`
           : `${formDescriptionId} ${formMessageId}`
-      }
+}
       aria-invalid={!!error}
       {...props}
     />
@@ -160,8 +154,7 @@ const FormMessage = React.forwardRef<
 
   if (!body) {
     return null;
-  }
-
+}
   return (
     <p
       ref={ref}

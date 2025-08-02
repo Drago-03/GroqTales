@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import { useEffect, useState } from 'react';
@@ -5,7 +6,7 @@ import { motion } from 'framer-motion';
 
 export const GalaxyBackground = () => {
   const [stars, setStars] = useState<Array<{ x: number; y: number; size: number; delay: number; color: string }>>([]);
-  
+
   useEffect(() => {
     // Generate way more random stars with different colors
     const newStars = Array.from({ length: 200 }, () => ({
@@ -161,7 +162,7 @@ export const GalaxyBackground = () => {
         const isFromCorner = Math.random() > 0.5;
         const startX = -50; // Start outside viewport
         const startY = isFromCorner ? -50 : Math.random() * 70; // Either corner or along left edge
-        
+
         return (
           <motion.div
             key={`meteor-${i}`}
@@ -261,7 +262,7 @@ export const GalaxyBackground = () => {
         const isFromCorner = i === 0; // First meteor always from corner for consistency
         const startX = -100; // Start further outside viewport
         const startY = isFromCorner ? -100 : Math.random() * 50;
-        
+
         return (
           <motion.div
             key={`large-meteor-${i}`}

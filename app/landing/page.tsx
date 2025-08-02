@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import { useState, useEffect } from "react";
@@ -8,13 +9,7 @@ import { Button } from "@/components/ui/button";
 import { LoadingAnimation } from "@/components/loading-animation";
 import { Github, Wallet, ArrowRight, BookOpen, Sparkles, Users, Shield, DollarSign, MessageSquare, Check, Trophy } from "lucide-react";
 
-export default   /**
-   * Implements LandingPage functionality
-   * 
-   * @function LandingPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function LandingPage() {
+export default function LandingPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [account, setAccount] = useState<string | null>(null);
@@ -31,27 +26,27 @@ export default   /**
 
   const connectWallet = async () => {
     setIsConnecting(true);
-    
+
     try {
       // Check if MetaMask is installed
       if (typeof window.ethereum !== 'undefined') {
         // Request account access
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         setAccount(accounts[0]);
-        
+
         // Redirect to home page after successful login
         setTimeout(() => {
           router.push('/');
         }, 1000);
       } else {
         alert('Please install MetaMask to use this feature!');
-      }
+}
     } catch (error) {
       console.error('Error connecting to MetaMask', error);
       alert('Failed to connect to MetaMask.');
     } finally {
       setIsConnecting(false);
-    }
+}
   };
 
   // Loading screen
@@ -67,8 +62,7 @@ export default   /**
         <LoadingAnimation message="Welcome to GroqTales" />
       </div>
     );
-  }
-
+}
   return (
     <div className="min-h-screen flex flex-col">
       {/* Floating doodles */}
@@ -147,7 +141,7 @@ export default   /**
       <section className="bg-muted/30 py-20 relative z-10">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 gradient-heading">Key Features</h2>
-          
+
           {/* Animated Feature Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 animate-features">
             <div className="bg-card border border-border p-6 rounded-lg shadow-sm transform hover:scale-105 transition-transform duration-300">
@@ -261,30 +255,26 @@ export default   /**
           @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
-          }
-
+}
           @keyframes slideUp {
             from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
-          }
-
+}
           .animate-features > div {
             animation: fadeIn 0.6s ease-out forwards;
-          }
-
+}
           .animate-features > div:nth-child(1) { animation-delay: 0.2s; }
           .animate-features > div:nth-child(2) { animation-delay: 0.4s; }
           .animate-features > div:nth-child(3) { animation-delay: 0.6s; }
 
           .animate-fade-in {
             animation: fadeIn 0.8s ease-out 0.8s forwards;
-          }
-
+}
           .animate-slide-up {
             animation: slideUp 0.8s ease-out 1s forwards;
-          }
+}
         `}</style>
       </section>
     </div>
   );
-} 
+}

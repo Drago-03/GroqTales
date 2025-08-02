@@ -1,10 +1,4 @@
 /**
- * @fileoverview Core application functionality
- * @module components.access-control.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -19,15 +13,7 @@ const ALLOWED_WALLETS = {
   minting: ["0x1234567890abcdef1234567890abcdef12345678"]
 };
 
-  /**
-   * Implements AccessControl functionality
-   * 
-   * @function AccessControl
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function AccessControl() {
+  export function AccessControl() {
   const { account } = useWeb3();
   const { toast } = useToast();
   const [access, setAccess] = useState({
@@ -59,14 +45,14 @@ export function AccessControl() {
           description: "Your wallet does not have access to special features. Contact support for more information.",
           variant: "destructive",
         });
-      }
+}
     } else {
       setAccess({
         history: false,
         generation: false,
         minting: false
       });
-    }
+}
   }, [account, toast]);
 
   return {
@@ -74,4 +60,4 @@ export function AccessControl() {
     hasGenerationAccess: access.generation,
     hasMintingAccess: access.minting
   };
-} 
+}

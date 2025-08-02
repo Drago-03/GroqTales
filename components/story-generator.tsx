@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.story-generator.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client"
 
@@ -26,15 +21,7 @@ const genres = [
   "Adventure"
 ];
 
-  /**
-   * Implements StoryGenerator functionality
-   * 
-   * @function StoryGenerator
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function StoryGenerator() {
+  export function StoryGenerator() {
   const [prompt, setPrompt] = useState("");
   const [genre, setGenre] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -51,8 +38,7 @@ export function StoryGenerator() {
         variant: "destructive",
       });
       return;
-    }
-
+}
     setIsGenerating(true);
     try {
       const response = await fetch("/api/generate", {
@@ -60,11 +46,10 @@ export function StoryGenerator() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt, genre, creator: address }),
       });
-      
+
       if (!response.ok) {
         throw new Error("Failed to generate story");
-      }
-      
+}
       const data = await response.json();
       setGeneratedStory(data.story);
       toast({
@@ -80,7 +65,7 @@ export function StoryGenerator() {
       });
     } finally {
       setIsGenerating(false);
-    }
+}
   };
 
   const handleMint = async () => {
@@ -91,8 +76,7 @@ export function StoryGenerator() {
         variant: "destructive",
       });
       return;
-    }
-
+}
     setIsMinting(true);
     try {
       // Upload to IPFS
@@ -108,8 +92,7 @@ export function StoryGenerator() {
 
       if (!ipfsResponse.ok) {
         throw new Error("Failed to upload to IPFS");
-      }
-
+}
       const { metadataUri } = await ipfsResponse.json();
 
       // Mint NFT
@@ -124,8 +107,7 @@ export function StoryGenerator() {
 
       if (!mintResponse.ok) {
         throw new Error("Failed to mint NFT");
-      }
-
+}
       toast({
         title: "NFT Minted",
         description: "Your story has been successfully minted as an NFT!",
@@ -139,7 +121,7 @@ export function StoryGenerator() {
       });
     } finally {
       setIsMinting(false);
-    }
+}
   };
 
   return (

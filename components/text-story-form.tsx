@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.text-story-form.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -19,16 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 interface TextStoryFormProps {
   onSuccess: () => void;
 }
-
-  /**
-   * Implements TextStoryForm functionality
-   * 
-   * @function TextStoryForm
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function TextStoryForm({ onSuccess }: TextStoryFormProps) {
+  export function TextStoryForm({ onSuccess }: TextStoryFormProps) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [genre, setGenre] = useState("");
@@ -37,7 +23,7 @@ export function TextStoryForm({ onSuccess }: TextStoryFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
       // TODO: Implement story submission
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated API call
@@ -46,7 +32,7 @@ export function TextStoryForm({ onSuccess }: TextStoryFormProps) {
       console.error("Failed to submit story:", error);
     } finally {
       setIsSubmitting(false);
-    }
+}
   };
 
   return (
@@ -60,7 +46,7 @@ export function TextStoryForm({ onSuccess }: TextStoryFormProps) {
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
-      
+
       <div className="space-y-2">
         <Label htmlFor="genre">Genre</Label>
         <Select value={genre} onValueChange={setGenre}>
@@ -81,7 +67,7 @@ export function TextStoryForm({ onSuccess }: TextStoryFormProps) {
           </SelectContent>
         </Select>
       </div>
-      
+
       <div className="space-y-2">
         <Label htmlFor="content">Content</Label>
         <Textarea
@@ -92,7 +78,7 @@ export function TextStoryForm({ onSuccess }: TextStoryFormProps) {
           className="min-h-[200px]"
         />
       </div>
-      
+
       <Button type="submit" disabled={!title || !content || !genre || isSubmitting} className="w-full">
         {isSubmitting ? (
           <>

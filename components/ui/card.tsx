@@ -1,8 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Card UI Components
- * @description Reusable card components built with Radix UI primitives
- * @version 1.0.0
- */
 
 import * as React from 'react';
 import { cn } from '@/lib/utils';

@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module lib.mini-kit-mock.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -16,14 +11,7 @@ interface MiniKitContext {
     added: boolean;
   };
 }
-
 // Mock for useMiniKit
-  /**
-   * Implements useMiniKit functionality
-   * 
-   * @function useMiniKit
-   * @returns {void|Promise<void>} Function return value
-   */
 
 export function useMiniKit() {
   const [isReady, setIsReady] = useState(false);
@@ -41,14 +29,7 @@ export function useMiniKit() {
     context
   };
 }
-
 // Mock for useAddFrame
-  /**
-   * Implements useAddFrame functionality
-   * 
-   * @function useAddFrame
-   * @returns {void|Promise<void>} Function return value
-   */
 
 export function useAddFrame() {
   return () => {
@@ -56,14 +37,7 @@ export function useAddFrame() {
     return true;
   };
 }
-
 // Mock for useOpenUrl
-  /**
-   * Implements useOpenUrl functionality
-   * 
-   * @function useOpenUrl
-   * @returns {void|Promise<void>} Function return value
-   */
 
 export function useOpenUrl() {
   return (url: string) => {
@@ -72,18 +46,11 @@ export function useOpenUrl() {
     return true;
   };
 }
-
 // Mock for useNotification
-  /**
-   * Implements useNotification functionality
-   * 
-   * @function useNotification
-   * @returns {void|Promise<void>} Function return value
-   */
 
 export function useNotification() {
   return async ({ title, body }: { title: string; body: string }) => {
     console.log("Mock notification sent:", { title, body });
     return true;
   };
-} 
+}

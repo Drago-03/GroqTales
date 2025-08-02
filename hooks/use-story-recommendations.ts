@@ -11,47 +11,35 @@ interface RecommendationOptions {
   model?: string;
   apiKey?: string;
 }
-
 interface UseStoryRecommendationsResult {
   getRecommendations: (options: RecommendationOptions) => Promise<any[]>;
   recommendations: any[];
   isLoading: boolean;
   error: string | null;
 }
-
-  /**
-   * Implements useStoryRecommendations functionality
-   * 
-   * @function useStoryRecommendations
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function useStoryRecommendations(): UseStoryRecommendationsResult {
+  export function useStoryRecommendations(): UseStoryRecommendationsResult {
   const [recommendations, setRecommendations] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   /**
    * Get recommendations based on a story's characteristics
-   */
+
   const getRecommendations = async (options: RecommendationOptions): Promise<any[]> => {
     const { storyId, content, keywords, genre, limit = 5, model, apiKey } = options;
-    
+
     if (!storyId) {
       setError("Story ID is required");
       return [];
-    }
-    
+}
     // Require at least one of content, keywords, or genre
     if (!content && (!keywords || keywords.length === 0) && !genre) {
       setError("At least one of content, keywords, or genre is required");
       return [];
-    }
-    
+}
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const response = await fetch("/api/story-recommendations", {
         method: "POST",
@@ -68,13 +56,12 @@ export function useStoryRecommendations(): UseStoryRecommendationsResult {
           apiKey,
         }),
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.error || "Failed to get recommendations");
-      }
-      
+}
       setRecommendations(data.recommendations || []);
       return data.recommendations || [];
     } catch (err: any) {
@@ -82,7 +69,7 @@ export function useStoryRecommendations(): UseStoryRecommendationsResult {
       return [];
     } finally {
       setIsLoading(false);
-    }
+}
   };
 
   return {
@@ -91,4 +78,4 @@ export function useStoryRecommendations(): UseStoryRecommendationsResult {
     isLoading,
     error,
   };
-} 
+}

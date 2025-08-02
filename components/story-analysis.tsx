@@ -1,8 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Story Analysis Component
- * @description AI-powered literary analysis component with multiple analysis types
- * @version 1.0.0
- */
 
 "use client";
 
@@ -18,7 +15,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 /**
  * Props for the StoryAnalysis component
- */
+
 interface StoryAnalysisProps {
   /** Story content to analyze */
   content: string;
@@ -33,10 +30,9 @@ interface StoryAnalysisProps {
   /** Callback fired when analysis completes */
   onAnalysisComplete?: (result: any) => void;
 }
-
 /**
  * Analysis type configuration
- */
+
 const ANALYSIS_TYPES = [
   { 
     value: 'standard', 
@@ -57,12 +53,12 @@ const ANALYSIS_TYPES = [
     value: 'development', 
     label: 'Developmental Edit', 
     description: 'Detailed editing feedback for story improvement' 
-  }
+}
 ] as const;
 
 /**
  * Content length limits
- */
+
 const CONTENT_LIMITS = {
   MIN_LENGTH: 100,
   MAX_LENGTH: 8000,
@@ -73,7 +69,7 @@ const CONTENT_LIMITS = {
  * 
  * Provides AI-powered literary analysis with multiple analysis types including
  * standard analysis, critical feedback, audience analysis, and developmental editing.
- */
+
 export function StoryAnalysis({
   content,
   title,
@@ -89,10 +85,10 @@ export function StoryAnalysis({
 
   /**
    * Handles the analysis process
-   */
+
   const handleAnalyze = async (): Promise<void> => {
     clearResult();
-    
+
     const analysisResult = await analyzeStory({
       content,
       title,
@@ -100,34 +96,34 @@ export function StoryAnalysis({
       analysisType,
       apiKey
     });
-    
+
     if (analysisResult) {
       const selectedType = ANALYSIS_TYPES.find(t => t.value === analysisType);
-      
+
       toast({
         title: "Analysis Complete",
         description: `${selectedType?.label} has been generated.`,
         variant: "default",
       });
-      
+
       // Set the initial active tab based on analysis type
       setActiveTab(getInitialTab(analysisType));
-      
+
       if (onAnalysisComplete) {
         onAnalysisComplete(analysisResult);
-      }
+}
     } else if (error) {
       toast({
         title: "Analysis Failed",
         description: error,
         variant: "destructive",
       });
-    }
+}
   };
 
   /**
    * Gets the initial tab based on analysis type
-   */
+
   const getInitialTab = (type: string): string => {
     const tabMap: Record<string, string> = {
       'standard': 'plot',
@@ -140,10 +136,10 @@ export function StoryAnalysis({
 
   /**
    * Handles downloading the analysis as JSON
-   */
+
   const handleDownload = (): void => {
     if (!result) return;
-    
+
     const analysisData = result.format === 'json' ? result.analysis : { rawText: result.analysis.rawText };
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(analysisData, null, 2));
     const downloadAnchorNode = document.createElement('a');
@@ -152,7 +148,7 @@ export function StoryAnalysis({
     document.body.appendChild(downloadAnchorNode);
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
-    
+
     toast({
       title: "Analysis Downloaded",
       description: "The analysis has been saved as a JSON file.",
@@ -162,21 +158,21 @@ export function StoryAnalysis({
 
   /**
    * Validates if content meets minimum requirements
-   */
+
   const isContentValid = (): boolean => {
     return Boolean(content && content.length >= CONTENT_LIMITS.MIN_LENGTH);
   };
 
   /**
    * Gets the content length for display
-   */
+
   const getContentLength = (): number => {
     return Math.min(content.length, CONTENT_LIMITS.MAX_LENGTH);
   };
 
   const renderAnalysisContent = () => {
     if (!result || !result.analysis) return null;
-    
+
     // Handle raw text format
     if (result.format === 'text') {
       return (
@@ -184,11 +180,10 @@ export function StoryAnalysis({
           {result.analysis.rawText}
         </div>
       );
-    }
-    
+}
     // Handle JSON format based on analysis type
     const analysis = result.analysis;
-    
+
     switch (result.analysisType) {
       case 'standard':
         return (
@@ -201,39 +196,39 @@ export function StoryAnalysis({
               <TabsTrigger value="strengths">Strengths</TabsTrigger>
               <TabsTrigger value="improvements">Improvements</TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="plot" className="space-y-4">
               <h3 className="text-lg font-semibold">Plot Structure</h3>
               <div className="whitespace-pre-line">{analysis["Plot Structure"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="characters" className="space-y-4">
               <h3 className="text-lg font-semibold">Character Analysis</h3>
               <div className="whitespace-pre-line">{analysis["Character Analysis"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="themes" className="space-y-4">
               <h3 className="text-lg font-semibold">Theme Analysis</h3>
               <div className="whitespace-pre-line">{analysis["Theme Analysis"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="style" className="space-y-4">
               <h3 className="text-lg font-semibold">Stylistic Elements</h3>
               <div className="whitespace-pre-line">{analysis["Stylistic Elements"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="strengths" className="space-y-4">
               <h3 className="text-lg font-semibold">Strengths</h3>
               <div className="whitespace-pre-line">{analysis["Strengths"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="improvements" className="space-y-4">
               <h3 className="text-lg font-semibold">Areas for Improvement</h3>
               <div className="whitespace-pre-line">{analysis["Areas for Improvement"]}</div>
             </TabsContent>
           </Tabs>
         );
-        
+
       case 'critique':
         return (
           <Tabs defaultValue="overall" value={activeTab} onValueChange={setActiveTab}>
@@ -245,39 +240,39 @@ export function StoryAnalysis({
               <TabsTrigger value="engagement">Engagement</TabsTrigger>
               <TabsTrigger value="recommendations">Recommendations</TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="overall" className="space-y-4">
               <h3 className="text-lg font-semibold">Overall Impression</h3>
               <div className="whitespace-pre-line">{analysis["Overall Impression"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="strengths" className="space-y-4">
               <h3 className="text-lg font-semibold">Strongest Elements</h3>
               <div className="whitespace-pre-line">{analysis["Strongest Elements"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="improvements" className="space-y-4">
               <h3 className="text-lg font-semibold">Areas for Improvement</h3>
               <div className="whitespace-pre-line">{analysis["Areas for Improvement"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="mechanics" className="space-y-4">
               <h3 className="text-lg font-semibold">Writing Mechanics</h3>
               <div className="whitespace-pre-line">{analysis["Writing Mechanics"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="engagement" className="space-y-4">
               <h3 className="text-lg font-semibold">Reader Engagement</h3>
               <div className="whitespace-pre-line">{analysis["Reader Engagement"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="recommendations" className="space-y-4">
               <h3 className="text-lg font-semibold">Specific Recommendations</h3>
               <div className="whitespace-pre-line">{analysis["Specific Recommendations"]}</div>
             </TabsContent>
           </Tabs>
         );
-        
+
       case 'audience':
         return (
           <Tabs defaultValue="demographics" value={activeTab} onValueChange={setActiveTab}>
@@ -289,39 +284,39 @@ export function StoryAnalysis({
               <TabsTrigger value="marketing">Marketing</TabsTrigger>
               <TabsTrigger value="expansion">Expansion</TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="demographics" className="space-y-4">
               <h3 className="text-lg font-semibold">Target Demographics</h3>
               <div className="whitespace-pre-line">{analysis["Target Demographics"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="positioning" className="space-y-4">
               <h3 className="text-lg font-semibold">Market Positioning</h3>
               <div className="whitespace-pre-line">{analysis["Market Positioning"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="appeal" className="space-y-4">
               <h3 className="text-lg font-semibold">Reader Appeal</h3>
               <div className="whitespace-pre-line">{analysis["Reader Appeal"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="comparisons" className="space-y-4">
               <h3 className="text-lg font-semibold">Comparisons</h3>
               <div className="whitespace-pre-line">{analysis["Comparisons"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="marketing" className="space-y-4">
               <h3 className="text-lg font-semibold">Marketing Angles</h3>
               <div className="whitespace-pre-line">{analysis["Marketing Angles"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="expansion" className="space-y-4">
               <h3 className="text-lg font-semibold">Audience Expansion</h3>
               <div className="whitespace-pre-line">{analysis["Audience Expansion"]}</div>
             </TabsContent>
           </Tabs>
         );
-        
+
       case 'development':
         return (
           <Tabs defaultValue="structure" value={activeTab} onValueChange={setActiveTab}>
@@ -333,46 +328,46 @@ export function StoryAnalysis({
               <TabsTrigger value="tension">Tension</TabsTrigger>
               <TabsTrigger value="nextsteps">Next Steps</TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="structure" className="space-y-4">
               <h3 className="text-lg font-semibold">Story Structure</h3>
               <div className="whitespace-pre-line">{analysis["Story Structure"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="characters" className="space-y-4">
               <h3 className="text-lg font-semibold">Character Development</h3>
               <div className="whitespace-pre-line">{analysis["Character Development"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="setting" className="space-y-4">
               <h3 className="text-lg font-semibold">Setting & Worldbuilding</h3>
               <div className="whitespace-pre-line">{analysis["Setting & Worldbuilding"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="dialogue" className="space-y-4">
               <h3 className="text-lg font-semibold">Dialogue & Voice</h3>
               <div className="whitespace-pre-line">{analysis["Dialogue & Voice"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="tension" className="space-y-4">
               <h3 className="text-lg font-semibold">Tension & Conflict</h3>
               <div className="whitespace-pre-line">{analysis["Tension & Conflict"]}</div>
             </TabsContent>
-            
+
             <TabsContent value="nextsteps" className="space-y-4">
               <h3 className="text-lg font-semibold">Next Steps</h3>
               <div className="whitespace-pre-line">{analysis["Next Steps"]}</div>
             </TabsContent>
           </Tabs>
         );
-        
+
       default:
         return (
           <div className="whitespace-pre-line">
             {JSON.stringify(analysis, null, 2)}
           </div>
         );
-    }
+}
   };
 
   return (
@@ -386,7 +381,7 @@ export function StoryAnalysis({
           AI-powered literary analysis and feedback powered by Groq
         </CardDescription>
       </CardHeader>
-      
+
       <CardContent>
         {isLoading ? (
           <div className="flex justify-center items-center py-12">
@@ -416,20 +411,20 @@ export function StoryAnalysis({
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">
                 This analysis will process approximately {getContentLength().toLocaleString()} characters 
                 of your story to provide detailed insights and feedback.
               </p>
-              
+
               {content.length > CONTENT_LIMITS.MAX_LENGTH && (
                 <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20">
                   Note: Only the first {CONTENT_LIMITS.MAX_LENGTH.toLocaleString()} characters will be analyzed
                 </Badge>
               )}
             </div>
-            
+
             <Button 
               onClick={handleAnalyze} 
               className="w-full"
@@ -437,7 +432,7 @@ export function StoryAnalysis({
             >
               Generate Analysis
             </Button>
-            
+
             {!isContentValid() && (
               <p className="text-sm text-red-500">
                 Please provide at least {CONTENT_LIMITS.MIN_LENGTH} characters of content to analyze
@@ -450,7 +445,7 @@ export function StoryAnalysis({
               <Badge variant="outline" className="bg-primary/10 text-primary">
                 {ANALYSIS_TYPES.find(t => t.value === result.analysisType)?.label || 'Analysis'}
               </Badge>
-              
+
               <Button 
                 variant="outline" 
                 size="sm" 
@@ -461,18 +456,18 @@ export function StoryAnalysis({
                 Download JSON
               </Button>
             </div>
-            
+
             {renderAnalysisContent()}
           </div>
         )}
       </CardContent>
-      
+
       {result && (
         <CardFooter className="flex justify-between">
           <span className="text-xs text-muted-foreground">
             Analyzed {getContentLength().toLocaleString()} characters
           </span>
-          
+
           <Button
             variant="outline"
             size="sm"
@@ -487,4 +482,4 @@ export function StoryAnalysis({
       )}
     </Card>
   );
-} 
+}

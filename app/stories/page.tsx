@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,13 +11,7 @@ export const metadata = {
 
 export const revalidate = process.env.NEXT_PUBLIC_BUILD_MODE === 'true' ? 10 : 3600;
 
-export default   /**
-   * Implements StoriesPage functionality
-   * 
-   * @function StoriesPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function StoriesPage() {
+export default function StoriesPage() {
   // Use mock data during build time to avoid database connections
   if (process.env.NEXT_PUBLIC_BUILD_MODE === 'true') {
     return (
@@ -25,8 +20,7 @@ export default   /**
         <p className="text-muted-foreground">Stories will be loaded dynamically after deployment.</p>
       </div>
     );
-  }
-
+}
   return (
     <div className="py-12 min-h-screen">
       <div className="container mx-auto px-4 max-w-5xl">
@@ -72,7 +66,7 @@ export default   /**
                 </p>
               </CardContent>
             </Card>
-            
+
             <Card className="bg-card border-border hover:shadow-md transition-shadow">
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center">
@@ -86,7 +80,7 @@ export default   /**
                 </p>
               </CardContent>
             </Card>
-            
+
             <Card className="bg-card border-border hover:shadow-md transition-shadow">
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center">
@@ -106,7 +100,7 @@ export default   /**
         {/* How to Create Stories Section */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-8 text-center">How to Create Stories</h2>
-          
+
           <div className="space-y-8">
             <div className="flex flex-col md:flex-row gap-6 items-center">
               <div className="md:w-1/3 aspect-video bg-muted rounded-lg flex items-center justify-center theme-gradient-bg bg-opacity-10">
@@ -124,7 +118,7 @@ export default   /**
                 </div>
               </div>
             </div>
-            
+
             <div className="flex flex-col md:flex-row gap-6 items-center">
               <div className="md:w-1/3 aspect-video bg-muted rounded-lg flex items-center justify-center theme-gradient-bg bg-opacity-10">
                 <span className="text-2xl font-bold">2</span>
@@ -141,7 +135,7 @@ export default   /**
                 </div>
               </div>
             </div>
-            
+
             <div className="flex flex-col md:flex-row gap-6 items-center">
               <div className="md:w-1/3 aspect-video bg-muted rounded-lg flex items-center justify-center theme-gradient-bg bg-opacity-10">
                 <span className="text-2xl font-bold">3</span>
@@ -182,4 +176,4 @@ export default   /**
       </div>
     </div>
   );
-} 
+}

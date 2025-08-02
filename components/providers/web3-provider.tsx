@@ -16,7 +16,6 @@ import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 /*
 const MONAD_CHAIN_ID = "0x1"; // Replace with actual Monad chain ID
 const MONAD_RPC_URL = "https://monad-rpc-url.com"; // Replace with actual Monad RPC URL
-*/
 
 // Constants for Base network
 const BASE_CHAIN_ID = base.id;
@@ -44,7 +43,6 @@ interface NFT {
   metadata: any;
   status: 'listed' | 'unlisted' | 'sold';
 }
-
 interface Web3ContextType {
   account: string | null;
   chainId: number | null;
@@ -71,7 +69,6 @@ interface Web3ContextType {
   sellNFTOnBase: (tokenId: string, price: string) => Promise<{ transactionHash: string }>;
   getNFTListings: () => Promise<NFT[]>;
 }
-
 // Create context with default values
 const Web3Context = createContext<Web3ContextType>({
   account: null,
@@ -128,25 +125,24 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
         variant: "destructive",
       });
       return;
-    }
-
+}
     try {
       setConnecting(true);
       // Request account access
       const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
       const chainIdHex = await window.ethereum.request({ method: "eth_chainId" });
       const chainIdNum = parseInt(chainIdHex, 16);
-      
+
       if (accounts && accounts[0]) {
         // Get account balance
         const balanceHex = await window.ethereum.request({
           method: "eth_getBalance",
           params: [accounts[0], "latest"],
         });
-        
+
         const balanceWei = parseInt(balanceHex, 16);
         const balanceEth = (balanceWei / 1e18).toFixed(4);
-        
+
         // Check for ENS name on Ethereum mainnet
         let name = null;
         if (chainIdNum === 1) {
@@ -154,18 +150,17 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
             // This is a mock for demonstration - in production you'd use an actual ENS lookup
             if (accounts[0].toLowerCase().includes("0x")) {
               name = `${accounts[0].substring(2, 6)}...${accounts[0].substring(38)}.eth`;
-            }
+}
           } catch (error) {
             console.error("Error fetching ENS name:", error);
-          }
-        }
-        
+}
+}
         setAccount(accounts[0]);
         setChainId(chainIdNum);
         setBalance(balanceEth);
         setConnected(true);
         setEnsName(name);
-        
+
         toast({
           title: "Wallet Connected",
           description: `Connected to ${NETWORKS[chainIdNum] || 'network'} as ${name || accounts[0].substring(0, 6) + '...' + accounts[0].substring(38)}`,
@@ -173,7 +168,7 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
 
         // Store in localStorage for persistence
         localStorage.setItem("walletConnected", "true");
-      }
+}
     } catch (error: any) {
       toast({
         title: "Connection Failed",
@@ -183,7 +178,7 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
       console.error("Error connecting wallet:", error);
     } finally {
       setConnecting(false);
-    }
+}
   };
 
   // Function to disconnect wallet
@@ -194,7 +189,7 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
     setConnected(false);
     setEnsName(null);
     localStorage.removeItem("walletConnected");
-    
+
     toast({
       title: "Wallet Disconnected",
       description: "Your wallet has been disconnected",
@@ -204,7 +199,7 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   // Function to switch networks
   const switchNetwork = async (newChainId: number) => {
     if (!window.ethereum) return;
-    
+
     try {
       // Try to switch to the network
       await window.ethereum.request({
@@ -225,152 +220,49 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
           description: switchError.message || "Failed to switch network",
           variant: "destructive",
         });
-      }
-    }
+}
+}
   };
 
-  // Add mintNFTOnBase   /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
+  // Add mintNFTOnBase const
 
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-  /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-   /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-   /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-   /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-
- function
   const mintNFTOnBase = async (metadata: any, recipient?: string) => {
     if (!account) {
       throw new Error("Wallet not connected");
-    }
-
+}
     if (chainId !== BASE_CHAIN_ID) {
       await switchNetwork(BASE_CHAIN_ID);
-    }
-
+}
     try {
       console.log('Starting NFT minting process with metadata:', metadata);
-      
+
       // Add timestamp to metadata
       const metadataWithTimestamp = {
         ...metadata,
         createdAt: new Date().toISOString(),
         creator: recipient || account
       };
-      
+
       // Upload metadata to IPFS - directly upload the object
       console.log('Uploading metadata to IPFS...');
       const ipfsHash = await uploadToIPFS(metadataWithTimestamp, { 
         name: `GroqTales-${metadata.title || 'Story'}-Metadata` 
       });
-      
+
       if (!ipfsHash) {
         throw new Error("Failed to upload metadata to IPFS");
-      }
-      
+}
       console.log('Metadata uploaded successfully with hash:', ipfsHash);
       const tokenURI = getIPFSUrl(ipfsHash);
       console.log('Token URI:', tokenURI);
-      
+
       // Get fallback URLs for the frontend
       const fallbackUrls = getIPFSFallbackUrls(ipfsHash);
-      
+
       // In a production environment, this would call the contract
       // For now, we're using a mock implementation
       console.log('Minting NFT with token URI:', tokenURI);
-      
+
       // Mock minting for now - in production, this would interact with your smart contract
       const mockTokenId = `0x${Math.floor(Math.random() * 1000000).toString(16)}`;
       const mockTxHash = `0x${Array.from({length: 64}, () => Math.floor(Math.random() * 16).toString(16)).join('')}`;
@@ -397,120 +289,18 @@ function const
         variant: "destructive",
       });
       throw error;
-    }
+}
   };
 
-  // Add buyNFTOnBase   /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
+  // Add buyNFTOnBase const
 
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-  /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-   /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-   /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-   /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-
- function
   const buyNFTOnBase = async (tokenId: string, price: string) => {
     if (!account) {
       throw new Error("Wallet not connected");
-    }
-
+}
     if (chainId !== BASE_CHAIN_ID) {
       await switchNetwork(BASE_CHAIN_ID);
-    }
-
+}
     try {
       // Mock buying for now - in production, this would interact with your smart contract
       const mockTxHash = `0x${Array.from({length: 64}, () => Math.floor(Math.random() * 16).toString(16)).join('')}`;
@@ -528,120 +318,18 @@ function const
         variant: "destructive",
       });
       throw error;
-    }
+}
   };
 
-  // Add sellNFTOnBase   /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
+  // Add sellNFTOnBase const
 
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-  /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-   /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-   /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-   /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-
- function
   const sellNFTOnBase = async (tokenId: string, price: string) => {
     if (!account) {
       throw new Error("Wallet not connected");
-    }
-
+}
     if (chainId !== BASE_CHAIN_ID) {
       await switchNetwork(BASE_CHAIN_ID);
-    }
-
+}
     try {
       // Mock selling for now - in production, this would interact with your smart contract
       const mockTxHash = `0x${Array.from({length: 64}, () => Math.floor(Math.random() * 16).toString(16)).join('')}`;
@@ -659,111 +347,11 @@ function const
         variant: "destructive",
       });
       throw error;
-    }
+}
   };
 
-  // Add getNFTListings   /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
+  // Add getNFTListings const
 
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-  /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-   /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-   /**
-   * Implements const functionality
-   * 
-   * @  /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-   /**
-   * Implements const functionality
-   * 
-   * @function const
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-
- function
   const getNFTListings = async () => {
     try {
       // Mock NFT listings for now - in production, this would fetch from your smart contract
@@ -782,7 +370,7 @@ function const
             { trait_type: "Type", value: Math.random() > 0.5 ? "Comic" : "Text" },
             { trait_type: "Rarity", value: ["Common", "Uncommon", "Rare", "Legendary"][Math.floor(Math.random() * 4)] }
           ]
-        }
+}
       }));
 
       return mockNFTs;
@@ -793,7 +381,7 @@ function const
         variant: "destructive",
       });
       throw error;
-    }
+}
   };
 
   // Check for existing connection on mount
@@ -804,13 +392,13 @@ function const
           const accounts = await window.ethereum.request({ method: "eth_accounts" });
           if (accounts && accounts.length > 0) {
             connectWallet();
-          }
+}
         } catch (error) {
           console.error("Error checking connection:", error);
-        }
-      }
+}
+}
     };
-    
+
     checkConnection();
   }, []);
 
@@ -825,7 +413,7 @@ function const
       } else if (accounts[0] !== account) {
         // User switched accounts
         connectWallet();
-      }
+}
     };
 
     const handleChainChanged = () => {
@@ -846,7 +434,7 @@ function const
         window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
         window.ethereum.removeListener("chainChanged", handleChainChanged);
         window.ethereum.removeListener("disconnect", handleDisconnect);
-      }
+}
     };
   }, [account]);
 
@@ -862,9 +450,9 @@ function const
         setConnected(true);
         setEnsName("groq.eth");
       }, 2000);
-      
+
       return () => clearTimeout(timer);
-    }
+}
   }, [connected]);
 
   const value = {
@@ -899,5 +487,5 @@ declare global {
       removeListener: (eventName: string, callback: (...args: any[]) => void) => void;
       selectedAddress?: string;
     };
-  }
+}
 }

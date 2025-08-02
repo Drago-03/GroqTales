@@ -1,25 +1,11 @@
 /**
- * @fileoverview Core application functionality
- * @module hooks.use-wallet.ts
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client"
 
 import { useState, useEffect } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 
-  /**
-   * Implements useWallet functionality
-   * 
-   * @function useWallet
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function useWallet() {
+  export function useWallet() {
   const [address, setAddress] = useState<string>("");
   const { toast } = useToast();
 
@@ -32,11 +18,11 @@ export function useWallet() {
           });
           if (accounts.length > 0) {
             setAddress(accounts[0]);
-          }
+}
         } catch (error) {
           console.error("Failed to check wallet connection:", error);
-        }
-      }
+}
+}
     };
 
     checkConnection();
@@ -55,17 +41,16 @@ export function useWallet() {
           description: "Your wallet has been disconnected",
           variant: "destructive",
         });
-      }
+}
     };
 
     if (window.ethereum) {
       window.ethereum.on("accountsChanged", handleAccountsChanged);
-    }
-
+}
     return () => {
       if (window.ethereum) {
         window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
-      }
+}
     };
   }, [toast]);
 
@@ -80,10 +65,10 @@ export function useWallet() {
       } catch (error) {
         console.error("Failed to connect wallet:", error);
         throw error;
-      }
+}
     } else {
       throw new Error("MetaMask not installed");
-    }
+}
   };
 
   return { address, connect };

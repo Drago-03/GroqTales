@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
@@ -26,28 +27,13 @@ import { getAdminActions } from "@/lib/admin-service";
 import { VerifiedBadge } from "@/components/verified-badge";
 import { useToast } from "@/components/ui/use-toast";
 
-export default   /**
-   * Implements DashboardPage functionality
-   * 
-   * @function DashboardPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function DashboardPage() {
+export default function DashboardPage() {
   return (
     <Suspense fallback={<div>Loading dashboard...</div>}>
       <DashboardContent />
     </Suspense>
   );
 }
-
-  /**
-   * Implements DashboardContent functionality
-   * 
-   * @function DashboardContent
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
 function DashboardContent() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -67,50 +53,46 @@ function DashboardContent() {
           localStorage.setItem('adminSession', 'true');
           localStorage.setItem('adminSessionToken', sessionToken);
           localStorage.setItem('adminSessionTimestamp', Date.now().toString());
-          
+
           // Set a direct cookie that doesn't require JavaScript
           if (typeof document !== 'undefined') {
             document.cookie = `adminSessionActive=true; path=/; max-age=${60 * 60 * 24}`; // 24 hours
-          }
-        }
-        
+}
+}
         // Authentication successful, stop loading
         setIsLoading(false);
         return;
       } catch (error) {
         console.error("Failed to store session token:", error);
         // Continue with other authentication methods
-      }
-    }
-    
+}
+}
     // Check existing authentication methods
     try {
       if (typeof window !== 'undefined') {
         const adminSession = localStorage.getItem('adminSession');
         const employeeId = localStorage.getItem('employeeId');
         const sessionTimestamp = localStorage.getItem('adminSessionTimestamp');
-        
+
         const now = Date.now();
         // Check if session has expired (24 hours)
         const isExpired = sessionTimestamp && (now - parseInt(sessionTimestamp)) > (24 * 60 * 60 * 1000);
-        
+
         if (!adminSession || !employeeId || isExpired) {
           // Try to check cookie as fallback
           const hasCookie = typeof document !== 'undefined' && document.cookie.split(';').some(c => c.trim().startsWith('adminSessionActive=true'));
-          
+
           if (!hasCookie) {
             console.log("No valid admin session found, redirecting to login");
             router.push('/admin/login');
             return;
-          }
-        }
-        
+}
+}
         // Session exists and is valid, refresh it
         localStorage.setItem('adminSessionTimestamp', now.toString());
         if (typeof document !== 'undefined') {
           document.cookie = "adminSessionActive=true; path=/; max-age=86400"; // 24 hours
-        }
-        
+}
         // Set up periodic session refresh without depending on React state
         const intervalId = window.setInterval(() => {
           try {
@@ -118,27 +100,27 @@ function DashboardContent() {
               localStorage.setItem('adminSessionTimestamp', Date.now().toString());
               if (typeof document !== 'undefined') {
                 document.cookie = "adminSessionActive=true; path=/; max-age=86400";
-              }
-            }
+}
+}
           } catch (error) {
             console.error("Error refreshing session:", error);
             // Not critical, will try again next interval
-          }
+}
         }, 15 * 60 * 1000); // 15 minutes
-        
+
         setIsLoading(false);
-        
+
         // Clear interval on component unmount
         return () => window.clearInterval(intervalId);
       } else {
         // SSR case - just set loading to false to avoid infinite loading
         setIsLoading(false);
-      }
+}
     } catch (error) {
       console.error("Error checking admin authentication:", error);
       setAuthError("Authentication error. Please try logging in again.");
       setIsLoading(false);
-    }
+}
   }, [router, sessionToken]);
 
   const handleLogout = () => {
@@ -149,53 +131,52 @@ function DashboardContent() {
         localStorage.removeItem('employeeId');
         localStorage.removeItem('adminSessionTimestamp');
         localStorage.removeItem('adminSessionToken');
-        
+
         // Expire all cookies
         if (typeof document !== 'undefined') {
           document.cookie = "adminSessionActive=; path=/; max-age=0";
-        }
-      }
-      
+}
+}
       // Show logout toast
       toast({
         title: "Logged out successfully",
         description: "You have been logged out of the admin dashboard"
       });
-      
+
       // Redirect after a short delay to ensure toast is shown
       setTimeout(() => {
         router.push('/admin/login');
       }, 800);
     } catch (error) {
       console.error("Error during logout:", error);
-      
+
       // Redirect anyway, even if clearing storage failed
       toast({
         variant: "destructive",
         title: "Logout issue",
         description: "There was a problem during logout, but you've been redirected to the login page."
       });
-      
+
       setTimeout(() => {
         router.push('/admin/login');
       }, 800);
-    }
+}
   };
 
   const handleCreatePost = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newPost.trim()) return;
-    
+
     setIsPostLoading(true);
     try {
       // In a real app, this would call an API endpoint
       await new Promise(resolve => setTimeout(resolve, 800)); // Simulate API call
-      
+
       toast({
         title: "Post created",
         description: "Your admin post has been published"
       });
-      
+
       setNewPost("");
     } catch (error) {
       toast({
@@ -205,13 +186,12 @@ function DashboardContent() {
       });
     } finally {
       setIsPostLoading(false);
-    }
+}
   };
 
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
-  }
-
+}
   if (authError) {
     return (
       <div className="min-h-screen flex items-center justify-center flex-col gap-4">
@@ -227,8 +207,7 @@ function DashboardContent() {
         </Button>
       </div>
     );
-  }
-
+}
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
       <div className="container mx-auto px-4 py-8">
@@ -390,7 +369,7 @@ function DashboardContent() {
                         <VerifiedBadge className="ml-1" />
                       </div>
                     </div>
-                    
+
                     <Textarea
                       value={newPost}
                       onChange={(e) => setNewPost(e.target.value)}
@@ -398,7 +377,7 @@ function DashboardContent() {
                       className="min-h-[120px]"
                       required
                     />
-                    
+
                     <div className="flex justify-end">
                       <Button type="submit" disabled={isPostLoading || !newPost.trim()}>
                         {isPostLoading ? (
@@ -417,7 +396,7 @@ function DashboardContent() {
                   </form>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader>
                   <CardTitle>Recent Admin Interactions</CardTitle>
@@ -437,7 +416,7 @@ function DashboardContent() {
                           {action.type === 'comment' && <MessageSquare className="w-5 h-5 text-blue-500" />}
                           {action.type === 'delete' && <Trash2 className="w-5 h-5 text-red-500" />}
                           {action.type === 'post' && <Send className="w-5 h-5 text-purple-500" />}
-                          
+
                           <div className="flex-1">
                             <div className="flex items-center">
                               <span className="font-medium">GroqTales</span>
@@ -446,7 +425,7 @@ function DashboardContent() {
                                 {action.timestamp.toLocaleString()}
                               </span>
                             </div>
-                            
+
                             <p className="text-sm mt-1">
                               {action.type === 'like' && `Liked story #${action.storyId}`}
                               {action.type === 'dislike' && `Disliked story #${action.storyId}`}
@@ -481,4 +460,4 @@ function DashboardContent() {
       </div>
     </div>
   );
-} 
+}

@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module app.admin.login.page.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -20,35 +15,19 @@ interface LoginForm {
   employeeId: string;
   password: string;
 }
-
 // Mock admin credentials - In production, this would be handled by a secure backend
 const MOCK_ADMIN = {
   employeeId: "GT001",
   password: "admin123"
 };
 
-export default   /**
-   * Implements LoginPage functionality
-   * 
-   * @function LoginPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function LoginPage() {
+export default function LoginPage() {
   return (
     <Suspense fallback={<div>Loading login page...</div>}>
       <LoginContent />
     </Suspense>
   );
 }
-
-  /**
-   * Implements LoginContent functionality
-   * 
-   * @function LoginContent
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
 function LoginContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<LoginForm>({
@@ -59,7 +38,7 @@ function LoginContent() {
   const router = useRouter();
   const { toast } = useToast();
   const searchParams = useSearchParams();
-  
+
   // Get the return URL from query parameters if available
   const returnUrl = searchParams.get('returnUrl') || '/admin/dashboard';
 
@@ -92,7 +71,7 @@ function LoginContent() {
         // Set up a robust admin session with a secure token
         const sessionToken = generateSessionToken('admin');
         setupAdminSession("admin", sessionToken);
-        
+
         toast({
           title: "Login Successful",
           description: "Welcome to the admin dashboard"
@@ -102,22 +81,20 @@ function LoginContent() {
         const redirectUrl = returnUrl.includes('?') 
           ? `${returnUrl}&sessionToken=${sessionToken}`
           : `${returnUrl}?sessionToken=${sessionToken}`;
-        
+
         router.push(redirectUrl);
         return;
-      }
-      
+}
       // Validate employee ID format for GT001 pattern
       if (formData.employeeId !== "admin" && !formData.employeeId.match(/^GT\d{3}$/)) {
         throw new Error("Invalid employee ID format. Should be GT followed by 3 digits (e.g., GT001) or 'admin'");
-      }
-
+}
       // In production, this would be an API call to validate credentials
       if (formData.employeeId === MOCK_ADMIN.employeeId && formData.password === MOCK_ADMIN.password) {
         // Set up a robust admin session with a secure token
         const sessionToken = generateSessionToken(formData.employeeId);
         setupAdminSession(formData.employeeId, sessionToken);
-        
+
         toast({
           title: "Login Successful",
           description: "Welcome to the admin dashboard"
@@ -127,11 +104,11 @@ function LoginContent() {
         const redirectUrl = returnUrl.includes('?') 
           ? `${returnUrl}&sessionToken=${sessionToken}`
           : `${returnUrl}?sessionToken=${sessionToken}`;
-        
+
         router.push(redirectUrl);
       } else {
         throw new Error("Invalid employee ID or password");
-      }
+}
     } catch (error: any) {
       setError(error.message);
       toast({
@@ -141,35 +118,35 @@ function LoginContent() {
       });
     } finally {
       setIsLoading(false);
-    }
+}
   };
 
   // Function to set up a robust admin session
   const setupAdminSession = (employeeId: string, sessionToken: string) => {
     try {
       // Try multiple storage methods for better resilience
-      
+
       // Primary storage - localStorage for persistent sessions
       localStorage.setItem('adminSession', 'true');
       localStorage.setItem('employeeId', employeeId);
       localStorage.setItem('adminSessionToken', sessionToken);
       localStorage.setItem('adminSessionTimestamp', Date.now().toString());
-      
+
       // Secondary storage - cookies for cross-tab consistency
       const expirationDate = new Date();
       expirationDate.setHours(expirationDate.getHours() + 24); // 24-hour expiration
       document.cookie = `adminSessionActive=true; path=/; expires=${expirationDate.toUTCString()}`;
       document.cookie = `adminSessionToken=${sessionToken}; path=/; expires=${expirationDate.toUTCString()}`;
-      
+
       // Tertiary - session storage as another option
       sessionStorage.setItem('adminSession', 'true');
-      
+
       console.log("Admin session established for:", employeeId);
     } catch (error) {
       // If any storage mechanism fails, log but continue
       // The URL token will still work as a fallback
       console.error("Error setting up storage for admin session:", error);
-    }
+}
   };
 
   return (
@@ -255,4 +232,4 @@ function LoginContent() {
       </Card>
     </div>
   );
-} 
+}

@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.ui.alert.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -24,7 +19,7 @@ const alertVariants = cva(
     defaultVariants: {
       variant: 'default',
     },
-  }
+}
 );
 
 const Alert = React.forwardRef<

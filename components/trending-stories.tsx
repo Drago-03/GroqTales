@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.trending-stories.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -28,7 +23,7 @@ const getMockTrendingStories = () => {
     "Echoes of Tomorrow",
     "The Silent Symphony"
   ];
-  
+
   return Array.from({ length: 6 }, (_, i) => ({
     id: `story-${i + 1}`,
     title: titles[i],
@@ -44,15 +39,7 @@ const getMockTrendingStories = () => {
   }));
 };
 
-  /**
-   * Implements TrendingStories functionality
-   * 
-   * @function TrendingStories
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function TrendingStories() {
+  export function TrendingStories() {
   const [stories, setStories] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -69,7 +56,7 @@ export function TrendingStories() {
     // Direct navigation with URL parameters
     if (typeof window !== 'undefined') {
       window.location.href = `/create/ai-story?source=trending&genre=${encodeURIComponent(genre)}&format=nft`;
-    }
+}
   };
 
   return (
@@ -139,4 +126,4 @@ export function TrendingStories() {
       </div>
     </section>
   );
-} 
+}

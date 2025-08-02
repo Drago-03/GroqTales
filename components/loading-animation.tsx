@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.loading-animation.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -13,16 +8,7 @@ import { useEffect, useState } from "react";
 interface LoadingAnimationProps {
   message?: string;
 }
-
-  /**
-   * Implements LoadingAnimation functionality
-   * 
-   * @function LoadingAnimation
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function LoadingAnimation({ message = "Loading..." }: LoadingAnimationProps) {
+  export function LoadingAnimation({ message = "Loading..." }: LoadingAnimationProps) {
   const [dots, setDots] = useState("");
 
   useEffect(() => {
@@ -47,4 +33,4 @@ export function LoadingAnimation({ message = "Loading..." }: LoadingAnimationPro
       </div>
     </div>
   );
-} 
+}

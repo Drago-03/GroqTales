@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module app.settings.page.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -16,17 +11,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-export default   /**
-   * Implements SettingsPage functionality
-   * 
-   * @function SettingsPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function SettingsPage() {
+export default function SettingsPage() {
   return (
     <div className="container mx-auto py-10">
       <h1 className="text-4xl font-bold mb-6">Settings</h1>
-      
+
       <Tabs defaultValue="profile" className="w-full">
         <TabsList className="grid w-full md:w-auto grid-cols-4 md:grid-cols-6 mb-8">
           <TabsTrigger value="profile">Profile</TabsTrigger>
@@ -36,7 +25,7 @@ export default   /**
           <TabsTrigger value="appearance">Appearance</TabsTrigger>
           <TabsTrigger value="privacy">Privacy</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="profile">
           <Card>
             <CardHeader>
@@ -54,7 +43,7 @@ export default   /**
                     Change Avatar
                   </Button>
                 </div>
-                
+
                 <div className="space-y-4 flex-1">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -66,12 +55,12 @@ export default   /**
                       <Input id="username" defaultValue="janedoe" />
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="bio">Bio</Label>
                     <Textarea id="bio" defaultValue="Digital storyteller and NFT enthusiast" />
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="website">Website</Label>
@@ -84,7 +73,7 @@ export default   /**
                   </div>
                 </div>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="preferred-genres">Preferred Genres</Label>
                 <Select defaultValue="sci-fi">
@@ -100,12 +89,12 @@ export default   /**
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <Button>Save Changes</Button>
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="account">
           <Card>
             <CardHeader>
@@ -118,25 +107,25 @@ export default   /**
                   <Label htmlFor="email">Email Address</Label>
                   <Input id="email" type="email" defaultValue="jane.doe@example.com" />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="current-password">Current Password</Label>
                   <Input id="current-password" type="password" />
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="new-password">New Password</Label>
                     <Input id="new-password" type="password" />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="confirm-password">Confirm New Password</Label>
                     <Input id="confirm-password" type="password" />
                   </div>
                 </div>
               </div>
-              
+
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
@@ -145,7 +134,7 @@ export default   /**
                   </div>
                   <Switch />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Login Notifications</h4>
@@ -154,12 +143,12 @@ export default   /**
                   <Switch defaultChecked />
                 </div>
               </div>
-              
+
               <Button>Update Account</Button>
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="notifications">
           <Card>
             <CardHeader>
@@ -175,7 +164,7 @@ export default   /**
                   </div>
                   <Switch defaultChecked />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">New Followers</h4>
@@ -183,7 +172,7 @@ export default   /**
                   </div>
                   <Switch defaultChecked />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Story Likes</h4>
@@ -191,7 +180,7 @@ export default   /**
                   </div>
                   <Switch defaultChecked />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">NFT Purchases</h4>
@@ -199,7 +188,7 @@ export default   /**
                   </div>
                   <Switch defaultChecked />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Platform Updates</h4>
@@ -207,7 +196,7 @@ export default   /**
                   </div>
                   <Switch />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Marketing Emails</h4>
@@ -219,7 +208,7 @@ export default   /**
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="wallet">
           <Card>
             <CardHeader>
@@ -235,7 +224,7 @@ export default   /**
                     <Button variant="outline" className="ml-2">Disconnect</Button>
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="network">Preferred Network</Label>
                   <Select defaultValue="ethereum">
@@ -250,7 +239,7 @@ export default   /**
                     </SelectContent>
                   </Select>
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Show NFT Badge on Stories</h4>
@@ -258,7 +247,7 @@ export default   /**
                   </div>
                   <Switch defaultChecked />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Auto-mint Popular Stories</h4>
@@ -267,12 +256,12 @@ export default   /**
                   <Switch />
                 </div>
               </div>
-              
+
               <Button>Save Wallet Settings</Button>
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="appearance">
           <Card>
             <CardHeader>
@@ -298,7 +287,7 @@ export default   /**
                     </Button>
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="font-size">Font Size</Label>
                   <Select defaultValue="medium">
@@ -313,7 +302,7 @@ export default   /**
                     </SelectContent>
                   </Select>
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Reduce Animations</h4>
@@ -322,12 +311,12 @@ export default   /**
                   <Switch />
                 </div>
               </div>
-              
+
               <Button>Save Appearance Settings</Button>
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="privacy">
           <Card>
             <CardHeader>
@@ -352,7 +341,7 @@ export default   /**
                     </SelectContent>
                   </Select>
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Story Comments</h4>
@@ -369,7 +358,7 @@ export default   /**
                     </SelectContent>
                   </Select>
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Data Collection</h4>
@@ -377,7 +366,7 @@ export default   /**
                   </div>
                   <Switch defaultChecked />
                 </div>
-                
+
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Personalized Recommendations</h4>
@@ -386,7 +375,7 @@ export default   /**
                   <Switch defaultChecked />
                 </div>
               </div>
-              
+
               <div className="pt-4 border-t">
                 <h3 className="font-medium mb-2">Data Management</h3>
                 <div className="space-y-2">
@@ -404,4 +393,4 @@ export default   /**
       </Tabs>
     </div>
   )
-} 
+}

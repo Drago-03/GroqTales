@@ -33,100 +33,12 @@ interface ComicNFT {
   previewImages: string[];
   isAnimated?: boolean;
 }
-
 interface ComicNFTDetailDialogProps {
   comic: ComicNFT;
   isOpen: boolean;
   onClose: () => void;
   onPurchase: () => void;
-}
-
-  /**
-   * Implements ComicNFTDetailDialog functionality
-   * 
-   * @function ComicNFTDetailDialog
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function ComicNFTDetailDialog({
-  comic,
-  isOpen,
-  onClose,
-  onPurchase,
-}: ComicNFTDetailDialogProps) {
-  const [activeTab, setActiveTab] = useState('details');
-  const [currentPreviewImage, setCurrentPreviewImage] = useState(0);
-  const { account } = useWeb3();
-  const { toast } = useToast();
-
-  const nextPreviewImage = () => {
-    setCurrentPreviewImage((prev) => 
-      prev === comic.previewImages.length - 1 ? 0 : prev + 1
-    );
-  };
-
-  const prevPreviewImage = () => {
-    setCurrentPreviewImage((prev) => 
-      prev === 0 ? comic.previewImages.length - 1 : prev - 1
-    );
-  };
-
-  // Prevent event propagation for buttons inside the preview section
-  const handlePreviewButtonClick = (e: React.MouseEvent, callback: () => void) => {
-    e.stopPropagation();
-    callback();
-  };
-
-  // Get rarity color
-  const getRarityColor = (rarity: ComicNFT["rarity"]) => {
-    switch (rarity) {
-      case "common": return "bg-gray-500 text-white";
-      case "uncommon": return "bg-green-500 text-white";
-      case "rare": return "bg-blue-500 text-white";
-      case "legendary": return "bg-amber-500 text-white";
-    }
-  };
-
-  const handlePurchase = () => {
-    if (!account) {
-      toast({
-        title: "Connect Wallet",
-        description: "Please connect your wallet to purchase this NFT",
-        variant: "destructive",
-      });
-      // Trigger wallet connection
-      document.getElementById("connect-wallet-button")?.click();
-      return;
-    }
-    
-    toast({
-      title: "Processing Payment",
-      description: "Completing your purchase transaction...",
-    });
-    
-    // Simulate transaction processing
-    setTimeout(() => {
-      toast({
-        title: "Purchase Successful!",
-        description: `You now own "${comic.title}"`,
-      });
-      
-      // Close current dialog
-      onClose();
-      
-      // Call the parent component's purchase handler
-      onPurchase();
-    }, 2000);
-  };
-
-  return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col p-0 top-0 translate-y-0 mt-4">
-        <DialogClose className="absolute right-4 top-4 z-10" />
-        
-        <div className="flex flex-col md:flex-row h-full overflow-auto">
-          {/* Left side: Comic Preview */}
+}}
           <div className="md:w-1/2 bg-black relative">
             <AnimatePresence mode="wait">
               <motion.div
@@ -144,7 +56,7 @@ export function ComicNFTDetailDialog({
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
-                
+
                 {/* Preview navigation */}
                 {comic.previewImages.length > 1 && (
                   <>
@@ -174,13 +86,13 @@ export function ComicNFTDetailDialog({
                     </div>
                   </>
                 )}
-                
+
                 {/* Rarity and animated badges */}
                 <div className="absolute top-2 right-2 flex gap-2">
                   <Badge className={`capitalize ${getRarityColor(comic.rarity)}`}>
                     {comic.rarity}
                   </Badge>
-                  
+
                   {comic.isAnimated && (
                     <Badge className="bg-purple-600 text-white flex items-center gap-1">
                       <Sparkles className="h-3 w-3" />
@@ -188,14 +100,14 @@ export function ComicNFTDetailDialog({
                     </Badge>
                   )}
                 </div>
-                
+
                 <div className="absolute bottom-2 left-2 bg-black/80 text-white px-3 py-1 rounded-full text-sm">
                   Page {currentPreviewImage + 1} of {Math.max(comic.previewImages.length, 1)}
                 </div>
               </motion.div>
             </AnimatePresence>
           </div>
-          
+
           {/* Right side: Comic Details */}
           <div className="md:w-1/2 flex flex-col overflow-hidden">
             <DialogHeader className="px-6 pt-6 pb-0">
@@ -210,11 +122,11 @@ export function ComicNFTDetailDialog({
                     by {comic.author}
                   </DialogDescription>
                 </div>
-                
+
                 <Badge variant="outline" className="ml-2">{comic.genre}</Badge>
               </div>
             </DialogHeader>
-            
+
             <Tabs defaultValue="details" className="flex-1 overflow-hidden flex flex-col" onValueChange={setActiveTab}>
               <div className="px-6 border-b">
                 <TabsList className="mt-4">
@@ -223,7 +135,7 @@ export function ComicNFTDetailDialog({
                   <TabsTrigger value="ownership">Ownership</TabsTrigger>
                 </TabsList>
               </div>
-              
+
               <div className="flex-1 overflow-y-auto px-6 py-4">
                 <TabsContent value="details" className="m-0 h-full">
                   <div className="space-y-4">
@@ -231,7 +143,7 @@ export function ComicNFTDetailDialog({
                       <h3 className="text-lg font-semibold mb-2">Description</h3>
                       <p className="text-muted-foreground">{comic.description}</p>
                     </div>
-                    
+
                     <div className="grid grid-cols-2 gap-4">
                       <div className="border rounded-lg p-3">
                         <div className="text-sm text-muted-foreground">Pages</div>
@@ -256,7 +168,7 @@ export function ComicNFTDetailDialog({
                         </div>
                       </div>
                     </div>
-                    
+
                     <div>
                       <h3 className="text-lg font-semibold mb-2">Rarity</h3>
                       <Badge className={`capitalize ${getRarityColor(comic.rarity)}`}>
@@ -271,7 +183,7 @@ export function ComicNFTDetailDialog({
                     </div>
                   </div>
                 </TabsContent>
-                
+
                 <TabsContent value="preview" className="m-0 h-full">
                   <div className="text-center space-y-4">
                     <BookOpen className="h-12 w-12 mx-auto text-muted-foreground" />
@@ -297,7 +209,7 @@ export function ComicNFTDetailDialog({
                     )}
                   </div>
                 </TabsContent>
-                
+
                 <TabsContent value="ownership" className="m-0 h-full">
                   <div className="space-y-4">
                     <h3 className="text-lg font-semibold">Ownership Benefits</h3>
@@ -343,7 +255,7 @@ export function ComicNFTDetailDialog({
                   </div>
                 </TabsContent>
               </div>
-              
+
               <div className="p-6 border-t mt-auto">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
@@ -361,7 +273,7 @@ export function ComicNFTDetailDialog({
                     </Button>
                   </div>
                 </div>
-                
+
                 <Button
                   onClick={handlePurchase}
                   className="w-full bg-amber-600 hover:bg-amber-700 text-white"
@@ -377,4 +289,4 @@ export function ComicNFTDetailDialog({
       </DialogContent>
     </Dialog>
   );
-} 
+}

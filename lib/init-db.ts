@@ -1,25 +1,11 @@
 /**
- * @fileoverview Core application functionality
- * @module lib.init-db.ts
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 import { getDb } from './db';
-
-  /**
-   * Implements initializeDatabase functionality
-   * 
-   * @function initializeDatabase
-   * @returns {void|Promise<void>} Function return value
-   */
-
 
 async function initializeDatabase() {
   try {
     const db = await getDb();
-    
+
     // Create collections
     await db.createCollection('users');
     await db.createCollection('stories');
@@ -54,12 +40,10 @@ async function initializeDatabase() {
   } catch (error) {
     console.error('Error initializing database:', error);
     throw error;
-  }
 }
-
+}
 // Only run initialization in development
 if (process.env.NODE_ENV === 'development') {
   initializeDatabase().catch(console.error);
 }
-
 export default initializeDatabase; 

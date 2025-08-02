@@ -7,8 +7,7 @@ import { useAgent } from "./hooks/useAgent";
 /**
  * Home page for the AgentKit Quickstart
  *
- * @returns {React.ReactNode} The home page
- */
+
 export default function Home() {
   const [input, setInput] = useState("");
   const { messages, sendMessage, isThinking } = useAgent();

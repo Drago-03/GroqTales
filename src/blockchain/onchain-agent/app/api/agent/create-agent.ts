@@ -18,34 +18,19 @@ import { prepareAgentkitAndWalletProvider } from './prepare-agentkit';
  * 2. Instantiate your Agent:
  *    - Pass the LLM, tools, and memory into `createReactAgent()`
  *    - Configure agent-specific parameters
- */
 
 // The agent
-let agent: any = null; // Temporary placeholder to bypass build error
+let agent: any = null; // Temporary placeholder to bypass build error getOrInitializeAgent
 
-/**
- * Initializes and returns an instance of the AI agent.
- * If an agent instance already exists, it returns the existing one.
  *
- * @  /**
-   * Retrieves orinitializeagent data
-   * 
-   * @function getOrInitializeAgent
-   * @returns {void|Promise<void>} Function return value
-   */
-function getOrInitializeAgent
- * @returns {Promise<any>} The initialized AI agent.
+
  *
- * @description Handles agent setup
- *
- * @throws {Error} If the agent initialization fails.
- */
+
 export async function createAgent(): Promise<any> {
   // If agent has already been initialized, return it
   if (agent) {
     return agent;
-  }
-
+}
   try {
     const { agentkit, walletProvider } = await prepareAgentkitAndWalletProvider();
 
@@ -67,5 +52,5 @@ export async function createAgent(): Promise<any> {
   } catch (error) {
     console.error('Error initializing agent:', error);
     throw new Error('Failed to initialize agent');
-  }
+}
 }

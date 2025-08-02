@@ -7,8 +7,7 @@ import { ethers } from 'ethers';
 const MINTER_PRIVATE_KEY = process.env.MINTER_PRIVATE_KEY || '0x0000000000000000000000000000000000000000000000000000000000000000';
 
 /**
- * @api {post} /api/monad/mint Mint a story as an NFT on Monad
- */
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -18,45 +17,40 @@ export async function POST(request: NextRequest) {
       case 'mint': {
         if (!metadata || !ownerAddress) {
           return NextResponse.json({ error: 'Missing required parameters' }, { status: 400 });
-        }
-
+}
         // Wallet that will sign the transaction - server side
         const provider = new ethers.JsonRpcProvider(process.env.MONAD_RPC_URL);
         const signer = new ethers.Wallet(MINTER_PRIVATE_KEY, provider);
-        
+
         // Mint the NFT
         const result = await mintStoryNFT(
           metadata as StoryMetadata,
           ownerAddress,
           signer
         );
-        
+
         return NextResponse.json({ 
           success: true, 
           nft: result 
         });
-      }
-      
+}
       case 'fetch': {
         if (!tokenId) {
           return NextResponse.json({ error: 'Token ID is required' }, { status: 400 });
-        }
-        
+}
         const nft = await getStoryNFT(tokenId);
-        
+
         if (!nft) {
           return NextResponse.json({ error: 'NFT not found' }, { status: 404 });
-        }
-        
+}
         return NextResponse.json({ 
           success: true, 
           nft 
         });
-      }
-      
+}
       default:
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
-    }
+}
   } catch (error: any) {
     console.error('Monad API error:', error);
     return NextResponse.json(
@@ -66,12 +60,10 @@ export async function POST(request: NextRequest) {
       },
       { status: 500 }
     );
-  }
 }
-
+}
 /**
- * @api {get} /api/monad/info Get Monad network information
- */
+
 export async function GET() {
   try {
     return NextResponse.json({
@@ -80,7 +72,7 @@ export async function GET() {
         chainId: 9090,
         rpcUrl: "https://rpc.testnet.monad.xyz/json-rpc",
         currency: "MONAD"
-      }
+}
     });
   } catch (error: any) {
     console.error('Error fetching Monad info:', error);
@@ -88,5 +80,5 @@ export async function GET() {
       { error: error.message || 'An error occurred while fetching Monad info' },
       { status: 500 }
     );
-  }
-} 
+}
+}

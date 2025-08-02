@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module app.terms.page.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -33,18 +28,12 @@ const FloatingDoodles = () => (
   </div>
 );
 
-export default   /**
-   * Implements TermsPage functionality
-   * 
-   * @function TermsPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function TermsPage() {
+export default function TermsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
       <FloatingDoodles />
       <FloatingGithub />
-      
+
       <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent mb-4 text-center">
@@ -196,4 +185,4 @@ export default   /**
       </div>
     </div>
   );
-} 
+}

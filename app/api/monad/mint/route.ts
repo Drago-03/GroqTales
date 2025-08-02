@@ -1,10 +1,4 @@
 /**
- * @fileoverview Core application functionality
- * @module app.api.monad.mint.route.ts
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 import { NextResponse } from "next/server";
 import { JsonRpcProvider, Wallet, Contract } from "ethers";
@@ -24,78 +18,20 @@ const IPFS_FALLBACK_GATEWAY = 'https://ipfs.io';
 const IPNS_PUBLISHING_KEY = 'self - k51qzi5uqu5dhindgjwye0f28c6zb6m06gl799ihzivn50kqkl8w0bomgz6rxc';
 
 // Function to dynamically initialize IPFS client only when needed
-  /**
-   * Retrieves ipfsclient data
-   * 
-   * @function getIpfsClient
-   * @returns {void|Promise<void>} Function return value
-   */
-
-async function getIpfsClient() {
-  try {
-    const { create } = await import('ipfs-http-client');
-    return create({ host: '127.0.0.1', port: 5001, protocol: 'http' });
-  } catch (error) {
-    console.error('Failed to load IPFS client:', error);
-    throw new Error('IPFS client initialization failed');
-  }
-}
-
-// ABI for StoryNFT contract - minimal subset needed for minting
-const CONTRACT_ABI = [
-  {
-    "inputs": [
-      { "internalType": "string", "name": "storyHash", "type": "string" },
-      { "internalType": "string", "name": "metadataURI", "type": "string" }
-    ],
-    "name": "mintStory",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "mintPrice",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      { "indexed": true, "internalType": "uint256", "name": "tokenId", "type": "uint256" },
-      { "indexed": true, "internalType": "address", "name": "owner", "type": "address" },
-      { "indexed": false, "internalType": "string", "name": "storyHash", "type": "string" },
-      { "indexed": false, "internalType": "string", "name": "metadataURI", "type": "string" }
-    ],
-    "name": "StoryMinted",
-    "type": "event"
-  }
-];
-
-  /**
-   * Implements POST functionality
-   * 
-   * @function POST
-   * @returns {void|Promise<void>} Function return value
-   */
-
 
 export async function POST(req: Request) {
   try {
     const { storyContent, metadata, userAddress } = await req.json();
 
     console.log('Minting request received:', { userAddress });
-    
+
     if (!storyContent || !metadata) {
       return NextResponse.json({ error: "Missing required parameters: storyContent and metadata are required" }, { status: 400 });
-    }
-
+}
     if (!PRIVATE_KEY || !CONTRACT_ADDRESS || ETHEREUM_RPC_URL.includes('example.com')) {
       console.error('Environment variables not properly configured for Ethereum connection');
       return NextResponse.json({ error: "Server configuration error. Please contact support." }, { status: 503 });
-    }
-
+}
     // Dynamically initialize IPFS client
     let ipfs;
     try {
@@ -103,8 +39,7 @@ export async function POST(req: Request) {
     } catch (error) {
       console.error('IPFS client initialization failed:', error);
       return NextResponse.json({ error: "Failed to initialize IPFS client", success: false }, { status: 500 });
-    }
-
+}
     // Upload story content to IPFS
     console.log('Uploading story content to IPFS...');
     const storyResult = await ipfs.add(storyContent);
@@ -144,7 +79,7 @@ export async function POST(req: Request) {
     console.log('Transaction sent, waiting for confirmation:', tx.hash);
     const receipt = await tx.wait();
     console.log('Transaction confirmed:', receipt.transactionHash);
-    
+
     // Extract tokenId from event logs
     const tokenIdEvent = receipt.logs?.find((e: any) => e.event === "StoryMinted");
     const tokenId = tokenIdEvent?.args?.tokenId;
@@ -156,8 +91,7 @@ export async function POST(req: Request) {
         error: "Minting succeeded but token ID could not be confirmed", 
         transactionHash: receipt.transactionHash 
       }, { status: 200 });
-    }
-
+}
     console.log('NFT successfully minted with tokenId:', tokenId.toString());
     return NextResponse.json({
       success: true,
@@ -173,5 +107,5 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error("Error minting NFT on Ethereum Mainnet or uploading to IPFS:", error);
     return NextResponse.json({ error: error.message || "Failed to mint NFT or upload to IPFS", success: false }, { status: 500 });
-  }
-} 
+}
+}

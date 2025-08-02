@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -14,7 +15,6 @@ interface StoryAuthor {
   avatar?: string;
   username?: string;
 }
-
 interface Story {
   id: string;
   title: string;
@@ -32,73 +32,12 @@ interface Story {
   isTop10?: boolean;
   genre?: string;
 }
-
 interface StoryCardProps {
   story: Story;
   viewMode?: "grid" | "list";
   hideLink?: boolean;
   showCreateButton?: boolean;
-}
-
-  /**
-   * Implements StoryCard functionality
-   * 
-   * @function StoryCard
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function StoryCard({ story, viewMode = "grid", hideLink = false, showCreateButton = false }: StoryCardProps) {
-  const router = useRouter();
-  const isGrid = viewMode === "grid";
-  
-  // Handle different author data structures
-  const authorName = typeof story.author === 'string' 
-    ? story.author 
-    : story.author?.name;
-  
-  const authorAvatar = typeof story.author === 'string'
-    ? story.authorAvatar || '/avatars/default.png'
-    : story.author?.avatar || '/avatars/default.png';
-    
-  const imageUrl = story.coverImage || story.image || '/covers/default.jpg';
-  const storyContent = story.description || story.content || '';
-  
-  const handleCreateSimilar = () => {
-    // Direct navigation with URL parameters
-    const genre = story.genre || 'fantasy';
-    if (typeof window !== 'undefined') {
-      window.location.href = `/create/ai-story?source=card&genre=${encodeURIComponent(genre)}&format=nft`;
-    }
-  };
-  
-  const handleViewNFT = () => {
-    // Navigate to story detail page
-    router.push(`/stories/${story.id}`);
-  };
-  
-  // Create the card content
-  const cardContent = (
-    <>
-      <div className={isGrid ? "relative pt-[60%]" : "relative w-48 min-w-48"}>
-        <img
-          src={imageUrl}
-          alt={story.title}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-        />
-        {story.price && (
-          <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-xs font-medium flex items-center">
-            <Sparkles className="h-3 w-3 mr-1 text-yellow-400" />
-            {story.price}
-          </div>
-        )}
-        {story.isTop10 && (
-          <div className="absolute top-2 left-2 bg-gradient-to-r from-purple-600 to-blue-500 text-white px-2 py-1 rounded-full text-xs font-bold">
-            Top 10
-          </div>
-        )}
-        
-        {/* View NFT Button */}
+}}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black/40">
           <motion.button 
             whileHover={{ scale: 1.05 }}
@@ -165,7 +104,7 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
       </div>
     </>
   );
-  
+
   return (
     <motion.div
       whileHover={{ y: -5, scale: 1.02, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
@@ -185,6 +124,5 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
     </motion.div>
   );
 }
-
 // Default export for backward compatibility
 export default StoryCard;

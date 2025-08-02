@@ -1,24 +1,10 @@
 /**
- * @fileoverview Core application functionality
- * @module hooks.use-web3-auth.ts
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 import { useAccount, useConnect, useDisconnect, useSignMessage } from 'wagmi';
 import { SiweMessage } from 'siwe';
 import { useState } from 'react';
 
-  /**
-   * Implements useWeb3Auth functionality
-   * 
-   * @function useWeb3Auth
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function useWeb3Auth() {
+  export function useWeb3Auth() {
   const { address, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
@@ -28,7 +14,7 @@ export function useWeb3Auth() {
   const signIn = async () => {
     try {
       setIsSigningIn(true);
-      
+
       if (!address) throw new Error('No wallet connected');
 
       const message = new SiweMessage({
@@ -62,7 +48,7 @@ export function useWeb3Auth() {
       throw error;
     } finally {
       setIsSigningIn(false);
-    }
+}
   };
 
   const generateNonce = async () => {

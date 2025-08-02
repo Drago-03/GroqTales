@@ -10,14 +10,12 @@ interface AnalysisOptions {
   model?: string;
   apiKey?: string;
 }
-
 interface AnalysisResult {
   success: boolean;
   analysis: any;
   format: 'json' | 'text';
   analysisType: string;
 }
-
 interface UseStoryAnalysisResult {
   analyzeStory: (options: AnalysisOptions) => Promise<AnalysisResult | null>;
   result: AnalysisResult | null;
@@ -25,34 +23,24 @@ interface UseStoryAnalysisResult {
   error: string | null;
   clearResult: () => void;
 }
-
-  /**
-   * Implements useStoryAnalysis functionality
-   * 
-   * @function useStoryAnalysis
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function useStoryAnalysis(): UseStoryAnalysisResult {
+  export function useStoryAnalysis(): UseStoryAnalysisResult {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   /**
    * Analyze a story using Groq API
-   */
+
   const analyzeStory = async (options: AnalysisOptions): Promise<AnalysisResult | null> => {
     const { content, title, genre, analysisType = 'standard', model, apiKey } = options;
-    
+
     if (!content) {
       setError("Story content is required");
       return null;
-    }
-    
+}
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const response = await fetch("/api/story-analysis", {
         method: "POST",
@@ -68,13 +56,12 @@ export function useStoryAnalysis(): UseStoryAnalysisResult {
           apiKey,
         }),
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.error || "Failed to analyze story");
-      }
-      
+}
       setResult(data);
       return data;
     } catch (err: any) {
@@ -82,12 +69,12 @@ export function useStoryAnalysis(): UseStoryAnalysisResult {
       return null;
     } finally {
       setIsLoading(false);
-    }
+}
   };
 
   /**
    * Clear the analysis result
-   */
+
   const clearResult = () => {
     setResult(null);
     setError(null);
@@ -100,4 +87,4 @@ export function useStoryAnalysis(): UseStoryAnalysisResult {
     error,
     clearResult,
   };
-} 
+}

@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module app.components.page-header.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 import { BookOpen, ShoppingCart, Users, Bookmark, Library, Settings, HelpCircle, Newspaper, BarChart3, Heart } from "lucide-react";
 
@@ -13,16 +8,7 @@ interface PageHeaderProps {
   description?: string;
   icon?: "book" | "shopping-cart" | "users" | "bookmark" | "library" | "settings" | "help" | "newspaper" | "chart" | "heart" | null;
 }
-
-  /**
-   * Implements PageHeader functionality
-   * 
-   * @function PageHeader
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function PageHeader({ title, description, icon }: PageHeaderProps) {
+  export function PageHeader({ title, description, icon }: PageHeaderProps) {
   const getIcon = () => {
     switch (icon) {
       case "book":
@@ -47,7 +33,7 @@ export function PageHeader({ title, description, icon }: PageHeaderProps) {
         return <Heart className="h-8 w-8 mr-4 text-primary/80" />;
       default:
         return null;
-    }
+}
   };
 
   return (
@@ -63,4 +49,4 @@ export function PageHeader({ title, description, icon }: PageHeaderProps) {
       )}
     </div>
   );
-} 
+}

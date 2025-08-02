@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.story-recommendations.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -27,16 +22,7 @@ interface StoryRecommendationsProps {
   apiKey?: string;
   onStoryClick?: (story: any) => void;
 }
-
-  /**
-   * Implements StoryRecommendations functionality
-   * 
-   * @function StoryRecommendations
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function StoryRecommendations({
+  export function StoryRecommendations({
   storyId,
   content,
   keywords,
@@ -55,7 +41,7 @@ export function StoryRecommendations({
     if (storyId && !isInitialized) {
       loadRecommendations();
       setIsInitialized(true);
-    }
+}
   }, [storyId, isInitialized]);
 
   const loadRecommendations = async () => {
@@ -74,7 +60,7 @@ export function StoryRecommendations({
         description: err.message || "Failed to load recommendations",
         variant: "destructive",
       });
-    }
+}
   };
 
   const handleRefresh = async () => {
@@ -93,8 +79,7 @@ export function StoryRecommendations({
       author = story.author.name || story.author.username;
     } else {
       author = story.author || 'Unknown';
-    }
-
+}
     return {
       id: story._id.toString(),
       title: story.title,
@@ -183,4 +168,4 @@ export function StoryRecommendations({
       )}
     </Card>
   );
-} 
+}

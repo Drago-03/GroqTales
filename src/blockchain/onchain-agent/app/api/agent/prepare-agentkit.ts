@@ -39,7 +39,6 @@ import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
  * Join us in shaping AgentKit! Check out the contribution guide:
  * - https://github.com/coinbase/agentkit/blob/main/CONTRIBUTING.md
  * - https://discord.gg/CDP
- */
 
 // Configure a file to persist the agent's Smart Wallet + Private Key data
 const WALLET_DATA_FILE = "wallet_data.txt";
@@ -52,52 +51,15 @@ type WalletData = {
 /**
  * Prepares the AgentKit and WalletProvider.
  *
- * @  /**
-   * Implements prepareAgentkitAndWalletProvider functionality
-   * 
-   * @  /**
-   * Implements prepareAgentkitAndWalletProvider functionality
-   * 
-   * @function prepareAgentkitAndWalletProvider
-   * @returns {void|Promise<void>} Function return value
-   */
-function prepareAgentkitAndWalletProvider
-   * @returns {void|Promise<void>} Function return value
-   */
-  /**
-   * Implements prepareAgentkitAndWalletProvider functionality
-   * 
-   * @function prepareAgentkitAndWalletProvider
-   * @returns {void|Promise<void>} Function return value
-   */
+ * @ prepareAgentkitAndWalletProvider
 
-function prepareAgentkitAndWalletProvider
- * @returns {Promise<{ agentkit: AgentKit, walletProvider: WalletProvider }>} The initialized AI agent.
+   */ prepareAgentkitAndWalletProvider
+
  *
- * @description Handles agent setup
+
  *
- * @throws {Error} If the agent initialization fails.
- */
-  /**
-   * Implements prepareAgentkitAndWalletProvider functionality
-   * 
-   * @  /**
-   * Implements prepareAgentkitAndWalletProvider functionality
-   * 
-   * @function prepareAgentkitAndWalletProvider
-   * @returns {void|Promise<void>} Function return value
-   */
-function prepareAgentkitAndWalletProvider
-   * @returns {void|Promise<void>} Function return value
-   */
 
-  /**
-   * Implements prepareAgentkitAndWalletProvider functionality
-   * 
-   * @function prepareAgentkitAndWalletProvider
-   * @returns {void|Promise<void>} Function return value
-   */
-
+ */ prepareAgentkitAndWalletProvider
 
 export async function prepareAgentkitAndWalletProvider(): Promise<{
   agentkit: AgentKit;
@@ -115,18 +77,16 @@ export async function prepareAgentkitAndWalletProvider(): Promise<{
       } catch (error) {
         console.error("Error reading wallet data:", error);
         // Continue without wallet data
-      }
-    }
-
+}
+}
     if (!privateKey) {
       if (walletData?.smartWalletAddress) {
         throw new Error(
           `Smart wallet found but no private key provided. Either provide the private key, or delete ${WALLET_DATA_FILE} and try again.`,
         );
-      }
+}
       privateKey = (process.env.PRIVATE_KEY || generatePrivateKey()) as Hex;
-    }
-
+}
     const signer = privateKeyToAccount(privateKey);
 
     // Initialize WalletProvider: https://docs.cdp.coinbase.com/agentkit/docs/wallet-management
@@ -166,5 +126,5 @@ export async function prepareAgentkitAndWalletProvider(): Promise<{
   } catch (error) {
     console.error("Error initializing agent:", error);
     throw new Error("Failed to initialize agent");
-  }
+}
 }

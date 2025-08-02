@@ -1,6 +1,5 @@
 /**
  * Mock data generation for stories and NFTs
- */
 
 // Generate mock NFT stories data
 export const generateNftEntries = (count: number) => {
@@ -8,14 +7,14 @@ export const generateNftEntries = (count: number) => {
     "fantasy", "sci-fi", "horror", "romance", 
     "adventure", "historical", "educational", "magical-realism"
   ];
-  
+
   const authors = [
     { name: "Alex Johnson", username: "@alexwrites", avatar: "/avatars/avatar-1.png" },
     { name: "Sara Chen", username: "@sarastories", avatar: "/avatars/avatar-2.png" },
     { name: "Marcus Lee", username: "@marcusworld", avatar: "/avatars/avatar-3.png" },
     { name: "Emma Davis", username: "@emmacraft", avatar: "/avatars/avatar-4.png" }
   ];
-  
+
   return Array.from({ length: count }, (_, i) => ({
     id: `story-${i + 1}`,
     title: `Story Title ${i + 1}`,
@@ -75,48 +74,39 @@ export const topNftStories = [
     description: "A family moves into a historic home only to discover the walls hold secrets of past residents who never truly left.",
     isTop10: true,
     sales: 76
-  }
+}
 ];
 
 /**
  * Fetches a story by its ID
- * @param id - The ID of the story to fetch
- * @param limit - Optional: Number of related stories to return if relatedStories is true
- * @param relatedStories - Optional: If true, returns related stories instead of a single story
- * @returns A single story object or an array of related stories
- */
+
 export function fetchStoryById(id: string, limit?: number, relatedStories?: boolean): any {
   // Combine top stories with generated stories
   const allStories = [...topNftStories, ...generateNftEntries(90)];
-  
+
   // If we're looking for related stories
   if (relatedStories) {
     const story = allStories.find(story => story.id === id);
     if (!story) return [];
-    
+
     // Find stories of the same genre, excluding the current story
     return allStories
       .filter(s => s.genre === story.genre && s.id !== id)
       .slice(0, limit || 4);
-  }
-  
+}
   // Otherwise return the specific story
   return allStories.find(story => story.id === id);
 }
-
 /**
  * Fetches popular stories by genre
- * @param genre - The genre slug to filter by
- * @param limit - Maximum number of stories to return
- * @returns An array of story objects
- */
+
 export function fetchPopularStoriesByGenre(genre: string, limit: number = 8): any[] {
   // Combine top stories with generated stories
   const allStories = [...topNftStories, ...generateNftEntries(90)];
-  
+
   // Filter by genre and sort by popularity (likes)
   return allStories
     .filter(story => story.genre === genre)
     .sort((a, b) => b.likes - a.likes)
     .slice(0, limit);
-} 
+}

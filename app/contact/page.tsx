@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import { useState } from "react";
@@ -88,13 +89,7 @@ const ContactInfo = ({ icon: Icon, title, content, link }: any) => (
   </div>
 );
 
-export default   /**
-   * Implements ContactPage functionality
-   * 
-   * @function ContactPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function ContactPage() {
+export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -108,14 +103,6 @@ export default   /**
     },
   });
 
-    /**
-   * Implements onSubmit functionality
-   * 
-   * @function onSubmit
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     // Simulate API call
@@ -123,13 +110,12 @@ export default   /**
     setIsSubmitting(false);
     setIsSubmitted(true);
     form.reset();
-  }
-
+}
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
       <FloatingDoodles />
       <FloatingGithub />
-      
+
       <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
@@ -297,4 +283,4 @@ export default   /**
       </div>
     </div>
   );
-} 
+}

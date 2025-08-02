@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.connect-wallet-button.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -15,15 +10,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useState, useEffect } from "react";
 
-  /**
-   * Implements ConnectWalletButton functionality
-   * 
-   * @function ConnectWalletButton
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function ConnectWalletButton() {
+  export function ConnectWalletButton() {
   const { address, isConnected, isSigningIn, connect, signIn, connectors } = useWeb3Auth();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
@@ -34,29 +21,26 @@ export function ConnectWalletButton() {
     if (connectors.length > 0) {
       console.log("Available connectors:", connectors.map(c => ({ id: c.id, name: c.name })));
       const detectedConnectors: Record<string, { index: number, name: string, id: string }> = {};
-      
+
       // Look for MetaMask or injected providers
       const metaMaskIdx = connectors.findIndex(c => c.id === 'injected' || c.name.toLowerCase().includes('metamask'));
       if (metaMaskIdx >= 0) {
         detectedConnectors['metaMask'] = { index: metaMaskIdx, name: connectors[metaMaskIdx].name, id: connectors[metaMaskIdx].id };
-      }
-
+}
       // Look for WalletConnect
       const walletConnectIdx = connectors.findIndex(c => c.id === 'walletConnect' || c.name.toLowerCase().includes('walletconnect'));
       if (walletConnectIdx >= 0) {
         detectedConnectors['walletConnect'] = { index: walletConnectIdx, name: connectors[walletConnectIdx].name, id: connectors[walletConnectIdx].id };
-      }
-
+}
       // Look for Ledger
       const ledgerIdx = connectors.findIndex(c => c.id === 'ledger' || c.name.toLowerCase().includes('ledger'));
       if (ledgerIdx >= 0) {
         detectedConnectors['ledger'] = { index: ledgerIdx, name: connectors[ledgerIdx].name, id: connectors[ledgerIdx].id };
-      }
-
+}
       setAvailableConnectors(detectedConnectors);
     } else {
       console.log("No connectors available");
-    }
+}
   }, [connectors]);
 
   const handleConnect = async (connectorKey: string) => {
@@ -64,7 +48,7 @@ export function ConnectWalletButton() {
       if (!isConnected) {
         if (connectors.length === 0 || !availableConnectors[connectorKey]) {
           throw new Error(`The ${connectorKey === 'metaMask' ? 'MetaMask' : connectorKey === 'walletConnect' ? 'WalletConnect' : 'Ledger'} connector is not available. Please ensure the provider is installed or enabled.`);
-        }
+}
         const { index, name } = availableConnectors[connectorKey];
         console.log(`Attempting connection with ${name} (index: ${index})`);
         const connector = connectors[index];
@@ -81,7 +65,7 @@ export function ConnectWalletButton() {
           description: "You can now create and interact with stories",
         });
         setOpen(false);
-      }
+}
     } catch (error: any) {
       console.error(`Connection failed for ${connectorKey}:`, error);
       toast({
@@ -89,7 +73,7 @@ export function ConnectWalletButton() {
         title: "Connection failed",
         description: error.message || `Failed to connect with ${connectorKey === 'metaMask' ? 'MetaMask' : connectorKey === 'walletConnect' ? 'WalletConnect' : 'Ledger'}. Please try again.`,
       });
-    }
+}
   };
 
   return (

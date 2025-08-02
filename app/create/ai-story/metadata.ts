@@ -1,10 +1,4 @@
 /**
- * @fileoverview Core application functionality
- * @module app.create.ai-story.metadata.ts
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 import { Metadata } from "next";
 
@@ -21,12 +15,12 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: "GroqTales AI Story Generator"
-      }
+}
     ]
   },
   twitter: {
     card: "summary_large_image",
     title: "AI Story Generator | GroqTales",
     description: "Create AI-powered stories and turn them into blockchain NFTs on GroqTales",
-  }
+}
 }; 

@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.admin-login-modal.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -28,16 +23,7 @@ interface AdminLoginModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
-
-  /**
-   * Implements AdminLoginModal functionality
-   * 
-   * @function AdminLoginModal
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
+  export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -53,10 +39,10 @@ export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
       const path = window.location.pathname;
       if (path.startsWith('/admin/') && path !== '/admin/login') {
         setRedirectPath(path);
-      }
-    }
+}
+}
   }, [open]);
-  
+
   // Generate a secure token for session management
   const generateSessionToken = (userId: string): string => {
     // In a real app, this would use a more secure method like JWT
@@ -78,20 +64,20 @@ export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
           (username === "GT001" && password === "admin123")) {
         // Create a secure session token
         const sessionToken = generateSessionToken(username);
-        
+
         // Set up a robust admin session
         setupAdminSession(username, sessionToken);
-        
+
         toast({
           title: "Login successful",
           description: "Redirecting to admin dashboard..."
         });
-        
+
         // Build redirect URL with token
         const redirectWithToken = redirectPath.includes('?') 
           ? `${redirectPath}&sessionToken=${sessionToken}`
           : `${redirectPath}?sessionToken=${sessionToken}`;
-        
+
         // Close modal and redirect
         setTimeout(() => {
           onOpenChange(false);
@@ -99,20 +85,20 @@ export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
         }, 1000);
       } else {
         setError("Invalid username or password");
-      }
+}
     } catch (err) {
       console.error("Login error:", err);
       setError("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
-    }
+}
   };
 
   // Function to set up a robust admin session
   const setupAdminSession = (employeeId: string, sessionToken: string) => {
     try {
       // Try multiple storage methods for better resilience
-      
+
       if (typeof window !== 'undefined') {
         // Primary storage - localStorage for persistent sessions
         if (window.localStorage) {
@@ -120,28 +106,25 @@ export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
           localStorage.setItem('employeeId', employeeId);
           localStorage.setItem('adminSessionToken', sessionToken);
           localStorage.setItem('adminSessionTimestamp', Date.now().toString());
-        }
-        
+}
         // Secondary storage - cookies for cross-tab consistency
         if (typeof document !== 'undefined') {
           const expirationDate = new Date();
           expirationDate.setHours(expirationDate.getHours() + 24); // 24-hour expiration
           document.cookie = `adminSessionActive=true; path=/; expires=${expirationDate.toUTCString()}`;
           document.cookie = `adminSessionToken=${sessionToken}; path=/; expires=${expirationDate.toUTCString()}`;
-        }
-        
+}
         // Tertiary - session storage as another option
         if (window.sessionStorage) {
           sessionStorage.setItem('adminSession', 'true');
-        }
-      }
-      
+}
+}
       console.log("Admin session established for:", employeeId);
     } catch (error) {
       console.error("Failed to set up admin session:", error);
       // Continue with the login even if localStorage fails
       // The URL token will still work as a fallback
-    }
+}
   };
 
   return (
@@ -163,7 +146,7 @@ export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
               {error}
             </div>
           )}
-          
+
           <div className="space-y-2">
             <Label htmlFor="username">Username</Label>
             <Input
@@ -174,7 +157,7 @@ export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
               required
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <Input
@@ -189,7 +172,7 @@ export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
               Use "groqtales" for admin or "admin123" for GT001
             </p>
           </div>
-          
+
           <DialogFooter className="mt-6">
             <Button
               type="button"
@@ -207,4 +190,4 @@ export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
       </DialogContent>
     </Dialog>
   );
-} 
+}

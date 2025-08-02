@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module app.cookies.page.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -23,8 +18,6 @@ const FloatingGithub = () => (
     <Github className="w-6 h-6 text-white" />
   </Link>
 );
-
-
 
 // Floating doodle elements
 const FloatingDoodles = () => (
@@ -49,18 +42,12 @@ const CookieSection = ({ icon: Icon, title, children }: any) => (
   </Card>
 );
 
-export default   /**
-   * Implements CookiePolicyPage functionality
-   * 
-   * @function CookiePolicyPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function CookiePolicyPage() {
+export default function CookiePolicyPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
       <FloatingDoodles />
       <FloatingGithub />
-      
+
       <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent mb-4 text-center">
@@ -86,13 +73,7 @@ export default   /**
           <CookieSection icon={Cookie} title="Types of Cookies We Use">
             <h3 className="text-lg font-semibold">Essential Cookies</h3>
             <p>
-              These cookies are necessary for the website to   /**
-   * Implements properly functionality
-   * 
-   * @function properly
-   * @returns {void|Promise<void>} Function return value
-   */
- function properly. They enable
+              These cookies are necessary for the website to properly. They enable
               core functionality such as security, network management, and accessibility.
               You cannot opt out of these cookies.
             </p>
@@ -144,7 +125,7 @@ export default   /**
 
             <div className="mt-4 space-y-4">
               <p className="font-medium">How to manage cookies in your browser:</p>
-              
+
               <div className="space-y-2">
                 <p>
                   <span className="font-medium">Chrome:</span> Settings {'->'} Privacy and security {'->'} Cookies and other site data
@@ -181,4 +162,4 @@ export default   /**
       </div>
     </div>
   );
-} 
+}

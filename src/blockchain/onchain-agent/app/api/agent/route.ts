@@ -7,75 +7,29 @@ interface AgentRequest {
   // Define necessary properties for the request
   body?: any;
 }
-
 interface AgentResponse {
   // Define necessary properties for the response
   status: number;
   data?: any;
 }
-
 /**
  * Handles incoming POST requests to interact with the AgentKit-powered AI agent.
- * This   /**
-   * Implements processes functionality
-   * 
-   * @function processes
-   * @returns {void|Promise<void>} Function return value
-   */
- function processes user messages and streams responses from the agent.
+ * This processes user messages and streams responses from the agent.
  *
- * @  /**
-   * Implements POST functionality
-   * 
-   * @  /**
-   * Implements POST functionality
-   * 
-   * @function POST
-   * @returns {void|Promise<void>} Function return value
-   */
-function POST
-   * @returns {void|Promise<void>} Function return value
-   */
-  /**
-   * Implements POST functionality
-   * 
-   * @function POST
-   * @returns {void|Promise<void>} Function return value
-   */
+ * @ POST
 
-function POST
- * @param {Request & { json: () => Promise<AgentRequest> }} req - The incoming request object containing the user message.
- * @returns {Promise<NextResponse<AgentResponse>>} JSON response containing the AI-generated reply or an error message.
+   */ POST
+
  *
- * @description Sends a single message to the agent and returns the agents' final response.
+
  *
- * @example
+
  * const response = await fetch("/api/agent", {
  *     method: "POST",
  *     headers: { "Content-Type": "application/json" },
  *     body: JSON.stringify({ userMessage: input }),
  * });
- */
-  /**
-   * Implements POST functionality
-   * 
-   * @  /**
-   * Implements POST functionality
-   * 
-   * @function POST
-   * @returns {void|Promise<void>} Function return value
-   */
-function POST
-   * @returns {void|Promise<void>} Function return value
-   */
-
-  /**
-   * Implements POST functionality
-   * 
-   * @function POST
-   * @returns {void|Promise<void>} Function return value
-   */
-
+ */ POST
 
 export async function POST(req: Request): Promise<NextResponse<AgentResponse>> {
   try {
@@ -87,5 +41,5 @@ export async function POST(req: Request): Promise<NextResponse<AgentResponse>> {
   } catch (error) {
     console.error('Error processing agent request:', error);
     return NextResponse.json({ status: 500, data: { error: 'Internal server error' } });
-  }
+}
 }

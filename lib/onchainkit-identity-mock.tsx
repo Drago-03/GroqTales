@@ -1,10 +1,4 @@
 /**
- * @fileoverview Core application functionality
- * @module lib.onchainkit-identity-mock.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -17,99 +11,50 @@ interface IdentityProps {
   className?: string;
   hasCopyAddressOnClick?: boolean;
 }
-
-  /**
-   * Implements Identity functionality
-   * 
-   * @function Identity
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function Identity({ children, className = "" }: IdentityProps) {
+  export function Identity({ children, className = "" }: IdentityProps) {
   return (
     <div className={`flex flex-col items-center space-y-2 ${className}`}>
       {children}
     </div>
   );
 }
-
 interface NameProps {
   className?: string;
 }
-
-  /**
-   * Implements Name functionality
-   * 
-   * @function Name
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function Name({ className = "" }: NameProps) {
+  export function Name({ className = "" }: NameProps) {
   return (
     <span className={`font-medium ${className}`}>
       CryptoFam420
     </span>
   );
 }
-
 interface AddressProps {
   className?: string;
 }
-
-  /**
-   * Implements Address functionality
-   * 
-   * @function Address
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function Address({ className = "" }: AddressProps) {
+  export function Address({ className = "" }: AddressProps) {
   return (
     <span className={`text-sm opacity-70 ${className}`}>
       0x69420...6969
     </span>
   );
 }
-
 interface AvatarProps {
   className?: string;
 }
-
-  /**
-   * Implements Avatar functionality
-   * 
-   * @function Avatar
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function Avatar({ className = "" }: AvatarProps) {
+  export function Avatar({ className = "" }: AvatarProps) {
   return (
     <div className={`w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden ${className}`}>
       <span role="img" aria-label="profile picture">🤑</span>
     </div>
   );
 }
-
 interface EthBalanceProps {
   className?: string;
 }
-
-  /**
-   * Implements EthBalance functionality
-   * 
-   * @function EthBalance
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function EthBalance({ className = "" }: EthBalanceProps) {
+  export function EthBalance({ className = "" }: EthBalanceProps) {
   return (
     <span className={`text-sm font-bold ${className}`}>
       420.69 ETH
     </span>
   );
-} 
+}

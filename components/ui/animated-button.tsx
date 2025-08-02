@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.ui.animated-button.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -22,7 +17,6 @@ interface AnimatedButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
   className?: string;
   children: React.ReactNode;
 }
-
 export const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(
   ({ 
     children, 
@@ -33,7 +27,7 @@ export const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButton
     className,
     ...props 
   }, ref) => {
-    
+
     const getAnimation = () => {
       switch (animationType) {
         case "x":
@@ -60,7 +54,7 @@ export const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButton
                 repeat: Infinity,
                 repeatType: "mirror" as const,
                 duration: 0.8
-              }
+}
             },
           };
         case "none":
@@ -71,11 +65,11 @@ export const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButton
             initial: { scale: 1 },
             whileHover: { scale: 1.05 },
           };
-      }
+}
     };
-    
+
     const animation = getAnimation();
-    
+
     return (
       <motion.div
         className="relative"
@@ -102,7 +96,7 @@ export const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButton
         </Button>
       </motion.div>
     );
-  }
+}
 );
 AnimatedButton.displayName = "AnimatedButton";
 
@@ -121,7 +115,7 @@ export const NFTButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps
         {children}
       </AnimatedButton>
     );
-  }
+}
 );
 NFTButton.displayName = "NFTButton";
 
@@ -140,7 +134,7 @@ export const StoryButton = React.forwardRef<HTMLButtonElement, AnimatedButtonPro
         {children}
       </AnimatedButton>
     );
-  }
+}
 );
 StoryButton.displayName = "StoryButton";
 
@@ -159,7 +153,7 @@ export const PrimaryAnimatedButton = React.forwardRef<HTMLButtonElement, Animate
         {children}
       </AnimatedButton>
     );
-  }
+}
 );
 PrimaryAnimatedButton.displayName = "PrimaryAnimatedButton";
 
@@ -179,6 +173,6 @@ export const GroqButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProp
         {children}
       </AnimatedButton>
     );
-  }
+}
 );
 GroqButton.displayName = "GroqButton"; 

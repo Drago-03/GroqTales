@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.wallet-balance.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -12,21 +7,12 @@ import { useWeb3Auth } from "@/hooks/use-web3-auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Wallet } from "lucide-react";
 
-  /**
-   * Implements WalletBalance functionality
-   * 
-   * @function WalletBalance
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function WalletBalance() {
+  export function WalletBalance() {
   const { address, isConnected } = useWeb3Auth();
 
   if (!isConnected || !address) {
     return null;
-  }
-
+}
   // Placeholder balance - replace with actual API call in future
   const mockBalance = "0.00 ETH";
 
@@ -46,4 +32,4 @@ export function WalletBalance() {
       </CardContent>
     </Card>
   );
-} 
+}

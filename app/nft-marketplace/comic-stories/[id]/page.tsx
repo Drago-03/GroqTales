@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import { useState, useEffect } from "react";
@@ -15,19 +16,10 @@ import { useToast } from "@/components/ui/use-toast";
 import { useWeb3 } from "@/components/providers/web3-provider";
 import { Heart, Eye, MessageSquare, Share2, ArrowLeft, BookOpen, ChevronLeft, ChevronRight, Download, Gift, ShoppingCart, Sparkles, Lock, ExternalLink } from "lucide-react";
 
-// Mock data   /**
-   * Implements to functionality
-   * 
-   * @function to
-   * @returns {void|Promise<void>} Function return value
-   */
- function to get comic by ID (would be replaced by actual API call)
+// Mock data to get comic by ID (would be replaced by actual API call)
   /**
    * Retrieves comicbyid data
    * 
-   * @function getComicById
-   * @returns {void|Promise<void>} Function return value
-   */
 
 function getComicById(id: string) {
   // This is just for demo - you would fetch from API
@@ -78,29 +70,22 @@ function getComicById(id: string) {
     ],
     tags: ["sci-fi", "space", "futuristic", "exploration", "aliens", "mars"]
   };
-  
+
   return mockComic;
 }
-
-export default   /**
-   * Implements ComicStoryDetailPage functionality
-   * 
-   * @function ComicStoryDetailPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function ComicStoryDetailPage() {
+export default function ComicStoryDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { toast } = useToast();
   const { account } = useWeb3();
   const [activeTab, setActiveTab] = useState("preview");
   const [currentPage, setCurrentPage] = useState(0);
-  
+
   // In a real app, you'd fetch this data from an API
   const [comic, setComic] = useState(getComicById(params.id as string));
   const [isLiked, setIsLiked] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
-  
+
   // Effect to track views
   useEffect(() => {
     // Increment views when component mounts
@@ -108,11 +93,11 @@ export default   /**
       ...prev,
       views: prev.views + 1
     }));
-    
+
     // This would call an API to register the view in a real app
     // api.trackView(comic.id);
   }, []);
-  
+
   const handlePurchase = () => {
     if (!account) {
       toast({
@@ -121,13 +106,12 @@ export default   /**
         variant: "destructive",
       });
       return;
-    }
-    
+}
     toast({
       title: "Purchase Initiated",
       description: `Starting purchase process for "${comic.title}"`,
     });
-    
+
     // Simulate the purchase process
     setTimeout(() => {
       setComic(prev => ({
@@ -135,35 +119,35 @@ export default   /**
         isOwned: true,
         owner: account
       }));
-      
+
       toast({
         title: "Purchase Successful!",
         description: `You are now the proud owner of "${comic.title}"`,
       });
     }, 2000);
   };
-  
+
   const handleLike = () => {
     if (isLiked) return;
-    
+
     setIsLiked(true);
     setComic(prev => ({
       ...prev,
       likes: prev.likes + 1
     }));
-    
+
     toast({
       title: "Comic Liked",
       description: "You've liked this comic!",
     });
-    
+
     // This would call an API to register the like in a real app
     // api.likeComic(comic.id);
   };
-  
+
   const downloadComicAsPDF = () => {
     setIsDownloading(true);
-    
+
     // Simulate PDF generation and download
     setTimeout(() => {
       // In a real app, this would generate an actual PDF with all the comic pages
@@ -175,7 +159,7 @@ export default   /**
       setIsDownloading(false);
     }, 1500);
   };
-  
+
   // Get rarity color
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
@@ -184,21 +168,21 @@ export default   /**
       case "rare": return "bg-blue-500 text-white";
       case "legendary": return "bg-amber-500 text-white";
       default: return "bg-gray-500 text-white";
-    }
+}
   };
-  
+
   // Navigate to next page
   const nextPage = () => {
     const maxPages = comic.isOwned ? comic.fullImages.length : comic.previewImages.length;
     setCurrentPage((prev) => (prev + 1) % maxPages);
   };
-  
+
   // Navigate to previous page
   const prevPage = () => {
     const maxPages = comic.isOwned ? comic.fullImages.length : comic.previewImages.length;
     setCurrentPage((prev) => (prev === 0 ? maxPages - 1 : prev - 1));
   };
-  
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50/30 via-background to-background dark:from-purple-950/10 dark:via-background overflow-x-hidden">
       {/* Hero Section */}
@@ -214,7 +198,7 @@ export default   /**
           />
           <div className="absolute inset-0 bg-gradient-to-b from-background/80 to-background"></div>
         </div>
-        
+
         <div className="container mx-auto px-4 py-8 relative">
           <div className="flex items-center mb-8">
             <Button 
@@ -227,7 +211,7 @@ export default   /**
               Back
             </Button>
           </div>
-          
+
           <div className="flex flex-col gap-8">
             <div className="flex flex-col md:flex-row gap-6 items-start">
               {/* Comic Cover */}
@@ -245,13 +229,13 @@ export default   /**
                     className="object-cover rounded-lg"
                     priority
                   />
-                  
+
                   {/* Badges */}
                   <div className="absolute top-2 right-2 flex flex-col gap-2">
                     <Badge className={`capitalize ${getRarityColor(comic.rarity)}`}>
                       {comic.rarity}
                     </Badge>
-                    
+
                     {comic.isAnimated && (
                       <Badge className="bg-purple-600 text-white flex items-center gap-1">
                         <Sparkles className="h-3 w-3" />
@@ -260,7 +244,7 @@ export default   /**
                     )}
                   </div>
                 </motion.div>
-                
+
                 <div className="mt-6 space-y-4">
                   <div className="flex items-center justify-between">
                     <Badge className="px-3 py-1">{comic.genre}</Badge>
@@ -268,7 +252,7 @@ export default   /**
                       {comic.pages} pages
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-2 gap-2">
                     <div className="flex items-center">
                       <Heart className="h-4 w-4 text-red-500 mr-2" />
@@ -279,7 +263,7 @@ export default   /**
                       <span>{comic.views} views</span>
                     </div>
                   </div>
-                  
+
                   <div className="flex flex-wrap gap-1 mt-2">
                     {comic.tags.map((tag) => (
                       <Badge key={tag} variant="outline" className="text-xs">
@@ -287,7 +271,7 @@ export default   /**
                       </Badge>
                     ))}
                   </div>
-                  
+
                   <div className="border-t border-border pt-4">
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium">
@@ -301,7 +285,7 @@ export default   /**
                       </div>
                     </div>
                   </div>
-                  
+
                   {comic.isOwned && (
                     <div className="border border-purple-200 dark:border-purple-800 rounded-lg p-4 bg-purple-50/50 dark:bg-purple-950/20">
                       <h3 className="font-semibold flex items-center text-purple-800 dark:text-purple-400">
@@ -313,7 +297,7 @@ export default   /**
                       </p>
                     </div>
                   )}
-                  
+
                   {!comic.isOwned && (
                     <Button 
                       onClick={handlePurchase}
@@ -325,7 +309,7 @@ export default   /**
                   )}
                 </div>
               </div>
-              
+
               {/* Comic Info */}
               <div className="md:w-3/4 overflow-hidden">
                 <motion.div 
@@ -334,7 +318,7 @@ export default   /**
                   transition={{ duration: 0.5, delay: 0.2 }}
                 >
                   <h1 className="text-4xl font-bold gradient-heading mb-3">{comic.title}</h1>
-                  
+
                   <div className="flex items-center mb-6">
                     <Avatar className="h-8 w-8 mr-2">
                       <AvatarImage src={comic.authorAvatar} alt={comic.author} />
@@ -346,7 +330,7 @@ export default   /**
                         Published on {comic.dateCreated}
                       </p>
                     </div>
-                    
+
                     <div className="ml-auto">
                       <Button 
                         variant={isLiked ? "default" : "ghost"}
@@ -360,17 +344,17 @@ export default   /**
                       </Button>
                     </div>
                   </div>
-                  
+
                   <div className="bg-muted/40 border p-4 rounded-lg mb-6">
                     <h3 className="text-lg font-semibold mb-2">Story Summary</h3>
                     <p className="italic">{comic.summary}</p>
                   </div>
-                  
+
                   <p className="text-muted-foreground mb-6">{comic.description}</p>
                 </motion.div>
               </div>
             </div>
-            
+
             {/* Comic Preview/Reading Section */}
             <div className="mt-4">
               <Tabs defaultValue="preview" onValueChange={setActiveTab} className="mb-8">
@@ -379,7 +363,7 @@ export default   /**
                   <TabsTrigger value="details">Details</TabsTrigger>
                   <TabsTrigger value="ownership">Ownership</TabsTrigger>
                 </TabsList>
-                
+
                 <div className="mt-4 max-h-[60vh] overflow-auto">
                   <TabsContent value="preview" className="m-0 h-full">
                     <div className="relative aspect-video max-w-4xl mx-auto border rounded-lg overflow-hidden bg-black">
@@ -399,7 +383,7 @@ export default   /**
                             fill
                             className="object-contain"
                           />
-                          
+
                           {/* Lock overlay for non-owned pages */}
                           {!comic.isOwned && currentPage >= comic.previewImages.length - 1 && (
                             <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-white p-6">
@@ -418,7 +402,7 @@ export default   /**
                           )}
                         </motion.div>
                       </AnimatePresence>
-                      
+
                       {/* Navigation Controls */}
                       <Button 
                         variant="ghost" 
@@ -436,7 +420,7 @@ export default   /**
                       >
                         <ChevronRight className="h-6 w-6" />
                       </Button>
-                      
+
                       {/* Page indicator */}
                       <div className="absolute bottom-4 left-0 right-0 flex justify-center">
                         <div className="bg-black/70 text-white px-4 py-1 rounded-full text-sm">
@@ -444,7 +428,7 @@ export default   /**
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Thumbnail Navigation */}
                     <div className="mt-6 max-w-4xl mx-auto">
                       <Carousel className="w-full">
@@ -474,7 +458,7 @@ export default   /**
                         <CarouselNext />
                       </Carousel>
                     </div>
-                    
+
                     {comic.isOwned && (
                       <div className="mt-6 flex justify-center">
                         <Button 
@@ -486,13 +470,13 @@ export default   /**
                           {isDownloading ? 
                             <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent mr-2"></div> :
                             <Download className="h-4 w-4 mr-2" />
-                          }
+}
                           Download Full Comic as PDF
                         </Button>
                       </div>
                     )}
                   </TabsContent>
-                  
+
                   <TabsContent value="details" className="m-0 h-full">
                     <div className="space-y-6 pb-4">
                       <div>
@@ -503,7 +487,7 @@ export default   /**
                         </div>
                         <p className="text-muted-foreground">{comic.description}</p>
                       </div>
-                      
+
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         <Card>
                           <CardContent className="pt-6">
@@ -530,7 +514,7 @@ export default   /**
                           </CardContent>
                         </Card>
                       </div>
-                      
+
                       <div>
                         <h3 className="text-lg font-semibold mb-2">Rarity Level</h3>
                         <div className="p-4 rounded-lg border">
@@ -540,7 +524,7 @@ export default   /**
                             </Badge>
                             <span className="font-medium">Comic NFT</span>
                           </div>
-                          
+
                           <p className="text-sm text-muted-foreground">
                             {comic.rarity === "common" && "Common NFTs are the most abundant in the marketplace. They're still great collectibles!"}
                             {comic.rarity === "uncommon" && "Uncommon NFTs are harder to find than common ones, making them more valuable to collectors."}
@@ -549,7 +533,7 @@ export default   /**
                           </p>
                         </div>
                       </div>
-                      
+
                       <div>
                         <h3 className="text-lg font-semibold mb-2">Tags</h3>
                         <div className="flex flex-wrap gap-2">
@@ -560,7 +544,7 @@ export default   /**
                           ))}
                         </div>
                       </div>
-                      
+
                       {comic.isAnimated && (
                         <div className="p-4 bg-purple-100 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
                           <h4 className="font-medium text-purple-800 dark:text-purple-300 flex items-center">
@@ -574,7 +558,7 @@ export default   /**
                       )}
                     </div>
                   </TabsContent>
-                  
+
                   <TabsContent value="ownership" className="m-0 h-full">
                     <div className="space-y-6 pb-4">
                       <div>
@@ -590,7 +574,7 @@ export default   /**
                               <p className="text-sm text-muted-foreground">Creator</p>
                             </div>
                           </div>
-                          
+
                           <div className="border-t border-border pt-4 mt-4">
                             <div className="flex items-center gap-3">
                               <Avatar>
@@ -605,7 +589,7 @@ export default   /**
                           </div>
                         </div>
                       </div>
-                      
+
                       <div>
                         <h3 className="text-lg font-semibold mb-2">Blockchain Information</h3>
                         <div className="p-4 rounded-lg border space-y-2">
@@ -644,7 +628,7 @@ export default   /**
                           </div>
                         </div>
                       </div>
-                      
+
                       <div>
                         <h3 className="text-lg font-semibold mb-2">Ownership Benefits</h3>
                         <ul className="space-y-3">
@@ -692,7 +676,7 @@ export default   /**
                           </li>
                         </ul>
                       </div>
-                      
+
                       {!comic.isOwned && (
                         <Button 
                           onClick={handlePurchase}
@@ -710,7 +694,7 @@ export default   /**
           </div>
         </div>
       </div>
-      
+
       {/* Related Comics Section */}
       <div className="container mx-auto px-4 py-12">
         <h2 className="text-2xl font-bold mb-6">More Comics Like This</h2>
@@ -746,4 +730,4 @@ export default   /**
       </div>
     </div>
   );
-} 
+}

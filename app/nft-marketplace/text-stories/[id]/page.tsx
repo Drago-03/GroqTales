@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import { useState, useEffect } from "react";
@@ -14,19 +15,10 @@ import { useToast } from "@/components/ui/use-toast";
 import { useWeb3 } from "@/components/providers/web3-provider";
 import { Heart, Eye, MessageSquare, Share2, ArrowLeft, BookOpen, Clock, Download, Gift, ShoppingCart, ExternalLink } from "lucide-react";
 
-// Mock data   /**
-   * Implements to functionality
-   * 
-   * @function to
-   * @returns {void|Promise<void>} Function return value
-   */
- function to get story by ID (would be replaced by actual API call)
+// Mock data to get story by ID (would be replaced by actual API call)
   /**
    * Retrieves storybyid data
    * 
-   * @function getStoryById
-   * @returns {void|Promise<void>} Function return value
-   */
 
 function getStoryById(id: string) {
   // This is just for demo - you would fetch from API
@@ -59,17 +51,10 @@ function getStoryById(id: string) {
       { id: 103, title: "Neural Connection", author: "NeuralNarrator", coverImage: `https://picsum.photos/seed/103/400/600` }
     ]
   };
-  
+
   return mockStory;
 }
-
-export default   /**
-   * Implements TextStoryDetailPage functionality
-   * 
-   * @function TextStoryDetailPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function TextStoryDetailPage() {
+export default function TextStoryDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { toast } = useToast();
@@ -78,7 +63,7 @@ export default   /**
   const [story, setStory] = useState(getStoryById(params.id as string));
   const [isLiked, setIsLiked] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
-  
+
   // Effect to track views
   useEffect(() => {
     // Increment views when component mounts
@@ -86,11 +71,11 @@ export default   /**
       ...prev,
       views: prev.views + 1
     }));
-    
+
     // This would call an API to register the view in a real app
     // api.trackView(story.id);
   }, []);
-  
+
   const handlePurchase = () => {
     if (!account) {
       toast({
@@ -99,13 +84,12 @@ export default   /**
         variant: "destructive",
       });
       return;
-    }
-    
+}
     toast({
       title: "Purchase Initiated",
       description: `Starting purchase process for "${story.title}"`,
     });
-    
+
     // Simulate the purchase process
     setTimeout(() => {
       setStory(prev => ({
@@ -113,35 +97,35 @@ export default   /**
         isOwned: true,
         owner: account
       }));
-      
+
       toast({
         title: "Purchase Successful!",
         description: `You are now the proud owner of "${story.title}"`,
       });
     }, 2000);
   };
-  
+
   const handleLike = () => {
     if (isLiked) return;
-    
+
     setIsLiked(true);
     setStory(prev => ({
       ...prev,
       likes: prev.likes + 1
     }));
-    
+
     toast({
       title: "Story Liked",
       description: "You've liked this story!",
     });
-    
+
     // This would call an API to register the like in a real app
     // api.likeStory(story.id);
   };
-  
+
   const downloadStoryAsPDF = () => {
     setIsDownloading(true);
-    
+
     // Simulate PDF generation and download
     setTimeout(() => {
       // In a real app, this would generate an actual PDF
@@ -153,35 +137,35 @@ export default   /**
       setIsDownloading(false);
     }, 1500);
   };
-  
+
   const downloadStoryAsMD = () => {
     setIsDownloading(true);
-    
+
     // In a real app, this would construct the Markdown content from story data
     const markdownContent = `# ${story.title}\n\nBy: ${story.author}\n\n## Summary\n\n${story.summary}\n\n## Story\n\n${story.fullText}`;
-    
+
     // Create a Blob with the Markdown content
     const blob = new Blob([markdownContent], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
-    
+
     // Create a temporary link element to trigger the download
     const a = document.createElement('a');
     a.href = url;
     a.download = `${story.title.toLowerCase().replace(/\s+/g, '-')}.md`;
     document.body.appendChild(a);
     a.click();
-    
+
     // Clean up
     URL.revokeObjectURL(url);
     document.body.removeChild(a);
-    
+
     toast({
       title: "Markdown Downloaded",
       description: `"${story.title}" has been downloaded as a Markdown file.`,
     });
     setIsDownloading(false);
   };
-  
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50/30 via-background to-background dark:from-amber-950/10 dark:via-background overflow-x-hidden">
       {/* Hero Section */}
@@ -197,7 +181,7 @@ export default   /**
           />
           <div className="absolute inset-0 bg-gradient-to-b from-background/80 to-background"></div>
         </div>
-        
+
         <div className="container mx-auto px-4 py-8 relative">
           <div className="flex items-center mb-8">
             <Button 
@@ -210,7 +194,7 @@ export default   /**
               Back
             </Button>
           </div>
-          
+
           <div className="flex flex-col md:flex-row gap-10">
             {/* Book Cover */}
             <div className="md:w-1/3 flex-shrink-0">
@@ -240,7 +224,7 @@ export default   /**
                   </div>
                 )}
               </motion.div>
-              
+
               <div className="mt-6 space-y-4">
                 <div className="flex items-center justify-between">
                   <Badge className="px-3 py-1">{story.genre}</Badge>
@@ -249,7 +233,7 @@ export default   /**
                     {story.readTime} read
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-2">
                   <div className="flex items-center">
                     <Heart className="h-4 w-4 text-red-500 mr-2" />
@@ -260,7 +244,7 @@ export default   /**
                     <span>{story.views} views</span>
                   </div>
                 </div>
-                
+
                 <div className="flex flex-wrap gap-1 mt-2">
                   {story.tags.map((tag) => (
                     <Badge key={tag} variant="outline" className="text-xs">
@@ -268,7 +252,7 @@ export default   /**
                     </Badge>
                   ))}
                 </div>
-                
+
                 <div className="border-t border-border pt-4">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium">
@@ -282,7 +266,7 @@ export default   /**
                     </div>
                   </div>
                 </div>
-                
+
                 {story.isOwned && (
                   <div className="border border-amber-200 dark:border-amber-800 rounded-lg p-4 bg-amber-50/50 dark:bg-amber-950/20">
                     <h3 className="font-semibold flex items-center text-amber-800 dark:text-amber-400">
@@ -296,7 +280,7 @@ export default   /**
                 )}
               </div>
             </div>
-            
+
             {/* Story Content */}
             <motion.div 
               initial={{ opacity: 0 }}
@@ -305,7 +289,7 @@ export default   /**
               className="md:w-2/3"
             >
               <h1 className="text-4xl font-bold gradient-heading mb-3">{story.title}</h1>
-              
+
               <div className="flex items-center mb-6">
                 <Avatar className="h-8 w-8 mr-2">
                   <AvatarImage src={story.authorAvatar} alt={story.author} />
@@ -318,14 +302,14 @@ export default   /**
                   </p>
                 </div>
               </div>
-              
+
               <Tabs defaultValue="story" onValueChange={setActiveTab} className="mb-8">
                 <TabsList className="w-full grid grid-cols-3">
                   <TabsTrigger value="story">Story</TabsTrigger>
                   <TabsTrigger value="details">Details</TabsTrigger>
                   <TabsTrigger value="ownership">Ownership</TabsTrigger>
                 </TabsList>
-                
+
                 <div className="mt-4 max-h-[60vh] overflow-auto">
                   <TabsContent value="story" className="m-0 h-full">
                     <div className="prose dark:prose-invert max-w-none pb-4">
@@ -337,14 +321,14 @@ export default   /**
                               <p className="italic">{story.summary}</p>
                             </div>
                           </div>
-                          
+
                           <div className="mb-6">
                             <h3 className="text-lg font-semibold mb-3">Full Story</h3>
                             <div className="whitespace-pre-line">
                               {story.fullText}
                             </div>
                           </div>
-                          
+
                           <div className="flex gap-3 mt-6">
                             <Button 
                               variant="outline" 
@@ -354,7 +338,7 @@ export default   /**
                               {isDownloading ? 
                                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent mr-2"></div> :
                                 <Download className="h-4 w-4 mr-2" />
-                              }
+}
                               Download as PDF
                             </Button>
                             <Button 
@@ -375,14 +359,14 @@ export default   /**
                               <p className="italic">{story.summary}</p>
                             </div>
                           </div>
-                          
+
                           <div className="mb-6">
                             <h3 className="text-lg font-semibold mb-3">Story Excerpt</h3>
                             <div className="bg-muted p-6 rounded-lg border italic">
                               {story.excerpt}
                             </div>
                           </div>
-                          
+
                           <div className="text-center p-8 border-t border-dashed">
                             <BookOpen className="h-12 w-12 mx-auto text-amber-600 mb-4" />
                             <h3 className="text-xl font-semibold mb-2">
@@ -402,14 +386,14 @@ export default   /**
                       )}
                     </div>
                   </TabsContent>
-                  
+
                   <TabsContent value="details" className="m-0 h-full">
                     <div className="space-y-6 pb-4">
                       <div>
                         <h3 className="text-lg font-semibold mb-2">Story Details</h3>
                         <p className="text-muted-foreground">{story.description}</p>
                       </div>
-                      
+
                       <div className="grid grid-cols-2 gap-4">
                         <Card>
                           <CardContent className="pt-6">
@@ -436,7 +420,7 @@ export default   /**
                           </CardContent>
                         </Card>
                       </div>
-                      
+
                       <div>
                         <h3 className="text-lg font-semibold mb-2">Tags</h3>
                         <div className="flex flex-wrap gap-2">
@@ -449,7 +433,7 @@ export default   /**
                       </div>
                     </div>
                   </TabsContent>
-                  
+
                   <TabsContent value="ownership" className="m-0 h-full">
                     <div className="space-y-6 pb-4">
                       <div>
@@ -465,7 +449,7 @@ export default   /**
                               <p className="text-sm text-muted-foreground">Creator</p>
                             </div>
                           </div>
-                          
+
                           <div className="border-t border-border pt-4 mt-4">
                             <div className="flex items-center gap-3">
                               <Avatar>
@@ -480,7 +464,7 @@ export default   /**
                           </div>
                         </div>
                       </div>
-                      
+
                       <div>
                         <h3 className="text-lg font-semibold mb-2">Blockchain Information</h3>
                         <div className="p-4 rounded-lg border space-y-2">
@@ -519,7 +503,7 @@ export default   /**
                           </div>
                         </div>
                       </div>
-                      
+
                       <div>
                         <h3 className="text-lg font-semibold mb-2">Ownership Benefits</h3>
                         <ul className="space-y-3">
@@ -557,7 +541,7 @@ export default   /**
                           </li>
                         </ul>
                       </div>
-                      
+
                       {!story.isOwned && (
                         <Button 
                           onClick={handlePurchase}
@@ -571,7 +555,7 @@ export default   /**
                   </TabsContent>
                 </div>
               </Tabs>
-              
+
               <div className="flex items-center justify-between border-t pt-4">
                 <div className="flex items-center gap-2">
                   <Button 
@@ -593,7 +577,7 @@ export default   /**
                     Share
                   </Button>
                 </div>
-                
+
                 {!story.isOwned && (
                   <Button 
                     onClick={handlePurchase}
@@ -608,7 +592,7 @@ export default   /**
           </div>
         </div>
       </div>
-      
+
       {/* Related Stories Section */}
       <div className="container mx-auto px-4 py-12">
         <h2 className="text-2xl font-bold mb-6">More Stories Like This</h2>
@@ -639,4 +623,4 @@ export default   /**
       </div>
     </div>
   );
-} 
+}

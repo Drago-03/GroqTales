@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.ui.calendar.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 'use client';
 
@@ -15,17 +10,7 @@ import { DayPicker } from 'react-day-picker';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker>;
-
-  /**
-   * Implements Calendar functionality
-   * 
-   * @function Calendar
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-function Calendar({
+export type CalendarProps = React.ComponentProps<typeof DayPicker>; Calendar({
   className,
   classNames,
   showOutsideDays = true,

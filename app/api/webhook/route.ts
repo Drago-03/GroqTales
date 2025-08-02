@@ -1,10 +1,4 @@
 /**
- * @fileoverview Core application functionality
- * @module app.api.webhook.route.ts
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 import { NextResponse } from 'next/server';
 import { sendFrameNotification } from '@/lib/notification-client';
@@ -27,12 +21,6 @@ const deleteUserNotificationDetails = async (address: string) => {
 
 // API route handler for webhook events
 // Updated on May 2, 2025, to force build recognition of changes - Revision 2
-  /**
-   * Implements POST functionality
-   * 
-   * @function POST
-   * @returns {void|Promise<void>} Function return value
-   */
 
 export async function POST(req: Request) {
   try {
@@ -43,5 +31,5 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error('Error processing webhook:', error);
     return NextResponse.json({ success: false, error: 'Failed to process webhook' }, { status: 500 });
-  }
-} 
+}
+}

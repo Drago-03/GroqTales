@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.theme-toggle.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client"
 
@@ -20,15 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-  /**
-   * Implements ThemeToggle functionality
-   * 
-   * @function ThemeToggle
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function ThemeToggle() {
+  export function ThemeToggle() {
   const { setTheme } = useTheme()
 
   // Direct theme setting without extra events

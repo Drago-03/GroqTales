@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import { useState } from "react";
@@ -27,7 +28,6 @@ interface Comment {
   timestamp: Date | string;
   likes: number;
 }
-
 interface StoryCommentsDialogProps {
   isOpen: boolean;
   onClose: () => void;
@@ -37,72 +37,7 @@ interface StoryCommentsDialogProps {
   onLikeComment?: (commentId: string) => void;
   isWalletConnected?: boolean;
   isAdmin?: boolean;
-}
-
-  /**
-   * Implements StoryCommentsDialog functionality
-   * 
-   * @function StoryCommentsDialog
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function StoryCommentsDialog({
-  isOpen,
-  onClose,
-  storyTitle,
-  comments,
-  onAddComment,
-  onLikeComment,
-  isWalletConnected = false,
-  isAdmin = false
-}: StoryCommentsDialogProps) {
-  const [newComment, setNewComment] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newComment.trim()) {
-      onAddComment(newComment.trim());
-      setNewComment("");
-    }
-  };
-
-  const handleConnectWallet = () => {
-    // Pass empty string to indicate we want to connect wallet, not add a comment
-    onAddComment("");
-  };
-
-  // Prevent dialog from closing when clicking inside
-  const handleContentClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
-
-  // Format timestamp
-  const formatTimestamp = (timestamp: Date | string) => {
-    const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp;
-    return date.toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent 
-        className="max-w-2xl h-[80vh] flex flex-col overflow-hidden"
-        onClick={handleContentClick}
-      >
-        <DialogHeader className="flex-shrink-0">
-          <DialogTitle>Comments</DialogTitle>
-          <DialogDescription>
-            Join the discussion about "{storyTitle}"
-          </DialogDescription>
-        </DialogHeader>
-
-        {/* Comments List */}
+}}
         <div className="flex-1 overflow-y-auto py-4">
           {comments.length === 0 ? (
             <div className="text-center text-muted-foreground py-8">
@@ -186,4 +121,4 @@ export function StoryCommentsDialog({
       </DialogContent>
     </Dialog>
   );
-} 
+}

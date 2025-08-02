@@ -1,10 +1,4 @@
 /**
- * @fileoverview Core application functionality
- * @module src.blockchain.clients.ts
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 import { createWalletClient, createPublicClient, custom, http } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
@@ -26,7 +20,7 @@ export const getAccount = async () => {
   if (walletClient) {
     const [account] = await walletClient.getAddresses();
     return account;
-  }
+}
   return null;
 };
 

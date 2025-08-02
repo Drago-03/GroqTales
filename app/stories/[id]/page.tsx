@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module app.stories.[id].page.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -37,14 +32,7 @@ interface Comment {
   likes: number;
   isVerified?: boolean;
 }
-
-export default   /**
-   * Implements StoryPage functionality
-   * 
-   * @function StoryPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function StoryPage({ params }: { params: { id: string } }) {
+export default function StoryPage({ params }: { params: { id: string } }) {
   // State
   const [story, setStory] = useState<any>(null);
   const [relatedStories, setRelatedStories] = useState<any[]>([]);
@@ -56,7 +44,7 @@ export default   /**
   const [upvotes, setUpvotes] = useState(0);
   const [downvotes, setDownvotes] = useState(0);
   const [isSharing, setIsSharing] = useState(false);
-  
+
   const { toast } = useToast();
   const { account } = useWeb3();
 
@@ -73,12 +61,11 @@ export default   /**
             variant: "destructive"
           });
           return;
-        }
-        
+}
         setStory(storyData);
         setUpvotes(storyData.likes || 0);
         setDownvotes(Math.floor((storyData.likes || 100) * 0.2)); // Mock downvotes data
-        
+
         // Mock comments data
         const mockComments: Comment[] = [
           {
@@ -105,11 +92,11 @@ export default   /**
             authorAvatar: `https://api.dicebear.com/7.x/personas/svg?seed=NewWriter`,
             timestamp: new Date(Date.now() - 259200000), // 3 days ago
             likes: 12
-          }
+}
         ];
-        
+
         setComments(mockComments);
-        
+
         // Fetch related stories
         const relatedData = fetchStoryById(params.id, 4, true);
         setRelatedStories(relatedData || []);
@@ -122,7 +109,7 @@ export default   /**
         });
       } finally {
         setIsLoading(false);
-      }
+}
     };
 
     fetchData();
@@ -136,8 +123,7 @@ export default   /**
         description: "You need to connect your wallet to vote on stories.",
       });
       return;
-    }
-
+}
     // If already voted the same way, remove the vote
     if (voteStatus === type) {
       setVoteStatus(null);
@@ -145,8 +131,8 @@ export default   /**
         setUpvotes(prev => prev - 1);
       } else {
         setDownvotes(prev => prev - 1);
-      }
-    } 
+}
+}
     // If changing vote
     else if (voteStatus !== null) {
       setVoteStatus(type);
@@ -156,8 +142,8 @@ export default   /**
       } else {
         setDownvotes(prev => prev + 1);
         setUpvotes(prev => prev - 1);
-      }
-    } 
+}
+}
     // If voting for the first time
     else {
       setVoteStatus(type);
@@ -165,9 +151,8 @@ export default   /**
         setUpvotes(prev => prev + 1);
       } else {
         setDownvotes(prev => prev + 1);
-      }
-    }
-
+}
+}
     toast({
       title: type === 'upvote' ? "Upvoted!" : "Downvoted",
       description: `You have ${type === 'upvote' ? 'upvoted' : 'downvoted'} this story.`,
@@ -177,15 +162,14 @@ export default   /**
   // Handle comment submission
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!account) {
       toast({
         title: "Please connect your wallet",
         description: "You need to connect your wallet to comment on stories.",
       });
       return;
-    }
-
+}
     if (!commentText.trim()) return;
 
     const newComment: Comment = {
@@ -215,8 +199,7 @@ export default   /**
         description: "You need to connect your wallet to like comments.",
       });
       return;
-    }
-
+}
     setComments(prev => 
       prev.map(comment => 
         comment.id === commentId 
@@ -242,12 +225,12 @@ export default   /**
           title: "Link copied!",
           description: "Story link copied to clipboard",
         });
-      }
+}
     } catch (error) {
       console.error("Error sharing:", error);
     } finally {
       setIsSharing(false);
-    }
+}
   };
 
   // Loading state
@@ -260,8 +243,7 @@ export default   /**
         </div>
       </div>
     );
-  }
-
+}
   // Not found state
   if (!story) {
     return (
@@ -282,10 +264,9 @@ export default   /**
         </Card>
       </div>
     );
-  }
-  
+}
   const genre = getGenreBySlug(story.genre);
-  
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -302,7 +283,7 @@ export default   /**
             </Button>
           </Link>
         </div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <motion.div
@@ -326,7 +307,7 @@ export default   /**
                     </div>
                   )}
                 </div>
-                
+
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
@@ -335,7 +316,7 @@ export default   /**
                         By {story.author} • {new Date().toLocaleDateString()}
                       </CardDescription>
                     </div>
-                    
+
                     <div>
                       {genre && (
                         <Link href={`/genres/${genre.slug}`}>
@@ -354,14 +335,14 @@ export default   /**
                     </div>
                   </div>
                 </CardHeader>
-                
+
                 <CardContent>
                   <div className="prose max-w-none dark:prose-invert">
                     {story.description.split('\n\n').map((paragraph: string, index: number) => (
                       <p key={index}>{paragraph}</p>
                     ))}
                   </div>
-                  
+
                   <div className="flex items-center justify-between mt-8">
                     <div className="flex items-center space-x-4">
                       <div className="flex items-center space-x-2">
@@ -393,7 +374,7 @@ export default   /**
                         <span>{story.views} views</span>
                       </div>
                     </div>
-                    
+
                     <Button variant="outline" size="sm" onClick={handleShare} disabled={isSharing}>
                       <Share className="h-4 w-4 mr-2" />
                       Share
@@ -413,7 +394,7 @@ export default   /**
                   <TabsTrigger value="details">Story Details</TabsTrigger>
                   <TabsTrigger value="comments">Comments ({comments.length})</TabsTrigger>
                 </TabsList>
-                
+
                 <TabsContent value="details">
                   <Card>
                     <CardContent className="pt-6">
@@ -422,7 +403,7 @@ export default   /**
                           <h3 className="text-lg font-semibold mb-2">About this Story</h3>
                           <p className="text-muted-foreground">{story.description}</p>
                         </div>
-                        
+
                         <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-2">
                             <h4 className="text-sm font-medium">Created On</h4>
@@ -443,7 +424,7 @@ export default   /**
                     </CardContent>
                   </Card>
                 </TabsContent>
-                
+
                 <TabsContent value="comments">
                   <Card>
                     <CardHeader>
@@ -472,7 +453,7 @@ export default   /**
                           </div>
                         </div>
                       </form>
-                      
+
                       <div className="space-y-6">
                         <AnimatePresence>
                           {comments.map((comment) => (
@@ -520,7 +501,7 @@ export default   /**
               </Tabs>
             </motion.div>
           </div>
-          
+
           <div>
             <motion.div
               initial={{ x: 20, opacity: 0 }}
@@ -575,7 +556,7 @@ export default   /**
                   <Button variant="default" className="w-full theme-gradient-bg">View All Stories</Button>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader>
                   <CardTitle>NFT Details</CardTitle>
@@ -602,11 +583,11 @@ export default   /**
                       <span className="text-muted-foreground">Royalty</span>
                       <span className="font-medium">10%</span>
                     </div>
-                    
+
                     <Separator />
-                    
+
                     <Button className="w-full theme-gradient-bg">Purchase NFT</Button>
-                    
+
                     <Button 
                       variant="outline" 
                       className="w-full flex items-center justify-center"
@@ -625,7 +606,7 @@ export default   /**
             </motion.div>
           </div>
         </div>
-        
+
         <motion.div
           initial={{ y: 40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -633,7 +614,7 @@ export default   /**
           className="mt-12"
         >
           <h2 className="text-2xl font-bold mb-6">Similar Stories</h2>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {relatedStories.map((relatedStory: any, index: number) => (
               <motion.div
@@ -647,7 +628,7 @@ export default   /**
               </motion.div>
             ))}
           </div>
-          
+
           <div className="mt-10 text-center">
             <Button 
               className="theme-gradient-bg text-white"
@@ -665,4 +646,4 @@ export default   /**
       </div>
     </motion.div>
   );
-} 
+}

@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.header.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -43,47 +38,39 @@ type NavItem = {
   items?: NavSubItem[];
 };
 
-  /**
-   * Implements Header functionality
-   * 
-   * @function Header
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function Header() {
+  export function Header() {
   const pathname = usePathname();
   const { account } = useWeb3();
   const { toast } = useToast();
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  
+
   // Track scroll position for adding box shadow to header
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
-    
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
+
   // Define active class for navigation links
   const isActive = (path: string) => {
     if (path === '/community') {
       return pathname === '/community' || pathname === '/community/creators' 
         ? "bg-primary/10 text-primary font-medium" 
         : "hover:bg-accent/20 text-muted-foreground";
-    }
+}
     return pathname === path ? "bg-primary/10 text-primary font-medium" : "hover:bg-accent/20 text-muted-foreground";
   };
 
   const handleCreateClick = () => {
     // Check if user is authenticated
     const isAdmin = typeof window !== 'undefined' && window.localStorage ? localStorage.getItem('adminSession') : null;
-    
+
     if (!account && !isAdmin) {
       toast({
         title: "Authentication Required",
@@ -91,8 +78,7 @@ export function Header() {
         variant: "destructive",
       });
       return;
-    }
-
+}
     setShowCreateDialog(true);
   };
 
@@ -129,7 +115,7 @@ export function Header() {
             </motion.div>
             <span className="text-xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent doodle-heading comic-text-bold">GroqTales</span>
           </Link>
-          
+
           <nav className="hidden md:flex items-center space-x-2">
             {navItems.map((item, index) => (
               <motion.div

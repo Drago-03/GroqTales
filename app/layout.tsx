@@ -1,3 +1,4 @@
+import React from "react";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -31,7 +32,7 @@ const getQuickBootScript = () => {
   } catch (e) {
     console.warn('Could not read quick-boot.js:', e);
     return ''; // Return empty string if file reading fails
-  }
+}
 };
 
 // Quick boot script to prevent flashing and improve initial load
@@ -49,16 +50,10 @@ export const metadata: Metadata = {
     width: "device-width",
     initialScale: 1,
     maximumScale: 5
-  }
+}
 };
 
-export default   /**
-   * Implements RootLayout functionality
-   * 
-   * @function RootLayout
-   * @returns {void|Promise<void>} Function return value
-   */
- function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -68,16 +63,16 @@ export default   /**
       <head>
         {/* Inline critical JS for fastest possible execution */}
         <script dangerouslySetInnerHTML={{ __html: quickBootScript }} />
-        
+
         {/* Preload critical resources */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
+
         {/* Optimize for performance */}
         <meta name="color-scheme" content="light dark" />
-        
+
         {/* Performance optimization scripts */}
         <Script id="theme-fix" src="/theme-fix.js" strategy="beforeInteractive" />
         <Script id="performance-fix" src="/performance-fix.js" strategy="afterInteractive" />

@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import { useState } from "react";
@@ -11,16 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 interface ImageStoryFormProps {
   onSuccess: () => void;
 }
-
-  /**
-   * Implements ImageStoryForm functionality
-   * 
-   * @function ImageStoryForm
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function ImageStoryForm({ onSuccess }: ImageStoryFormProps) {
+  export function ImageStoryForm({ onSuccess }: ImageStoryFormProps) {
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");
   const [genre, setGenre] = useState("");
@@ -29,7 +21,7 @@ export function ImageStoryForm({ onSuccess }: ImageStoryFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
       // TODO: Implement image story submission
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated API call
@@ -38,7 +30,7 @@ export function ImageStoryForm({ onSuccess }: ImageStoryFormProps) {
       console.error("Failed to submit story:", error);
     } finally {
       setIsSubmitting(false);
-    }
+}
   };
 
   return (
@@ -101,7 +93,7 @@ export function ImageStoryForm({ onSuccess }: ImageStoryFormProps) {
           onChange={(e) => setCaption(e.target.value)}
         />
       </div>
-      
+
       <Button type="submit" disabled={!title || !genre || isSubmitting} className="w-full">
         {isSubmitting ? (
           <>

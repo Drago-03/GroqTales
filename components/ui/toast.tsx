@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.ui.toast.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 'use client';
 
@@ -45,7 +40,7 @@ const toastVariants = cva(
     defaultVariants: {
       variant: 'default',
     },
-  }
+}
 );
 
 const Toast = React.forwardRef<

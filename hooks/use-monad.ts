@@ -9,7 +9,6 @@ type MonadNetworkInfo = {
   rpcUrl: string;
   currency: string;
 };
-*/
 
 type UseMonadResult = {
   mintNFT: (metadata: StoryMetadata) => Promise<MintedNFT | null>;
@@ -20,18 +19,7 @@ type UseMonadResult = {
   error: string | null;
   //switchToMonadNetwork: () => Promise<boolean>;
   //isOnMonadNetwork: boolean;
-};
-
-  /**
-   * Implements useMonad functionality
-   * 
-   * @function useMonad
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function useMonad(): UseMonadResult {
-  const { account/*, chainId, switchNetwork*/ } = useWeb3();
+}; } = useWeb3();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   //const [networkInfo, setNetworkInfo] = useState<MonadNetworkInfo | null>(null);
@@ -44,7 +32,7 @@ export function useMonad(): UseMonadResult {
       const response = await fetch('/api/monad/info');
       if (!response.ok) {
         throw new Error(`Failed to fetch network info: ${response.statusText}`);
-      }
+}
       const data = await response.json();
       setNetworkInfo(data.network);
     } catch (err) {
@@ -57,16 +45,14 @@ export function useMonad(): UseMonadResult {
         rpcUrl: 'https://fallback.rpc.url',
         currency: 'MONAD'
       });
-    }
+}
   }, []);
-  */
 
   // Fetch Monad network information only once on mount
   /*
   useEffect(() => {
     fetchNetworkInfo();
   }, [fetchNetworkInfo]);
-  */
 
   // Check if network changes
   /*
@@ -74,24 +60,22 @@ export function useMonad(): UseMonadResult {
     if (networkInfo && chainId) {
       const hexChainId = '0x' + networkInfo.chainId.toString(16);
       setIsOnMonadNetwork(chainId === hexChainId);
-    }
+}
   }, [chainId, networkInfo]);
-  */
 
   /**
    * Switch to Monad network
-   */
+
   /*
   const switchToMonadNetwork = useCallback(async (): Promise<boolean> => {
     if (!networkInfo) {
       setError('Network information not available');
       return false;
-    }
-    
+}
     try {
       setIsLoading(true);
       setError(null);
-      
+
       await switchNetwork(networkInfo.chainId);
       setIsOnMonadNetwork(true);
       return true;
@@ -101,29 +85,25 @@ export function useMonad(): UseMonadResult {
       return false;
     } finally {
       setIsLoading(false);
-    }
+}
   }, [networkInfo, switchNetwork]);
-  */
 
   /**
    * Mint a story as an NFT on Monad
-   */
+
   const mintNFT = useCallback(async (metadata: StoryMetadata): Promise<MintedNFT | null> => {
     if (!account) {
       setError('Wallet not connected');
       return null;
-    }
-
+}
     /*
     if (!isOnMonadNetwork) {
       const switched = await switchToMonadNetwork();
       if (!switched) {
         setError('Must be on Monad network to mint NFTs');
         return null;
-      }
-    }
-    */
-
+}
+}
     try {
       setIsLoading(true);
       setError(null);
@@ -149,11 +129,10 @@ export function useMonad(): UseMonadResult {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to mint NFT');
-      }
-
+}
       const data = await response.json();
       return data.nft;
-      */
+
       // Placeholder return for now since Monad is commented out
       return { 
         tokenId: `placeholder-${Math.random().toString(36).substring(2, 7)}`, 
@@ -168,12 +147,12 @@ export function useMonad(): UseMonadResult {
       return null;
     } finally {
       setIsLoading(false);
-    }
+}
   }, [account/*, isOnMonadNetwork, switchToMonadNetwork*/]);
 
   /**
    * Fetch an NFT by token ID
-   */
+
   const fetchNFT = useCallback(async (tokenId: string): Promise<MintedNFT | null> => {
     try {
       setIsLoading(true);
@@ -194,11 +173,10 @@ export function useMonad(): UseMonadResult {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to fetch NFT');
-      }
-
+}
       const data = await response.json();
       return data.nft;
-      */
+
       // Placeholder return for now since Monad is commented out
       return { 
         tokenId, 
@@ -224,12 +202,12 @@ export function useMonad(): UseMonadResult {
       return null;
     } finally {
       setIsLoading(false);
-    }
+}
   }, []);
 
   /**
    * Generate a story using Groq and mint it as an NFT
-   */
+
   const generateAndMint = useCallback(
     async (prompt: string, title?: string, genre?: string, options?: { apiKey?: string }): Promise<MintedNFT | null> => {
       try {
@@ -238,8 +216,7 @@ export function useMonad(): UseMonadResult {
 
         if (!account) {
           throw new Error('Wallet not connected');
-        }
-
+}
         // Extract API key if provided
         const { apiKey } = options || {};
 
@@ -261,11 +238,10 @@ export function useMonad(): UseMonadResult {
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.error || 'Failed to generate and mint story');
-        }
-
+}
         const data = await response.json();
         return data.nft;
-        */
+
         // Placeholder return for now since Monad is commented out
         return { 
           tokenId: `generated-${Math.random().toString(36).substring(2, 7)}`, 
@@ -291,7 +267,7 @@ export function useMonad(): UseMonadResult {
         throw err;
       } finally {
         setIsLoading(false);
-      }
+}
     },
     [account]
   );
@@ -306,4 +282,4 @@ export function useMonad(): UseMonadResult {
     //switchToMonadNetwork,
     //isOnMonadNetwork,
   } as UseMonadResult;
-} 
+}

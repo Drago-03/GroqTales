@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import Link from "next/link";
@@ -124,18 +125,12 @@ const StoryCard = ({ story }: any) => (
   </Card>
 );
 
-export default   /**
-   * Implements ProfilePage functionality
-   * 
-   * @function ProfilePage
-   * @returns {void|Promise<void>} Function return value
-   */
- function ProfilePage() {
+export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
       <FloatingDoodles />
       <FloatingGithub />
-      
+
       <div className="container mx-auto px-4 py-12 relative z-10">
         {/* Profile Info */}
         <Card className="mb-8">
@@ -145,7 +140,7 @@ export default   /**
                 <AvatarImage src={userData.avatar} alt={userData.name} />
                 <AvatarFallback>AT</AvatarFallback>
               </Avatar>
-              
+
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <h1 className="text-2xl font-bold">{userData.name}</h1>
@@ -282,4 +277,4 @@ export default   /**
       </div>
     </div>
   );
-} 
+}

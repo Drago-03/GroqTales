@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.genre-selector.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -106,30 +101,17 @@ export const genres: Genre[] = [
     description: "Ordinary worlds with magical elements woven into reality",
     elements: "Subtle magic, realistic settings, metaphor, cultural traditions",
     famousWorks: "One Hundred Years of Solitude, Midnight's Children, The House of the Spirits"
-  }
+}
 ];
 
   /**
    * Retrieves genrebyslug data
    * 
-   * @function getGenreBySlug
-   * @returns {void|Promise<void>} Function return value
-   */
-
 
 export function getGenreBySlug(slug: string): Genre | undefined {
   return genres.find(genre => genre.slug === slug);
 }
-
-  /**
-   * Implements GenreCard functionality
-   * 
-   * @function GenreCard
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function GenreCard({ genre }: { genre: Genre }) {
+  export function GenreCard({ genre }: { genre: Genre }) {
   return (
     <Link href={`/genres/${genre.slug}`} className="block group">
       <div className="bg-card hover:bg-accent transition-colors rounded-lg shadow p-6 h-full">
@@ -142,16 +124,7 @@ export function GenreCard({ genre }: { genre: Genre }) {
     </Link>
   );
 }
-
-  /**
-   * Implements GenreSelector functionality
-   * 
-   * @function GenreSelector
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function GenreSelector() {
+  export function GenreSelector() {
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center justify-between">
@@ -168,16 +141,7 @@ export function GenreSelector() {
     </div>
   );
 }
-
-  /**
-   * Implements GenresPage functionality
-   * 
-   * @function GenresPage
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function GenresPage() {
+  export function GenresPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Browse Stories by Genre</h1>
@@ -188,4 +152,4 @@ export function GenresPage() {
       </div>
     </div>
   );
-} 
+}

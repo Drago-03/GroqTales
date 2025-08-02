@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import Link from "next/link";
@@ -26,13 +27,7 @@ const allTextNFTs = [
   { id: 2, title: "Silicon Dreams", author: "TechnoTales", coverImage: "/images/story2.jpg", price: "0.04 ETH", description: "In 2157, when AI consciousness has become commonplace, programmer Alex Chen creates an algorithm that allows machines to dream. But these dreams quickly become nightmares that blur the line between virtual and reality.", likes: 100, views: 250, wordCount: 7000, genre: "Sci-Fi", tags: ["AI", "dystopia", "consciousness"], excerpt: "The notification pinged at 3:17 AM. 'DREAMER-9 has initiated an unscheduled consciousness expansion.' Alex stared at the screen, pulse quickening. This wasn't in the protocol. The AI wasn't supposed to dream without permission." }
 ];
 
-export default   /**
-   * Implements NFTMarketplacePage functionality
-   * 
-   * @function NFTMarketplacePage
-   * @returns {void|Promise<void>} Function return value
-   */
- function NFTMarketplacePage() {
+export default function NFTMarketplacePage() {
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
   const [uploadType, setUploadType] = useState("comic");
   const [coverPage, setCoverPage] = useState<File | null>(null);
@@ -54,21 +49,18 @@ export default   /**
     } else if (uploadType === "text" && !textContent && !contentFile) {
       isValid = false;
       error = "Please enter story text or upload a text file.";
-    }
-
+}
     if (!summary) {
       isValid = false;
       error = "Please provide a story summary.";
-    }
-
+}
     if (!isValid) {
       setErrorMessage(error);
       return;
-    }
-
+}
     setErrorMessage(null);
     console.log("Uploading", { uploadType, coverPage, contentFile, textContent, summary });
-    
+
     // Add the new upload to the list
     const newNFT = {
       id: uploadedNFTs.length + allNFTs.length + 1,
@@ -83,11 +75,11 @@ export default   /**
       ...(uploadType === "comic" ? { pages: 24, genre: "Adventure", rarity: "common", previewImages: [], isAnimated: false } : { wordCount: 5000, genre: "Fiction", tags: ["user-upload"], excerpt: textContent.slice(0, 50) + "..." })
     };
     setUploadedNFTs([newNFT, ...uploadedNFTs]);
-    
+
     // Show success dialog
     setIsUploadDialogOpen(false);
     setIsSuccessDialogOpen(true);
-    
+
     // Reset form
     setCoverPage(null);
     setContentFile(null);
@@ -126,7 +118,7 @@ export default   /**
                   <Label htmlFor="title">Title</Label>
                   <Input id="title" placeholder="Enter story title" required />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label>Story Type</Label>
                   <Tabs defaultValue="comic" onValueChange={setUploadType} className="w-full">
@@ -174,7 +166,7 @@ export default   /**
                     </TabsContent>
                   </Tabs>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="summary">Story Summary</Label>
                   <Textarea 
@@ -189,7 +181,7 @@ export default   /**
                     This summary will be shown in the story details page below the excerpt.
                   </p>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="coverUpload">Cover Image</Label>
                   <Input 
@@ -203,12 +195,12 @@ export default   /**
                     This will be displayed as your story cover. Recommended size: 800x1200px.
                   </p>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="price">Price (ETH)</Label>
                   <Input id="price" type="number" step="0.01" min="0.01" placeholder="0.1" required />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="description">Description</Label>
                   <Textarea 
@@ -218,7 +210,7 @@ export default   /**
                   />
                 </div>
               </div>
-              
+
               <DialogFooter className="mt-6">
                 {errorMessage && (
                   <div className="text-red-500 mb-4 text-sm flex items-center gap-2">
@@ -235,7 +227,7 @@ export default   /**
           </DialogContent>
         </Dialog>
       </div>
-      
+
       <Dialog open={isSuccessDialogOpen} onOpenChange={setIsSuccessDialogOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -252,7 +244,7 @@ export default   /**
           </motion.div>
         </DialogContent>
       </Dialog>
-      
+
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -274,7 +266,7 @@ export default   /**
             </Button>
           </div>
         </Link>
-        
+
         <Link href="/nft-marketplace/text-stories">
           <div className="bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-950/40 dark:to-yellow-950/40 rounded-xl p-8 border border-amber-200 dark:border-amber-800 shadow-sm hover:shadow-md transition-all h-full flex flex-col">
             <div className="h-12 w-12 bg-amber-500/20 dark:bg-amber-500/10 rounded-full flex items-center justify-center mb-4">
@@ -291,7 +283,7 @@ export default   /**
           </div>
         </Link>
       </motion.div>
-      
+
       <div className="mt-8">
         <h2 className="text-2xl font-bold mb-4">Community Stories</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -339,7 +331,7 @@ export default   /**
                     </div>
                   )}
                 </div>
-                
+
                 <div className="mb-2">
                   {'tags' in nft && nft.tags.length > 0 && (
                     <div className="flex flex-wrap gap-1 mt-2">
@@ -356,7 +348,7 @@ export default   /**
                     </span>
                   )}
                 </div>
-                
+
                 <p className="text-sm text-muted-foreground line-clamp-2 my-2">
                   {'excerpt' in nft ? nft.excerpt : nft.description}
                 </p>
@@ -369,7 +361,7 @@ export default   /**
             </Card>
           ))}
         </div>
-        
+
         <div className="mt-8 flex justify-center">
           <div className="flex gap-4">
             <Link href="/nft-marketplace/comic-stories">
@@ -383,4 +375,4 @@ export default   /**
       </div>
     </div>
   );
-} 
+}

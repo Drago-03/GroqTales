@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.nft-gallery.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client"
 
@@ -23,16 +18,7 @@ interface Story {
   price: number;
   salesCount: number;
 }
-
-  /**
-   * Implements NFTGallery functionality
-   * 
-   * @function NFTGallery
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function NFTGallery() {
+  export function NFTGallery() {
   const [stories, setStories] = useState<Story[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -49,7 +35,7 @@ export function NFTGallery() {
       console.error("Failed to fetch stories:", error);
     } finally {
       setIsLoading(false);
-    }
+}
   };
 
   // Add a filter for best sellers based on a hypothetical salesCount property
@@ -61,8 +47,7 @@ export function NFTGallery() {
         <Loader2 className="h-8 w-8 animate-spin" />
       </div>
     );
-  }
-
+}
   return (
     <div className="flex flex-col gap-6 px-2 py-6 max-w-7xl mx-auto">
       <h2 className="text-2xl font-bold text-foreground pl-2">NFT Gallery</h2>

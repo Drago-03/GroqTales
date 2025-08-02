@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module app.story-tools.page.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -20,13 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Upload } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
-export default   /**
-   * Implements StoryToolsPage functionality
-   * 
-   * @function StoryToolsPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function StoryToolsPage() {
+export default function StoryToolsPage() {
   const [storyId, setStoryId] = useState("demo-story-" + Date.now());
   const [storyTitle, setStoryTitle] = useState("");
   const [storyGenre, setStoryGenre] = useState("");
@@ -43,25 +32,25 @@ export default   /**
     try {
       const text = await file.text();
       setStoryContent(text);
-      
+
       // Try to extract title from first line if not set
       if (!storyTitle) {
         const firstLine = text.split('\n')[0].trim();
         if (firstLine && firstLine.length < 100) {
           setStoryTitle(firstLine);
-        }
-      }
+}
+}
     } catch (error) {
       console.error("Error reading file:", error);
     } finally {
       setIsLoading(false);
-    }
+}
   };
 
   const handleSummaryGenerated = (summary: any) => {
     if (summary?.keywords) {
       setSummaryKeywords(summary.keywords);
-    }
+}
   };
 
   return (
@@ -81,7 +70,7 @@ export default   /**
             <TabsTrigger value="analysis">Story Analysis</TabsTrigger>
             <TabsTrigger value="recommendations">Recommendations</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="editor">
             <Card>
               <CardHeader>
@@ -109,7 +98,7 @@ export default   /**
                     />
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <label className="text-sm font-medium">Story Content</label>
@@ -124,7 +113,7 @@ export default   /**
                     onChange={(e) => setStoryContent(e.target.value)}
                   />
                 </div>
-                
+
                 <div className="flex justify-between items-center">
                   <Button
                     variant="outline"
@@ -146,7 +135,7 @@ export default   /**
                       onChange={handleFileUpload}
                     />
                   </Button>
-                  
+
                   <Button
                     onClick={() => setActiveTab("summary")}
                     disabled={!storyContent || storyContent.length < 100}
@@ -154,7 +143,7 @@ export default   /**
                     Continue to Summary
                   </Button>
                 </div>
-                
+
                 {storyContent && storyContent.length < 100 && (
                   <p className="text-sm text-red-500">
                     Please enter at least 100 characters to use the AI tools
@@ -163,7 +152,7 @@ export default   /**
               </CardContent>
             </Card>
           </TabsContent>
-          
+
           <TabsContent value="summary">
             <StorySummary
               storyId={storyId}
@@ -171,28 +160,28 @@ export default   /**
               title={storyTitle || "Story Summary"}
               onSummaryGenerated={handleSummaryGenerated}
             />
-            
+
             <div className="flex justify-end mt-4">
               <Button onClick={() => setActiveTab("analysis")}>
                 Continue to Analysis
               </Button>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="analysis">
             <StoryAnalysis
               content={storyContent}
               title={storyTitle}
               genre={storyGenre}
             />
-            
+
             <div className="flex justify-end mt-4">
               <Button onClick={() => setActiveTab("recommendations")}>
                 Continue to Recommendations
               </Button>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="recommendations">
             <StoryRecommendations
               storyId={storyId}
@@ -201,7 +190,7 @@ export default   /**
               genre={storyGenre}
               limit={4}
             />
-            
+
             <div className="flex justify-end mt-4">
               <Button onClick={() => setActiveTab("editor")}>
                 Back to Editor
@@ -209,7 +198,7 @@ export default   /**
             </div>
           </TabsContent>
         </Tabs>
-        
+
         <div className="mt-12 p-6 border rounded-xl bg-muted/20">
           <h2 className="text-xl font-semibold mb-4">About These Tools</h2>
           <div className="space-y-4 text-sm">
@@ -236,4 +225,4 @@ export default   /**
       </div>
     </div>
   );
-} 
+}

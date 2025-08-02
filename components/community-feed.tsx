@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import * as React from "react";
@@ -147,15 +148,7 @@ const dummyUsers = [
   { id: 10, name: "Ava Rodriguez", avatar: "https://images.unsplash.com/photo-1542080681-b52d485c3763?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" }
 ];
 
-  /**
-   * Implements PostActions functionality
-   * 
-   * @function PostActions
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-function PostActions({ post, onVote, onCommentClick }: { post: CommunityPost, onVote: (postId: string, vote: 'up' | 'down' | null) => void, onCommentClick: (postId: string) => void }) {
+function PostActions({  post, onVote, onCommentClick  }: {  post: CommunityPost, onVote: (postId: string, vote: 'up' | 'down' | null) => void, onCommentClick: (postId: string) => void  }) {
   return (
     <div className="flex items-center justify-between text-muted-foreground pt-3 border-t">
       <div className="flex items-center space-x-2">
@@ -177,33 +170,24 @@ function PostActions({ post, onVote, onCommentClick }: { post: CommunityPost, on
           <ArrowDown className="h-4 w-4" />
         </Button>
       </div>
-      
+
       <Button variant="ghost" size="sm" className="flex items-center" onClick={() => onCommentClick(post.id)}>
         <MessageSquare className="h-4 w-4 mr-1" />
         <span className="text-xs">{post.comments}</span>
       </Button>
-      
+
       <Button variant="ghost" size="sm" className="flex items-center">
         <Share2 className="h-4 w-4 mr-1" />
         <span className="text-xs">{post.shares}</span>
       </Button>
-      
+
       <Button variant="ghost" size="icon">
         <BookmarkPlus className="h-4 w-4" />
       </Button>
     </div>
   );
 }
-
-  /**
-   * Implements PostCard functionality
-   * 
-   * @function PostCard
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-function PostCard({ post, onVote, onCommentClick }: { post: CommunityPost, onVote: (postId: string, vote: 'up' | 'down' | null) => void, onCommentClick: (postId: string) => void }) {
+function PostCard({  post, onVote, onCommentClick  }: {  post: CommunityPost, onVote: (postId: string, vote: 'up' | 'down' | null) => void, onCommentClick: (postId: string) => void  }) {
   return (
     <Card className="overflow-hidden hover:border-primary/20 transition-all duration-200 bg-gradient-to-br from-background via-background to-background/80">
       <CardHeader className="p-4 pb-0 flex flex-row items-start justify-between space-y-0">
@@ -278,15 +262,6 @@ function PostCard({ post, onVote, onCommentClick }: { post: CommunityPost, onVot
     </Card>
   );
 }
-
-  /**
-   * Implements CreatePostForm functionality
-   * 
-   * @function CreatePostForm
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
 function CreatePostForm() {
   const [content, setContent] = useState('');
 
@@ -320,181 +295,7 @@ function CreatePostForm() {
       </CardContent>
     </Card>
   );
-}
-
-  /**
-   * Implements CommunityFeed functionality
-   * 
-   * @function CommunityFeed
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function CommunityFeed() {
-  const [posts, setPosts] = useState<CommunityPost[]>(dummyPosts);
-  const [commentInput, setCommentInput] = useState('');
-  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
-  const [usedComments, setUsedComments] = useState<{ [postId: string]: string[] }>({});
-
-  const handleVote = (postId: string, vote: 'up' | 'down' | null) => {
-    setPosts(prev => prev.map(post => {
-      if (post.id === postId) {
-        // Update vote counts based on previous vote and new vote
-        let upvotes = post.upvotes;
-        let downvotes = post.downvotes;
-        
-        // Remove previous vote
-        if (post.userVote === 'up') upvotes--;
-        if (post.userVote === 'down') downvotes--;
-        
-        // Add new vote
-        if (vote === 'up') upvotes++;
-        if (vote === 'down') downvotes++;
-        
-        return { ...post, userVote: vote, upvotes, downvotes };
-      }
-      return post;
-    }));
-  };
-
-  const handleCommentSubmit = (postId: string) => {
-    if (!commentInput.trim()) return;
-
-    // Here you would typically send the comment to a backend API
-    // For this example, we'll just update the post's comment count
-    setPosts(prev => prev.map(post => {
-      if (post.id === postId) {
-        return { ...post, comments: post.comments + 1 };
-      }
-      return post;
-    }));
-
-    setCommentInput('');
-    setSelectedPostId(null);
-  };
-
-  const handleCommentClick = (postId: string) => {
-    setSelectedPostId(postId === selectedPostId ? null : postId);
-    // Initialize used comments for this post if not already done
-    if (!usedComments[postId]) {
-      setUsedComments(prev => ({ ...prev, [postId]: [] }));
-    }
-  };
-
-  // Function to get a unique comment for a post
-  const getUniqueComment = (postId: string, tag: string) => {
-    const availableComments = getCommentsByTag(tag);
-    const used = usedComments[postId] || [];
-    const unusedComments = availableComments.filter(comment => !used.includes(comment));
-    
-    // If we've used all comments, reset the used list to start fresh
-    if (unusedComments.length === 0) {
-      setUsedComments(prev => ({ ...prev, [postId]: [] }));
-      return availableComments[Math.floor(Math.random() * availableComments.length)];
-    }
-    
-    const selectedComment = unusedComments[Math.floor(Math.random() * unusedComments.length)];
-    setUsedComments(prev => ({ ...prev, [postId]: [...(prev[postId] || []), selectedComment] }));
-    return selectedComment;
-  };
-
-  return (
-    <div className="max-w-4xl mx-auto">
-      <Tabs defaultValue="trending" className="mb-6">
-        <TabsList className="bg-card/30 border w-full">
-          <TabsTrigger value="trending" className="flex-1">Trending</TabsTrigger>
-          <TabsTrigger value="recent" className="flex-1">Recent</TabsTrigger>
-          <TabsTrigger value="following" className="flex-1">Following</TabsTrigger>
-        </TabsList>
-      </Tabs>
-      
-      <CreatePostForm />
-      
-      <div className="space-y-4">
-        {posts.map((post) => (
-          <div key={post.id}>
-            <PostCard post={post} onVote={handleVote} onCommentClick={() => handleCommentClick(post.id)} />
-            {selectedPostId === post.id && (
-              <div className="mt-2 ml-10">
-                <Card>
-                  <CardContent className="p-4">
-                    <h4 className="font-semibold mb-2">Comments ({post.comments})</h4>
-                    <div className="mb-4 max-h-60 overflow-y-auto">
-                      {/* Generate dummy comments matching the post's comment count */}
-                      {Array.from({ length: post.comments }).map((_, index) => {
-                        const user = dummyUsers[index % dummyUsers.length];
-                        return (
-                          <div key={index} className="border-b pb-2 mb-2 flex items-start space-x-2">
-                            <Avatar className="w-6 h-6">
-                              <AvatarImage src={user.avatar} alt={user.name} />
-                              <AvatarFallback>{user.name.substring(0, 2)}</AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <p className="text-sm font-medium">{user.name}: {getUniqueComment(post.id, post.tags[0] || 'General')}</p>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <Textarea 
-                      placeholder="Add a comment..." 
-                      className="resize-none focus-visible:ring-primary/20 bg-background/50 mb-2"
-                      rows={2}
-                      value={commentInput}
-                      onChange={(e) => setCommentInput(e.target.value)}
-                    />
-                    <Button 
-                      size="sm" 
-                      onClick={() => handleCommentSubmit(post.id)}
-                      disabled={!commentInput.trim()}
-                    >
-                      Post Comment
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-      
-      <div className="mt-8 flex justify-center">
-        <Button variant="outline" className="w-full max-w-xs">
-          Load More
-        </Button>
-      </div>
-    </div>
-  );
-}
-
-// Helper   /**
-   * Implements to functionality
-   * 
-   * @  /**
-   * Implements to functionality
-   * 
-   * @function to
-   * @returns {void|Promise<void>} Function return value
-   */
-function to
-   * @returns {void|Promise<void>} Function return value
-   */
-   /**
-   * Implements to functionality
-   * 
-   * @function to
-   * @returns {void|Promise<void>} Function return value
-   */
-
- function to get comments based on tag
-  /**
-   * Retrieves commentsbytag data
-   * 
-   * @function getCommentsByTag
-   * @returns {void|Promise<void>} Function return value
-   */
-
-function getCommentsByTag(tag: string) {
+} to get comments based on tag function getCommentsByTag(tag: string) {
   const generalComments = [
     "Great post!",
     "Really interesting thoughts.",
@@ -582,35 +383,9 @@ function getCommentsByTag(tag: string) {
 
   return comments;
 }
+// Helper to
 
-// Helper   /**
-   * Implements to functionality
-   * 
-   * @  /**
-   * Implements to functionality
-   * 
-   * @function to
-   * @returns {void|Promise<void>} Function return value
-   */
-function to
-   * @returns {void|Promise<void>} Function return value
-   */
-   /**
-   * Implements to functionality
-   * 
-   * @function to
-   * @returns {void|Promise<void>} Function return value
-   */
-
- function to generate random comment text based on post tags
-  /**
-   * Retrieves randomcomment data
-   * 
-   * @function getRandomComment
-   * @returns {void|Promise<void>} Function return value
-   */
-
-function getRandomComment(tag: string) {
+   */ to generate random comment text based on post tags function getRandomComment(tag: string) {
   const comments = getCommentsByTag(tag);
   return comments[Math.floor(Math.random() * comments.length)];
-} 
+}

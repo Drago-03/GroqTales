@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module app.components.DemoComponents.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -17,17 +12,7 @@ type CardProps = {
   children: ReactNode;
   className?: string;
   onClick?: () => void;
-}
-
-  /**
-   * Implements Card functionality
-   * 
-   * @function Card
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-function Card({
+} Card({
   title,
   children,
   className = "",
@@ -37,12 +22,12 @@ function Card({
     if (onClick && (e.key === "Enter" || e.key === " ")) {
       e.preventDefault();
       onClick();
-    }
+}
   };
-  
+
   // Use a button for interactive elements or div for non-interactive
   const Element = onClick ? 'button' : 'div';
-  
+
   return (
     <Element
       className={`bg-[var(--app-card-bg)] backdrop-blur-md rounded-xl shadow-lg border border-[var(--app-card-border)] overflow-hidden transition-all hover:shadow-xl ${className} ${onClick ? "cursor-pointer" : ""}`}
@@ -61,4 +46,4 @@ function Card({
       <div className="p-5">{children}</div>
     </Element>
   );
-} 
+}

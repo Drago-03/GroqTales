@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.featured-creators.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -67,19 +62,11 @@ const getMockCreators = () => {
       featured: true,
       rating: 4.6,
       tags: ["Contemporary", "Cultural", "Drama"]
-    }
+}
   ];
 };
 
-  /**
-   * Implements FeaturedCreators functionality
-   * 
-   * @function FeaturedCreators
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function FeaturedCreators() {
+  export function FeaturedCreators() {
   const [creators, setCreators] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -185,4 +172,4 @@ export function FeaturedCreators() {
       </div>
     </section>
   );
-} 
+}

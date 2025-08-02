@@ -8,25 +8,24 @@ interface AdminAction {
   content?: string;
   timestamp: Date;
 }
-
 // Keep track of admin actions for demo purpose
 let adminActions: AdminAction[] = [];
 
 /**
  * Check if the current user is logged in as admin
- */
+
 export function isAdminLoggedIn(): boolean {
   if (typeof window === 'undefined') return false;
-  
+
   try {
     // Check localStorage (primary method)
     const adminSession = localStorage.getItem('adminSession') === 'true';
-    
+
     // Also check the cookie (backup method)
     const hasCookie = document.cookie.split(';').some(cookie => {
       return cookie.trim().startsWith('adminSessionActive=true');
     });
-    
+
     // Return true if either authentication method is valid
     return adminSession || hasCookie;
   } catch (error) {
@@ -38,29 +37,26 @@ export function isAdminLoggedIn(): boolean {
     } catch (e) {
       console.error("Error checking admin authentication:", e);
       return false;
-    }
-  }
 }
-
+}
+}
 /**
  * Get the admin display name for interactions
- */
+
 export function getAdminDisplayName(): string {
   return "GroqTales";
 }
-
 /**
  * Get the admin avatar URL
- */
+
 export function getAdminAvatarUrl(): string {
   // In a real app, this would be a proper logo URL
   // Using a placeholder avatar for now
   return "https://api.dicebear.com/7.x/bottts/svg?seed=GroqTales&backgroundColor=6d28d9";
 }
-
 /**
  * Perform an admin action on a story or comment
- */
+
 export async function performAdminAction(action: Omit<AdminAction, 'timestamp'>): Promise<boolean> {
   // In a real app, this would call an API
   try {
@@ -68,48 +64,45 @@ export async function performAdminAction(action: Omit<AdminAction, 'timestamp'>)
       ...action,
       timestamp: new Date()
     };
-    
+
     // Store action for demo purposes
     adminActions.push(actionWithTimestamp);
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 300));
-    
+
     return true;
   } catch (error) {
     console.error("Admin action failed:", error);
     return false;
-  }
 }
-
+}
 /**
  * Get the admin's recent actions (for the dashboard)
- */
+
 export function getAdminActions(): AdminAction[] {
   return [...adminActions].sort((a, b) => 
     b.timestamp.getTime() - a.timestamp.getTime()
   );
 }
-
 /**
  * Clear admin action history
- */
+
 export function clearAdminActions(): void {
   adminActions = [];
 }
-
 /**
  * Hook for admin interactions that provides easy access to admin functionality
- */
+
 export function useAdminInteractions() {
   const { toast } = useToast();
-  
+
   const likeStory = async (storyId: string) => {
     const success = await performAdminAction({
       type: 'like',
       storyId
     });
-    
+
     if (success) {
       toast({
         title: "Action successful",
@@ -121,17 +114,16 @@ export function useAdminInteractions() {
         title: "Action failed",
         description: "Could not like this story"
       });
-    }
-    
+}
     return success;
   };
-  
+
   const dislikeStory = async (storyId: string) => {
     const success = await performAdminAction({
       type: 'dislike',
       storyId
     });
-    
+
     if (success) {
       toast({
         title: "Action successful",
@@ -143,18 +135,17 @@ export function useAdminInteractions() {
         title: "Action failed",
         description: "Could not dislike this story"
       });
-    }
-    
+}
     return success;
   };
-  
+
   const commentOnStory = async (storyId: string, content: string) => {
     const success = await performAdminAction({
       type: 'comment',
       storyId,
       content
     });
-    
+
     if (success) {
       toast({
         title: "Comment added",
@@ -166,17 +157,16 @@ export function useAdminInteractions() {
         title: "Comment failed",
         description: "Could not add your comment"
       });
-    }
-    
+}
     return success;
   };
-  
+
   const deleteStory = async (storyId: string) => {
     const success = await performAdminAction({
       type: 'delete',
       storyId
     });
-    
+
     if (success) {
       toast({
         title: "Story deleted",
@@ -188,17 +178,16 @@ export function useAdminInteractions() {
         title: "Delete failed",
         description: "Could not delete the story"
       });
-    }
-    
+}
     return success;
   };
-  
+
   const createPost = async (content: string) => {
     const success = await performAdminAction({
       type: 'post',
       content
     });
-    
+
     if (success) {
       toast({
         title: "Post created",
@@ -210,11 +199,10 @@ export function useAdminInteractions() {
         title: "Post failed",
         description: "Could not create your post"
       });
-    }
-    
+}
     return success;
   };
-  
+
   return {
     isAdmin: isAdminLoggedIn(),
     adminName: getAdminDisplayName(),
@@ -225,4 +213,4 @@ export function useAdminInteractions() {
     deleteStory,
     createPost
   };
-} 
+}

@@ -4,19 +4,11 @@ import { AgentRequest, AgentResponse } from "../types/api";
 /**
  * Sends a user message to the AgentKit backend API and retrieves the agent's response.
  *
- * @async
- * @  /**
-   * Implements callAgentAPI functionality
-   * 
-   * @function callAgentAPI
-   * @returns {void|Promise<void>} Function return value
-   */
-function callAgentAPI
- * @param {string} userMessage - The message sent by the user.
- * @returns {Promise<string | null>} The agent's response message or `null` if an error occurs.
+
+ * @ callAgentAPI
+
  *
- * @throws {Error} Logs an error if the request fails.
- */
+
 async function messageAgent(userMessage: string): Promise<string | null> {
   try {
     const response = await fetch("/api/agent", {
@@ -30,11 +22,8 @@ async function messageAgent(userMessage: string): Promise<string | null> {
   } catch (error) {
     console.error("Error communicating with agent:", error);
     return null;
-  }
 }
-
-/**
- *
+}
  * This hook manages interactions with the AI agent by making REST calls to the backend.
  * It also stores the local conversation state, tracking messages sent by the user and
  * responses from the agent.
@@ -47,17 +36,11 @@ async function messageAgent(userMessage: string): Promise<string | null> {
  * #### See Also
  * - The API logic in `/api/agent.ts`
  *
- * @returns {object} An object containing:
+
  * - `messages`: The conversation history.
- * - `sendMessage`: A   /**
-   * Implements to functionality
-   * 
-   * @function to
-   * @returns {void|Promise<void>} Function return value
-   */
- function to send a new message.
+ * - `sendMessage`: A to send a new message.
  * - `isThinking`: Boolean indicating if the agent is processing a response.
- */
+
 export function useAgent() {
   const [messages, setMessages] = useState<{ text: string; sender: "user" | "agent" }[]>([]);
   const [isThinking, setIsThinking] = useState(false);
@@ -65,8 +48,7 @@ export function useAgent() {
   /**
    * Sends a user message, updates local state, and retrieves the agent's response.
    *
-   * @param {string} input - The message from the user.
-   */
+
   const sendMessage = async (input: string) => {
     if (!input.trim()) return;
 
@@ -77,8 +59,7 @@ export function useAgent() {
 
     if (responseMessage) {
       setMessages(prev => [...prev, { text: responseMessage, sender: "agent" }]);
-    }
-
+}
     setIsThinking(false);
   };
 

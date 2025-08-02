@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import { useState, useEffect } from "react";
@@ -35,7 +36,6 @@ interface TextNFT {
   isOwned: boolean;
   owner: string;
 }
-
 // Mock data for text story NFTs
 const textNFTs: TextNFT[] = [
   {
@@ -145,26 +145,18 @@ const textNFTs: TextNFT[] = [
     tags: ["philosophy", "time", "consciousness"],
     isOwned: false,
     owner: ""
-  }
+}
 ];
 
-// Generate more text NFTs for demonstration
-  /**
-   * Implements generateMoreTextNFTs functionality
-   * 
-   * @function generateMoreTextNFTs
-   * @returns {void|Promise<void>} Function return value
-   */
-
-function generateMoreTextNFTs(count: number): TextNFT[] {
+// Generate more text NFTs for demonstration generateMoreTextNFTs(count: number): TextNFT[] {
   const genres = ["Mystery", "Sci-Fi", "Fantasy", "Cyberpunk", "Historical Fiction", "Philosophy", "Romance", "Horror", "Thriller"];
-  
+
   return Array.from({ length: count }, (_, index) => {
     const id = index + textNFTs.length + 1;
     const genre = genres[Math.floor(Math.random() * genres.length)];
     const wordCount = Math.floor(Math.random() * 15000) + 5000;
     const readTime = `${Math.ceil(wordCount / 300)} min`;
-    
+
     return {
       id,
       title: `Story #${id}`,
@@ -185,7 +177,6 @@ function generateMoreTextNFTs(count: number): TextNFT[] {
     };
   });
 }
-
 const allTextNFTs = [...textNFTs, ...generateMoreTextNFTs(18)];
 
 interface TextNFTDetailDialogProps {
@@ -193,20 +184,10 @@ interface TextNFTDetailDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onPurchase: (story: TextNFT) => void;
-}
-
-  /**
-   * Implements TextNFTDetailDialog functionality
-   * 
-   * @function TextNFTDetailDialog
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDetailDialogProps) {
+} TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDetailDialogProps) {
   const { account } = useWeb3();
   const { toast } = useToast();
-  
+
   const handlePurchase = () => {
     if (!account) {
       toast({
@@ -217,28 +198,27 @@ function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDeta
       // Trigger wallet connection
       document.getElementById("connect-wallet-button")?.click();
       return;
-    }
-    
+}
     toast({
       title: "Processing Payment",
       description: "Completing your purchase transaction...",
     });
-    
+
     // Simulate transaction processing
     setTimeout(() => {
       toast({
         title: "Purchase Successful!",
         description: `You now own "${story.title}"`,
       });
-      
+
       // Close current dialog
       onClose();
-      
+
       // Call the parent component's purchase handler
       onPurchase(story);
     }, 2000);
   };
-  
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col top-0 translate-y-0 mt-4">
@@ -255,7 +235,7 @@ function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDeta
             by {story.author}
           </DialogDescription>
         </DialogHeader>
-        
+
         <div className="flex flex-col md:flex-row gap-6 mt-4 flex-1 overflow-auto">
           <div className="md:w-1/3">
             <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg">
@@ -267,7 +247,7 @@ function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDeta
                 sizes="(max-width: 768px) 100vw, 33vw"
               />
             </div>
-            
+
             <div className="mt-4 grid grid-cols-2 gap-2">
               <div className="border rounded p-2 text-center">
                 <p className="text-xs text-muted-foreground">Word Count</p>
@@ -286,7 +266,7 @@ function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDeta
                 <p className="font-medium">{story.views}</p>
               </div>
             </div>
-            
+
             <div className="mt-4">
               <div className="flex flex-wrap gap-1">
                 {story.tags.map((tag) => (
@@ -297,7 +277,7 @@ function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDeta
               </div>
             </div>
           </div>
-          
+
           <div className="md:w-2/3 flex flex-col overflow-hidden">
             <Tabs defaultValue="excerpt" className="flex-1 overflow-hidden flex flex-col">
               <TabsList>
@@ -322,7 +302,7 @@ function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDeta
                       <h3 className="text-lg font-semibold mb-2">About This Story</h3>
                       <p className="text-muted-foreground">{story.description}</p>
                     </div>
-                    
+
                     <div>
                       <h3 className="text-lg font-semibold mb-2">Ownership Benefits</h3>
                       <ul className="space-y-2">
@@ -364,7 +344,7 @@ function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDeta
                 </TabsContent>
               </div>
             </Tabs>
-            
+
             <div className="mt-6 pt-4 border-t">
               <Button
                 onClick={handlePurchase}
@@ -380,14 +360,7 @@ function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDeta
     </Dialog>
   );
 }
-
-export default   /**
-   * Implements TextStoriesPage functionality
-   * 
-   * @function TextStoriesPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function TextStoriesPage() {
+export default function TextStoriesPage() {
   const [stories, setStories] = useState<TextNFT[]>(allTextNFTs);
   const [filteredStories, setFilteredStories] = useState<TextNFT[]>(allTextNFTs);
   const [searchTerm, setSearchTerm] = useState("");
@@ -397,13 +370,13 @@ export default   /**
   const [maxWordCount, setMaxWordCount] = useState<number | "">("");
   const [selectedStory, setSelectedStory] = useState<TextNFT | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-  
+
   const { account } = useWeb3();
   const { toast } = useToast();
 
   useEffect(() => {
     let result = stories;
-    
+
     // Apply search filter
     if (searchTerm) {
       result = result.filter(story => 
@@ -412,22 +385,18 @@ export default   /**
         story.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
         story.tags.some(tag => tag.includes(searchTerm.toLowerCase()))
       );
-    }
-    
+}
     // Apply genre filter
     if (selectedGenre) {
       result = result.filter(story => story.genre === selectedGenre);
-    }
-    
+}
     // Apply word count filters
     if (minWordCount !== "") {
       result = result.filter(story => story.wordCount >= Number(minWordCount));
-    }
-    
+}
     if (maxWordCount !== "") {
       result = result.filter(story => story.wordCount <= Number(maxWordCount));
-    }
-    
+}
     // Apply sorting
     switch (sortBy) {
       case "price-asc":
@@ -443,8 +412,7 @@ export default   /**
       default:
         result = [...result].sort((a, b) => (b.likes + b.views) - (a.likes + a.views));
         break;
-    }
-    
+}
     setFilteredStories(result);
   }, [stories, searchTerm, selectedGenre, sortBy, minWordCount, maxWordCount]);
 
@@ -466,14 +434,13 @@ export default   /**
         variant: "destructive",
       });
       return;
-    }
-    
+}
     // Update the story ownership in our state
     const updatedStories = stories.map(s => 
       s.id === story.id ? { ...s, isOwned: true, owner: account } : s
     );
     setStories(updatedStories);
-    
+
     toast({
       title: "Purchase Complete",
       description: `You now own "${story.title}"`,
@@ -487,10 +454,10 @@ export default   /**
       opacity: 1,
       transition: {
         staggerChildren: 0.1
-      }
-    }
+}
+}
   };
-  
+
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -500,8 +467,8 @@ export default   /**
         type: "spring",
         stiffness: 260,
         damping: 20
-      }
-    }
+}
+}
   };
 
   return (
@@ -517,7 +484,7 @@ export default   /**
           icon="book"
         />
       </motion.div>
-      
+
       {/* Filters Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -536,7 +503,7 @@ export default   /**
             />
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="flex items-center">
               <span className="mr-2 text-sm font-medium">Genre:</span>
@@ -552,7 +519,7 @@ export default   /**
                 ))}
               </select>
             </div>
-            
+
             <div className="flex items-center">
               <span className="mr-2 text-sm font-medium">Sort by:</span>
               <select
@@ -567,7 +534,7 @@ export default   /**
                 <option value="length">Longest Stories</option>
               </select>
             </div>
-            
+
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium">Word Count:</span>
               <Input
@@ -593,7 +560,7 @@ export default   /**
           </div>
         </div>
       </motion.div>
-      
+
       {/* Results Section */}
       <div className="mb-8">
         <div className="flex justify-between items-center mb-4">
@@ -607,7 +574,7 @@ export default   /**
             </Button>
           </Link>
         </div>
-        
+
         {filteredStories.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
@@ -645,13 +612,13 @@ export default   /**
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none" />
                       </div>
-                      
+
                       <div className="absolute bottom-0 left-0 right-0 p-4">
                         <h3 className="text-white font-bold text-lg line-clamp-2 drop-shadow-md">{story.title}</h3>
                         <p className="text-white/80 text-sm mt-1 drop-shadow-md">by {story.author}</p>
                       </div>
                     </div>
-                    
+
                     <CardContent className="flex-grow p-4 bg-card">
                       <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
                         <FileText className="h-4 w-4" />
@@ -660,10 +627,10 @@ export default   /**
                         <Clock className="h-4 w-4" />
                         <span>{story.readTime}</span>
                       </div>
-                      
+
                       <p className="text-sm line-clamp-3">{story.description}</p>
                     </CardContent>
-                    
+
                     <CardFooter className="border-t p-4 flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="flex items-center">
@@ -686,7 +653,7 @@ export default   /**
           </motion.div>
         )}
       </div>
-      
+
       {/* Story Detail Dialog */}
       {selectedStory && (
         <TextNFTDetailDialog
@@ -698,4 +665,4 @@ export default   /**
       )}
     </div>
   );
-} 
+}

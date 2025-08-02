@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.ui.tooltip-fallback.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 'use client';
 
@@ -24,7 +19,6 @@ interface TooltipProps {
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
-
 const Tooltip = ({ children, open, defaultOpen, onOpenChange }: TooltipProps) => {
   return <>{children}</>;
 };
@@ -32,7 +26,6 @@ const Tooltip = ({ children, open, defaultOpen, onOpenChange }: TooltipProps) =>
 interface TooltipTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean;
 }
-
 const TooltipTrigger = React.forwardRef<HTMLButtonElement, TooltipTriggerProps>(
   ({ className, asChild = false, ...props }, ref) => {
     return (
@@ -42,14 +35,13 @@ const TooltipTrigger = React.forwardRef<HTMLButtonElement, TooltipTriggerProps>(
         {...props}
       />
     );
-  }
+}
 );
 TooltipTrigger.displayName = 'TooltipTrigger';
 
 interface TooltipContentProps extends React.HTMLAttributes<HTMLDivElement> {
   sideOffset?: number;
 }
-
 const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
   ({ className, sideOffset = 4, ...props }, ref) => {
     return (
@@ -62,7 +54,7 @@ const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
         {...props}
       />
     );
-  }
+}
 );
 TooltipContent.displayName = 'TooltipContent';
 

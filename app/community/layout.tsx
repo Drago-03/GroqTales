@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module app.community.layout.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 import { metadata } from "./metadata";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,17 +7,11 @@ import Link from "next/link";
 
 export { metadata };
 
-export default   /**
-   * Implements CommunityLayout functionality
-   * 
-   * @function CommunityLayout
-   * @returns {void|Promise<void>} Function return value
-   */
- function CommunityLayout({
+export default function CommunityLayout({ 
   children,
-}: {
+ }: { 
   children: React.ReactNode;
-}) {
+ }) {
   return (
     <div className="container max-w-6xl mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
@@ -36,8 +25,8 @@ export default   /**
           </Link>
         </div>
       </div>
-      
+
       {children}
     </div>
   );
-} 
+}

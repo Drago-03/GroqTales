@@ -1,10 +1,4 @@
 /**
- * @fileoverview Core application functionality
- * @module src.blockchain.nft_data_fetch.js
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 import { Network, Alchemy } from 'alchemy-sdk';
 

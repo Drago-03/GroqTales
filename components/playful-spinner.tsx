@@ -1,25 +1,12 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.playful-spinner.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 
-  /**
-   * Implements PlayfulSpinner functionality
-   * 
-   * @function PlayfulSpinner
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function PlayfulSpinner() {
+  export function PlayfulSpinner() {
   return (
     <motion.div
       animate={{ rotate: 360 }}
@@ -29,4 +16,4 @@ export function PlayfulSpinner() {
       <Loader2 className="h-8 w-8 colorful-icon" />
     </motion.div>
   );
-} 
+}

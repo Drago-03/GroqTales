@@ -1,10 +1,4 @@
 /**
- * @fileoverview Core application functionality
- * @module app.nft-marketplace.metadata.ts
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 import { Metadata } from "next";
 
@@ -34,7 +28,7 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: "GroqTales NFT Marketplace"
-      }
+}
     ]
-  }
+}
 }; 

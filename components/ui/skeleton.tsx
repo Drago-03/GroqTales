@@ -1,22 +1,7 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.ui.skeleton.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
-import { cn } from '@/lib/utils';
-
-  /**
-   * Implements Skeleton functionality
-   * 
-   * @function Skeleton
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-function Skeleton({
+import { cn } from '@/lib/utils'; Skeleton({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
@@ -27,5 +12,4 @@ function Skeleton({
     />
   );
 }
-
 export { Skeleton };

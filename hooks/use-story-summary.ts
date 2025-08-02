@@ -15,7 +15,6 @@ interface StorySummary {
   createdAt: Date;
   updatedAt: Date;
 }
-
 interface UseStorySummaryResult {
   generateSummary: (storyId: string, content: string, model?: string, apiKey?: string) => Promise<StorySummary | null>;
   fetchSummary: (storyId: string) => Promise<StorySummary | null>;
@@ -24,22 +23,13 @@ interface UseStorySummaryResult {
   isLoading: boolean;
   error: string | null;
 }
-
-  /**
-   * Implements useStorySummary functionality
-   * 
-   * @function useStorySummary
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function useStorySummary(): UseStorySummaryResult {
+  export function useStorySummary(): UseStorySummaryResult {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   /**
    * Generate and store a summary for a story
-   */
+
   const generateSummary = async (
     storyId: string, 
     content: string, 
@@ -48,7 +38,7 @@ export function useStorySummary(): UseStorySummaryResult {
   ): Promise<StorySummary | null> => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const response = await fetch("/api/story-summaries", {
         method: "POST",
@@ -62,40 +52,38 @@ export function useStorySummary(): UseStorySummaryResult {
           apiKey,
         }),
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.error || "Failed to generate summary");
-      }
-      
+}
       return data.summary;
     } catch (err: any) {
       setError(err.message || "An error occurred");
       return null;
     } finally {
       setIsLoading(false);
-    }
+}
   };
 
   /**
    * Fetch a summary for a story
-   */
+
   const fetchSummary = async (storyId: string): Promise<StorySummary | null> => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const response = await fetch(`/api/story-summaries?storyId=${storyId}`, {
         method: "GET",
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.error || "Failed to fetch summary");
-      }
-      
+}
       // Return the first summary if there are multiple (should be only one per story)
       return data.summaries && data.summaries.length > 0 ? data.summaries[0] : null;
     } catch (err: any) {
@@ -103,12 +91,12 @@ export function useStorySummary(): UseStorySummaryResult {
       return null;
     } finally {
       setIsLoading(false);
-    }
+}
   };
 
   /**
    * Update a story summary
-   */
+
   const updateSummary = async (
     id: string, 
     updates: Partial<StorySummary>,
@@ -117,7 +105,7 @@ export function useStorySummary(): UseStorySummaryResult {
   ): Promise<StorySummary | null> => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const response = await fetch("/api/story-summaries", {
         method: "PUT",
@@ -131,47 +119,45 @@ export function useStorySummary(): UseStorySummaryResult {
           content,
         }),
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.error || "Failed to update summary");
-      }
-      
+}
       return data.summary;
     } catch (err: any) {
       setError(err.message || "An error occurred");
       return null;
     } finally {
       setIsLoading(false);
-    }
+}
   };
 
   /**
    * Delete a story summary
-   */
+
   const deleteSummary = async (id: string): Promise<boolean> => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const response = await fetch(`/api/story-summaries?id=${id}`, {
         method: "DELETE",
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.error || "Failed to delete summary");
-      }
-      
+}
       return true;
     } catch (err: any) {
       setError(err.message || "An error occurred");
       return false;
     } finally {
       setIsLoading(false);
-    }
+}
   };
 
   return {
@@ -182,4 +168,4 @@ export function useStorySummary(): UseStorySummaryResult {
     isLoading,
     error,
   };
-} 
+}

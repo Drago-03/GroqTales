@@ -1,3 +1,4 @@
+import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
@@ -106,16 +107,10 @@ const genreData = [
     description: "Stories featuring supernatural phenomena not explained by scientific understanding, often including ghosts, psychic abilities, or unexplained events.",
     popularElements: ["Ghosts", "Psychics", "Hauntings", "Supernatural Creatures", "Spiritual Elements"],
     famousWorks: ["The Shining", "Mexican Gothic", "The Haunting of Hill House"]
-  }
+}
 ];
 
-export default   /**
-   * Implements GenresPage functionality
-   * 
-   * @function GenresPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function GenresPage() {
+export default function GenresPage() {
   return (
     <div className="py-12 min-h-screen">
       <div className="container mx-auto px-4 max-w-6xl">
@@ -261,7 +256,7 @@ export default   /**
           <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-6">
             Not sure which genre best fits your story idea? Here are some questions to help you decide:
           </p>
-          
+
           <div className="space-y-4 max-w-3xl mx-auto">
             <div className="p-4 border border-border rounded-md bg-card">
               <p className="font-medium">What elements excite you most as a reader or viewer?</p>
@@ -270,7 +265,7 @@ export default   /**
                 or shows have most captivated you.
               </p>
             </div>
-            
+
             <div className="p-4 border border-border rounded-md bg-card">
               <p className="font-medium">What themes are you passionate about exploring?</p>
               <p className="text-sm text-muted-foreground mt-1">
@@ -278,7 +273,7 @@ export default   /**
                 examines technological ethics, while fantasy might explore power dynamics.
               </p>
             </div>
-            
+
             <div className="p-4 border border-border rounded-md bg-card">
               <p className="font-medium">What kind of emotional response do you want to evoke?</p>
               <p className="text-sm text-muted-foreground mt-1">
@@ -286,7 +281,7 @@ export default   /**
                 Consider what feelings you want to stir in your readers.
               </p>
             </div>
-            
+
             <div className="p-4 border border-border rounded-md bg-card">
               <p className="font-medium">Remember: Genres are guides, not rigid rules</p>
               <p className="text-sm text-muted-foreground mt-1">
@@ -299,4 +294,4 @@ export default   /**
       </div>
     </div>
   );
-} 
+}

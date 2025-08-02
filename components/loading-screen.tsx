@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import { motion } from "framer-motion";
@@ -9,71 +10,6 @@ interface LoadingScreenProps {
   fullScreen?: boolean;
   size?: "sm" | "md" | "lg";
 }
-
-  /**
-   * Implements LoadingScreen functionality
-   * 
-   * @function LoadingScreen
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function LoadingScreen({ 
-  message = "Loading...", 
-  fullScreen = false,
-  size = "md"
-}: LoadingScreenProps) {
-  // Size configurations
-  const sizes = {
-    sm: {
-      container: "h-20",
-      icon: "w-6 h-6",
-      text: "text-sm",
-      orbit: "w-16 h-16"
-    },
-    md: {
-      container: "h-32",
-      icon: "w-8 h-8",
-      text: "text-base",
-      orbit: "w-24 h-24"
-    },
-    lg: {
-      container: "h-48",
-      icon: "w-10 h-10",
-      text: "text-lg",
-      orbit: "w-32 h-32"
-    }
-  };
-
-  const currentSize = sizes[size];
-
-  // Simple fallback for SSR
-  const StaticFallback = () => (
-    <div className={`
-      flex flex-col items-center justify-center
-      ${fullScreen ? "fixed inset-0 z-50 bg-background" : "w-full py-8"}
-    `}>
-      <div className={currentSize.container}>
-        <div className="flex items-center justify-center h-full">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-        </div>
-      </div>
-      {message && (
-        <p className={`text-muted-foreground ${currentSize.text} mt-4`}>
-          {message}
-        </p>
-      )}
-    </div>
-  );
-  
-  return (
-    <ClientOnly fallback={<StaticFallback />}>
-    <div className={`
-      flex flex-col items-center justify-center
-      ${fullScreen ? "fixed inset-0 z-50 bg-background" : "w-full py-8"}
-    `}>
-      <div className={`relative ${currentSize.orbit}`}>
-        {/* Central element */}
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.div 
             animate={{ 
@@ -90,7 +26,7 @@ export function LoadingScreen({
             <BookText className={`text-primary ${currentSize.icon}`} />
           </motion.div>
         </div>
-        
+
         {/* Orbiting elements */}
         <motion.div
           animate={{ rotate: 360 }}
@@ -116,7 +52,7 @@ export function LoadingScreen({
           >
             <div className="bg-purple-500 w-2 h-2 rounded-full" />
           </motion.div>
-          
+
           {/* Bottom element */}
           <motion.div 
             className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2"
@@ -127,7 +63,7 @@ export function LoadingScreen({
               <Cpu className="w-2 h-2 text-white" />
             </div>
           </motion.div>
-          
+
           {/* Left element */}
           <motion.div 
             className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2"
@@ -136,7 +72,7 @@ export function LoadingScreen({
           >
             <div className="bg-amber-500/80 w-3 h-3 rounded-full" />
           </motion.div>
-          
+
           {/* Right element */}
           <motion.div 
             className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2"
@@ -149,7 +85,7 @@ export function LoadingScreen({
           </motion.div>
         </motion.div>
       </div>
-      
+
       {message && (
         <div className="mt-4">
           <motion.p 
@@ -159,7 +95,7 @@ export function LoadingScreen({
           >
             {message}
           </motion.p>
-          
+
           <motion.div 
             className="mt-2 w-full h-1 bg-muted/30 rounded-full overflow-hidden"
             initial={{ opacity: 0 }}
@@ -186,5 +122,4 @@ export function LoadingScreen({
     </ClientOnly>
   );
 }
-
 export default LoadingScreen; 

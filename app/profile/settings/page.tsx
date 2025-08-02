@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import { useState } from "react";
@@ -76,35 +77,18 @@ const defaultValues: ProfileFormValues = {
   primaryGenre: "sci-fi",
 };
 
-export default   /**
-   * Implements SettingsPage functionality
-   * 
-   * @function SettingsPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function SettingsPage() {
+export default function SettingsPage() {
   const [avatar, setAvatar] = useState<string>("https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3");
-  
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
     mode: "onChange",
-  });
-
-    /**
-   * Implements onSubmit functionality
-   * 
-   * @function onSubmit
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-  function onSubmit(data: ProfileFormValues) {
+  }); onSubmit(data: ProfileFormValues) {
     // In a real app, this would save the data to the server
     console.log(data);
     // Show success message or redirect
-  }
-
+}
   return (
     <div className="container max-w-5xl mx-auto py-12 px-4 min-h-screen">
       <div className="mb-8">
@@ -309,7 +293,7 @@ export default   /**
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">Email Notifications</h3>
                   <Separator className="my-4" />
-                  
+
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
@@ -322,7 +306,7 @@ export default   /**
                       </div>
                       <Switch id="comments" defaultChecked />
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <label htmlFor="likes" className="text-sm font-medium">
@@ -334,7 +318,7 @@ export default   /**
                       </div>
                       <Switch id="likes" defaultChecked />
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <label htmlFor="followers" className="text-sm font-medium">
@@ -346,7 +330,7 @@ export default   /**
                       </div>
                       <Switch id="followers" defaultChecked />
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <label htmlFor="nft-sale" className="text-sm font-medium">
@@ -358,7 +342,7 @@ export default   /**
                       </div>
                       <Switch id="nft-sale" defaultChecked />
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <label htmlFor="newsletter" className="text-sm font-medium">
@@ -372,11 +356,11 @@ export default   /**
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">In-App Notifications</h3>
                   <Separator className="my-4" />
-                  
+
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
@@ -389,7 +373,7 @@ export default   /**
                       </div>
                       <Switch id="app-comments" defaultChecked />
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <label htmlFor="app-likes" className="text-sm font-medium">
@@ -401,7 +385,7 @@ export default   /**
                       </div>
                       <Switch id="app-likes" defaultChecked />
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <label htmlFor="app-followers" className="text-sm font-medium">
@@ -413,7 +397,7 @@ export default   /**
                       </div>
                       <Switch id="app-followers" defaultChecked />
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <label htmlFor="app-messages" className="text-sm font-medium">
@@ -472,11 +456,11 @@ export default   /**
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">NFT Settings</h3>
                   <Separator className="my-4" />
-                  
+
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
@@ -489,7 +473,7 @@ export default   /**
                       </div>
                       <Switch id="auto-sign" />
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <label htmlFor="nft-visibility" className="text-sm font-medium">
@@ -501,7 +485,7 @@ export default   /**
                       </div>
                       <Switch id="nft-visibility" defaultChecked />
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <label htmlFor="gas-optimization" className="text-sm font-medium">
@@ -515,11 +499,11 @@ export default   /**
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">Transaction History</h3>
                   <Separator className="my-4" />
-                  
+
                   <div className="space-y-2">
                     <div className="flex justify-between items-center p-3 border rounded-md bg-card">
                       <div className="flex items-center gap-3">
@@ -536,7 +520,7 @@ export default   /**
                         <p className="text-xs text-muted-foreground">0.05 ETH gas fee</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex justify-between items-center p-3 border rounded-md bg-card">
                       <div className="flex items-center gap-3">
                         <div className="bg-blue-500/10 p-1.5 rounded-full">
@@ -553,7 +537,7 @@ export default   /**
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="flex justify-center mt-4">
                     <Button variant="outline">View All Transactions</Button>
                   </div>
@@ -577,7 +561,7 @@ export default   /**
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">Visibility Settings</h3>
                   <Separator className="my-4" />
-                  
+
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
@@ -590,7 +574,7 @@ export default   /**
                       </div>
                       <Switch id="profile-visibility" defaultChecked />
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <label htmlFor="story-comments" className="text-sm font-medium">
@@ -602,7 +586,7 @@ export default   /**
                       </div>
                       <Switch id="story-comments" defaultChecked />
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <label htmlFor="show-activity" className="text-sm font-medium">
@@ -614,7 +598,7 @@ export default   /**
                       </div>
                       <Switch id="show-activity" defaultChecked />
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <label htmlFor="show-reading" className="text-sm font-medium">
@@ -628,11 +612,11 @@ export default   /**
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">Account Security</h3>
                   <Separator className="my-4" />
-                  
+
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
@@ -648,7 +632,7 @@ export default   /**
                         <Switch id="two-factor" />
                       </div>
                     </div>
-                    
+
                     <div className="mt-4">
                       <Button variant="outline" className="w-full sm:w-auto flex items-center gap-2" size="sm">
                         <Shield className="h-4 w-4" />
@@ -657,11 +641,11 @@ export default   /**
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-4">
                   <h3 className="text-lg font-medium">Data & Privacy</h3>
                   <Separator className="my-4" />
-                  
+
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
@@ -674,7 +658,7 @@ export default   /**
                       </div>
                       <Switch id="data-collection" defaultChecked />
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <label htmlFor="personalization" className="text-sm font-medium">
@@ -687,7 +671,7 @@ export default   /**
                       <Switch id="personalization" defaultChecked />
                     </div>
                   </div>
-                  
+
                   <div className="flex gap-4">
                     <Button variant="outline" className="flex items-center gap-2" size="sm">
                       <EyeOff className="h-4 w-4" />
@@ -707,4 +691,4 @@ export default   /**
       </Tabs>
     </div>
   );
-} 
+}

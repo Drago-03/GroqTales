@@ -1,25 +1,12 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module app.components.footer.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
 import Link from "next/link";
 import { Github } from "lucide-react";
 
-  /**
-   * Implements Footer functionality
-   * 
-   * @function Footer
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function Footer() {
+  export function Footer() {
   return (
     <footer className="border-t bg-background/80 backdrop-blur-sm">
       <div className="container mx-auto px-4 py-8">
@@ -106,4 +93,4 @@ export function Footer() {
       </div>
     </footer>
   );
-} 
+}

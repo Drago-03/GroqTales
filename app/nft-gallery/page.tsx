@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import Image from "next/image";
@@ -36,7 +37,6 @@ interface NFTStory {
   sales?: number;
   isTop10?: boolean;
 }
-
 // Mock data for top NFT stories
 const topNftData: NFTStory[] = [
   {
@@ -179,17 +179,7 @@ const topNftData: NFTStory[] = [
     sales: 76,
     description: "A story told through fragmented time periods, where the protagonist must piece together reality from disjointed moments."
   },
-];
-
-  /**
-   * Implements generateRemainingNfts functionality
-   * 
-   * @function generateRemainingNfts
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-function generateRemainingNfts(): NFTStory[] {
+]; generateRemainingNfts(): NFTStory[] {
   const backgroundImages = [
     "photo-1635776062127-d379bfcba9f8",
     "photo-1518709766631-a6a7f45921c3",
@@ -206,7 +196,7 @@ function generateRemainingNfts(): NFTStory[] {
     const hue = (nftIndex * 137.5) % 360;
     const seed = `NFT${nftIndex}`;
     const sales = Math.floor(Math.random() * 100); // Random sales between 0-99
-    
+
     return {
       id: nftIndex,
       title: `NFT Story #${nftIndex}`,
@@ -223,16 +213,9 @@ function generateRemainingNfts(): NFTStory[] {
     };
   });
 }
-
 const nftData: NFTStory[] = [...topNftData, ...generateRemainingNfts()];
 
-export default   /**
-   * Implements NftGalleryPage functionality
-   * 
-   * @function NftGalleryPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function NftGalleryPage() {
+export default function NftGalleryPage() {
   const [imageError, setImageError] = useState<{[key: string]: boolean}>({});
   const [activeTab, setActiveTab] = useState("trending");
   const [selectedGenre, setSelectedGenre] = useState("all");
@@ -255,7 +238,7 @@ export default   /**
   // Sort NFTs based on active tab
   const getSortedNFTs = () => {
     let sortedNFTs = [...nftData];
-    
+
     // First sort based on tab
     switch (activeTab) {
       case "bestsellers":
@@ -272,11 +255,10 @@ export default   /**
           return scoreB - scoreA;
         });
         break;
-    }
-
+}
     // Then filter by genre
     sortedNFTs = filterByGenre(sortedNFTs);
-    
+
     return sortedNFTs.slice(0, 10);
   };
 
@@ -298,8 +280,7 @@ export default   /**
         variant: "destructive",
       });
       return;
-    }
-
+}
     toast({
       title: "Purchase Initiated",
       description: "Starting the NFT purchase process...",
@@ -321,8 +302,7 @@ export default   /**
         variant: "destructive",
       });
       return;
-    }
-
+}
     toast({
       title: "Liked!",
       description: "You liked this story",
@@ -336,7 +316,7 @@ export default   /**
           <h1 className="text-3xl font-bold mb-2">NFT Gallery</h1>
           <p className="text-muted-foreground">Explore unique AI-generated story NFTs from our community</p>
         </div>
-        
+
         <div className="flex flex-col sm:flex-row gap-3">
           <Link href="/nft-marketplace" passHref>
             <Button className="bg-amber-600 hover:bg-amber-700 text-white flex items-center gap-2">
@@ -346,7 +326,7 @@ export default   /**
           </Link>
         </div>
       </div>
-      
+
       <Tabs defaultValue="top10" className="w-full mb-8">
         <TabsList>
           <TabsTrigger value="trending">Trending</TabsTrigger>
@@ -456,7 +436,7 @@ export default   /**
         <h2 className="text-2xl font-bold mb-6">
           {selectedGenre === "all" ? "Top 100 NFT Stories" : `Top 100 ${selectedGenre.charAt(0).toUpperCase() + selectedGenre.slice(1)} Stories`}
         </h2>
-        
+
         <div className="overflow-auto">
           <table className="w-full border-collapse">
             <thead>
@@ -568,4 +548,4 @@ export default   /**
       </div>
     </div>
   );
-} 
+}

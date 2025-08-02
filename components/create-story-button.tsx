@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.create-story-button.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -16,15 +11,7 @@ import { TextStoryForm } from "@/components/text-story-form";
 import { ImageStoryForm } from "@/components/image-story-form";
 import { PenLine, ImagePlus } from "lucide-react";
 
-  /**
-   * Implements CreateStoryButton functionality
-   * 
-   * @function CreateStoryButton
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function CreateStoryButton() {
+  export function CreateStoryButton() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -39,7 +26,7 @@ export function CreateStoryButton() {
           <DialogHeader>
             <DialogTitle className="gradient-heading">Create a New Story</DialogTitle>
           </DialogHeader>
-          
+
           <Tabs defaultValue="text" className="mt-4">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="text" className="data-[state=active]:theme-gradient-bg data-[state=active]:text-white">
@@ -51,11 +38,11 @@ export function CreateStoryButton() {
                 Image Story
               </TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="text">
               <TextStoryForm onSuccess={() => setOpen(false)} />
             </TabsContent>
-            
+
             <TabsContent value="image">
               <ImageStoryForm onSuccess={() => setOpen(false)} />
             </TabsContent>

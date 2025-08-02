@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module app.community.creators.page.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -222,17 +217,11 @@ const getMockCreators = () => {
       achievements: ["Best Short Story Collection"],
       totalLikes: 6200,
       verified: false
-    }
+}
   ];
 };
 
-export default   /**
-   * Implements CreatorsPage functionality
-   * 
-   * @function CreatorsPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function CreatorsPage() {
+export default function CreatorsPage() {
   const [creators, setCreators] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -246,7 +235,7 @@ export default   /**
       setCreators(getMockCreators());
       setIsLoading(false);
     }, 800);
-    
+
     return () => clearTimeout(timer);
   }, []);
 
@@ -255,7 +244,7 @@ export default   /**
     // First filter by active tab
     if (activeTab === "featured" && !creator.featured) return false;
     if (activeTab === "verified" && !creator.verified) return false;
-    
+
     // Then filter by search term
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
@@ -264,14 +253,13 @@ export default   /**
           !creator.bio.toLowerCase().includes(term) &&
           !creator.tags.some((tag: string) => tag.toLowerCase().includes(term))) {
         return false;
-      }
-    }
-    
+}
+}
     // Finally, filter by dropdown filter
     if (filterOption === "followers" && creator.followers < 5000) return false;
     if (filterOption === "stories" && creator.stories < 10) return false;
     if (filterOption === "nfts" && creator.nfts < 5) return false;
-    
+
     return true;
   }).sort((a, b) => b.followers - a.followers);
 
@@ -299,7 +287,7 @@ export default   /**
             Creator
           </Badge>
         );
-    }
+}
   };
 
   const renderCreatorCard = (creator: any, index: number) => (
@@ -319,7 +307,7 @@ export default   /**
             </Badge>
           </div>
         )}
-        
+
         <CardContent className="p-6">
           <div className="flex items-start space-x-4">
             <div className="relative">
@@ -335,7 +323,7 @@ export default   /**
                 </div>
               )}
             </div>
-            
+
             <div className="flex-1">
               <div className="flex items-center justify-between">
                 <div>
@@ -346,9 +334,9 @@ export default   /**
                   {renderBadge(creator.badge)}
                 </div>
               </div>
-              
+
               <p className="text-sm mt-2 line-clamp-2">{creator.bio}</p>
-              
+
               <div className="flex flex-wrap gap-1 mt-3">
                 {creator.tags.map((tag: string) => (
                   <Badge key={tag} variant="outline" className="text-xs">
@@ -356,7 +344,7 @@ export default   /**
                   </Badge>
                 ))}
               </div>
-              
+
               <div className="grid grid-cols-4 gap-2 mt-4">
                 <div className="flex flex-col items-center border rounded-md p-2">
                   <span className="text-xs text-muted-foreground">Followers</span>
@@ -378,7 +366,7 @@ export default   /**
                   </span>
                 </div>
               </div>
-              
+
               {creator.achievements.length > 0 && (
                 <div className="mt-4">
                   <p className="text-xs text-muted-foreground mb-1">Achievements:</p>
@@ -399,7 +387,7 @@ export default   /**
               )}
             </div>
           </div>
-          
+
           <div className="flex justify-between mt-6">
             <Button variant="outline" size="sm" asChild>
               <Link href={`/community/creators/${creator.id}`}>
@@ -450,7 +438,7 @@ export default   /**
           </Select>
         </div>
       </div>
-      
+
       <div className="bg-accent/10 rounded-lg p-3">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-3">
@@ -460,7 +448,7 @@ export default   /**
           </TabsList>
         </Tabs>
       </div>
-      
+
       {isLoading ? (
         <div className="grid grid-cols-1 gap-6">
           {Array.from({ length: 5 }).map((_, i) => (
@@ -509,13 +497,13 @@ export default   /**
           </div>
         </div>
       )}
-      
+
       {filteredCreators.length > 0 && filteredCreators.length < creators.length && (
         <div className="text-center mt-4 text-sm text-muted-foreground">
           Showing {filteredCreators.length} of {creators.length} creators
         </div>
       )}
-      
+
       <div className="mt-12 p-6 border rounded-lg bg-muted/10">
         <h2 className="text-xl font-bold mb-3">Become a Featured Creator</h2>
         <p className="mb-4 text-muted-foreground">
@@ -547,4 +535,4 @@ export default   /**
       </div>
     </div>
   );
-} 
+}

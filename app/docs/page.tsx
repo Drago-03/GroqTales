@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module app.docs.page.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -41,18 +36,12 @@ const FloatingDoodles = () => (
   </div>
 );
 
-export default   /**
-   * Implements DocsPage functionality
-   * 
-   * @function DocsPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function DocsPage() {
+export default function DocsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
       <FloatingDoodles />
       <FloatingGithub />
-      
+
       <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="max-w-3xl mx-auto mb-12 text-center">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent mb-4">
@@ -229,4 +218,4 @@ export default   /**
       </div>
     </div>
   );
-} 
+}

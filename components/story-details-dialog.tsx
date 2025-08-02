@@ -1,3 +1,4 @@
+import React from "react";
 import * as React from 'react';
 import Link from 'next/link';
 import {
@@ -22,88 +23,7 @@ interface StoryDetailsDialogProps {
   onPurchase?: () => void;
   onComment?: () => void;
   onLike?: () => void;
-}
-
-  /**
-   * Implements StoryDetailsDialog functionality
-   * 
-   * @function StoryDetailsDialog
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function StoryDetailsDialog({
-  isOpen,
-  onClose,
-  story,
-  onPurchase,
-  onComment,
-  onLike,
-}: StoryDetailsDialogProps) {
-  const { account } = useWeb3();
-  const { toast } = useToast();
-
-  const handlePurchase = () => {
-    if (!account) {
-      toast({
-        title: "Connect Wallet",
-        description: "Please connect your wallet to purchase this NFT",
-        variant: "destructive",
-      });
-      // Trigger wallet connection
-      if (typeof document !== 'undefined') {
-        document.getElementById("connect-wallet-button")?.click();
-      }
-      return;
-    }
-    
-    toast({
-      title: "Processing Payment",
-      description: "Completing your purchase transaction...",
-    });
-    
-    // Simulate transaction processing
-    setTimeout(() => {
-      toast({
-        title: "Purchase Successful!",
-        description: `You now own "${story.title}"`,
-      });
-      
-      // Close current dialog
-      onClose();
-      
-      // Call the parent component's purchase handler
-      onPurchase?.();
-    }, 2000);
-  };
-
-  // Prevent dialog from closing when clicking inside
-  const handleContentClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
-
-  return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent 
-        className="max-w-3xl h-[90vh] flex flex-col overflow-hidden top-0 translate-y-0 mt-4"
-        onClick={handleContentClick}
-      >
-        <DialogHeader className="flex-shrink-0">
-          <DialogTitle className="text-2xl">{story.title}</DialogTitle>
-          <DialogDescription>
-            By {story.author} • {new Date().toLocaleDateString()}
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="flex-1 overflow-y-auto mt-4">
-          <div className="relative aspect-video w-full mb-6">
-            <img
-              src={story.coverImage || story.image}
-              alt={story.title}
-              className="w-full h-full object-cover rounded-lg"
-            />
-            
-            {/* Purchase Badge */}
+}}
             {story.price && (
               <div className="absolute top-4 right-4 bg-black/80 text-white px-3 py-1.5 rounded-full text-sm font-medium flex items-center">
                 <ShoppingCart className="h-3.5 w-3.5 mr-1.5 text-amber-400" />
@@ -194,4 +114,4 @@ export function StoryDetailsDialog({
       </DialogContent>
     </Dialog>
   );
-} 
+}

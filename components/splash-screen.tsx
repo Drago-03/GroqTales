@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import { useEffect, useState } from "react";
@@ -8,87 +9,12 @@ interface SplashScreenProps {
   onComplete?: () => void;
   minDisplayTime?: number; // minimum time to display in ms
 }
-
-  /**
-   * Implements SplashScreen functionality
-   * 
-   * @function SplashScreen
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function SplashScreen({
-  onComplete,
-  minDisplayTime = 2000,
-}: SplashScreenProps) {
-  const [show, setShow] = useState(true);
-
-  useEffect(() => {
-    const startTime = Date.now();
-    
-    // This ensures the splash screen shows for at least minDisplayTime
-    // even if the page loads faster
-    const timer = setTimeout(() => {
-      const elapsedTime = Date.now() - startTime;
-      const remainingTime = Math.max(0, minDisplayTime - elapsedTime);
-      
-      setTimeout(() => {
-        setShow(false);
-        if (onComplete) onComplete();
-      }, remainingTime);
-    }, 500); // Small delay to ensure animations start properly
-    
-    return () => clearTimeout(timer);
-  }, [minDisplayTime, onComplete]);
-
-  // Use a random book title generator for the loading text
-  const bookTitles = [
-    "Generating cosmic tales...",
-    "Weaving digital narratives...",
-    "Minting story tokens...",
-    "Crafting magical plots...",
-    "Enchanting characters...",
-    "Summoning creative worlds...",
-    "Building story blocks...",
-    "Connecting to the storyverse...",
-  ];
-  
-  const [currentTitleIndex, setCurrentTitleIndex] = useState(0);
-  
-  // Cycle through book titles
-  useEffect(() => {
-    if (!show) return;
-    
-    const interval = setInterval(() => {
-      setCurrentTitleIndex((prev) => (prev + 1) % bookTitles.length);
-    }, 2000);
-    
-    return () => clearInterval(interval);
-  }, [show, bookTitles.length]);
-
-  return (
-    <AnimatePresence>
-      {show && (
-        <motion.div
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background"
-        >
-          <div className="flex flex-col items-center justify-center max-w-md text-center space-y-10">
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="relative w-32 h-32"
-            >
-              {/* Main logo */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-24 h-24 rounded-full theme-gradient-bg flex items-center justify-center">
                   <BookOpen className="w-12 h-12 text-white" />
                 </div>
               </div>
-              
+
               {/* Orbiting NFT elements */}
               <motion.div
                 animate={{ 
@@ -110,7 +36,7 @@ export function SplashScreen({
                     <Sparkles className="w-4 h-4 text-white" />
                   </div>
                 </motion.div>
-                
+
                 <motion.div 
                   className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2"
                   animate={{ scale: [1, 1.2, 1] }}
@@ -120,7 +46,7 @@ export function SplashScreen({
                     <Wand2 className="w-4 h-4 text-white" />
                   </div>
                 </motion.div>
-                
+
                 <motion.div 
                   className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2"
                   animate={{ scale: [1, 1.2, 1] }}
@@ -132,7 +58,7 @@ export function SplashScreen({
                     </svg>
                   </div>
                 </motion.div>
-                
+
                 <motion.div 
                   className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2"
                   animate={{ scale: [1, 1.2, 1] }}
@@ -156,7 +82,7 @@ export function SplashScreen({
               >
                 GroqTales
               </motion.h1>
-              
+
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -177,7 +103,7 @@ export function SplashScreen({
                 </AnimatePresence>
               </motion.div>
             </div>
-            
+
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -206,5 +132,4 @@ export function SplashScreen({
     </AnimatePresence>
   );
 }
-
 export default SplashScreen; 

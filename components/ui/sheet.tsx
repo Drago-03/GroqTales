@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.ui.sheet.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 'use client';
 
@@ -54,7 +49,7 @@ const sheetVariants = cva(
     defaultVariants: {
       side: 'right',
     },
-  }
+}
 );
 
 interface SheetContentProps

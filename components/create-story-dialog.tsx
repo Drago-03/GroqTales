@@ -1,10 +1,5 @@
+import React from "react";
 /**
- * @fileoverview Core application functionality
- * @module components.create-story-dialog.tsx
- * @version 1.0.0
- * @author GroqTales Team
- * @since 2025-08-02
- */
 
 "use client";
 
@@ -21,7 +16,6 @@ interface CreateStoryDialogProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
 interface CreateOption {
   id: string;
   title: string;
@@ -29,7 +23,6 @@ interface CreateOption {
   icon: React.ReactNode;
   path: string;
 }
-
 const createOptions: CreateOption[] = [
   {
     id: "ai",
@@ -51,52 +44,43 @@ const createOptions: CreateOption[] = [
     description: "Create a story with images",
     icon: <Camera className="w-5 h-5" />,
     path: "/create"
-  }
+}
 ];
 
-  /**
-   * Implements CreateStoryDialog functionality
-   * 
-   * @function CreateStoryDialog
-   * @returns {void|Promise<void>} Function return value
-   */
-
-
-export function CreateStoryDialog({ isOpen, onClose }: CreateStoryDialogProps) {
+  export function CreateStoryDialog({ isOpen, onClose }: CreateStoryDialogProps) {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [selectedFormat, setSelectedFormat] = useState<string>("free");
   const [selectedGenre, setSelectedGenre] = useState<string>("");
   const router = useRouter();
-  
+
   const handleOptionSelect = (option: CreateOption) => {
     setSelectedOption(option.id);
     setCurrentStep(2);
   };
-  
+
   const handleBack = () => {
     setCurrentStep(1);
     setSelectedOption(null);
   };
-  
+
   const handleFormatChange = (value: string) => {
     setSelectedFormat(value);
   };
-  
+
   const handleGenreChange = (value: string) => {
     setSelectedGenre(value);
   };
-  
+
   const handleContinue = () => {
     if (!selectedOption) return;
-    
+
     // Create a path based on the selections
     let path = "/create";
-    
+
     if (selectedOption === "ai") {
       path = "/create/ai-story";
-    }
-    
+}
     try {
       // Store the selection in localStorage with stringified JSON
       const storyData = {
@@ -105,23 +89,22 @@ export function CreateStoryDialog({ isOpen, onClose }: CreateStoryDialogProps) {
         genre: selectedGenre,
         timestamp: new Date().getTime()
       };
-      
+
       // Store to localStorage
       if (typeof window !== 'undefined' && window.localStorage) {
         localStorage.setItem('storyCreationData', JSON.stringify(storyData));
-        
+
         // Verify the data was saved correctly
         const savedData = localStorage.getItem('storyCreationData');
         if (!savedData) {
           throw new Error("Failed to save story creation data");
-        }
-      }
-      
+}
+}
       console.log("Story creation data saved successfully:", storyData);
-      
+
       // Close the dialog first to avoid UI issues
       onClose();
-      
+
       // Force a slight delay to ensure the dialog is closed
       // and localStorage is updated before navigation
       setTimeout(() => {
@@ -134,13 +117,12 @@ export function CreateStoryDialog({ isOpen, onClose }: CreateStoryDialogProps) {
       // Show an error through toast notification if available
       if (typeof window !== 'undefined') {
         alert("Error creating story. Please try again.");
-      }
-      
+}
       // Try direct navigation as fallback
       if (typeof window !== 'undefined') {
         window.location.href = path;
-      }
-    }
+}
+}
   };
 
   return (
@@ -162,7 +144,7 @@ export function CreateStoryDialog({ isOpen, onClose }: CreateStoryDialogProps) {
             {currentStep === 1 ? "Create Story" : "Story Details"}
           </DialogTitle>
         </DialogHeader>
-        
+
         {currentStep === 1 && (
           <div className="grid gap-4 py-4">
             {createOptions.map((option) => (
@@ -185,7 +167,7 @@ export function CreateStoryDialog({ isOpen, onClose }: CreateStoryDialogProps) {
             ))}
           </div>
         )}
-        
+
         {currentStep === 2 && (
           <div className="grid gap-6 py-4">
             <div className="space-y-4">
@@ -211,7 +193,7 @@ export function CreateStoryDialog({ isOpen, onClose }: CreateStoryDialogProps) {
                 </div>
               </RadioGroup>
             </div>
-            
+
             <div className="space-y-4">
               <h3 className="font-medium">Choose Genre</h3>
               <div className="grid grid-cols-2 gap-2 max-h-[200px] overflow-y-auto pr-2">
@@ -231,7 +213,7 @@ export function CreateStoryDialog({ isOpen, onClose }: CreateStoryDialogProps) {
             </div>
           </div>
         )}
-        
+
         {currentStep === 2 && (
           <DialogFooter>
             <Button
@@ -246,4 +228,4 @@ export function CreateStoryDialog({ isOpen, onClose }: CreateStoryDialogProps) {
       </DialogContent>
     </Dialog>
   );
-} 
+}

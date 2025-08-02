@@ -1,3 +1,4 @@
+import React from "react";
 "use client";
 
 import { useState, useEffect } from "react";
@@ -33,7 +34,6 @@ interface ComicNFT {
   isOwned?: boolean;
   owner?: string;
 }
-
 // Mock data for comic NFTs
 const mockComicNFTs: ComicNFT[] = [
   {
@@ -146,28 +146,20 @@ const mockComicNFTs: ComicNFT[] = [
       "https://images.unsplash.com/photo-1519872436884-5700c0586730?w=800&h=500&fit=crop&q=80"
     ],
     isAnimated: true
-  }
+}
 ];
 
-// Generate more comic NFTs for demonstration
-  /**
-   * Implements generateMoreComicNFTs functionality
-   * 
-   * @function generateMoreComicNFTs
-   * @returns {void|Promise<void>} Function return value
-   */
-
-function generateMoreComicNFTs(count: number): ComicNFT[] {
+// Generate more comic NFTs for demonstration generateMoreComicNFTs(count: number): ComicNFT[] {
   const genres = ["Sci-Fi", "Fantasy", "Cyberpunk", "Mystery", "Action", "Horror", "Comedy", "Romance"];
   const rarities: Array<ComicNFT["rarity"]> = ["common", "uncommon", "rare", "legendary"];
-  
+
   return Array.from({ length: count }, (_, index) => {
     const id = index + mockComicNFTs.length + 1;
     const genre = genres[Math.floor(Math.random() * genres.length)];
     const rarity = rarities[Math.floor(Math.random() * rarities.length)];
     const pages = Math.floor(Math.random() * 20) + 10;
     const isAnimated = Math.random() > 0.7;
-    
+
     return {
       id,
       title: `Comic #${id}`,
@@ -189,16 +181,9 @@ function generateMoreComicNFTs(count: number): ComicNFT[] {
     };
   });
 }
-
 const allComicNFTs = [...mockComicNFTs, ...generateMoreComicNFTs(18)];
 
-export default   /**
-   * Implements ComicStoriesPage functionality
-   * 
-   * @function ComicStoriesPage
-   * @returns {void|Promise<void>} Function return value
-   */
- function ComicStoriesPage() {
+export default function ComicStoriesPage() {
   const [comics, setComics] = useState<ComicNFT[]>(allComicNFTs);
   const [filteredComics, setFilteredComics] = useState<ComicNFT[]>(allComicNFTs);
   const [searchTerm, setSearchTerm] = useState("");
@@ -208,13 +193,13 @@ export default   /**
   const [selectedComic, setSelectedComic] = useState<ComicNFT | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [hoveredId, setHoveredId] = useState<number | null>(null);
-  
+
   const { account } = useWeb3();
   const { toast } = useToast();
 
   useEffect(() => {
     let result = comics;
-    
+
     // Apply search filter
     if (searchTerm) {
       result = result.filter(comic => 
@@ -222,23 +207,19 @@ export default   /**
         comic.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
         comic.description.toLowerCase().includes(searchTerm.toLowerCase())
       );
-    }
-    
+}
     // Apply genre filter
     if (selectedGenre) {
       result = result.filter(comic => comic.genre === selectedGenre);
-    }
-    
+}
     // Apply rarity filter
     if (selectedRarity) {
       result = result.filter(comic => comic.rarity === selectedRarity);
-    }
-    
+}
     // Apply animated filter
     if (showAnimatedOnly) {
       result = result.filter(comic => comic.isAnimated);
-    }
-    
+}
     setFilteredComics(result);
   }, [comics, searchTerm, selectedGenre, selectedRarity, showAnimatedOnly]);
 
@@ -260,14 +241,13 @@ export default   /**
         variant: "destructive",
       });
       return;
-    }
-    
+}
     // Update the comic ownership in our state
     const updatedComics = comics.map(c => 
       c.id === comic.id ? { ...c, isOwned: true, owner: account } : c
     );
     setComics(updatedComics);
-    
+
     toast({
       title: "Purchase Complete",
       description: `You now own "${comic.title}"`,
@@ -281,10 +261,10 @@ export default   /**
       opacity: 1,
       transition: {
         staggerChildren: 0.1
-      }
-    }
+}
+}
   };
-  
+
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -294,8 +274,8 @@ export default   /**
         type: "spring",
         stiffness: 260,
         damping: 20
-      }
-    }
+}
+}
   };
 
   // Get rarity color
@@ -305,7 +285,7 @@ export default   /**
       case "uncommon": return "bg-green-500 text-white";
       case "rare": return "bg-blue-500 text-white";
       case "legendary": return "bg-amber-500 text-white";
-    }
+}
   };
 
   return (
@@ -321,7 +301,7 @@ export default   /**
           icon="book"
         />
       </motion.div>
-      
+
       {/* Filters Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -342,7 +322,7 @@ export default   /**
               <Filter className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             </div>
           </div>
-          
+
           <div className="flex flex-wrap gap-2">
             <div className="flex items-center">
               <span className="mr-2 text-sm font-medium">Genre:</span>
@@ -358,7 +338,7 @@ export default   /**
                 ))}
               </select>
             </div>
-            
+
             <div className="flex items-center">
               <span className="mr-2 text-sm font-medium">Rarity:</span>
               <select
@@ -374,7 +354,7 @@ export default   /**
                 <option value="legendary">Legendary</option>
               </select>
             </div>
-            
+
             <div className="flex items-center">
               <label className="flex items-center cursor-pointer">
                 <input
@@ -389,7 +369,7 @@ export default   /**
           </div>
         </div>
       </motion.div>
-      
+
       {/* Results Section */}
       <div className="mb-8">
         <div className="flex justify-between items-center mb-4">
@@ -403,7 +383,7 @@ export default   /**
             </Button>
           </Link>
         </div>
-        
+
         {filteredComics.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
@@ -441,19 +421,19 @@ export default   /**
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                      
+
                       {/* Rarity Badge */}
                       <Badge className={`absolute top-2 right-2 capitalize ${getRarityColor(comic.rarity)}`}>
                         {comic.rarity}
                       </Badge>
-                      
+
                       {comic.isAnimated && (
                         <Badge className="absolute top-2 left-2 bg-purple-600 text-white flex items-center gap-1">
                           <Sparkles className="h-3 w-3" />
                           Animated
                         </Badge>
                       )}
-                      
+
                       {/* Preview overlay on hover */}
                       <AnimatePresence>
                         {hoveredId === comic.id && (
@@ -471,7 +451,7 @@ export default   /**
                         )}
                       </AnimatePresence>
                     </div>
-                    
+
                     <CardHeader className="p-4 pb-0">
                       <div className="flex items-center gap-2">
                         <Avatar className="w-6 h-6">
@@ -482,7 +462,7 @@ export default   /**
                       </div>
                       <h3 className="text-lg font-bold mt-2 line-clamp-1">{comic.title}</h3>
                     </CardHeader>
-                    
+
                     <CardContent className="p-4 pt-2">
                       <p className="text-sm text-muted-foreground mb-2 line-clamp-2">{comic.description}</p>
                       <div className="flex items-center justify-between text-sm">
@@ -490,7 +470,7 @@ export default   /**
                         <Badge variant="outline">{comic.genre}</Badge>
                       </div>
                     </CardContent>
-                    
+
                     <CardFooter className="p-4 pt-0 flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="flex items-center">
@@ -511,7 +491,7 @@ export default   /**
           </motion.div>
         )}
       </div>
-      
+
       {/* Comic Detail Dialog */}
       {selectedComic && (
         <ComicNFTDetailDialog
@@ -523,4 +503,4 @@ export default   /**
       )}
     </div>
   );
-} 
+}
