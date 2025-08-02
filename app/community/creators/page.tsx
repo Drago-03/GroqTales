@@ -1,7 +1,6 @@
-import React from "react";
-/**
-
 "use client";
+
+import React from "react";
 
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";

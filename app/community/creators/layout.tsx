@@ -1,6 +1,4 @@
 import React from "react";
-/**
-
 import { metadata } from "./metadata";
 
 export { metadata };
