@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.stories.[id].page.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -30,7 +38,13 @@ interface Comment {
   isVerified?: boolean;
 }
 
-export default function StoryPage({ params }: { params: { id: string } }) {
+export default   /**
+   * Implements StoryPage functionality
+   * 
+   * @function StoryPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function StoryPage({ params }: { params: { id: string } }) {
   // State
   const [story, setStory] = useState<any>(null);
   const [relatedStories, setRelatedStories] = useState<any[]>([]);

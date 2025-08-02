@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.story-generator.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client"
 
 import { useState } from "react";
@@ -17,6 +25,14 @@ const genres = [
   "Horror",
   "Adventure"
 ];
+
+  /**
+   * Implements StoryGenerator functionality
+   * 
+   * @function StoryGenerator
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function StoryGenerator() {
   const [prompt, setPrompt] = useState("");

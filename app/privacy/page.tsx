@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.privacy.page.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import Link from "next/link";
@@ -39,7 +47,13 @@ const PrivacySection = ({ icon: Icon, title, children }: any) => (
   </Card>
 );
 
-export default function PrivacyPage() {
+export default   /**
+   * Implements PrivacyPage functionality
+   * 
+   * @function PrivacyPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function PrivacyPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
       <FloatingDoodles />

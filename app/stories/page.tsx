@@ -10,7 +10,13 @@ export const metadata = {
 
 export const revalidate = process.env.NEXT_PUBLIC_BUILD_MODE === 'true' ? 10 : 3600;
 
-export default function StoriesPage() {
+export default   /**
+   * Implements StoriesPage functionality
+   * 
+   * @function StoriesPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function StoriesPage() {
   // Use mock data during build time to avoid database connections
   if (process.env.NEXT_PUBLIC_BUILD_MODE === 'true') {
     return (

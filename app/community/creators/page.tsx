@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.community.creators.page.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -218,7 +226,13 @@ const getMockCreators = () => {
   ];
 };
 
-export default function CreatorsPage() {
+export default   /**
+   * Implements CreatorsPage functionality
+   * 
+   * @function CreatorsPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function CreatorsPage() {
   const [creators, setCreators] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");

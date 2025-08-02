@@ -1,7 +1,16 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.ui.scroll-area.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 'use client';
 
 import * as React from 'react';
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
+import { ClientOnly } from '@/components/client-only';
 
 import { cn } from '@/lib/utils';
 
@@ -9,17 +18,19 @@ const ScrollArea = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>
 >(({ className, children, ...props }, ref) => (
-  <ScrollAreaPrimitive.Root
-    ref={ref}
-    className={cn('relative overflow-hidden', className)}
-    {...props}
-  >
-    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
-      {children}
-    </ScrollAreaPrimitive.Viewport>
-    <ScrollBar />
-    <ScrollAreaPrimitive.Corner />
-  </ScrollAreaPrimitive.Root>
+  <ClientOnly fallback={<div className={cn('relative overflow-auto', className)}>{children}</div>}>
+    <ScrollAreaPrimitive.Root
+      ref={ref}
+      className={cn('relative overflow-hidden', className)}
+      {...props}
+    >
+      <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
+        {children}
+      </ScrollAreaPrimitive.Viewport>
+      <ScrollBar />
+      <ScrollAreaPrimitive.Corner />
+    </ScrollAreaPrimitive.Root>
+  </ClientOnly>
 ));
 ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName;
 

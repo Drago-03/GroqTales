@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.ui.button.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';

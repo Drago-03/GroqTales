@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.story-summary.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -18,6 +26,14 @@ interface StorySummaryProps {
   apiKey?: string;
   className?: string;
 }
+
+  /**
+   * Implements StorySummary functionality
+   * 
+   * @function StorySummary
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function StorySummary({ 
   storyId,
@@ -125,6 +141,14 @@ export function StorySummary({
 
   // Render sentiment badge with appropriate color
   const renderSentimentBadge = (sentiment: string) => {
+      /**
+   * sentimentMap React component
+   * 
+   * @component
+   * @param {Object} props - Component props
+   * @returns {JSX.Element} Rendered component
+   */
+
     const sentimentMap: Record<string, { color: string, icon: JSX.Element }> = {
       "positive": { 
         color: "bg-green-500/10 text-green-500 hover:bg-green-500/20", 

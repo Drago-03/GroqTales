@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.ui.input.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';

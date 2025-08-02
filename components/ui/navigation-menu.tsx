@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.ui.navigation-menu.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 import * as React from 'react';
 import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu';
 import { cva } from 'class-variance-authority';

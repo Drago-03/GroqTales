@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.genres.[slug].page.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
@@ -6,6 +14,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import StoryCard from '@/components/story-card';
 import { fetchPopularStoriesByGenre } from '@/lib/mock-data';
+
+  /**
+   * Implements generateMetadata functionality
+   * 
+   * @function generateMetadata
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const genre = getGenreBySlug(params.slug);
@@ -22,7 +38,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default function GenrePage({ params }: { params: { slug: string } }) {
+export default   /**
+   * Implements GenrePage functionality
+   * 
+   * @function GenrePage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function GenrePage({ params }: { params: { slug: string } }) {
   const genre = getGenreBySlug(params.slug);
   
   if (!genre) {

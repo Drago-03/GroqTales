@@ -124,7 +124,13 @@ const StoryCard = ({ story }: any) => (
   </Card>
 );
 
-export default function ProfilePage() {
+export default   /**
+   * Implements ProfilePage functionality
+   * 
+   * @function ProfilePage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function ProfilePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
       <FloatingDoodles />

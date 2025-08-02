@@ -1,9 +1,25 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.nft-purchase.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { useWeb3Auth } from "@/hooks/use-web3-auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sparkles } from "lucide-react";
+
+  /**
+   * Implements NFTPurchase functionality
+   * 
+   * @function NFTPurchase
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function NFTPurchase({ nftId, nftTitle, price }: { nftId: string, nftTitle: string, price: string }) {
   const { address, isConnected } = useWeb3Auth();
@@ -26,7 +42,9 @@ export function NFTPurchase({ nftId, nftTitle, price }: { nftId: string, nftTitl
 
   // Placeholder purchase action
   const handlePurchase = () => {
-    alert(`Purchased ${nftTitle} for ${price} ETH! (This is a mock action)`);
+    if (typeof window !== 'undefined') {
+      alert(`Purchased ${nftTitle} for ${price} ETH! (This is a mock action)`);
+    }
   };
 
   return (

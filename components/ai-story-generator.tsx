@@ -51,6 +51,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
+  /**
+   * Implements AnimatedSparkles functionality
+   * 
+   * @function AnimatedSparkles
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 function AnimatedSparkles() {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -89,6 +97,14 @@ function AnimatedSparkles() {
     </div>
   );
 }
+
+  /**
+   * Implements LoadingStateIndicator functionality
+   * 
+   * @function LoadingStateIndicator
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 function LoadingStateIndicator({ message }: { message: string | null }) {
   const messages = ["Generating story", "Creating worlds", "Crafting characters", "Building plot", "Finalizing details"];
@@ -157,6 +173,14 @@ function LoadingStateIndicator({ message }: { message: string | null }) {
     </motion.div>
   );
 }
+
+  /**
+   * Implements AIStoryGenerator functionality
+   * 
+   * @function AIStoryGenerator
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function AIStoryGenerator({ 
   initialGenre = 'fantasy', 
@@ -242,32 +266,36 @@ export function AIStoryGenerator({
   // Remove the old useEffect for localStorage and replace with URL parameter check
   useEffect(() => {
     // Check URL parameters for navigation source
-    const urlParams = new URLSearchParams(window.location.search);
-    const source = urlParams.get('source');
-    const format = urlParams.get('format');
-    
-    // If user came from homepage or another source that sets this parameter
-    if (source === 'home') {
-      setShowWelcomeAnimation(true);
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const source = urlParams.get('source');
+      const format = urlParams.get('format');
       
-      // Auto-select format if provided in URL parameters
-      if (format === 'nft') {
-        setStoryFormat('nft');
-      } else if (format === 'free') {
-        setStoryFormat('free');
+      // If user came from homepage or another source that sets this parameter
+      if (source === 'home') {
+        setShowWelcomeAnimation(true);
+        
+        // Auto-select format if provided in URL parameters
+        if (format === 'nft') {
+          setStoryFormat('nft');
+        } else if (format === 'free') {
+          setStoryFormat('free');
+        }
+        
+        // Clear welcome animation after delay
+        const timer = setTimeout(() => {
+          setShowWelcomeAnimation(false);
+        }, 3000);
+        
+        return () => clearTimeout(timer);
       }
-      
-      // Clear welcome animation after delay
-      const timer = setTimeout(() => {
-        setShowWelcomeAnimation(false);
-      }, 3000);
-      
-      return () => clearTimeout(timer);
     }
   }, []);
   
   // useEffect to handle page visibility changes
   useEffect(() => {
+    if (typeof document === 'undefined') return;
+    
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible' && !isGroqLoading) {
         // Refresh models when user returns to the page
@@ -306,7 +334,13 @@ export function AIStoryGenerator({
         const currentPanel = panels[currentPanelIndex];
         const loadImage = async () => {
           setIsLoadingImage(true);
-          // Placeholder for image generation function
+          // Placeholder for image generation   /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+ function
           const imageUrl = 'https://via.placeholder.com/800x400?text=Comic+Panel';
           setPanelImage(imageUrl);
           setIsLoadingImage(false);
@@ -492,7 +526,13 @@ Please generate this story with attention to quality, creativity, and narrative 
     }
   };
 
-  // Helper function to parse comic panels from text
+  // Helper   /**
+   * Implements to functionality
+   * 
+   * @function to
+   * @returns {void|Promise<void>} Function return value
+   */
+ function to parse comic panels from text
   const parseComicPanelsFromText = (text: string) => {
     const lines = text.split('\n');
     const panels: Array<{
@@ -579,7 +619,13 @@ Please generate this story with attention to quality, creativity, and narrative 
       return;
     }
 
-    // No need to check for specific network - the mintNFTOnBase function will handle switching
+    // No need to check for specific network - the mintNFTOnBase   /**
+   * Implements will functionality
+   * 
+   * @function will
+   * @returns {void|Promise<void>} Function return value
+   */
+ function will handle switching
     setIsActionLoading(true);
 
     try {
@@ -768,6 +814,14 @@ Please generate this story with attention to quality, creativity, and narrative 
       setIsMinting(false);
     }
   };
+
+    /**
+   * Implements switchToMonadNetwork functionality
+   * 
+   * @function switchToMonadNetwork
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
   function switchToMonadNetwork(event: React.MouseEvent<HTMLButtonElement>): void {
     event.preventDefault();
@@ -1280,11 +1334,13 @@ Please generate this story with attention to quality, creativity, and narrative 
                   variant="ghost"
                   size="sm"
                   onClick={() => {
-                    navigator.clipboard.writeText(generatedContent);
-                    toast({
-                      title: "Copied",
-                      description: "Story copied to clipboard",
-                    });
+                    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+                      navigator.clipboard.writeText(generatedContent);
+                      toast({
+                        title: "Copied",
+                        description: "Story copied to clipboard",
+                      });
+                    }
                   }}
                   className="text-primary hover:bg-primary/5 border-primary/20"
                 >
@@ -1295,13 +1351,15 @@ Please generate this story with attention to quality, creativity, and narrative 
                   variant="ghost"
                   size="sm"
                   onClick={() => {
-                    const element = document.createElement('a');
-                    const file = new Blob([generatedContent], { type: 'text/plain' });
-                    element.href = URL.createObjectURL(file);
-                    element.download = `${title || 'Untitled_Story'}.md`;
-                    document.body.appendChild(element);
-                    element.click();
-                    document.body.removeChild(element);
+                    if (typeof document !== 'undefined') {
+                      const element = document.createElement('a');
+                      const file = new Blob([generatedContent], { type: 'text/plain' });
+                      element.href = URL.createObjectURL(file);
+                      element.download = `${title || 'Untitled_Story'}.md`;
+                      document.body.appendChild(element);
+                      element.click();
+                      document.body.removeChild(element);
+                    }
                   }}
                   className="text-primary hover:bg-primary/5 border-primary/20"
                 >
@@ -1431,19 +1489,23 @@ Please generate this story with attention to quality, creativity, and narrative 
                     onClick={() => {
                       // Set a navigation flag in localStorage
                       try {
-                        const navData = { 
-                          from: 'generator', 
-                          destination: 'nft-view',
-                          timestamp: Date.now() 
-                        };
-                        localStorage.setItem('navigationData', JSON.stringify(navData));
+                        if (typeof window !== 'undefined' && window.localStorage) {
+                          const navData = { 
+                            from: 'generator', 
+                            destination: 'nft-view',
+                            timestamp: Date.now() 
+                          };
+                          localStorage.setItem('navigationData', JSON.stringify(navData));
+                        }
                       } catch (e) {
                         console.error('Error storing navigation data:', e);
                       }
                       
                       // Use setTimeout to ensure reliable navigation
                       setTimeout(() => {
-                        window.location.href = mintedNftUrl;
+                        if (typeof window !== 'undefined') {
+                          window.location.href = mintedNftUrl;
+                        }
                       }, 100);
                     }}
                   >

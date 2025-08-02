@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.header.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import Link from "next/link";
@@ -35,6 +43,14 @@ type NavItem = {
   items?: NavSubItem[];
 };
 
+  /**
+   * Implements Header functionality
+   * 
+   * @function Header
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function Header() {
   const pathname = usePathname();
   const { account } = useWeb3();
@@ -44,6 +60,8 @@ export function Header() {
   
   // Track scroll position for adding box shadow to header
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
@@ -64,7 +82,7 @@ export function Header() {
 
   const handleCreateClick = () => {
     // Check if user is authenticated
-    const isAdmin = localStorage.getItem('adminSession');
+    const isAdmin = typeof window !== 'undefined' && window.localStorage ? localStorage.getItem('adminSession') : null;
     
     if (!account && !isAdmin) {
       toast({

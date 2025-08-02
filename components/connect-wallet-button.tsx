@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.connect-wallet-button.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -6,6 +14,14 @@ import { Loader2, Wallet, QrCode, Lock } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useState, useEffect } from "react";
+
+  /**
+   * Implements ConnectWalletButton functionality
+   * 
+   * @function ConnectWalletButton
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function ConnectWalletButton() {
   const { address, isConnected, isSigningIn, connect, signIn, connectors } = useWeb3Auth();

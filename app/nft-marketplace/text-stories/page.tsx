@@ -149,6 +149,13 @@ const textNFTs: TextNFT[] = [
 ];
 
 // Generate more text NFTs for demonstration
+  /**
+   * Implements generateMoreTextNFTs functionality
+   * 
+   * @function generateMoreTextNFTs
+   * @returns {void|Promise<void>} Function return value
+   */
+
 function generateMoreTextNFTs(count: number): TextNFT[] {
   const genres = ["Mystery", "Sci-Fi", "Fantasy", "Cyberpunk", "Historical Fiction", "Philosophy", "Romance", "Horror", "Thriller"];
   
@@ -187,6 +194,14 @@ interface TextNFTDetailDialogProps {
   onClose: () => void;
   onPurchase: (story: TextNFT) => void;
 }
+
+  /**
+   * Implements TextNFTDetailDialog functionality
+   * 
+   * @function TextNFTDetailDialog
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDetailDialogProps) {
   const { account } = useWeb3();
@@ -366,7 +381,13 @@ function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDeta
   );
 }
 
-export default function TextStoriesPage() {
+export default   /**
+   * Implements TextStoriesPage functionality
+   * 
+   * @function TextStoriesPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function TextStoriesPage() {
   const [stories, setStories] = useState<TextNFT[]>(allTextNFTs);
   const [filteredStories, setFilteredStories] = useState<TextNFT[]>(allTextNFTs);
   const [searchTerm, setSearchTerm] = useState("");

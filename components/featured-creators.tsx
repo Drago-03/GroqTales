@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.featured-creators.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -62,6 +70,14 @@ const getMockCreators = () => {
     }
   ];
 };
+
+  /**
+   * Implements FeaturedCreators functionality
+   * 
+   * @function FeaturedCreators
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function FeaturedCreators() {
   const [creators, setCreators] = useState<any[]>([]);

@@ -17,7 +17,13 @@ import { TrendingStories } from "@/components/trending-stories";
 import { FeaturedCreators } from "@/components/featured-creators";
 import { GalaxyBackground } from "@/components/galaxy-background";
 
-export default function Home() {
+export default   /**
+   * Implements Home functionality
+   * 
+   * @function Home
+   * @returns {void|Promise<void>} Function return value
+   */
+ function Home() {
   const { account, connectWallet } = useWeb3();
   const router = useRouter();
   

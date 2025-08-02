@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.ui.calendar.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 'use client';
 
 import * as React from 'react';
@@ -8,6 +16,14 @@ import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+
+  /**
+   * Implements Calendar functionality
+   * 
+   * @function Calendar
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 function Calendar({
   className,

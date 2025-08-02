@@ -181,6 +181,14 @@ const topNftData: NFTStory[] = [
   },
 ];
 
+  /**
+   * Implements generateRemainingNfts functionality
+   * 
+   * @function generateRemainingNfts
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 function generateRemainingNfts(): NFTStory[] {
   const backgroundImages = [
     "photo-1635776062127-d379bfcba9f8",
@@ -218,7 +226,13 @@ function generateRemainingNfts(): NFTStory[] {
 
 const nftData: NFTStory[] = [...topNftData, ...generateRemainingNfts()];
 
-export default function NftGalleryPage() {
+export default   /**
+   * Implements NftGalleryPage functionality
+   * 
+   * @function NftGalleryPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function NftGalleryPage() {
   const [imageError, setImageError] = useState<{[key: string]: boolean}>({});
   const [activeTab, setActiveTab] = useState("trending");
   const [selectedGenre, setSelectedGenre] = useState("all");

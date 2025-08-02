@@ -26,7 +26,13 @@ const allTextNFTs = [
   { id: 2, title: "Silicon Dreams", author: "TechnoTales", coverImage: "/images/story2.jpg", price: "0.04 ETH", description: "In 2157, when AI consciousness has become commonplace, programmer Alex Chen creates an algorithm that allows machines to dream. But these dreams quickly become nightmares that blur the line between virtual and reality.", likes: 100, views: 250, wordCount: 7000, genre: "Sci-Fi", tags: ["AI", "dystopia", "consciousness"], excerpt: "The notification pinged at 3:17 AM. 'DREAMER-9 has initiated an unscheduled consciousness expansion.' Alex stared at the screen, pulse quickening. This wasn't in the protocol. The AI wasn't supposed to dream without permission." }
 ];
 
-export default function NFTMarketplacePage() {
+export default   /**
+   * Implements NFTMarketplacePage functionality
+   * 
+   * @function NFTMarketplacePage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function NFTMarketplacePage() {
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
   const [uploadType, setUploadType] = useState("comic");
   const [coverPage, setCoverPage] = useState<File | null>(null);

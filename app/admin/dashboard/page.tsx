@@ -26,13 +26,27 @@ import { getAdminActions } from "@/lib/admin-service";
 import { VerifiedBadge } from "@/components/verified-badge";
 import { useToast } from "@/components/ui/use-toast";
 
-export default function DashboardPage() {
+export default   /**
+   * Implements DashboardPage functionality
+   * 
+   * @function DashboardPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function DashboardPage() {
   return (
     <Suspense fallback={<div>Loading dashboard...</div>}>
       <DashboardContent />
     </Suspense>
   );
 }
+
+  /**
+   * Implements DashboardContent functionality
+   * 
+   * @function DashboardContent
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 function DashboardContent() {
   const router = useRouter();
@@ -48,13 +62,17 @@ function DashboardContent() {
     // Check if authentication is directly from URL token (most reliable method)
     if (sessionToken) {
       try {
-        // Store the session token for future use
-        localStorage.setItem('adminSession', 'true');
-        localStorage.setItem('adminSessionToken', sessionToken);
-        localStorage.setItem('adminSessionTimestamp', Date.now().toString());
-        
-        // Set a direct cookie that doesn't require JavaScript
-        document.cookie = `adminSessionActive=true; path=/; max-age=${60 * 60 * 24}`; // 24 hours
+        if (typeof window !== 'undefined') {
+          // Store the session token for future use
+          localStorage.setItem('adminSession', 'true');
+          localStorage.setItem('adminSessionToken', sessionToken);
+          localStorage.setItem('adminSessionTimestamp', Date.now().toString());
+          
+          // Set a direct cookie that doesn't require JavaScript
+          if (typeof document !== 'undefined') {
+            document.cookie = `adminSessionActive=true; path=/; max-age=${60 * 60 * 24}`; // 24 hours
+          }
+        }
         
         // Authentication successful, stop loading
         setIsLoading(false);
@@ -67,44 +85,55 @@ function DashboardContent() {
     
     // Check existing authentication methods
     try {
-      const adminSession = localStorage.getItem('adminSession');
-      const employeeId = localStorage.getItem('employeeId');
-      const sessionTimestamp = localStorage.getItem('adminSessionTimestamp');
-      
-      const now = Date.now();
-      // Check if session has expired (24 hours)
-      const isExpired = sessionTimestamp && (now - parseInt(sessionTimestamp)) > (24 * 60 * 60 * 1000);
-      
-      if (!adminSession || !employeeId || isExpired) {
-        // Try to check cookie as fallback
-        const hasCookie = document.cookie.split(';').some(c => c.trim().startsWith('adminSessionActive=true'));
+      if (typeof window !== 'undefined') {
+        const adminSession = localStorage.getItem('adminSession');
+        const employeeId = localStorage.getItem('employeeId');
+        const sessionTimestamp = localStorage.getItem('adminSessionTimestamp');
         
-        if (!hasCookie) {
-          console.log("No valid admin session found, redirecting to login");
-          router.push('/admin/login');
-          return;
+        const now = Date.now();
+        // Check if session has expired (24 hours)
+        const isExpired = sessionTimestamp && (now - parseInt(sessionTimestamp)) > (24 * 60 * 60 * 1000);
+        
+        if (!adminSession || !employeeId || isExpired) {
+          // Try to check cookie as fallback
+          const hasCookie = typeof document !== 'undefined' && document.cookie.split(';').some(c => c.trim().startsWith('adminSessionActive=true'));
+          
+          if (!hasCookie) {
+            console.log("No valid admin session found, redirecting to login");
+            router.push('/admin/login');
+            return;
+          }
         }
+        
+        // Session exists and is valid, refresh it
+        localStorage.setItem('adminSessionTimestamp', now.toString());
+        if (typeof document !== 'undefined') {
+          document.cookie = "adminSessionActive=true; path=/; max-age=86400"; // 24 hours
+        }
+        
+        // Set up periodic session refresh without depending on React state
+        const intervalId = window.setInterval(() => {
+          try {
+            if (typeof window !== 'undefined') {
+              localStorage.setItem('adminSessionTimestamp', Date.now().toString());
+              if (typeof document !== 'undefined') {
+                document.cookie = "adminSessionActive=true; path=/; max-age=86400";
+              }
+            }
+          } catch (error) {
+            console.error("Error refreshing session:", error);
+            // Not critical, will try again next interval
+          }
+        }, 15 * 60 * 1000); // 15 minutes
+        
+        setIsLoading(false);
+        
+        // Clear interval on component unmount
+        return () => window.clearInterval(intervalId);
+      } else {
+        // SSR case - just set loading to false to avoid infinite loading
+        setIsLoading(false);
       }
-      
-      // Session exists and is valid, refresh it
-      localStorage.setItem('adminSessionTimestamp', now.toString());
-      document.cookie = "adminSessionActive=true; path=/; max-age=86400"; // 24 hours
-      
-      // Set up periodic session refresh without depending on React state
-      const intervalId = window.setInterval(() => {
-        try {
-          localStorage.setItem('adminSessionTimestamp', Date.now().toString());
-          document.cookie = "adminSessionActive=true; path=/; max-age=86400";
-        } catch (error) {
-          console.error("Error refreshing session:", error);
-          // Not critical, will try again next interval
-        }
-      }, 15 * 60 * 1000); // 15 minutes
-      
-      setIsLoading(false);
-      
-      // Clear interval on component unmount
-      return () => window.clearInterval(intervalId);
     } catch (error) {
       console.error("Error checking admin authentication:", error);
       setAuthError("Authentication error. Please try logging in again.");
@@ -114,14 +143,18 @@ function DashboardContent() {
 
   const handleLogout = () => {
     try {
-      // Clear all localStorage items
-      localStorage.removeItem('adminSession');
-      localStorage.removeItem('employeeId');
-      localStorage.removeItem('adminSessionTimestamp');
-      localStorage.removeItem('adminSessionToken');
-      
-      // Expire all cookies
-      document.cookie = "adminSessionActive=; path=/; max-age=0";
+      if (typeof window !== 'undefined') {
+        // Clear all localStorage items
+        localStorage.removeItem('adminSession');
+        localStorage.removeItem('employeeId');
+        localStorage.removeItem('adminSessionTimestamp');
+        localStorage.removeItem('adminSessionToken');
+        
+        // Expire all cookies
+        if (typeof document !== 'undefined') {
+          document.cookie = "adminSessionActive=; path=/; max-age=0";
+        }
+      }
       
       // Show logout toast
       toast({

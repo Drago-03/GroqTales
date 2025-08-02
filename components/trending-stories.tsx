@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.trending-stories.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -36,6 +44,14 @@ const getMockTrendingStories = () => {
   }));
 };
 
+  /**
+   * Implements TrendingStories functionality
+   * 
+   * @function TrendingStories
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function TrendingStories() {
   const [stories, setStories] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -51,7 +67,9 @@ export function TrendingStories() {
 
   const handleCreateSimilar = (genre: string) => {
     // Direct navigation with URL parameters
-    window.location.href = `/create/ai-story?source=trending&genre=${encodeURIComponent(genre)}&format=nft`;
+    if (typeof window !== 'undefined') {
+      window.location.href = `/create/ai-story?source=trending&genre=${encodeURIComponent(genre)}&format=nft`;
+    }
   };
 
   return (

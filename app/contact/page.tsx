@@ -88,7 +88,13 @@ const ContactInfo = ({ icon: Icon, title, content, link }: any) => (
   </div>
 );
 
-export default function ContactPage() {
+export default   /**
+   * Implements ContactPage functionality
+   * 
+   * @function ContactPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -101,6 +107,14 @@ export default function ContactPage() {
       message: "",
     },
   });
+
+    /**
+   * Implements onSubmit functionality
+   * 
+   * @function onSubmit
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);

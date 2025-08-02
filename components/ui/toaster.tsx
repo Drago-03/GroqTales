@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.ui.toaster.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 'use client';
 
 import { useToast } from '@/hooks/use-toast';
@@ -9,6 +17,14 @@ import {
   ToastTitle,
   ToastViewport,
 } from '@/components/ui/toast';
+
+  /**
+   * Implements Toaster functionality
+   * 
+   * @function Toaster
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function Toaster() {
   const { toasts } = useToast();

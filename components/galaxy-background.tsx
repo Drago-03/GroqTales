@@ -188,8 +188,8 @@ export const GalaxyBackground = () => {
                 zIndex: 3,
               }}
               animate={{
-                x: [0, window.innerWidth * 1.2],
-                y: [0, isFromCorner ? window.innerHeight * 0.8 : window.innerHeight * 0.5],
+                x: [0, typeof window !== 'undefined' ? window.innerWidth * 1.2 : 1200],
+                y: [0, typeof window !== 'undefined' ? (isFromCorner ? window.innerHeight * 0.8 : window.innerHeight * 0.5) : 600],
                 opacity: [0, 1, 1, 0],
                 scale: [0.8, 1.1, 0.9], // Slight scale change for depth perception
               }}
@@ -214,8 +214,8 @@ export const GalaxyBackground = () => {
                 zIndex: 2,
               }}
               animate={{
-                x: [0, window.innerWidth * 1.2],
-                y: [0, isFromCorner ? window.innerHeight * 0.8 : window.innerHeight * 0.5],
+                x: [0, typeof window !== 'undefined' ? window.innerWidth * 1.2 : 1200],
+                y: [0, typeof window !== 'undefined' ? (isFromCorner ? window.innerHeight * 0.8 : window.innerHeight * 0.5) : 600],
                 opacity: [0, 0.9, 0.9, 0],
                 scaleX: [0.3, 1.3, 0.6], // More dynamic trail length based on velocity
               }}

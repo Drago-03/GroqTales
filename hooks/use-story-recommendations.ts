@@ -19,6 +19,14 @@ interface UseStoryRecommendationsResult {
   error: string | null;
 }
 
+  /**
+   * Implements useStoryRecommendations functionality
+   * 
+   * @function useStoryRecommendations
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function useStoryRecommendations(): UseStoryRecommendationsResult {
   const [recommendations, setRecommendations] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);

@@ -15,7 +15,13 @@ import { genres } from "@/components/genre-selector";
 // We'll import ipfs conditionally to avoid errors
 // import { create } from 'ipfs-http-client';
 
-// Move IPFS client creation to a function to avoid initialization at module scope
+// Move IPFS client creation to a   /**
+   * Implements to functionality
+   * 
+   * @function to
+   * @returns {void|Promise<void>} Function return value
+   */
+ function to avoid initialization at module scope
 const getIpfsClient = async () => {
   try {
     // Dynamically import ipfs-http-client only when needed
@@ -84,7 +90,13 @@ interface StoryMetadata {
   ipfsHash: string;
 }
 
-export default function CreateStoryPage() {
+export default   /**
+   * Implements CreateStoryPage functionality
+   * 
+   * @function CreateStoryPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function CreateStoryPage() {
   const router = useRouter();
   const { account } = useWeb3();
   const { toast } = useToast();

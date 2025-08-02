@@ -76,7 +76,13 @@ const defaultValues: ProfileFormValues = {
   primaryGenre: "sci-fi",
 };
 
-export default function SettingsPage() {
+export default   /**
+   * Implements SettingsPage functionality
+   * 
+   * @function SettingsPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function SettingsPage() {
   const [avatar, setAvatar] = useState<string>("https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3");
   
   const form = useForm<ProfileFormValues>({
@@ -84,6 +90,14 @@ export default function SettingsPage() {
     defaultValues,
     mode: "onChange",
   });
+
+    /**
+   * Implements onSubmit functionality
+   * 
+   * @function onSubmit
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
   function onSubmit(data: ProfileFormValues) {
     // In a real app, this would save the data to the server

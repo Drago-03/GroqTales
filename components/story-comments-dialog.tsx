@@ -39,6 +39,14 @@ interface StoryCommentsDialogProps {
   isAdmin?: boolean;
 }
 
+  /**
+   * Implements StoryCommentsDialog functionality
+   * 
+   * @function StoryCommentsDialog
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function StoryCommentsDialog({
   isOpen,
   onClose,

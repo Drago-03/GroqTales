@@ -10,11 +10,41 @@ import { GROQ_MODELS } from './groq-service';
 
 // NFT Contract ABI - simplified for this example
 const NFT_CONTRACT_ABI = [
-  "function mint(address to, string memory tokenURI) external returns (uint256)",
-  "function ownerOf(uint256 tokenId) external view returns (address)",
-  "function tokenURI(uint256 tokenId) external view returns (string memory)",
-  "function transferFrom(address from, address to, uint256 tokenId) external",
-  "function totalSupply() external view returns (uint256)",
+  "  /**
+   * Implements mint functionality
+   * 
+   * @function mint
+   * @returns {void|Promise<void>} Function return value
+   */
+function mint(address to, string memory tokenURI) external returns (uint256)",
+  "  /**
+   * Implements ownerOf functionality
+   * 
+   * @function ownerOf
+   * @returns {void|Promise<void>} Function return value
+   */
+function ownerOf(uint256 tokenId) external view returns (address)",
+  "  /**
+   * Implements tokenURI functionality
+   * 
+   * @function tokenURI
+   * @returns {void|Promise<void>} Function return value
+   */
+function tokenURI(uint256 tokenId) external view returns (string memory)",
+  "  /**
+   * Implements transferFrom functionality
+   * 
+   * @function transferFrom
+   * @returns {void|Promise<void>} Function return value
+   */
+function transferFrom(address from, address to, uint256 tokenId) external",
+  "  /**
+   * Implements totalSupply functionality
+   * 
+   * @function totalSupply
+   * @returns {void|Promise<void>} Function return value
+   */
+function totalSupply() external view returns (uint256)",
   "event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)"
 ];
 
@@ -107,6 +137,13 @@ export async function pinToIPFS(metadata: StoryMetadata): Promise<string> {
  * @param ownerAddress - Address that will own the minted NFT
  * @param signer - Signer with funds to pay for the transaction
  */
+  /**
+   * Implements mint functionality
+   * 
+   * @function mint
+   * @returns {void|Promise<void>} Function return value
+   */
+
 export async function mintStoryNFT(
   metadata: StoryMetadata, 
   ownerAddress: string,

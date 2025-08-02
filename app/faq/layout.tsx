@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.faq.layout.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -23,7 +31,13 @@ export const metadata: Metadata = {
   }
 };
 
-export default function FaqLayout({
+export default   /**
+   * Implements FaqLayout functionality
+   * 
+   * @function FaqLayout
+   * @returns {void|Promise<void>} Function return value
+   */
+ function FaqLayout({
   children,
 }: {
   children: React.ReactNode;

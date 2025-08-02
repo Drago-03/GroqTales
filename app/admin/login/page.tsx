@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.admin.login.page.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { useState, Suspense } from "react";
@@ -19,13 +27,27 @@ const MOCK_ADMIN = {
   password: "admin123"
 };
 
-export default function LoginPage() {
+export default   /**
+   * Implements LoginPage functionality
+   * 
+   * @function LoginPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function LoginPage() {
   return (
     <Suspense fallback={<div>Loading login page...</div>}>
       <LoginContent />
     </Suspense>
   );
 }
+
+  /**
+   * Implements LoginContent functionality
+   * 
+   * @function LoginContent
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 function LoginContent() {
   const [isLoading, setIsLoading] = useState(false);

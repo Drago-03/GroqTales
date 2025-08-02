@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module lib.mongodb.ts
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 import { MongoClient } from 'mongodb';
 import * as dotenv from 'dotenv';
 

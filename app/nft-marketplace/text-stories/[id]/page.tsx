@@ -14,7 +14,20 @@ import { useToast } from "@/components/ui/use-toast";
 import { useWeb3 } from "@/components/providers/web3-provider";
 import { Heart, Eye, MessageSquare, Share2, ArrowLeft, BookOpen, Clock, Download, Gift, ShoppingCart, ExternalLink } from "lucide-react";
 
-// Mock data function to get story by ID (would be replaced by actual API call)
+// Mock data   /**
+   * Implements to functionality
+   * 
+   * @function to
+   * @returns {void|Promise<void>} Function return value
+   */
+ function to get story by ID (would be replaced by actual API call)
+  /**
+   * Retrieves storybyid data
+   * 
+   * @function getStoryById
+   * @returns {void|Promise<void>} Function return value
+   */
+
 function getStoryById(id: string) {
   // This is just for demo - you would fetch from API
   const mockStory = {
@@ -50,7 +63,13 @@ function getStoryById(id: string) {
   return mockStory;
 }
 
-export default function TextStoryDetailPage() {
+export default   /**
+   * Implements TextStoryDetailPage functionality
+   * 
+   * @function TextStoryDetailPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function TextStoryDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { toast } = useToast();

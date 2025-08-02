@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.story-tools.page.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { useState } from "react";
@@ -12,7 +20,13 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Upload } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
-export default function StoryToolsPage() {
+export default   /**
+   * Implements StoryToolsPage functionality
+   * 
+   * @function StoryToolsPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function StoryToolsPage() {
   const [storyId, setStoryId] = useState("demo-story-" + Date.now());
   const [storyTitle, setStoryTitle] = useState("");
   const [storyGenre, setStoryGenre] = useState("");

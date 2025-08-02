@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.nft-gallery.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client"
 
 import { useState, useEffect } from "react";
@@ -15,6 +23,14 @@ interface Story {
   price: number;
   salesCount: number;
 }
+
+  /**
+   * Implements NFTGallery functionality
+   * 
+   * @function NFTGallery
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function NFTGallery() {
   const [stories, setStories] = useState<Story[]>([]);

@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.create-story-button.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { useState } from "react";
@@ -7,6 +15,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TextStoryForm } from "@/components/text-story-form";
 import { ImageStoryForm } from "@/components/image-story-form";
 import { PenLine, ImagePlus } from "lucide-react";
+
+  /**
+   * Implements CreateStoryButton functionality
+   * 
+   * @function CreateStoryButton
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function CreateStoryButton() {
   const [open, setOpen] = useState(false);

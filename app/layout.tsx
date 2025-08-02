@@ -52,7 +52,13 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({
+export default   /**
+   * Implements RootLayout functionality
+   * 
+   * @function RootLayout
+   * @returns {void|Promise<void>} Function return value
+   */
+ function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

@@ -147,6 +147,14 @@ const dummyUsers = [
   { id: 10, name: "Ava Rodriguez", avatar: "https://images.unsplash.com/photo-1542080681-b52d485c3763?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" }
 ];
 
+  /**
+   * Implements PostActions functionality
+   * 
+   * @function PostActions
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 function PostActions({ post, onVote, onCommentClick }: { post: CommunityPost, onVote: (postId: string, vote: 'up' | 'down' | null) => void, onCommentClick: (postId: string) => void }) {
   return (
     <div className="flex items-center justify-between text-muted-foreground pt-3 border-t">
@@ -186,6 +194,14 @@ function PostActions({ post, onVote, onCommentClick }: { post: CommunityPost, on
     </div>
   );
 }
+
+  /**
+   * Implements PostCard functionality
+   * 
+   * @function PostCard
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 function PostCard({ post, onVote, onCommentClick }: { post: CommunityPost, onVote: (postId: string, vote: 'up' | 'down' | null) => void, onCommentClick: (postId: string) => void }) {
   return (
@@ -263,6 +279,14 @@ function PostCard({ post, onVote, onCommentClick }: { post: CommunityPost, onVot
   );
 }
 
+  /**
+   * Implements CreatePostForm functionality
+   * 
+   * @function CreatePostForm
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 function CreatePostForm() {
   const [content, setContent] = useState('');
 
@@ -297,6 +321,14 @@ function CreatePostForm() {
     </Card>
   );
 }
+
+  /**
+   * Implements CommunityFeed functionality
+   * 
+   * @function CommunityFeed
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function CommunityFeed() {
   const [posts, setPosts] = useState<CommunityPost[]>(dummyPosts);
@@ -435,7 +467,33 @@ export function CommunityFeed() {
   );
 }
 
-// Helper function to get comments based on tag
+// Helper   /**
+   * Implements to functionality
+   * 
+   * @  /**
+   * Implements to functionality
+   * 
+   * @function to
+   * @returns {void|Promise<void>} Function return value
+   */
+function to
+   * @returns {void|Promise<void>} Function return value
+   */
+   /**
+   * Implements to functionality
+   * 
+   * @function to
+   * @returns {void|Promise<void>} Function return value
+   */
+
+ function to get comments based on tag
+  /**
+   * Retrieves commentsbytag data
+   * 
+   * @function getCommentsByTag
+   * @returns {void|Promise<void>} Function return value
+   */
+
 function getCommentsByTag(tag: string) {
   const generalComments = [
     "Great post!",
@@ -525,7 +583,33 @@ function getCommentsByTag(tag: string) {
   return comments;
 }
 
-// Helper function to generate random comment text based on post tags
+// Helper   /**
+   * Implements to functionality
+   * 
+   * @  /**
+   * Implements to functionality
+   * 
+   * @function to
+   * @returns {void|Promise<void>} Function return value
+   */
+function to
+   * @returns {void|Promise<void>} Function return value
+   */
+   /**
+   * Implements to functionality
+   * 
+   * @function to
+   * @returns {void|Promise<void>} Function return value
+   */
+
+ function to generate random comment text based on post tags
+  /**
+   * Retrieves randomcomment data
+   * 
+   * @function getRandomComment
+   * @returns {void|Promise<void>} Function return value
+   */
+
 function getRandomComment(tag: string) {
   const comments = getCommentsByTag(tag);
   return comments[Math.floor(Math.random() * comments.length)];

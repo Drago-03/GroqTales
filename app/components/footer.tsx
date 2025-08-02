@@ -1,7 +1,23 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.components.footer.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import Link from "next/link";
 import { Github } from "lucide-react";
+
+  /**
+   * Implements Footer functionality
+   * 
+   * @function Footer
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function Footer() {
   return (

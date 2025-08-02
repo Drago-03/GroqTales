@@ -1,3 +1,11 @@
+/**
+ * @fileoverview React component implementation
+ * @module lib.transaction-components.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import React, { createContext, useContext, ReactNode } from "react";
@@ -40,6 +48,13 @@ type TransactionProps = {
 };
 
 // Main Transaction component
+  /**
+   * Implements Transaction functionality
+   * 
+   * @function Transaction
+   * @returns {void|Promise<void>} Function return value
+   */
+
 export function Transaction({ children, calls, onSuccess, onError }: TransactionProps) {
   // Mock implementation
   const execute = async () => {
@@ -90,6 +105,23 @@ type TransactionButtonProps = {
   children?: ReactNode;
 };
 
+  /**
+   * Implements Transaction functionality
+   * 
+   * @function Transaction
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+  /**
+   * Implements TransactionButton functionality
+   * 
+   * @function TransactionButton
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+
 export function TransactionButton({ className = "", children }: TransactionButtonProps) {
   const { execute, isLoading } = useTransaction();
 
@@ -105,6 +137,21 @@ export function TransactionButton({ className = "", children }: TransactionButto
 }
 
 // Transaction Status
+  /**
+   * Implements Transaction functionality
+   * 
+   * @function Transaction
+   * @returns {void|Promise<void>} Function return value
+   */
+
+  /**
+   * Implements TransactionStatus functionality
+   * 
+   * @function TransactionStatus
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function TransactionStatus({ children }: { children: ReactNode }) {
   const { isLoading, isSuccess, isError } = useTransaction();
   
@@ -118,6 +165,30 @@ export function TransactionStatus({ children }: { children: ReactNode }) {
 }
 
 // Transaction Status Label
+  /**
+   * Implements Transaction functionality
+   * 
+   * @function Transaction
+   * @returns {void|Promise<void>} Function return value
+   */
+
+  /**
+   * Implements TransactionStatus functionality
+   * 
+   * @function TransactionStatus
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+  /**
+   * Implements TransactionStatusLabel functionality
+   * 
+   * @function TransactionStatusLabel
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+
 export function TransactionStatusLabel() {
   const { isLoading, isSuccess, isError, error } = useTransaction();
   
@@ -129,6 +200,30 @@ export function TransactionStatusLabel() {
 }
 
 // Transaction Status Action
+  /**
+   * Implements Transaction functionality
+   * 
+   * @function Transaction
+   * @returns {void|Promise<void>} Function return value
+   */
+
+  /**
+   * Implements TransactionStatus functionality
+   * 
+   * @function TransactionStatus
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+  /**
+   * Implements TransactionStatusAction functionality
+   * 
+   * @function TransactionStatusAction
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+
 export function TransactionStatusAction() {
   const { isLoading, isSuccess, isError } = useTransaction();
   
@@ -141,6 +236,21 @@ export function TransactionStatusAction() {
 }
 
 // Transaction Toast
+  /**
+   * Implements Transaction functionality
+   * 
+   * @function Transaction
+   * @returns {void|Promise<void>} Function return value
+   */
+
+  /**
+   * Implements TransactionToast functionality
+   * 
+   * @function TransactionToast
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function TransactionToast({ children, className = "" }: { children: ReactNode, className?: string }) {
   const { isSuccess, isError } = useTransaction();
   
@@ -154,6 +264,30 @@ export function TransactionToast({ children, className = "" }: { children: React
 }
 
 // Transaction Toast Icon
+  /**
+   * Implements Transaction functionality
+   * 
+   * @function Transaction
+   * @returns {void|Promise<void>} Function return value
+   */
+
+  /**
+   * Implements TransactionToast functionality
+   * 
+   * @function TransactionToast
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+  /**
+   * Implements TransactionToastIcon functionality
+   * 
+   * @function TransactionToastIcon
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+
 export function TransactionToastIcon() {
   const { isSuccess, isError } = useTransaction();
   
@@ -164,6 +298,30 @@ export function TransactionToastIcon() {
 }
 
 // Transaction Toast Label
+  /**
+   * Implements Transaction functionality
+   * 
+   * @function Transaction
+   * @returns {void|Promise<void>} Function return value
+   */
+
+  /**
+   * Implements TransactionToast functionality
+   * 
+   * @function TransactionToast
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+  /**
+   * Implements TransactionToastLabel functionality
+   * 
+   * @function TransactionToastLabel
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+
 export function TransactionToastLabel() {
   const { isSuccess, isError, error } = useTransaction();
   
@@ -174,6 +332,30 @@ export function TransactionToastLabel() {
 }
 
 // Transaction Toast Action
+  /**
+   * Implements Transaction functionality
+   * 
+   * @function Transaction
+   * @returns {void|Promise<void>} Function return value
+   */
+
+  /**
+   * Implements TransactionToast functionality
+   * 
+   * @function TransactionToast
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+  /**
+   * Implements TransactionToastAction functionality
+   * 
+   * @function TransactionToastAction
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+
 export function TransactionToastAction() {
   const { isSuccess } = useTransaction();
   

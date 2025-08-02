@@ -25,6 +25,14 @@ interface UseStorySummaryResult {
   error: string | null;
 }
 
+  /**
+   * Implements useStorySummary functionality
+   * 
+   * @function useStorySummary
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function useStorySummary(): UseStorySummaryResult {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);

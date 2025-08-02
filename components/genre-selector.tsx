@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.genre-selector.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import * as React from "react";
@@ -101,9 +109,25 @@ export const genres: Genre[] = [
   }
 ];
 
+  /**
+   * Retrieves genrebyslug data
+   * 
+   * @function getGenreBySlug
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function getGenreBySlug(slug: string): Genre | undefined {
   return genres.find(genre => genre.slug === slug);
 }
+
+  /**
+   * Implements GenreCard functionality
+   * 
+   * @function GenreCard
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function GenreCard({ genre }: { genre: Genre }) {
   return (
@@ -118,6 +142,14 @@ export function GenreCard({ genre }: { genre: Genre }) {
     </Link>
   );
 }
+
+  /**
+   * Implements GenreSelector functionality
+   * 
+   * @function GenreSelector
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function GenreSelector() {
   return (
@@ -136,6 +168,14 @@ export function GenreSelector() {
     </div>
   );
 }
+
+  /**
+   * Implements GenresPage functionality
+   * 
+   * @function GenresPage
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function GenresPage() {
   return (

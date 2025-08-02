@@ -41,6 +41,14 @@ interface ComicNFTDetailDialogProps {
   onPurchase: () => void;
 }
 
+  /**
+   * Implements ComicNFTDetailDialog functionality
+   * 
+   * @function ComicNFTDetailDialog
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function ComicNFTDetailDialog({
   comic,
   isOpen,

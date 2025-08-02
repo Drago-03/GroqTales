@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.admin-login-modal.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -21,6 +29,14 @@ interface AdminLoginModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
+  /**
+   * Implements AdminLoginModal functionality
+   * 
+   * @function AdminLoginModal
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -32,7 +48,7 @@ export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
 
   // Check for the current path when the modal opens
   useEffect(() => {
-    if (open) {
+    if (open && typeof window !== 'undefined') {
       // Remember the path the user was trying to access
       const path = window.location.pathname;
       if (path.startsWith('/admin/') && path !== '/admin/login') {
@@ -97,20 +113,28 @@ export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
     try {
       // Try multiple storage methods for better resilience
       
-      // Primary storage - localStorage for persistent sessions
-      localStorage.setItem('adminSession', 'true');
-      localStorage.setItem('employeeId', employeeId);
-      localStorage.setItem('adminSessionToken', sessionToken);
-      localStorage.setItem('adminSessionTimestamp', Date.now().toString());
-      
-      // Secondary storage - cookies for cross-tab consistency
-      const expirationDate = new Date();
-      expirationDate.setHours(expirationDate.getHours() + 24); // 24-hour expiration
-      document.cookie = `adminSessionActive=true; path=/; expires=${expirationDate.toUTCString()}`;
-      document.cookie = `adminSessionToken=${sessionToken}; path=/; expires=${expirationDate.toUTCString()}`;
-      
-      // Tertiary - session storage as another option
-      sessionStorage.setItem('adminSession', 'true');
+      if (typeof window !== 'undefined') {
+        // Primary storage - localStorage for persistent sessions
+        if (window.localStorage) {
+          localStorage.setItem('adminSession', 'true');
+          localStorage.setItem('employeeId', employeeId);
+          localStorage.setItem('adminSessionToken', sessionToken);
+          localStorage.setItem('adminSessionTimestamp', Date.now().toString());
+        }
+        
+        // Secondary storage - cookies for cross-tab consistency
+        if (typeof document !== 'undefined') {
+          const expirationDate = new Date();
+          expirationDate.setHours(expirationDate.getHours() + 24); // 24-hour expiration
+          document.cookie = `adminSessionActive=true; path=/; expires=${expirationDate.toUTCString()}`;
+          document.cookie = `adminSessionToken=${sessionToken}; path=/; expires=${expirationDate.toUTCString()}`;
+        }
+        
+        // Tertiary - session storage as another option
+        if (window.sessionStorage) {
+          sessionStorage.setItem('adminSession', 'true');
+        }
+      }
       
       console.log("Admin session established for:", employeeId);
     } catch (error) {

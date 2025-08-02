@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.story-recommendations.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -19,6 +27,14 @@ interface StoryRecommendationsProps {
   apiKey?: string;
   onStoryClick?: (story: any) => void;
 }
+
+  /**
+   * Implements StoryRecommendations functionality
+   * 
+   * @function StoryRecommendations
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function StoryRecommendations({
   storyId,

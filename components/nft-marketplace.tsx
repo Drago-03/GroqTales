@@ -24,6 +24,14 @@ interface NFT {
   views?: number;
 }
 
+  /**
+   * Implements NFTMarketplace functionality
+   * 
+   * @function NFTMarketplace
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function NFTMarketplace() {
   const { account, connectWallet, buyNFTOnBase, sellNFTOnBase, getNFTListings } = useWeb3();
   const [nfts, setNfts] = useState<NFT[]>([]);

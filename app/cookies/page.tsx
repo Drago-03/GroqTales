@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.cookies.page.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import Link from "next/link";
@@ -41,7 +49,13 @@ const CookieSection = ({ icon: Icon, title, children }: any) => (
   </Card>
 );
 
-export default function CookiePolicyPage() {
+export default   /**
+   * Implements CookiePolicyPage functionality
+   * 
+   * @function CookiePolicyPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function CookiePolicyPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
       <FloatingDoodles />
@@ -72,7 +86,13 @@ export default function CookiePolicyPage() {
           <CookieSection icon={Cookie} title="Types of Cookies We Use">
             <h3 className="text-lg font-semibold">Essential Cookies</h3>
             <p>
-              These cookies are necessary for the website to function properly. They enable
+              These cookies are necessary for the website to   /**
+   * Implements properly functionality
+   * 
+   * @function properly
+   * @returns {void|Promise<void>} Function return value
+   */
+ function properly. They enable
               core functionality such as security, network management, and accessibility.
               You cannot opt out of these cookies.
             </p>

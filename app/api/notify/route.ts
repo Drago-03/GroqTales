@@ -1,9 +1,24 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.api.notify.route.ts
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 import { NextResponse } from 'next/server';
 
 // Make this file a module
 export {};
 
 // API route handler for sending notifications
+  /**
+   * Implements POST functionality
+   * 
+   * @function POST
+   * @returns {void|Promise<void>} Function return value
+   */
+
 export async function POST(req: Request) {
   try {
     // Temporarily return a static response to bypass notification logic

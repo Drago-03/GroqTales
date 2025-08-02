@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.types.global.d.ts
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 declare global {
   interface Window {
     ethereum?: {

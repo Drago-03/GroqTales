@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.api.monad.mint.route.ts
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 import { NextResponse } from "next/server";
 import { JsonRpcProvider, Wallet, Contract } from "ethers";
 // Removed direct import of ipfs-http-client to avoid build-time Node.js module issues
@@ -16,6 +24,13 @@ const IPFS_FALLBACK_GATEWAY = 'https://ipfs.io';
 const IPNS_PUBLISHING_KEY = 'self - k51qzi5uqu5dhindgjwye0f28c6zb6m06gl799ihzivn50kqkl8w0bomgz6rxc';
 
 // Function to dynamically initialize IPFS client only when needed
+  /**
+   * Retrieves ipfsclient data
+   * 
+   * @function getIpfsClient
+   * @returns {void|Promise<void>} Function return value
+   */
+
 async function getIpfsClient() {
   try {
     const { create } = await import('ipfs-http-client');
@@ -57,6 +72,14 @@ const CONTRACT_ABI = [
     "type": "event"
   }
 ];
+
+  /**
+   * Implements POST functionality
+   * 
+   * @function POST
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export async function POST(req: Request) {
   try {

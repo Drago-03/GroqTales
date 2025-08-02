@@ -1,4 +1,20 @@
+/**
+ * @fileoverview Core application functionality
+ * @module lib.test-db.ts
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 import { getDb, insertOne, findOne } from './db';
+
+  /**
+   * Implements testConnection functionality
+   * 
+   * @function testConnection
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 async function testConnection() {
   try {

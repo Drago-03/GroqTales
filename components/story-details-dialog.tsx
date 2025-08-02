@@ -24,6 +24,14 @@ interface StoryDetailsDialogProps {
   onLike?: () => void;
 }
 
+  /**
+   * Implements StoryDetailsDialog functionality
+   * 
+   * @function StoryDetailsDialog
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function StoryDetailsDialog({
   isOpen,
   onClose,
@@ -43,7 +51,9 @@ export function StoryDetailsDialog({
         variant: "destructive",
       });
       // Trigger wallet connection
-      document.getElementById("connect-wallet-button")?.click();
+      if (typeof document !== 'undefined') {
+        document.getElementById("connect-wallet-button")?.click();
+      }
       return;
     }
     

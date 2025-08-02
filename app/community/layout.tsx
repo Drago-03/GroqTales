@@ -1,10 +1,24 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.community.layout.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 import { metadata } from "./metadata";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 
 export { metadata };
 
-export default function CommunityLayout({
+export default   /**
+   * Implements CommunityLayout functionality
+   * 
+   * @function CommunityLayout
+   * @returns {void|Promise<void>} Function return value
+   */
+ function CommunityLayout({
   children,
 }: {
   children: React.ReactNode;

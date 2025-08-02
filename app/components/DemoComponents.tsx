@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.components.DemoComponents.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { type ReactNode, useCallback, useMemo, useState } from "react";
@@ -10,6 +18,14 @@ type CardProps = {
   className?: string;
   onClick?: () => void;
 }
+
+  /**
+   * Implements Card functionality
+   * 
+   * @function Card
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 function Card({
   title,

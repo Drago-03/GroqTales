@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module lib.redis.ts
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 // Yo, we don't have the actual Redis module, so let's fake it
 // This is a mock implementation of the Redis client
 

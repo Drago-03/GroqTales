@@ -168,6 +168,29 @@ Thanks to these amazing people for making GroqTales better!
 
 ---
 
+## 📚 Documentation & Architecture
+
+### Core Documentation
+- **Architecture Overview:** [ARCHITECTURE.md](ARCHITECTURE.md) - Comprehensive system design and technical architecture
+- **Project Wiki:** [GitHub Wiki](https://github.com/Drago-03/GroqTales/wiki) - Detailed guides and documentation
+- **API Documentation:** [Wiki/API](https://github.com/Drago-03/GroqTales/wiki/API) - Backend API reference
+- **Smart Contracts:** [Wiki/Blockchain](https://github.com/Drago-03/GroqTales/wiki/Blockchain) - Contract documentation
+
+### System Architecture
+- **Frontend Architecture:** [ARCHITECTURE.md#frontend](ARCHITECTURE.md#frontend-architecture) - Next.js application structure
+- **Backend Architecture:** [ARCHITECTURE.md#backend](ARCHITECTURE.md#backend-architecture) - API and service design  
+- **Blockchain Integration:** [ARCHITECTURE.md#blockchain](ARCHITECTURE.md#blockchain-architecture) - Web3 and smart contract integration
+- **AI Integration:** [ARCHITECTURE.md#ai](ARCHITECTURE.md#ai-architecture) - Groq AI implementation
+- **System Diagrams:** [ARCHITECTURE.md#diagrams](ARCHITECTURE.md#system-diagrams) - Mermaid flowcharts and architecture diagrams
+
+### Development Resources
+- **Setup Guide:** [Wiki/Development-Setup](https://github.com/Drago-03/GroqTales/wiki/Development-Setup)
+- **Contributing:** [CONTRIBUTING.md](CONTRIBUTING.md) - How to contribute to the project
+- **Code of Conduct:** [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) - Community guidelines
+- **Security Policy:** [SECURITY.md](SECURITY.md) - Security practices and vulnerability reporting
+
+---
+
 ## 📚 Resources
 
 - **Website:** [groqtales.xyz](https://www.groqtales.xyz)

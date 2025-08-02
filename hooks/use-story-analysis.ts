@@ -26,6 +26,14 @@ interface UseStoryAnalysisResult {
   clearResult: () => void;
 }
 
+  /**
+   * Implements useStoryAnalysis functionality
+   * 
+   * @function useStoryAnalysis
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function useStoryAnalysis(): UseStoryAnalysisResult {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);

@@ -9,6 +9,14 @@ interface SplashScreenProps {
   minDisplayTime?: number; // minimum time to display in ms
 }
 
+  /**
+   * Implements SplashScreen functionality
+   * 
+   * @function SplashScreen
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function SplashScreen({
   onComplete,
   minDisplayTime = 2000,

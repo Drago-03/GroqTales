@@ -40,6 +40,14 @@ interface StoryCardProps {
   showCreateButton?: boolean;
 }
 
+  /**
+   * Implements StoryCard functionality
+   * 
+   * @function StoryCard
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function StoryCard({ story, viewMode = "grid", hideLink = false, showCreateButton = false }: StoryCardProps) {
   const router = useRouter();
   const isGrid = viewMode === "grid";
@@ -59,7 +67,9 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
   const handleCreateSimilar = () => {
     // Direct navigation with URL parameters
     const genre = story.genre || 'fantasy';
-    window.location.href = `/create/ai-story?source=card&genre=${encodeURIComponent(genre)}&format=nft`;
+    if (typeof window !== 'undefined') {
+      window.location.href = `/create/ai-story?source=card&genre=${encodeURIComponent(genre)}&format=nft`;
+    }
   };
   
   const handleViewNFT = () => {

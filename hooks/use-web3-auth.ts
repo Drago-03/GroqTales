@@ -1,6 +1,22 @@
+/**
+ * @fileoverview Core application functionality
+ * @module hooks.use-web3-auth.ts
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 import { useAccount, useConnect, useDisconnect, useSignMessage } from 'wagmi';
 import { SiweMessage } from 'siwe';
 import { useState } from 'react';
+
+  /**
+   * Implements useWeb3Auth functionality
+   * 
+   * @function useWeb3Auth
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function useWeb3Auth() {
   const { address, isConnected } = useAccount();

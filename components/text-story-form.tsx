@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.text-story-form.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { useState } from "react";
@@ -11,6 +19,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 interface TextStoryFormProps {
   onSuccess: () => void;
 }
+
+  /**
+   * Implements TextStoryForm functionality
+   * 
+   * @function TextStoryForm
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function TextStoryForm({ onSuccess }: TextStoryFormProps) {
   const [title, setTitle] = useState("");

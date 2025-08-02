@@ -2,12 +2,21 @@
 
 import { motion } from "framer-motion";
 import { Sparkles, BookText, Cpu } from "lucide-react";
+import { ClientOnly } from "@/components/client-only";
 
 interface LoadingScreenProps {
   message?: string;
   fullScreen?: boolean;
   size?: "sm" | "md" | "lg";
 }
+
+  /**
+   * Implements LoadingScreen functionality
+   * 
+   * @function LoadingScreen
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function LoadingScreen({ 
   message = "Loading...", 
@@ -37,8 +46,28 @@ export function LoadingScreen({
   };
 
   const currentSize = sizes[size];
+
+  // Simple fallback for SSR
+  const StaticFallback = () => (
+    <div className={`
+      flex flex-col items-center justify-center
+      ${fullScreen ? "fixed inset-0 z-50 bg-background" : "w-full py-8"}
+    `}>
+      <div className={currentSize.container}>
+        <div className="flex items-center justify-center h-full">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      </div>
+      {message && (
+        <p className={`text-muted-foreground ${currentSize.text} mt-4`}>
+          {message}
+        </p>
+      )}
+    </div>
+  );
   
   return (
+    <ClientOnly fallback={<StaticFallback />}>
     <div className={`
       flex flex-col items-center justify-center
       ${fullScreen ? "fixed inset-0 z-50 bg-background" : "w-full py-8"}
@@ -154,6 +183,7 @@ export function LoadingScreen({
         </div>
       )}
     </div>
+    </ClientOnly>
   );
 }
 

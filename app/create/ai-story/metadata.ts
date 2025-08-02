@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.create.ai-story.metadata.ts
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

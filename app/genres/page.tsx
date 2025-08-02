@@ -109,7 +109,13 @@ const genreData = [
   }
 ];
 
-export default function GenresPage() {
+export default   /**
+   * Implements GenresPage functionality
+   * 
+   * @function GenresPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function GenresPage() {
   return (
     <div className="py-12 min-h-screen">
       <div className="container mx-auto px-4 max-w-6xl">

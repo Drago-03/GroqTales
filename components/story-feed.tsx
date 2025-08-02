@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.story-feed.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import * as React from "react";
@@ -133,6 +141,14 @@ const communityStories: Story[] = [
   }
 ];
 
+  /**
+   * Implements StoryCard functionality
+   * 
+   * @function StoryCard
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function StoryCard({ story }: { story: Story }) {
   return (
     <div className="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
@@ -197,6 +213,14 @@ export function StoryCard({ story }: { story: Story }) {
     </div>
   );
 }
+
+  /**
+   * Implements StoryFeed functionality
+   * 
+   * @function StoryFeed
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function StoryFeed() {
   return (

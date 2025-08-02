@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.create.ai-story.page.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
@@ -9,13 +17,27 @@ import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-export default function AIStoryGeneratorPage() {
+export default   /**
+   * Implements AIStoryGeneratorPage functionality
+   * 
+   * @function AIStoryGeneratorPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function AIStoryGeneratorPage() {
   return (
     <Suspense fallback={<div>Loading AI story page...</div>}>
       <AIStoryContent />
     </Suspense>
   );
 }
+
+  /**
+   * Implements AIStoryContent functionality
+   * 
+   * @function AIStoryContent
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 function AIStoryContent() {
   const router = useRouter();
@@ -61,7 +83,13 @@ function AIStoryContent() {
 
   // Enhanced navigation detection from URL parameters
   useEffect(() => {
-    // This function runs when the component mounts to detect navigation source
+    // This   /**
+   * Implements runs functionality
+   * 
+   * @function runs
+   * @returns {void|Promise<void>} Function return value
+   */
+ function runs when the component mounts to detect navigation source
     const detectNavigationSource = () => {
       // Check URL parameters for source
       if (source) {

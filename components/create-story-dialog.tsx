@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.create-story-dialog.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { useState } from "react";
@@ -46,6 +54,14 @@ const createOptions: CreateOption[] = [
   }
 ];
 
+  /**
+   * Implements CreateStoryDialog functionality
+   * 
+   * @function CreateStoryDialog
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function CreateStoryDialog({ isOpen, onClose }: CreateStoryDialogProps) {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -91,12 +107,14 @@ export function CreateStoryDialog({ isOpen, onClose }: CreateStoryDialogProps) {
       };
       
       // Store to localStorage
-      localStorage.setItem('storyCreationData', JSON.stringify(storyData));
-      
-      // Verify the data was saved correctly
-      const savedData = localStorage.getItem('storyCreationData');
-      if (!savedData) {
-        throw new Error("Failed to save story creation data");
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem('storyCreationData', JSON.stringify(storyData));
+        
+        // Verify the data was saved correctly
+        const savedData = localStorage.getItem('storyCreationData');
+        if (!savedData) {
+          throw new Error("Failed to save story creation data");
+        }
       }
       
       console.log("Story creation data saved successfully:", storyData);
@@ -114,10 +132,14 @@ export function CreateStoryDialog({ isOpen, onClose }: CreateStoryDialogProps) {
     } catch (error) {
       console.error("Error saving data or navigating:", error);
       // Show an error through toast notification if available
-      alert("Error creating story. Please try again.");
+      if (typeof window !== 'undefined') {
+        alert("Error creating story. Please try again.");
+      }
       
       // Try direct navigation as fallback
-      window.location.href = path;
+      if (typeof window !== 'undefined') {
+        window.location.href = path;
+      }
     }
   };
 

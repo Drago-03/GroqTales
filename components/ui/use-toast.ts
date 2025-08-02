@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.ui.use-toast.ts
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 // Inspired by react-hot-toast library
 import * as React from "react"
 
@@ -24,6 +32,14 @@ const actionTypes = {
 } as const
 
 let count = 0
+
+  /**
+   * Implements genId functionality
+   * 
+   * @function genId
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 function genId() {
   count = (count + 1) % Number.MAX_VALUE
@@ -131,6 +147,14 @@ const listeners: Array<(state: State) => void> = []
 
 let memoryState: State = { toasts: [] }
 
+  /**
+   * Implements dispatch functionality
+   * 
+   * @function dispatch
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 function dispatch(action: Action) {
   memoryState = reducer(memoryState, action)
   listeners.forEach((listener) => {
@@ -139,6 +163,14 @@ function dispatch(action: Action) {
 }
 
 type Toast = Omit<ToasterToast, "id">
+
+  /**
+   * Implements toast functionality
+   * 
+   * @function toast
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 function toast({ ...props }: Toast) {
   const id = genId()
@@ -168,6 +200,14 @@ function toast({ ...props }: Toast) {
     update,
   }
 }
+
+  /**
+   * Implements useToast functionality
+   * 
+   * @function useToast
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 function useToast() {
   const [state, setState] = React.useState<State>(memoryState)

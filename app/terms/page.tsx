@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.terms.page.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import Link from "next/link";
@@ -25,7 +33,13 @@ const FloatingDoodles = () => (
   </div>
 );
 
-export default function TermsPage() {
+export default   /**
+   * Implements TermsPage functionality
+   * 
+   * @function TermsPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function TermsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
       <FloatingDoodles />

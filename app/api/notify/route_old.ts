@@ -1,6 +1,22 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.api.notify.route_old.ts
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 // Commented out due to missing module
 // import { sendFrameNotification } from "@/lib/notification-client";
 import { NextResponse } from "next/server";
+
+  /**
+   * Implements POST functionality
+   * 
+   * @function POST
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export async function POST(request: Request) {
   try {

@@ -12,6 +12,14 @@ interface ImageStoryFormProps {
   onSuccess: () => void;
 }
 
+  /**
+   * Implements ImageStoryForm functionality
+   * 
+   * @function ImageStoryForm
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function ImageStoryForm({ onSuccess }: ImageStoryFormProps) {
   const [title, setTitle] = useState("");
   const [caption, setCaption] = useState("");

@@ -150,6 +150,13 @@ const mockComicNFTs: ComicNFT[] = [
 ];
 
 // Generate more comic NFTs for demonstration
+  /**
+   * Implements generateMoreComicNFTs functionality
+   * 
+   * @function generateMoreComicNFTs
+   * @returns {void|Promise<void>} Function return value
+   */
+
 function generateMoreComicNFTs(count: number): ComicNFT[] {
   const genres = ["Sci-Fi", "Fantasy", "Cyberpunk", "Mystery", "Action", "Horror", "Comedy", "Romance"];
   const rarities: Array<ComicNFT["rarity"]> = ["common", "uncommon", "rare", "legendary"];
@@ -185,7 +192,13 @@ function generateMoreComicNFTs(count: number): ComicNFT[] {
 
 const allComicNFTs = [...mockComicNFTs, ...generateMoreComicNFTs(18)];
 
-export default function ComicStoriesPage() {
+export default   /**
+   * Implements ComicStoriesPage functionality
+   * 
+   * @function ComicStoriesPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function ComicStoriesPage() {
   const [comics, setComics] = useState<ComicNFT[]>(allComicNFTs);
   const [filteredComics, setFilteredComics] = useState<ComicNFT[]>(allComicNFTs);
   const [searchTerm, setSearchTerm] = useState("");

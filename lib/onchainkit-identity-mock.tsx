@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module lib.onchainkit-identity-mock.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 // just some fire mock components for identity stuff
@@ -9,6 +17,14 @@ interface IdentityProps {
   className?: string;
   hasCopyAddressOnClick?: boolean;
 }
+
+  /**
+   * Implements Identity functionality
+   * 
+   * @function Identity
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function Identity({ children, className = "" }: IdentityProps) {
   return (
@@ -22,6 +38,14 @@ interface NameProps {
   className?: string;
 }
 
+  /**
+   * Implements Name functionality
+   * 
+   * @function Name
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function Name({ className = "" }: NameProps) {
   return (
     <span className={`font-medium ${className}`}>
@@ -33,6 +57,14 @@ export function Name({ className = "" }: NameProps) {
 interface AddressProps {
   className?: string;
 }
+
+  /**
+   * Implements Address functionality
+   * 
+   * @function Address
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function Address({ className = "" }: AddressProps) {
   return (
@@ -46,6 +78,14 @@ interface AvatarProps {
   className?: string;
 }
 
+  /**
+   * Implements Avatar functionality
+   * 
+   * @function Avatar
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function Avatar({ className = "" }: AvatarProps) {
   return (
     <div className={`w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden ${className}`}>
@@ -57,6 +97,14 @@ export function Avatar({ className = "" }: AvatarProps) {
 interface EthBalanceProps {
   className?: string;
 }
+
+  /**
+   * Implements EthBalance functionality
+   * 
+   * @function EthBalance
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function EthBalance({ className = "" }: EthBalanceProps) {
   return (

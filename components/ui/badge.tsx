@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.ui.badge.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
@@ -26,6 +34,14 @@ const badgeVariants = cva(
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
+
+  /**
+   * Implements Badge functionality
+   * 
+   * @function Badge
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 function Badge({ className, variant, ...props }: BadgeProps) {
   return (

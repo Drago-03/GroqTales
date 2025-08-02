@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.footer.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import Link from "next/link";
@@ -8,6 +16,14 @@ import {
   FileCheck, Shield, Cookie, Mail, BookOpen
 } from "lucide-react";
 import { AdminLoginModal } from "./admin-login-modal";
+
+  /**
+   * Implements Footer functionality
+   * 
+   * @function Footer
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function Footer() {
   const currentYear = new Date().getFullYear();

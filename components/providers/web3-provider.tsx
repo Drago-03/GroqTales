@@ -229,7 +229,108 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Add mintNFTOnBase function
+  // Add mintNFTOnBase   /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+  /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+   /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+   /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+   /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+
+ function
   const mintNFTOnBase = async (metadata: any, recipient?: string) => {
     if (!account) {
       throw new Error("Wallet not connected");
@@ -299,7 +400,108 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Add buyNFTOnBase function
+  // Add buyNFTOnBase   /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+  /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+   /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+   /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+   /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+
+ function
   const buyNFTOnBase = async (tokenId: string, price: string) => {
     if (!account) {
       throw new Error("Wallet not connected");
@@ -329,7 +531,108 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Add sellNFTOnBase function
+  // Add sellNFTOnBase   /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+  /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+   /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+   /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+   /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+
+ function
   const sellNFTOnBase = async (tokenId: string, price: string) => {
     if (!account) {
       throw new Error("Wallet not connected");
@@ -359,7 +662,108 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Add getNFTListings function
+  // Add getNFTListings   /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+  /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+   /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+   /**
+   * Implements const functionality
+   * 
+   * @  /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+   /**
+   * Implements const functionality
+   * 
+   * @function const
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+
+ function
   const getNFTListings = async () => {
     try {
       // Mock NFT listings for now - in production, this would fetch from your smart contract

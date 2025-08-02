@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.page-header.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 import { BookOpen, ShoppingCart, Users, Bookmark, Library, Settings, HelpCircle, Newspaper, BarChart3, Heart } from "lucide-react";
 
 interface PageHeaderProps {
@@ -5,6 +13,14 @@ interface PageHeaderProps {
   description?: string;
   icon?: "book" | "shopping-cart" | "users" | "bookmark" | "library" | "settings" | "help" | "newspaper" | "chart" | "heart" | null;
 }
+
+  /**
+   * Implements PageHeader functionality
+   * 
+   * @function PageHeader
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function PageHeader({ title, description, icon }: PageHeaderProps) {
   const getIcon = () => {

@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.user-nav.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { 
@@ -15,6 +23,14 @@ import { Wallet, User, Settings, LogOut } from "lucide-react";
 import Link from "next/link";
 import { useWeb3 } from "@/components/providers/web3-provider";
 import { useToast } from "@/components/ui/use-toast";
+
+  /**
+   * Implements UserNav functionality
+   * 
+   * @function UserNav
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function UserNav() {
   const { account, connectWallet, disconnectWallet } = useWeb3();

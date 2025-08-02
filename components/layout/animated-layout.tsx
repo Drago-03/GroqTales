@@ -10,6 +10,14 @@ interface AnimatedLayoutProps {
   className?: string;
 }
 
+  /**
+   * Implements AnimatedLayout functionality
+   * 
+   * @function AnimatedLayout
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function AnimatedLayout({ 
   children, 
   disableAnimation = false,
@@ -17,13 +25,13 @@ export function AnimatedLayout({
 }: AnimatedLayoutProps) {
   return (
     <div className="relative min-h-screen w-full">
-      {/* fr fr this galaxy background be bussin no cap */}
+      {/* Animated galaxy background */}
       {!disableAnimation && <GalaxyBackground />}
       
-      {/* lowkey making sure the text stays readable n stuff */}
+      {/* Overlay to ensure content readability */}
       <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] pointer-events-none" />
       
-      {/* no cap this where the content goes */}
+      {/* Main content container */}
       <div className={cn(
         "relative z-10 min-h-screen w-full",
         className

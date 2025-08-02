@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.access-control.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -10,6 +18,14 @@ const ALLOWED_WALLETS = {
   generation: ["0x1234567890abcdef1234567890abcdef12345678", "0xabcdef1234567890abcdef1234567890abcdef12"],
   minting: ["0x1234567890abcdef1234567890abcdef12345678"]
 };
+
+  /**
+   * Implements AccessControl functionality
+   * 
+   * @function AccessControl
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function AccessControl() {
   const { account } = useWeb3();

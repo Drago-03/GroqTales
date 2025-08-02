@@ -22,6 +22,14 @@ type UseMonadResult = {
   //isOnMonadNetwork: boolean;
 };
 
+  /**
+   * Implements useMonad functionality
+   * 
+   * @function useMonad
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function useMonad(): UseMonadResult {
   const { account/*, chainId, switchNetwork*/ } = useWeb3();
   const [isLoading, setIsLoading] = useState(false);

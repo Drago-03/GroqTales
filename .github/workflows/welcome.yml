@@ -1,0 +1,191 @@
+name: Welcome New Contributors
+
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+  discussion:
+    types: [created]
+
+permissions:
+  issues: write
+  pull-requests: write
+  discussions: write
+
+jobs:
+  welcome:
+    name: Welcome New Contributors
+    runs-on: ubuntu-latest
+    steps:
+      - name: Welcome new issue creator
+        if: github.event_name == 'issues'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              creator: context.payload.issue.user.login,
+              state: 'all'
+            });
+            
+            if (issues.length === 1) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: `## Welcome to GroqTales!
+
+Thank you @${context.payload.issue.user.login} for opening your first issue! We're excited to have you as part of our community.
+
+### What happens next?
+- Our team will review your issue within 24-48 hours
+- We may ask for additional information or clarification
+- If this is a bug report, please ensure you've included reproduction steps
+- If this is a feature request, we'll discuss feasibility and implementation
+
+### Getting Started
+- Check out our [Contributing Guide](./CONTRIBUTING.md)
+- Review our [Architecture Documentation](./ARCHITECTURE.md)
+- Join our community discussions
+- Read our [Code of Conduct](./CODE_OF_CONDUCT.md)
+
+### Need Help?
+- Browse existing issues and discussions
+- Check our comprehensive documentation
+- Feel free to ask questions - we're here to help!
+
+Thank you for helping make GroqTales better!
+
+*This is an automated welcome message. A human maintainer will respond soon.*`
+              });
+            }
+
+      - name: Welcome new PR contributor
+        if: github.event_name == 'pull_request_target'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: prs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              creator: context.payload.pull_request.user.login,
+              state: 'all'
+            });
+            
+            if (prs.length === 1) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: `## Welcome to GroqTales Development!
+
+Thank you @${context.payload.pull_request.user.login} for your first contribution! We're thrilled to have you join our development community.
+
+### Your PR Journey
+- Automated checks will run shortly (security, linting, tests, build verification)
+- AI code review will provide initial feedback
+- Human review from our maintainers will follow
+- Iteration - we may request changes or improvements
+
+### PR Guidelines
+- Ensure your code follows our style guidelines (ESLint + Prettier)
+- Add tests for new functionality
+- Update documentation if needed
+- Keep commits atomic and well-described
+- Be responsive to feedback and suggestions
+
+### Development Resources
+- [Architecture Guide](./ARCHITECTURE.md) - Understand our codebase structure
+- [Contributing Guide](./CONTRIBUTING.md) - Detailed contribution process
+- [Testing Guide](./docs/testing.md) - How to write and run tests
+- [Deployment Guide](./docs/deployment.md) - Understanding our deployment process
+
+### Quality Standards
+Our automated systems will check:
+- Security: Vulnerability scanning and dependency analysis
+- Code Quality: ESLint, Prettier, TypeScript compliance
+- Testing: Unit tests, integration tests, coverage requirements
+- Performance: Bundle size analysis and performance metrics
+- Build: Vercel deployment readiness
+
+### Need Help?
+- Comment on this PR with questions
+- Check our documentation and guides
+- Look at other merged PRs for examples
+- Our maintainers are here to help you succeed!
+
+We appreciate your contribution and look forward to working with you!
+
+*This is an automated welcome message. Our review process will begin shortly.*`
+              });
+            }
+
+  auto-assign:
+    name: Auto-assign PR
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request_target'
+    steps:
+      - name: Auto-assign reviewers and labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const reviewers = ['Drago-03'];
+            const labels = [];
+            const title = pr.title.toLowerCase();
+            
+            if (title.includes('fix') || title.includes('bug')) {
+              labels.push('bug', 'fix');
+            }
+            if (title.includes('feat') || title.includes('feature')) {
+              labels.push('enhancement', 'feature');
+            }
+            if (title.includes('doc') || title.includes('readme')) {
+              labels.push('documentation');
+            }
+            if (title.includes('test')) {
+              labels.push('testing');
+            }
+            if (title.includes('refactor') || title.includes('cleanup')) {
+              labels.push('refactor');
+            }
+            if (title.includes('security')) {
+              labels.push('security');
+            }
+            if (title.includes('performance') || title.includes('perf')) {
+              labels.push('performance');
+            }
+            
+            const totalChanges = (pr.additions || 0) + (pr.deletions || 0);
+            if (totalChanges < 10) {
+              labels.push('size/XS');
+            } else if (totalChanges < 30) {
+              labels.push('size/S');
+            } else if (totalChanges < 100) {
+              labels.push('size/M');
+            } else if (totalChanges < 500) {
+              labels.push('size/L');
+            } else {
+              labels.push('size/XL');
+            }
+            
+            if (labels.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                labels: labels
+              });
+            }
+            
+            const filteredReviewers = reviewers.filter(reviewer => reviewer !== pr.user.login);
+            if (filteredReviewers.length > 0) {
+              await github.rest.pulls.requestReviewers({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pr.number,
+                reviewers: filteredReviewers
+              });
+            }

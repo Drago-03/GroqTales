@@ -9,13 +9,27 @@ import { Button } from "@/components/ui/button";
 import { HelpCircle, Wallet, BookOpen, Coins, Shield, Users, PenSquare } from "lucide-react";
 import Link from "next/link";
 
-export default function FAQPage() {
+export default   /**
+   * Implements FAQPage functionality
+   * 
+   * @function FAQPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function FAQPage() {
   return (
     <Suspense fallback={<div>Loading FAQ page...</div>}>
       <FAQContent />
     </Suspense>
   );
 }
+
+  /**
+   * Implements FAQContent functionality
+   * 
+   * @function FAQContent
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 function FAQContent() {
   const router = useRouter();

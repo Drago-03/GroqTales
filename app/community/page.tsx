@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.community.page.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -8,7 +16,13 @@ import { CommunityFeed } from "@/components/community-feed";
 import { LoadingScreen } from "@/components/loading-screen";
 import { motion } from "framer-motion";
 
-export default function CommunityPage() {
+export default   /**
+   * Implements CommunityPage functionality
+   * 
+   * @function CommunityPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function CommunityPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

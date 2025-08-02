@@ -8,7 +8,13 @@ import { Button } from "@/components/ui/button";
 import { LoadingAnimation } from "@/components/loading-animation";
 import { Github, Wallet, ArrowRight, BookOpen, Sparkles, Users, Shield, DollarSign, MessageSquare, Check, Trophy } from "lucide-react";
 
-export default function LandingPage() {
+export default   /**
+   * Implements LandingPage functionality
+   * 
+   * @function LandingPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function LandingPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [account, setAccount] = useState<string | null>(null);

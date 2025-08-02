@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.docs.page.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 "use client";
 
 import Link from "next/link";
@@ -33,7 +41,13 @@ const FloatingDoodles = () => (
   </div>
 );
 
-export default function DocsPage() {
+export default   /**
+   * Implements DocsPage functionality
+   * 
+   * @function DocsPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function DocsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
       <FloatingDoodles />

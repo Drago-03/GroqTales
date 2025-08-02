@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.ui.carousel.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 'use client';
 
 import * as React from 'react';
@@ -31,6 +39,14 @@ type CarouselContextProps = {
 } & CarouselProps;
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
+
+  /**
+   * Implements useCarousel functionality
+   * 
+   * @function useCarousel
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 function useCarousel() {
   const context = React.useContext(CarouselContext);

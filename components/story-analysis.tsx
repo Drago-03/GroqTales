@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Story Analysis Component
+ * @description AI-powered literary analysis component with multiple analysis types
+ * @version 1.0.0
+ */
+
 "use client";
 
 import { useState } from "react";
@@ -10,15 +16,64 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/use-toast";
 
+/**
+ * Props for the StoryAnalysis component
+ */
 interface StoryAnalysisProps {
+  /** Story content to analyze */
   content: string;
+  /** Optional story title */
   title?: string;
+  /** Optional story genre */
   genre?: string;
+  /** Optional API key for analysis service */
   apiKey?: string;
+  /** Optional CSS class name */
   className?: string;
+  /** Callback fired when analysis completes */
   onAnalysisComplete?: (result: any) => void;
 }
 
+/**
+ * Analysis type configuration
+ */
+const ANALYSIS_TYPES = [
+  { 
+    value: 'standard', 
+    label: 'Standard Analysis', 
+    description: 'Complete literary analysis covering plot, characters, themes, and style' 
+  },
+  { 
+    value: 'critique', 
+    label: 'Critical Feedback', 
+    description: 'Constructive critique focusing on strengths and areas for improvement' 
+  },
+  { 
+    value: 'audience', 
+    label: 'Audience Analysis', 
+    description: 'Target demographic and market positioning assessment' 
+  },
+  { 
+    value: 'development', 
+    label: 'Developmental Edit', 
+    description: 'Detailed editing feedback for story improvement' 
+  }
+] as const;
+
+/**
+ * Content length limits
+ */
+const CONTENT_LIMITS = {
+  MIN_LENGTH: 100,
+  MAX_LENGTH: 8000,
+} as const;
+
+/**
+ * StoryAnalysis Component
+ * 
+ * Provides AI-powered literary analysis with multiple analysis types including
+ * standard analysis, critical feedback, audience analysis, and developmental editing.
+ */
 export function StoryAnalysis({
   content,
   title,
@@ -32,14 +87,10 @@ export function StoryAnalysis({
   const [activeTab, setActiveTab] = useState<string>("plot");
   const { toast } = useToast();
 
-  const analysisTypes = [
-    { value: 'standard', label: 'Standard Analysis', description: 'Complete literary analysis covering plot, characters, themes, and style' },
-    { value: 'critique', label: 'Critical Feedback', description: 'Constructive critique focusing on strengths and areas for improvement' },
-    { value: 'audience', label: 'Audience Analysis', description: 'Target demographic and market positioning assessment' },
-    { value: 'development', label: 'Developmental Edit', description: 'Detailed editing feedback for story improvement' }
-  ];
-
-  const handleAnalyze = async () => {
+  /**
+   * Handles the analysis process
+   */
+  const handleAnalyze = async (): Promise<void> => {
     clearResult();
     
     const analysisResult = await analyzeStory({
@@ -51,27 +102,16 @@ export function StoryAnalysis({
     });
     
     if (analysisResult) {
+      const selectedType = ANALYSIS_TYPES.find(t => t.value === analysisType);
+      
       toast({
         title: "Analysis Complete",
-        description: `${analysisTypes.find(t => t.value === analysisType)?.label} has been generated.`,
+        description: `${selectedType?.label} has been generated.`,
         variant: "default",
       });
       
       // Set the initial active tab based on analysis type
-      switch (analysisType) {
-        case 'standard':
-          setActiveTab("plot");
-          break;
-        case 'critique':
-          setActiveTab("overall");
-          break;
-        case 'audience':
-          setActiveTab("demographics");
-          break;
-        case 'development':
-          setActiveTab("structure");
-          break;
-      }
+      setActiveTab(getInitialTab(analysisType));
       
       if (onAnalysisComplete) {
         onAnalysisComplete(analysisResult);
@@ -85,7 +125,23 @@ export function StoryAnalysis({
     }
   };
 
-  const handleDownload = () => {
+  /**
+   * Gets the initial tab based on analysis type
+   */
+  const getInitialTab = (type: string): string => {
+    const tabMap: Record<string, string> = {
+      'standard': 'plot',
+      'critique': 'overall',
+      'audience': 'demographics',
+      'development': 'structure'
+    };
+    return tabMap[type] || 'plot';
+  };
+
+  /**
+   * Handles downloading the analysis as JSON
+   */
+  const handleDownload = (): void => {
     if (!result) return;
     
     const analysisData = result.format === 'json' ? result.analysis : { rawText: result.analysis.rawText };
@@ -102,6 +158,20 @@ export function StoryAnalysis({
       description: "The analysis has been saved as a JSON file.",
       variant: "default",
     });
+  };
+
+  /**
+   * Validates if content meets minimum requirements
+   */
+  const isContentValid = (): boolean => {
+    return Boolean(content && content.length >= CONTENT_LIMITS.MIN_LENGTH);
+  };
+
+  /**
+   * Gets the content length for display
+   */
+  const getContentLength = (): number => {
+    return Math.min(content.length, CONTENT_LIMITS.MAX_LENGTH);
   };
 
   const renderAnalysisContent = () => {
@@ -335,7 +405,7 @@ export function StoryAnalysis({
                   <SelectValue placeholder="Select analysis type" />
                 </SelectTrigger>
                 <SelectContent>
-                  {analysisTypes.map((type) => (
+                  {ANALYSIS_TYPES.map((type) => (
                     <SelectItem key={type.value} value={type.value}>
                       <div className="flex flex-col gap-1">
                         <span>{type.label}</span>
@@ -349,13 +419,13 @@ export function StoryAnalysis({
             
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">
-                This analysis will process approximately {Math.min(content.length, 8000).toLocaleString()} characters 
+                This analysis will process approximately {getContentLength().toLocaleString()} characters 
                 of your story to provide detailed insights and feedback.
               </p>
               
-              {content.length > 8000 && (
+              {content.length > CONTENT_LIMITS.MAX_LENGTH && (
                 <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20">
-                  Note: Only the first 8,000 characters will be analyzed
+                  Note: Only the first {CONTENT_LIMITS.MAX_LENGTH.toLocaleString()} characters will be analyzed
                 </Badge>
               )}
             </div>
@@ -363,14 +433,14 @@ export function StoryAnalysis({
             <Button 
               onClick={handleAnalyze} 
               className="w-full"
-              disabled={!content || content.length < 100}
+              disabled={!isContentValid()}
             >
               Generate Analysis
             </Button>
             
-            {(!content || content.length < 100) && (
+            {!isContentValid() && (
               <p className="text-sm text-red-500">
-                Please provide at least 100 characters of content to analyze
+                Please provide at least {CONTENT_LIMITS.MIN_LENGTH} characters of content to analyze
               </p>
             )}
           </div>
@@ -378,7 +448,7 @@ export function StoryAnalysis({
           <div className="space-y-4">
             <div className="flex items-center justify-between mb-4">
               <Badge variant="outline" className="bg-primary/10 text-primary">
-                {analysisTypes.find(t => t.value === result.analysisType)?.label || 'Analysis'}
+                {ANALYSIS_TYPES.find(t => t.value === result.analysisType)?.label || 'Analysis'}
               </Badge>
               
               <Button 
@@ -400,7 +470,7 @@ export function StoryAnalysis({
       {result && (
         <CardFooter className="flex justify-between">
           <span className="text-xs text-muted-foreground">
-            Analyzed {Math.min(content.length, 8000).toLocaleString()} characters
+            Analyzed {getContentLength().toLocaleString()} characters
           </span>
           
           <Button

@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module app.settings.page.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
@@ -8,7 +16,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-export default function SettingsPage() {
+export default   /**
+   * Implements SettingsPage functionality
+   * 
+   * @function SettingsPage
+   * @returns {void|Promise<void>} Function return value
+   */
+ function SettingsPage() {
   return (
     <div className="container mx-auto py-10">
       <h1 className="text-4xl font-bold mb-6">Settings</h1>

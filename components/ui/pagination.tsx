@@ -1,8 +1,25 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.ui.pagination.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 import * as React from 'react';
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { ButtonProps, buttonVariants } from '@/components/ui/button';
+
+  /**
+   * Pagination React component
+   * 
+   * @component
+   * @param {Object} props - Component props
+   * @returns {JSX.Element} Rendered component
+   */
+
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   <nav
@@ -13,6 +30,15 @@ const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   />
 );
 Pagination.displayName = 'Pagination';
+
+  /**
+   * Pagination React component
+   * 
+   * @component
+   * @param {Object} props - Component props
+   * @returns {JSX.Element} Rendered component
+   */
+
 
 const PaginationContent = React.forwardRef<
   HTMLUListElement,
@@ -26,6 +52,15 @@ const PaginationContent = React.forwardRef<
 ));
 PaginationContent.displayName = 'PaginationContent';
 
+  /**
+   * Pagination React component
+   * 
+   * @component
+   * @param {Object} props - Component props
+   * @returns {JSX.Element} Rendered component
+   */
+
+
 const PaginationItem = React.forwardRef<
   HTMLLIElement,
   React.ComponentProps<'li'>
@@ -38,6 +73,15 @@ type PaginationLinkProps = {
   isActive?: boolean;
 } & Pick<ButtonProps, 'size'> &
   React.ComponentProps<'a'>;
+
+  /**
+   * Pagination React component
+   * 
+   * @component
+   * @param {Object} props - Component props
+   * @returns {JSX.Element} Rendered component
+   */
+
 
 const PaginationLink = ({
   className,
@@ -59,6 +103,15 @@ const PaginationLink = ({
 );
 PaginationLink.displayName = 'PaginationLink';
 
+  /**
+   * Pagination React component
+   * 
+   * @component
+   * @param {Object} props - Component props
+   * @returns {JSX.Element} Rendered component
+   */
+
+
 const PaginationPrevious = ({
   className,
   ...props
@@ -75,6 +128,15 @@ const PaginationPrevious = ({
 );
 PaginationPrevious.displayName = 'PaginationPrevious';
 
+  /**
+   * Pagination React component
+   * 
+   * @component
+   * @param {Object} props - Component props
+   * @returns {JSX.Element} Rendered component
+   */
+
+
 const PaginationNext = ({
   className,
   ...props
@@ -90,6 +152,15 @@ const PaginationNext = ({
   </PaginationLink>
 );
 PaginationNext.displayName = 'PaginationNext';
+
+  /**
+   * Pagination React component
+   * 
+   * @component
+   * @param {Object} props - Component props
+   * @returns {JSX.Element} Rendered component
+   */
+
 
 const PaginationEllipsis = ({
   className,

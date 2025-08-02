@@ -22,6 +22,14 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 
+  /**
+   * Implements WalletConnect functionality
+   * 
+   * @function WalletConnect
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function WalletConnect() {
   const { connectWallet, disconnectWallet, account, connected, connecting, networkName } = useWeb3();
   const { toast } = useToast();
@@ -42,7 +50,7 @@ export function WalletConnect() {
   };
 
   const copyAddressToClipboard = () => {
-    if (account) {
+    if (account && typeof navigator !== 'undefined' && navigator.clipboard) {
       navigator.clipboard.writeText(account);
       setCopyTooltip("Copied!");
       setTimeout(() => setCopyTooltip("Copy Address"), 2000);

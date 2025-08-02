@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Core application functionality
+ * @module components.ui.chart.tsx
+ * @version 1.0.0
+ * @author GroqTales Team
+ * @since 2025-08-02
+ */
+
 'use client';
 
 import * as React from 'react';
@@ -23,6 +31,14 @@ type ChartContextProps = {
 };
 
 const ChartContext = React.createContext<ChartContextProps | null>(null);
+
+  /**
+   * Implements useChart functionality
+   * 
+   * @function useChart
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 function useChart() {
   const context = React.useContext(ChartContext);
@@ -317,6 +333,13 @@ const ChartLegendContent = React.forwardRef<
 ChartLegendContent.displayName = 'ChartLegend';
 
 // Helper to extract item config from a payload.
+  /**
+   * Retrieves payloadconfigfrompayload data
+   * 
+   * @function getPayloadConfigFromPayload
+   * @returns {void|Promise<void>} Function return value
+   */
+
 function getPayloadConfigFromPayload(
   config: ChartConfig,
   payload: unknown,

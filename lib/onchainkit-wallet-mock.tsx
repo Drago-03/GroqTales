@@ -7,6 +7,14 @@ interface WalletProps {
   className?: string;
 }
 
+  /**
+   * Implements Wallet functionality
+   * 
+   * @function Wallet
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
 export function Wallet({ children, className = "" }: WalletProps) {
   return (
     <div className={`relative ${className}`}>
@@ -19,6 +27,14 @@ interface ConnectWalletProps {
   children?: React.ReactNode;
   className?: string;
 }
+
+  /**
+   * Implements ConnectWallet functionality
+   * 
+   * @function ConnectWallet
+   * @returns {void|Promise<void>} Function return value
+   */
+
 
 export function ConnectWallet({ children, className = "" }: ConnectWalletProps) {
   const [connected, setConnected] = useState(true); // default to connected for the vibe
@@ -51,6 +67,23 @@ interface WalletDropdownProps {
   className?: string;
 }
 
+  /**
+   * Implements Wallet functionality
+   * 
+   * @function Wallet
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+  /**
+   * Implements WalletDropdown functionality
+   * 
+   * @function WalletDropdown
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+
 export function WalletDropdown({ children, className = "" }: WalletDropdownProps) {
   const [open, setOpen] = useState(false);
   
@@ -75,6 +108,33 @@ export function WalletDropdown({ children, className = "" }: WalletDropdownProps
 interface WalletDropdownDisconnectProps {
   className?: string;
 }
+
+  /**
+   * Implements Wallet functionality
+   * 
+   * @function Wallet
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+  /**
+   * Implements WalletDropdown functionality
+   * 
+   * @function WalletDropdown
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+
+  /**
+   * Implements WalletDropdownDisconnect functionality
+   * 
+   * @function WalletDropdownDisconnect
+   * @returns {void|Promise<void>} Function return value
+   */
+
+
+
 
 export function WalletDropdownDisconnect({ className = "" }: WalletDropdownDisconnectProps) {
   const handleDisconnect = () => {
