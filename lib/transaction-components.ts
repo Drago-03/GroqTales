@@ -1,215 +1,76 @@
-/**
- * Transaction Components Library
- * 
- * Provides transaction handling components and utilities for Web3 interactions
- * in the GroqTales platform.
- */
-
 import React from 'react';
-import { toast } from '@/components/ui/use-toast';
 
 /**
- * Transaction component for handling Web3 transactions
+ * Mock transaction components for development
+ * These components simulate blockchain transaction functionality
+ * without requiring actual blockchain connections.
+ * 
+ * @fileoverview Transaction component interfaces and types
+ * @version 1.0.0
+ * @author GroqTales Development Team
+ * @since 2024-01-01
+ * @lastModified 2024-01-15
  */
 export interface TransactionProps {
   children: React.ReactNode;
+  calls?: { to: string; data: `0x${string}`; value: bigint }[];
   onSuccess?: (txHash: string) => void;
   onError?: (error: Error) => void;
 }
 
-export const Transaction: React.FC<TransactionProps> = ({ 
-  children, 
-  onSuccess, 
-  onError 
-}) => {
-  return (
-    <div className="transaction-wrapper">
-      {children}
-    </div>
-  );
-};
-
 /**
- * Transaction button component for submitting transactions
+ * Transaction button component props
  */
 export interface TransactionButtonProps {
-  onClick?: () => Promise<void>;
+  onClick?: () => void;
   disabled?: boolean;
   children: React.ReactNode;
   className?: string;
 }
 
-export const TransactionButton: React.FC<TransactionButtonProps> = ({
-  onClick,
-  disabled = false,
-  children,
-  className = ""
-}) => {
-  const handleClick = async () => {
-    if (onClick) {
-      try {
-        await onClick();
-      } catch (error) {
-        console.error('Transaction failed:', error);
-        toast({
-          title: "Transaction Failed",
-          description: error instanceof Error ? error.message : "Unknown error occurred",
-          variant: "destructive"
-        });
-      }
-    }
-  };
-
-  return (
-    <button
-      onClick={handleClick}
-      disabled={disabled}
-      className={`transaction-button ${className}`}
-    >
-      {children}
-    </button>
-  );
-};
-
 /**
- * Transaction toast component for showing transaction notifications
+ * Transaction toast component props
  */
 export interface TransactionToastProps {
-  title: string;
+  title?: string;
   description?: string;
-  variant?: 'default' | 'destructive';
+  children: React.ReactNode;
+  className?: string;
 }
 
-export const TransactionToast: React.FC<TransactionToastProps> = ({
-  title,
-  description,
-  variant = 'default'
-}) => {
-  return (
-    <div className={`transaction-toast ${variant}`}>
-      <h4>{title}</h4>
-      {description && <p>{description}</p>}
-    </div>
-  );
-};
-
 /**
- * Transaction toast action component
+ * Transaction toast action props
  */
 export interface TransactionToastActionProps {
-  onClick: () => void;
+  onClick?: () => void;
   children: React.ReactNode;
 }
 
-export const TransactionToastAction: React.FC<TransactionToastActionProps> = ({
-  onClick,
-  children
-}) => {
-  return (
-    <button onClick={onClick} className="transaction-toast-action">
-      {children}
-    </button>
-  );
-};
-
 /**
- * Transaction toast icon component
+ * Transaction toast icon props
  */
 export interface TransactionToastIconProps {
-  type: 'success' | 'error' | 'pending';
+  className?: string;
 }
 
-export const TransactionToastIcon: React.FC<TransactionToastIconProps> = ({
-  type
-}) => {
-  const getIcon = () => {
-    switch (type) {
-      case 'success':
-        return '✅';
-      case 'error':
-        return '❌';
-      case 'pending':
-        return '⏳';
-      default:
-        return '📄';
-    }
-  };
-
-  return (
-    <span className="transaction-toast-icon">
-      {getIcon()}
-    </span>
-  );
-};
-
 /**
- * Transaction toast label component
+ * Transaction toast label props
  */
 export interface TransactionToastLabelProps {
-  children?: React.ReactNode;
   className?: string;
+  children: React.ReactNode;
 }
 
-export const TransactionToastLabel: React.FC<TransactionToastLabelProps> = ({
-  children,
-  className = ""
-}) => {
-  return (
-    <span className={`transaction-toast-label ${className}`}>
-      {children || 'Transaction'}
-    </span>
-  );
-};
-
 /**
- * Transaction status type
+ * Transaction status props
  */
-export type TransactionStatus = 'idle' | 'pending' | 'success' | 'error';
-
-/**
- * Transaction error component
- */
-export interface TransactionErrorProps {
-  error?: Error | string;
+export interface TransactionStatusProps {
   className?: string;
+  children: React.ReactNode;
 }
 
-export const TransactionError: React.FC<TransactionErrorProps> = ({
-  error,
-  className = ""
-}) => {
-  const errorMessage = error instanceof Error ? error.message : error || 'Transaction failed';
-  
-  return (
-    <div className={`transaction-error ${className}`}>
-      <span className="error-message">{errorMessage}</span>
-    </div>
-  );
-};
-
 /**
- * Transaction response component
- */
-export interface TransactionResponseProps {
-  response?: any;
-  className?: string;
-}
-
-export const TransactionResponse: React.FC<TransactionResponseProps> = ({
-  response,
-  className = ""
-}) => {
-  return (
-    <div className={`transaction-response ${className}`}>
-      {response && (
-        <pre>{JSON.stringify(response, null, 2)}</pre>
-      )}
-    </div>
-  );
-};
-
-/**
- * Transaction status action component
+ * Transaction status action props
  */
 export interface TransactionStatusActionProps {
   onClick?: () => void;
@@ -217,97 +78,31 @@ export interface TransactionStatusActionProps {
   className?: string;
 }
 
-export const TransactionStatusAction: React.FC<TransactionStatusActionProps> = ({
-  onClick,
-  children,
-  className = ""
-}) => {
-  return (
-    <button onClick={onClick} className={`transaction-status-action ${className}`}>
-      {children}
-    </button>
-  );
-};
-
 /**
- * Transaction status label component
+ * Transaction status label props
  */
 export interface TransactionStatusLabelProps {
-  status?: TransactionStatus;
-  children?: React.ReactNode;
   className?: string;
+  children: React.ReactNode;
 }
 
-export const TransactionStatusLabel: React.FC<TransactionStatusLabelProps> = ({
-  status = 'idle',
-  children,
-  className = ""
-}) => {
-  const getStatusText = () => {
-    switch (status) {
-      case 'pending':
-        return 'Pending';
-      case 'success':
-        return 'Success';
-      case 'error':
-        return 'Failed';
-      default:
-        return 'Ready';
-    }
-  };
-
-  return (
-    <span className={`transaction-status-label status-${status} ${className}`}>
-      {children || getStatusText()}
-    </span>
-  );
-};
-
 /**
- * Transaction status component
+ * Transaction error type
  */
-export interface TransactionStatusProps {
-  status?: TransactionStatus;
-  children?: React.ReactNode;
-  className?: string;
+export interface TransactionError {
+  message: string;
+  code?: number;
 }
 
-export const TransactionStatus: React.FC<TransactionStatusProps> = ({
-  status = 'idle',
-  children,
-  className = ""
-}) => {
-  return (
-    <div className={`transaction-status ${className}`}>
-      {children || <TransactionStatusLabel status={status} />}
-    </div>
-  );
-};
-
 /**
- * Transaction utilities
+ * Transaction response type
  */
-export const TransactionUtils = {
-  /**
-   * Format transaction hash for display
-   */
-  formatTxHash: (hash: string): string => {
-    if (hash.length <= 10) return hash;
-    return `${hash.slice(0, 6)}...${hash.slice(-4)}`;
-  },
+export interface TransactionResponse {
+  transactionReceipts: Array<{
+    transactionHash: string;
+    status: string;
+  }>;
+}
 
-  /**
-   * Get transaction explorer URL
-   */
-  getExplorerUrl: (hash: string, network: string = 'ethereum'): string => {
-    const explorers = {
-      ethereum: 'https://etherscan.io/tx/',
-      polygon: 'https://polygonscan.com/tx/',
-      base: 'https://basescan.org/tx/',
-      arbitrum: 'https://arbiscan.io/tx/',
-    };
-    
-    const baseUrl = explorers[network as keyof typeof explorers] || explorers.ethereum;
-    return `${baseUrl}${hash}`;
-  }
-};
+// All component implementations are in transaction-components.tsx
+// This file contains only TypeScript interface definitions

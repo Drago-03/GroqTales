@@ -88,7 +88,6 @@ module.exports = {
     'no-alert': 'error',
     'no-duplicate-imports': 'error',
     'no-unused-expressions': 'error',
-    'prefer-const': 'error',
     'no-var': 'error',
     'object-shorthand': 'error',
     'prefer-arrow-callback': 'error',
