@@ -1,253 +1,111 @@
 "use client";
 
-import React from "react";
-
-
-import { useState, useEffect } from "react";
-import { useStorySummary } from "@/hooks/use-story-summary";
-import { Label } from "@/components/ui/label";
+import React, { useState } from "react";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, RefreshCw, Trash2, CheckCircle, AlertCircle } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { Clock, User, BookOpen, Share2, Download, Heart } from "lucide-react";
 
 interface StorySummaryProps {
-  storyId: string;
-  content: string;
-  title?: string;
-  onSummaryGenerated?: (summary: any) => void;
-  apiKey?: string;
-  className?: string;
+  title: string;
+  author: string;
+  genre: string;
+  readTime: string;
+  summary: string;
+  tags: string[];
+  onShare?: () => void;
+  onDownload?: () => void;
+  onLike?: () => void;
+  isLiked?: boolean;
+  likeCount?: number;
 }
-  export function StorySummary({ 
-  storyId,
-  content,
-  title = "Story Summary",
-  onSummaryGenerated,
-  apiKey,
-  className
+
+export function StorySummary({
+  title,
+  author,
+  genre,
+  readTime,
+  summary,
+  tags,
+  onShare,
+  onDownload,
+  onLike,
+  isLiked = false,
+  likeCount = 0
 }: StorySummaryProps) {
-  const { generateSummary, fetchSummary, updateSummary, deleteSummary, isLoading, error } = useStorySummary();
-  const [summary, setSummary] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<string>("summary");
-  const { toast } = useToast();
+  const [liked, setLiked] = useState(isLiked);
+  const [likes, setLikes] = useState(likeCount);
 
-  // Get existing summary on mount
-  useEffect(() => {
-    if (storyId) {
-      loadSummary();
-}
-  }, [storyId]);
-
-  const loadSummary = async () => {
-    const result = await fetchSummary(storyId);
-    if (result) {
-      setSummary(result);
-      if (onSummaryGenerated) {
-        onSummaryGenerated(result);
-}
-}
-  };
-
-  const handleGenerateSummary = async () => {
-    const result = await generateSummary(storyId, content, undefined, apiKey);
-
-    if (result) {
-      setSummary(result);
-      toast({
-        title: "Summary Generated",
-        description: "The AI summary has been created successfully.",
-        variant: "default",
-      });
-
-      if (onSummaryGenerated) {
-        onSummaryGenerated(result);
-}
-    } else if (error) {
-      toast({
-        title: "Error",
-        description: error,
-        variant: "destructive",
-      });
-}
-  };
-
-  const handleRegenerate = async () => {
-    if (!summary || !summary._id) return;
-
-    const result = await updateSummary(
-      summary._id.toString(),
-      {},
-      true,
-      content
-    );
-
-    if (result) {
-      setSummary(result);
-      toast({
-        title: "Summary Updated",
-        description: "The AI summary has been regenerated successfully.",
-        variant: "default",
-      });
-
-      if (onSummaryGenerated) {
-        onSummaryGenerated(result);
-}
-    } else if (error) {
-      toast({
-        title: "Error",
-        description: error,
-        variant: "destructive",
-      });
-}
-  };
-
-  const handleDelete = async () => {
-    if (!summary || !summary._id) return;
-
-    const success = await deleteSummary(summary._id.toString());
-
-    if (success) {
-      setSummary(null);
-      toast({
-        title: "Summary Deleted",
-        description: "The AI summary has been removed.",
-        variant: "default",
-      });
-    } else if (error) {
-      toast({
-        title: "Error",
-        description: error,
-        variant: "destructive",
-      });
-}
-  };
-
-  // Render sentiment badge with appropriate color
-  const renderSentimentBadge = (sentiment: string) => {
-      /**
-   * sentimentMap React component
-   * 
-
-    const sentimentMap: Record<string, { color: string, icon: JSX.Element }> = {
-      "positive": { 
-        color: "bg-green-500/10 text-green-500 hover:bg-green-500/20", 
-        icon: <CheckCircle className="h-3 w-3 mr-1" /> 
-      },
-      "negative": { 
-        color: "bg-red-500/10 text-red-500 hover:bg-red-500/20", 
-        icon: <AlertCircle className="h-3 w-3 mr-1" /> 
-      },
-      "mixed": { 
-        color: "bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20", 
-        icon: <></>
-      },
-      "neutral": { 
-        color: "bg-blue-500/10 text-blue-500 hover:bg-blue-500/20", 
-        icon: <></>
-}
-    };
-
-    const { color, icon } = sentimentMap[sentiment.toLowerCase()] || 
-                            { color: "bg-gray-500/10 text-gray-500 hover:bg-gray-500/20", icon: null };
-
-    return (
-      <Badge 
-        variant="outline" 
-        className={`${color} flex items-center capitalize`}
-      >
-        {icon}
-        {sentiment}
-      </Badge>
-    );
+  const handleLike = () => {
+    setLiked(!liked);
+    setLikes(prev => liked ? prev - 1 : prev + 1);
+    onLike?.();
   };
 
   return (
-    <Card className={className}>
+    <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle className="flex justify-between items-center">
-          <span>{title}</span>
-          {summary?.sentiment && renderSentimentBadge(summary.sentiment)}
-        </CardTitle>
-        <CardDescription>
-          AI-powered analysis and summary using Groq's LLM
-        </CardDescription>
+        <div className="flex items-start justify-between">
+          <div className="space-y-2">
+            <CardTitle className="text-2xl font-bold">{title}</CardTitle>
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <div className="flex items-center gap-1">
+                <User className="w-4 h-4" />
+                <span>{author}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <BookOpen className="w-4 h-4" />
+                <span>{genre}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Clock className="w-4 h-4" />
+                <span>{readTime}</span>
+              </div>
+            </div>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleLike}
+            className={`flex items-center gap-1 ${liked ? 'text-red-500' : ''}`}
+          >
+            <Heart className={`w-4 h-4 ${liked ? 'fill-current' : ''}`} />
+            <span>{likes}</span>
+          </Button>
+        </div>
       </CardHeader>
-      <CardContent>
-        {isLoading ? (
-          <div className="flex justify-center items-center py-8">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <span className="ml-2">Processing with AI...</span>
+
+      <CardContent className="space-y-4">
+        <div className="prose prose-sm max-w-none">
+          <p className="text-muted-foreground leading-relaxed">{summary}</p>
+        </div>
+
+        {tags.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {tags.map((tag, index) => (
+              <Badge key={index} variant="secondary" className="text-xs">
+                {tag}
+              </Badge>
+            ))}
           </div>
-        ) : !summary ? (
-          <div className="text-center py-8">
-            <p className="text-muted-foreground mb-4">
-              No summary has been generated yet. Click the button below to create an AI-powered summary of this story.
-            </p>
-            <Button onClick={handleGenerateSummary}>
-              Generate Summary
-            </Button>
-          </div>
-        ) : (
-          <Tabs defaultValue="summary" value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="summary">Summary</TabsTrigger>
-              <TabsTrigger value="keyPoints">Key Points</TabsTrigger>
-              <TabsTrigger value="keywords">Keywords</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="summary" className="mt-4">
-              <div className="whitespace-pre-line">
-                {summary.summary}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="keyPoints" className="mt-4">
-              <ul className="space-y-2 pl-5 list-disc">
-                {summary.keyPoints.map((point: string, index: number) => (
-                  <li key={index}>{point}</li>
-                ))}
-              </ul>
-            </TabsContent>
-
-            <TabsContent value="keywords" className="mt-4">
-              <div className="flex flex-wrap gap-2">
-                {summary.keywords.map((keyword: string, index: number) => (
-                  <Badge key={index} variant="secondary">{keyword}</Badge>
-                ))}
-              </div>
-            </TabsContent>
-          </Tabs>
         )}
       </CardContent>
 
-      {summary && (
-        <CardFooter className="flex justify-between">
-          <div className="text-xs text-muted-foreground">
-            {new Date(summary.updatedAt).toLocaleDateString()} · {summary.model?.split('/').pop() || 'AI'}
-          </div>
-          <div className="flex space-x-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={handleRegenerate}
-              disabled={isLoading}
-            >
-              <RefreshCw className="h-4 w-4 mr-1" />
-              Regenerate
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={handleDelete}
-              disabled={isLoading}
-              className="text-destructive border-destructive hover:bg-destructive/10"
-            >
-              <Trash2 className="h-4 w-4 mr-1" />
-              Delete
-            </Button>
+      {(onShare || onDownload) && (
+        <CardFooter>
+          <div className="flex gap-2 w-full">
+            {onShare && (
+              <Button variant="outline" size="sm" onClick={onShare} className="flex items-center gap-2">
+                <Share2 className="w-4 h-4" />
+                Share
+              </Button>
+            )}
+            {onDownload && (
+              <Button variant="outline" size="sm" onClick={onDownload} className="flex items-center gap-2">
+                <Download className="w-4 h-4" />
+                Download
+              </Button>
+            )}
           </div>
         </CardFooter>
       )}

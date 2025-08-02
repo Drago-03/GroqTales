@@ -1,4 +1,3 @@
-import React from "react";
 'use client';
 
 import * as React from 'react';
@@ -121,5 +120,3 @@ export {
   DialogTitle,
   DialogDescription,
 };
-
-export { Dialog, DialogPortal, DialogOverlay, DialogClose, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription };
