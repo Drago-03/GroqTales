@@ -1,9 +1,10 @@
 ---
-name: 'Bug Report'
-about: 'Report a bug or unexpected behavior'
-title: '[Bug] <title>'
+name: "Bug Report"
+about: "Report a bug or unexpected behavior"
+title: "[Bug] <title>"
 labels: bug
 assignees: ''
+
 ---
 
 ## Describe the bug
@@ -37,6 +38,5 @@ Add any other context about the problem here.
 
 ---
 
-**Related Links:**
-
+**Related Links:**  
 - [GroqTales Website](https://www.groqtales.xyz/)
