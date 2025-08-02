@@ -230,10 +230,10 @@ jobs:
             summary += `**Branch:** ${context.ref.replace('refs/heads/', '')}\n\n`;
             
             summary += `### Check Results:\n`;
-            summary += `- **Vercel Deploy:** ${{ needs.deploy-vercel.result === 'success' ? '✅' : '❌' }} ${{ needs.deploy-vercel.result }}\n`;
-            summary += `- **E2E Tests:** ${{ needs.post-deployment.result === 'success' ? '✅' : '❌' }} ${{ needs.post-deployment.result }}\n`;
-            summary += `- **Lighthouse Audit:** ${{ needs.lighthouse-audit.result === 'success' ? '✅' : '❌' }} ${{ needs.lighthouse-audit.result }}\n`;
-            summary += `- **Security Scan:** ${{ needs.security-scan.result === 'success' ? '✅' : '❌' }} ${{ needs.security-scan.result }}\n\n`;
+            summary += `- **Vercel Deploy:** ${{ needs.deploy-vercel.result == 'success' && '✅' || '❌' }} ${{ needs.deploy-vercel.result }}\n`;
+            summary += `- **E2E Tests:** ${{ needs.post-deployment.result == 'success' && '✅' || '❌' }} ${{ needs.post-deployment.result }}\n`;
+            summary += `- **Lighthouse Audit:** ${{ needs.lighthouse-audit.result == 'success' && '✅' || '❌' }} ${{ needs.lighthouse-audit.result }}\n`;
+            summary += `- **Security Scan:** ${{ needs.security-scan.result == 'success' && '✅' || '❌' }} ${{ needs.security-scan.result }}\n\n`;
             
             if (status === 'success') {
               summary += `🎉 **Deployment completed successfully!**\n\n`;

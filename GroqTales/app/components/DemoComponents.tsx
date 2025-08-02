@@ -405,7 +405,18 @@ function TransactionCard() {
     async (response: {
       transactionReceipts: { transactionHash: string }[];
     }) => {
-      const transactionHash = response.transactionReceipts[0].transactionHash;
+      if (!response.transactionReceipts || response.transactionReceipts.length === 0) {
+        console.error('No transaction receipts found');
+        return;
+      }
+      
+      const firstReceipt = response.transactionReceipts[0];
+      if (!firstReceipt) {
+        console.error('First transaction receipt is undefined');
+        return;
+      }
+      
+      const transactionHash = firstReceipt.transactionHash;
 
       console.log(`Transaction successful: ${transactionHash}`);
 

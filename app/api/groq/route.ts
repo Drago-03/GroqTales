@@ -34,7 +34,14 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           );
         }
-        result = await generateStoryContent(prompt, model, updatedOptions);
+        result = await generateStoryContent({
+          theme: prompt,
+          genre,
+          length,
+          tone: options?.tone,
+          characters: options?.characters,
+          setting: options?.setting
+        });
         break;
       case 'analyze':
         if (!content) {
@@ -43,8 +50,7 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           );
         }
-        // Pass apiKey to analyzeStoryContent (which internally uses generateStoryContent)
-        result = await analyzeStoryContent(content, apiKey);
+        result = await analyzeStoryContent(content);
         break;
       case 'ideas':
         if (!genre) {
@@ -53,8 +59,7 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           );
         }
-        // Pass apiKey to generateStoryIdeas (which internally uses generateStoryContent)
-        result = await generateStoryIdeas(genre, theme, length, apiKey);
+        result = await generateStoryIdeas(genre, 5);
         break;
       case 'improve':
         if (!content) {
@@ -63,8 +68,7 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           );
         }
-        // Pass apiKey to improveStoryContent (which internally uses generateStoryContent)
-        result = await improveStoryContent(content, focus, apiKey);
+        result = await improveStoryContent(content, focus);
         break;
       default:
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
@@ -89,10 +93,9 @@ export async function GET(request: NextRequest) {
     // Handle test action
     if (action === 'test') {
       const useSpecialModel = searchParams.get('special') === 'true';
-      const apiKey = searchParams.get('apiKey') || undefined;
       const result = useSpecialModel
-        ? await testGroqSpecialModel(apiKey)
-        : await testGroqConnection(apiKey);
+        ? await testGroqSpecialModel()
+        : await testGroqConnection();
       return NextResponse.json(result);
     }
     // Default action: list models
@@ -100,14 +103,13 @@ export async function GET(request: NextRequest) {
     const { GROQ_MODELS } = await import('@/lib/groq-service');
     return NextResponse.json({
       models: GROQ_MODELS,
-      default: GROQ_MODELS.GROQ, // Use the special GROQ model as default
+      default: GROQ_MODELS.STORY_GENERATION,
       // Provide human-readable names for the models
       modelNames: {
-        [GROQ_MODELS.LLAMA_3_70B]: 'Llama 3 (70B)',
-        [GROQ_MODELS.LLAMA_4_SCOUT]: 'Llama 4 Scout (17B)',
-        [GROQ_MODELS.MIXTRAL]: 'Mixtral (8x7B)',
-        [GROQ_MODELS.GEMMA]: 'Gemma (7B)',
-        [GROQ_MODELS.GROQ]: 'Groq (Default API model)',
+        [GROQ_MODELS.STORY_GENERATION]: 'Llama 3 (70B) - Story Generation',
+        [GROQ_MODELS.STORY_ANALYSIS]: 'Llama 3 (8B) - Story Analysis',
+        [GROQ_MODELS.CONTENT_IMPROVEMENT]: 'Mixtral (8x7B) - Content Improvement',
+        [GROQ_MODELS.RECOMMENDATIONS]: 'Llama 3 (8B) - Recommendations',
       },
     });
   } catch (error: any) {

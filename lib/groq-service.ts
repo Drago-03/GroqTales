@@ -355,12 +355,68 @@ function buildStoryPrompt(params: StoryGenerationParams): string {
 function getMaxTokensForLength(length: 'short' | 'medium' | 'long'): number {
   switch (length) {
     case 'short':
-      return 1000
+      return 500
     case 'medium':
-      return 2000
+      return 1500
     case 'long':
-      return 4000
+      return 3000
     default:
-      return 2000
+      return 1500
+  }
+}
+
+/**
+ * Test Groq connection
+ */
+export async function testGroqConnection(): Promise<boolean> {
+  try {
+    const groqApiKey = process.env.GROQ_API_KEY
+    if (!groqApiKey) {
+      return false
+    }
+
+    const response = await fetch('https://api.groq.com/openai/v1/models', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${groqApiKey}`,
+        'Content-Type': 'application/json',
+      },
+    })
+
+    return response.ok
+  } catch (error) {
+    console.error('Groq connection test failed:', error)
+    return false
+  }
+}
+
+/**
+ * Test Groq special model
+ */
+export async function testGroqSpecialModel(model: string = GROQ_MODELS.STORY_GENERATION): Promise<boolean> {
+  try {
+    const groqApiKey = process.env.GROQ_API_KEY
+    if (!groqApiKey) {
+      return false
+    }
+
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${groqApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model,
+        messages: [{ role: 'user', content: 'Test message' }],
+        max_tokens: 10,
+        temperature: 0.1,
+      }),
+    })
+
+    return response.ok
+  } catch (error) {
+    console.error('Groq special model test failed:', error)
+    return false
   }
 }
