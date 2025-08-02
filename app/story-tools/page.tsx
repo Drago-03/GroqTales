@@ -162,10 +162,17 @@ export default function StoryToolsPage() {
 
           <TabsContent value="summary">
             <StorySummary
-              storyId={storyId}
-              content={storyContent}
               title={storyTitle || 'Story Summary'}
-              onSummaryGenerated={handleSummaryGenerated}
+              author="Anonymous"
+              genre="General"
+              readTime="5 min"
+              summary={storyContent.slice(0, 200) + '...'}
+              tags={['AI Generated']}
+              onShare={() => console.log('Share clicked')}
+              onDownload={() => console.log('Download clicked')}
+              onLike={() => console.log('Like clicked')}
+              isLiked={false}
+              likeCount={0}
             />
 
             <div className="flex justify-end mt-4">
