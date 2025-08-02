@@ -25,6 +25,9 @@ const MOCK_ADMIN = {
   password: 'admin123',
 };
 
+/**
+ * Renders the admin login page, displaying a loading message while the login form is being prepared.
+ */
 export default function LoginPage() {
   return (
     <Suspense fallback={<div>Loading login page...</div>}>
@@ -32,6 +35,11 @@ export default function LoginPage() {
     </Suspense>
   );
 }
+/**
+ * Renders the admin login form, handling credential validation, session setup, error feedback, and navigation to the admin dashboard.
+ *
+ * Validates user input for either a hardcoded admin or a mock employee account, generates a session token, persists session state in multiple storage mechanisms, and redirects to the dashboard with the session token on successful login. Displays error messages and disables form controls during authentication.
+ */
 function LoginContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<LoginForm>({

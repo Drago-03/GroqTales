@@ -103,6 +103,11 @@ const allTextNFTs = [
   },
 ];
 
+/**
+ * Renders the NFT Marketplace page for browsing and uploading comic and text story NFTs.
+ *
+ * Displays featured navigation cards, a community stories section with NFT cards, and dialogs for uploading new NFTs and confirming successful uploads. Users can upload their own comic or text story NFTs with form validation and view a selection of available NFTs.
+ */
 export default function NFTMarketplacePage() {
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
   const [uploadType, setUploadType] = useState('comic');

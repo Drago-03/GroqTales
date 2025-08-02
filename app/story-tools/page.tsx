@@ -19,6 +19,13 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 
+/**
+ * Renders the main Story Tools page, providing a multi-tab interface for editing, summarizing, analyzing, and receiving AI-powered recommendations for stories.
+ *
+ * Users can input or upload their story, generate an AI summary with keywords, receive detailed analysis, and view recommended similar stories. Navigation between tabs is controlled based on story content length and user actions.
+ *
+ * @returns The Story Tools page React component.
+ */
 export default function StoryToolsPage() {
   const [storyId, setStoryId] = useState('demo-story-' + Date.now());
   const [storyTitle, setStoryTitle] = useState('');

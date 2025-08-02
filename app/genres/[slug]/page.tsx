@@ -15,6 +15,13 @@ import {
 } from '@/components/ui/card';
 import { fetchPopularStoriesByGenre } from '@/lib/mock-data';
 
+/**
+ * Renders a genre-specific page displaying details and popular stories for the given genre slug.
+ *
+ * If the genre does not exist, shows a "Genre Not Found" message with a link back to the genres list. Otherwise, displays the genre's information and a grid of up to 12 popular stories in that genre.
+ *
+ * @param params - Object containing the `slug` of the genre to display
+ */
 function GenrePage({ params }: { params: { slug: string } }) {
   const genre = getGenreBySlug(params.slug);
 

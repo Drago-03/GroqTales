@@ -214,6 +214,11 @@ const genreData = [
   },
 ];
 
+/**
+ * Renders a static informational page introducing various story genres, their characteristics, notable works, and guidance for selecting or combining genres.
+ *
+ * The page includes sections for individual genre overviews, popular genre combinations, and tips to help users identify their preferred genre.
+ */
 export default function GenresPage() {
   return (
     <div className="py-12 min-h-screen">

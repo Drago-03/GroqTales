@@ -37,8 +37,11 @@ interface FilterOptions {
 }
 
 /**
- * NFT Gallery Backup Page Component
- * Displays a comprehensive gallery of story NFTs with filtering, sorting, and purchase functionality
+ * Renders a comprehensive NFT story gallery with filtering, sorting, and purchase features.
+ *
+ * Displays a collection of story NFTs, allowing users to search, filter by genre, rarity, and price range, sort by various criteria, and view different categories via tabs. Users can like stories, initiate purchases, and view story details. The gallery initializes with mock data and shows a loading state during data fetching.
+ *
+ * @returns The NFT story gallery page component.
  */
 export default function NFTGalleryBackup() {
   const [nftData, setNftData] = useState<NFTStory[]>([])

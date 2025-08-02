@@ -6,6 +6,12 @@ import { generateAndMintAIStory } from '@/lib/monad-service';
 const MINTER_PRIVATE_KEY =
   process.env.MINTER_PRIVATE_KEY ||
   '0x0000000000000000000000000000000000000000000000000000000000000000';
+/**
+ * Handles POST requests to generate an AI story and mint it as an NFT.
+ *
+ * Expects a JSON body containing `prompt` and `ownerAddress`. Optionally accepts `title`, `genre`, and `apiKey`.
+ * Returns a JSON response with the minted NFT data on success, or an error message on failure.
+ */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

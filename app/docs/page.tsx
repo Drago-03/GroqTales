@@ -41,6 +41,11 @@ const FloatingDoodles = () => (
   </div>
 );
 
+/**
+ * Renders the main documentation page for GroqTales, providing guides and FAQs for users.
+ *
+ * Displays a tabbed interface with sections for getting started, wallet setup, and frequently asked questions. Includes decorative UI elements and navigation links to relevant platform pages.
+ */
 export default function DocsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">

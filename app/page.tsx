@@ -18,6 +18,11 @@ import { useWeb3 } from '@/components/providers/web3-provider';
 import { TrendingStories } from '@/components/trending-stories';
 import { Button } from '@/components/ui/button';
 
+/**
+ * Renders the GroqTales landing page, featuring sections for AI-generated NFT stories, trending stories, featured creators, platform workflow, and calls to action.
+ *
+ * The page conditionally displays wallet connection options and navigation based on the user's blockchain account status.
+ */
 export default function Home() {
   const { account, connectWallet } = useWeb3();
   const router = useRouter();

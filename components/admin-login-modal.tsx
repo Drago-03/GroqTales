@@ -21,6 +21,14 @@ interface AdminLoginModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
+/**
+ * Renders a modal dialog for admin login, handling credential validation, session setup, and redirection upon successful authentication.
+ *
+ * Displays input fields for username and password, manages loading and error states, and persists session data using multiple browser storage methods. On successful login, redirects the user to the intended admin page with a session token.
+ *
+ * @param open - Whether the modal is visible
+ * @param onOpenChange - Callback to update the modal's open state
+ */
 export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

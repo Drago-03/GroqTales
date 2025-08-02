@@ -27,6 +27,11 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Serves as a layout wrapper for the FAQ page, rendering its child content without modification.
+ *
+ * @param children - The content to be displayed within the FAQ layout
+ */
 export default function FaqLayout({ children }: { children: React.ReactNode }) {
   return children;
 }

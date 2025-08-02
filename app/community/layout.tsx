@@ -7,6 +7,13 @@ import { metadata } from './metadata';
 
 export { metadata };
 
+/**
+ * Provides a layout wrapper for community pages with a header and navigation links.
+ *
+ * Renders a styled container with a "Community" heading, navigation links to the main feed and creators pages, and displays the provided child content.
+ *
+ * @param children - The content to display within the layout
+ */
 export default function CommunityLayout({
   children,
 }: {

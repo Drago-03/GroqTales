@@ -26,6 +26,11 @@ export const metadata = {
 export const revalidate =
   process.env.NEXT_PUBLIC_BUILD_MODE === 'true' ? 10 : 3600;
 
+/**
+ * Renders the main Stories page for GroqTales, providing information, guidance, and calls to action for users to create, publish, and share stories.
+ *
+ * Displays a placeholder message during build mode to avoid database connections, and the full interactive page after deployment.
+ */
 export default function StoriesPage() {
   // Use mock data during build time to avoid database connections
   if (process.env.NEXT_PUBLIC_BUILD_MODE === 'true') {

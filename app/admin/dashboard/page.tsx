@@ -33,6 +33,11 @@ import { useToast } from '@/components/ui/use-toast';
 import { VerifiedBadge } from '@/components/verified-badge';
 import { getAdminActions } from '@/lib/admin-service';
 
+/**
+ * Renders the admin dashboard page, displaying a loading message until the dashboard content is ready.
+ *
+ * Wraps the main dashboard content in a React Suspense boundary to handle asynchronous loading.
+ */
 export default function DashboardPage() {
   return (
     <Suspense fallback={<div>Loading dashboard...</div>}>
@@ -40,6 +45,11 @@ export default function DashboardPage() {
     </Suspense>
   );
 }
+/**
+ * Renders the main admin dashboard content, handling authentication, session management, logout, post creation, and displaying dashboard statistics and activity.
+ *
+ * This component verifies admin authentication via session tokens or stored session data, manages session refresh and expiration, and redirects to login if authentication fails. It provides UI for dashboard statistics, admin actions, post creation, and tabbed analytics, transactions, community, and reports sections. Displays loading and error states as appropriate.
+ */
 function DashboardContent() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);

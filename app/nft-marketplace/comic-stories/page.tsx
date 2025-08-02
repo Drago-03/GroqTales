@@ -179,7 +179,12 @@ const mockComicNFTs: ComicNFT[] = [
   },
 ];
 
-// Generate more comic NFTs for demonstration
+/**
+ * Generates an array of mock comic NFT objects with randomized attributes for demonstration purposes.
+ *
+ * @param count - The number of comic NFTs to generate
+ * @returns An array of generated `ComicNFT` objects
+ */
 function generateMoreComicNFTs(count: number): ComicNFT[] {
   const genres = [
     'Sci-Fi',
@@ -228,6 +233,13 @@ function generateMoreComicNFTs(count: number): ComicNFT[] {
 }
 const allComicNFTs = [...mockComicNFTs, ...generateMoreComicNFTs(18)];
 
+/**
+ * Renders the Comic Stories NFT marketplace page with filtering, searching, and detailed viewing of comic NFTs.
+ *
+ * Displays a list of comic NFTs with options to filter by search term, genre, rarity, and animation status. Users can preview comic details, view statistics, and initiate NFT purchases. Handles wallet connection prompts and updates ownership state upon purchase.
+ *
+ * @returns The Comic Stories NFT marketplace React component
+ */
 export default function ComicStoriesPage() {
   const [comics, setComics] = useState<ComicNFT[]>(allComicNFTs);
   const [filteredComics, setFilteredComics] =

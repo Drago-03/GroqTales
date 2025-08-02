@@ -57,6 +57,13 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Defines the root layout for the application, applying global providers, theming, and performance optimizations.
+ *
+ * Wraps all pages with context providers for web3, data fetching, and theme management, and injects critical scripts and styles for optimal performance and user experience.
+ *
+ * @param children - The page content to render within the layout
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

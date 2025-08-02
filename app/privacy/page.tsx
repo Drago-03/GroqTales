@@ -47,6 +47,11 @@ const PrivacySection = ({ icon: Icon, title, children }: any) => (
   </Card>
 );
 
+/**
+ * Renders the Privacy Policy page with floating decorative elements and structured policy sections.
+ *
+ * Displays detailed information about data collection, usage, sharing, storage, user rights, and retention policies, organized into visually distinct sections. Includes a floating GitHub link, animated background doodles, and contact information for privacy inquiries.
+ */
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">

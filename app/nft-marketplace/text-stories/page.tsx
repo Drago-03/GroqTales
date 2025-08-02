@@ -188,7 +188,12 @@ const textNFTs: TextNFT[] = [
   },
 ];
 
-// Generate more text NFTs for demonstration
+/**
+ * Generates an array of mock text story NFTs with randomized metadata for demonstration purposes.
+ *
+ * @param count - The number of text story NFTs to generate
+ * @returns An array of generated TextNFT objects with unique IDs and varied genres, word counts, prices, and other attributes
+ */
 function generateMoreTextNFTs(count: number): TextNFT[] {
   const genres = [
     'Mystery',
@@ -237,6 +242,16 @@ interface TextNFTDetailDialogProps {
   onPurchase: (story: TextNFT) => void;
 }
 
+/**
+ * Displays a modal dialog with detailed information about a text story NFT and allows the user to purchase it.
+ *
+ * Shows the story's title, author, genre, cover image, statistics, tags, excerpt, description, and ownership benefits. Provides a purchase button that initiates a simulated transaction and updates ownership status upon completion.
+ *
+ * @param story - The text NFT to display details for
+ * @param isOpen - Whether the dialog is currently open
+ * @param onClose - Callback to close the dialog
+ * @param onPurchase - Callback invoked after a successful purchase, receiving the purchased story
+ */
 function TextNFTDetailDialog({
   story,
   isOpen,
@@ -484,6 +499,13 @@ function TextNFTDetailDialog({
     </Dialog>
   );
 }
+/**
+ * Displays a searchable, filterable, and sortable marketplace of text story NFTs with detailed views and simulated purchase functionality.
+ *
+ * Users can browse, search, and filter text story NFTs by title, author, description, tags, genre, and word count. Sorting options include popularity, price, and story length. Selecting a story opens a detail dialog with an excerpt, description, and purchase option. Ownership state is updated upon simulated purchase.
+ *
+ * @returns The React component for the text story NFT marketplace page.
+ */
 export default function TextStoriesPage() {
   const [stories, setStories] = useState<TextNFT[]>(allTextNFTs);
   const [filteredStories, setFilteredStories] =

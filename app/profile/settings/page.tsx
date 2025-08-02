@@ -78,6 +78,11 @@ const defaultValues: ProfileFormValues = {
   primaryGenre: 'sci-fi',
 };
 
+/**
+ * Renders the user settings page with tabs for Profile, Notifications, Wallet, and Privacy.
+ *
+ * Provides forms and controls for updating profile information, managing notification preferences, configuring blockchain wallet and NFT settings, and adjusting privacy and security options. No data is persisted; all changes are local and for demonstration purposes only.
+ */
 export default function SettingsPage() {
   const [avatar, setAvatar] = useState<string>(
     'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3'

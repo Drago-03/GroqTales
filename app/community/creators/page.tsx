@@ -230,6 +230,13 @@ const getMockCreators = () => {
   ];
 };
 
+/**
+ * Displays an interactive page listing content creators with search, filtering, and tabbed views.
+ *
+ * Users can search creators by name, username, bio, or tags; filter by followers, stories, or NFTs; and switch between all, featured, or verified creators. The page shows animated creator cards, handles loading and empty states, and includes a promotional section for becoming a featured creator.
+ *
+ * @returns The rendered creators page component.
+ */
 export default function CreatorsPage() {
   const [creators, setCreators] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);

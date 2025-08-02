@@ -27,6 +27,11 @@ const FloatingDoodles = () => (
   </div>
 );
 
+/**
+ * Renders the Terms of Service page for the GroqTales platform, including all terms sections, decorative floating elements, and contact information.
+ *
+ * Displays structured content cards outlining user agreements, service usage, content and NFT policies, fees, termination rights, disclaimers, and terms modification policy.
+ */
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
