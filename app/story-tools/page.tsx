@@ -139,6 +139,7 @@ export default function StoryToolsPage() {
                       accept=".txt,.md,.rtf"
                       className="hidden"
                       onChange={handleFileUpload}
+                      aria-label="Upload text file for story analysis"
                     />
                   </Button>
 
