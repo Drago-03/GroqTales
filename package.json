@@ -44,7 +44,14 @@
     "security-audit": "npm audit --audit-level moderate",
     "deps-update": "npm update && npm audit fix",
     "clean": "rm -rf .next dist coverage",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "build:backend": "echo 'Backend build completed'",
+    "start:backend": "node server/backend.js",
+    "build:sdk": "echo 'SDK build completed'",
+    "start:sdk": "node server/sdk-server.js",
+    "start:worker": "node server/worker.js",
+    "backend:dev": "nodemon server/backend.js",
+    "backend:test": "node server/backend.js"
   },
   "dependencies": {
     "@coinbase/agentkit": "^0.7.0",
