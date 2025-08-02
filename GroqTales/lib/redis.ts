@@ -22,7 +22,7 @@ class MockRedis {
     this.cache.delete(key);
     return existed ? 1 : 0;
   }
-  
+
   // Add other methods as needed
 }
 

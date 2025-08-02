@@ -58,4 +58,4 @@ export interface NFT {
   currency: string;
   createdAt: Date;
   updatedAt: Date;
-} 
+}

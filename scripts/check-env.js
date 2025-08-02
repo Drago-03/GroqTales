@@ -2,7 +2,7 @@
 
 /**
  * Environment Variables Check Script
- * 
+ *
  * This script verifies that all required environment variables are
  * properly set before running the application.
  */
@@ -24,21 +24,23 @@ if (fs.existsSync(envLocalPath)) {
 const requiredVars = [
   'NEXT_PUBLIC_GROQ_API_KEY',
   'MONGODB_URI',
-  'MONGODB_DB_NAME'
+  'MONGODB_DB_NAME',
 ];
 
 // Optional but recommended environment variables
 const recommendedVars = [
   'NEXT_PUBLIC_INFURA_IPFS_PROJECT_ID',
   'NEXT_PUBLIC_INFURA_IPFS_PROJECT_SECRET',
-  'NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID'
+  'NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID',
 ];
 
 // In production, we assume env vars are set correctly in the platform
 if (isProduction && !fs.existsSync(envLocalPath)) {
   console.log('\n🔍 Environment Variables Check - Production Mode\n');
-  console.log('Using environment variables configured in the hosting platform.\n');
-  
+  console.log(
+    'Using environment variables configured in the hosting platform.\n'
+  );
+
   // Just check that required vars exist
   const missingVars = [];
   for (const varName of requiredVars) {
@@ -46,18 +48,27 @@ if (isProduction && !fs.existsSync(envLocalPath)) {
       missingVars.push(varName);
     }
   }
-  
+
   if (missingVars.length === 0) {
-    console.log('\x1b[32m%s\x1b[0m', '✅ All required environment variables are set!\n');
+    console.log(
+      '\x1b[32m%s\x1b[0m',
+      '✅ All required environment variables are set!\n'
+    );
   } else {
-    console.error('\x1b[31m%s\x1b[0m', '❌ Missing required environment variables:');
-    missingVars.forEach(varName => {
+    console.error(
+      '\x1b[31m%s\x1b[0m',
+      '❌ Missing required environment variables:'
+    );
+    missingVars.forEach((varName) => {
       console.error(`   - ${varName}`);
     });
-    console.log('\n\x1b[33m%s\x1b[0m', 'Please configure these variables in your hosting platform.');
+    console.log(
+      '\n\x1b[33m%s\x1b[0m',
+      'Please configure these variables in your hosting platform.'
+    );
     process.exit(1);
   }
-  
+
   console.log('\n✨ Environment check completed successfully!\n');
   process.exit(0);
 }
@@ -65,7 +76,10 @@ if (isProduction && !fs.existsSync(envLocalPath)) {
 // For development environment, check for .env.local
 if (!isProduction && !fs.existsSync(envLocalPath)) {
   console.error('\x1b[31m%s\x1b[0m', 'ERROR: .env.local file not found!');
-  console.log('\x1b[33m%s\x1b[0m', 'Please copy .env.example to .env.local and fill in your environment variables.');
+  console.log(
+    '\x1b[33m%s\x1b[0m',
+    'Please copy .env.example to .env.local and fill in your environment variables.'
+  );
   process.exit(1);
 }
 
@@ -81,13 +95,22 @@ for (const varName of requiredVars) {
 console.log('\n🔍 Environment Variables Check\n');
 
 if (missingVars.length === 0) {
-  console.log('\x1b[32m%s\x1b[0m', '✅ All required environment variables are set!\n');
+  console.log(
+    '\x1b[32m%s\x1b[0m',
+    '✅ All required environment variables are set!\n'
+  );
 } else {
-  console.error('\x1b[31m%s\x1b[0m', '❌ Missing required environment variables:');
-  missingVars.forEach(varName => {
+  console.error(
+    '\x1b[31m%s\x1b[0m',
+    '❌ Missing required environment variables:'
+  );
+  missingVars.forEach((varName) => {
     console.error(`   - ${varName}`);
   });
-  console.log('\n\x1b[33m%s\x1b[0m', 'Please update your .env.local file with these variables.');
+  console.log(
+    '\n\x1b[33m%s\x1b[0m',
+    'Please update your .env.local file with these variables.'
+  );
   process.exit(1);
 }
 
@@ -100,11 +123,16 @@ for (const varName of recommendedVars) {
 }
 
 if (missingRecommended.length > 0) {
-  console.log('\x1b[33m%s\x1b[0m', '⚠️ Missing recommended environment variables:');
-  missingRecommended.forEach(varName => {
+  console.log(
+    '\x1b[33m%s\x1b[0m',
+    '⚠️ Missing recommended environment variables:'
+  );
+  missingRecommended.forEach((varName) => {
     console.log(`   - ${varName}`);
   });
-  console.log('\nThese variables are not required but recommended for full functionality.');
+  console.log(
+    '\nThese variables are not required but recommended for full functionality.'
+  );
 }
 
-console.log('\n✨ Environment check completed successfully!\n'); 
+console.log('\n✨ Environment check completed successfully!\n');

@@ -18,7 +18,9 @@ async function testConnection() {
     console.log('Test document inserted:', insertResult.insertedId);
 
     // Retrieve test document
-    const foundDocument = await findOne(testCollection, { _id: insertResult.insertedId });
+    const foundDocument = await findOne(testCollection, {
+      _id: insertResult.insertedId,
+    });
     console.log('Retrieved test document:', foundDocument);
 
     // Clean up
@@ -31,10 +33,8 @@ async function testConnection() {
     throw error;
   }
 }
-
 // Run the test if this file is executed directly
 if (require.main === module) {
   testConnection().catch(console.error);
 }
-
-export default testConnection; 
+export default testConnection;

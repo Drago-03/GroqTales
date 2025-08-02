@@ -1,6 +1,8 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
+
+import { Button } from '@/components/ui/button';
 
 export default function TestButtonsLayout({
   children,
@@ -17,12 +19,12 @@ export default function TestButtonsLayout({
               Back to Home
             </Button>
           </Link>
-          <h1 className="text-xl font-bold mx-auto">GroqTales Button Testing</h1>
+          <h1 className="text-xl font-bold mx-auto">
+            GroqTales Button Testing
+          </h1>
         </div>
       </header>
-      <main className="flex-grow">
-        {children}
-      </main>
+      <main className="flex-grow">{children}</main>
     </div>
   );
-} 
+}

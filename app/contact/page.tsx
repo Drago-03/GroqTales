@@ -1,18 +1,29 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Github,
+  Mail,
+  MessageSquare,
+  Phone,
+  MapPin,
+  Twitter,
+  Linkedin,
+  Send,
+} from 'lucide-react';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -21,23 +32,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { 
-  Github, 
-  Mail, 
-  MessageSquare, 
-  Phone, 
-  MapPin,
-  Twitter,
-  Linkedin,
-  Send
-} from "lucide-react";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 // Floating GitHub button component
 const FloatingGithub = () => (
-  <Link 
+  <Link
     href="https://github.com/Drago-03/GroqTales.git"
     target="_blank"
     className="fixed bottom-24 right-6 p-3 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-50"
@@ -57,16 +58,16 @@ const FloatingDoodles = () => (
 
 const formSchema = z.object({
   name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+    message: 'Name must be at least 2 characters.',
   }),
   email: z.string().email({
-    message: "Please enter a valid email address.",
+    message: 'Please enter a valid email address.',
   }),
   subject: z.string().min(5, {
-    message: "Subject must be at least 5 characters.",
+    message: 'Subject must be at least 5 characters.',
   }),
   message: z.string().min(10, {
-    message: "Message must be at least 10 characters.",
+    message: 'Message must be at least 10 characters.',
   }),
 });
 
@@ -78,7 +79,10 @@ const ContactInfo = ({ icon: Icon, title, content, link }: any) => (
     <div>
       <h3 className="font-medium">{title}</h3>
       {link ? (
-        <Link href={link} className="text-sm text-muted-foreground hover:text-primary">
+        <Link
+          href={link}
+          className="text-sm text-muted-foreground hover:text-primary"
+        >
           {content}
         </Link>
       ) : (
@@ -95,27 +99,26 @@ export default function ContactPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
+      name: '',
+      email: '',
+      subject: '',
+      message: '',
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsSubmitting(false);
     setIsSubmitted(true);
     form.reset();
   }
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
       <FloatingDoodles />
       <FloatingGithub />
-      
+
       <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
@@ -133,7 +136,8 @@ export default function ContactPage() {
               <CardHeader>
                 <CardTitle>Send us a Message</CardTitle>
                 <CardDescription>
-                  Fill out the form below and we'll get back to you as soon as possible.
+                  Fill out the form below and we'll get back to you as soon as
+                  possible.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -142,9 +146,12 @@ export default function ContactPage() {
                     <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-4">
                       <Send className="w-6 h-6 text-primary" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">Message Sent!</h3>
+                    <h3 className="text-xl font-semibold mb-2">
+                      Message Sent!
+                    </h3>
                     <p className="text-muted-foreground mb-4">
-                      Thank you for reaching out. We'll respond to your message soon.
+                      Thank you for reaching out. We'll respond to your message
+                      soon.
                     </p>
                     <Button onClick={() => setIsSubmitted(false)}>
                       Send Another Message
@@ -152,7 +159,10 @@ export default function ContactPage() {
                   </div>
                 ) : (
                   <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <form
+                      onSubmit={form.handleSubmit(onSubmit)}
+                      className="space-y-6"
+                    >
                       <FormField
                         control={form.control}
                         name="name"
@@ -186,7 +196,10 @@ export default function ContactPage() {
                           <FormItem>
                             <FormLabel>Subject</FormLabel>
                             <FormControl>
-                              <Input placeholder="What's this about?" {...field} />
+                              <Input
+                                placeholder="What's this about?"
+                                {...field}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -199,7 +212,7 @@ export default function ContactPage() {
                           <FormItem>
                             <FormLabel>Message</FormLabel>
                             <FormControl>
-                              <Textarea 
+                              <Textarea
                                 placeholder="Your message..."
                                 className="min-h-[120px]"
                                 {...field}
@@ -209,8 +222,12 @@ export default function ContactPage() {
                           </FormItem>
                         )}
                       />
-                      <Button type="submit" className="w-full" disabled={isSubmitting}>
-                        {isSubmitting ? "Sending..." : "Send Message"}
+                      <Button
+                        type="submit"
+                        className="w-full"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? 'Sending...' : 'Send Message'}
                       </Button>
                     </form>
                   </Form>
@@ -269,7 +286,10 @@ export default function ContactPage() {
                       </Link>
                     </Button>
                     <Button variant="outline" className="w-full" asChild>
-                      <Link href="https://www.linkedin.com/in/mantej-singh-arora/" target="_blank">
+                      <Link
+                        href="https://www.linkedin.com/in/mantej-singh-arora/"
+                        target="_blank"
+                      >
                         <Linkedin className="w-4 h-4 mr-2" />
                         LinkedIn
                       </Link>
@@ -283,4 +303,4 @@ export default function ContactPage() {
       </div>
     </div>
   );
-} 
+}

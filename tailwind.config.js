@@ -16,9 +16,12 @@ module.exports = {
     },
     extend: {
       backgroundImage: {
-        'community-pattern': 'radial-gradient(circle at 50% 50%, rgba(var(--primary), 0.08) 1px, transparent 1px), radial-gradient(circle at 100% 100%, rgba(var(--primary), 0.08) 1px, transparent 1px)',
-        'hero-gradient': 'linear-gradient(to right bottom, rgba(var(--primary), 0.1), transparent)',
-        'card-gradient': 'linear-gradient(to right bottom, rgba(var(--primary), 0.05), transparent)'
+        'community-pattern':
+          'radial-gradient(circle at 50% 50%, rgba(var(--primary), 0.08) 1px, transparent 1px), radial-gradient(circle at 100% 100%, rgba(var(--primary), 0.08) 1px, transparent 1px)',
+        'hero-gradient':
+          'linear-gradient(to right bottom, rgba(var(--primary), 0.1), transparent)',
+        'card-gradient':
+          'linear-gradient(to right bottom, rgba(var(--primary), 0.05), transparent)',
       },
       backgroundSize: {
         'community-pattern': '40px 40px',
@@ -63,11 +66,11 @@ module.exports = {
           foreground: 'hsl(var(--card-foreground))',
         },
         chart: {
-          '1': 'hsl(var(--chart-1))',
-          '2': 'hsl(var(--chart-2))',
-          '3': 'hsl(var(--chart-3))',
-          '4': 'hsl(var(--chart-4))',
-          '5': 'hsl(var(--chart-5))',
+          1: 'hsl(var(--chart-1))',
+          2: 'hsl(var(--chart-2))',
+          3: 'hsl(var(--chart-3))',
+          4: 'hsl(var(--chart-4))',
+          5: 'hsl(var(--chart-5))',
         },
       },
       fontFamily: {
@@ -82,7 +85,7 @@ module.exports = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
-        'float': {
+        float: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
         },
@@ -99,7 +102,7 @@ module.exports = {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'spin-slow': 'spin 3s linear infinite',
-        'float': 'float 4s ease-in-out infinite',
+        float: 'float 4s ease-in-out infinite',
         'float-delayed': 'float-delayed 5s ease-in-out infinite 1s',
         'float-slow': 'float-slow 6s ease-in-out infinite',
       },

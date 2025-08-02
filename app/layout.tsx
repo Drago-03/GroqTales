@@ -1,30 +1,51 @@
-import "./globals.css";
-import { Inter } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/toaster";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { QueryProvider } from "@/components/query-provider";
-import { Web3Provider } from "@/components/providers/web3-provider";
-import Script from "next/script";
+import React from 'react';
+
+import './globals.css';
 import fs from 'fs';
 import path from 'path';
-import ClientLayout from "@/components/client-layout";
-import Link from "next/link";
-import Image from "next/image";
-import type { Metadata } from "next";
-import { AnimatedLayout } from "@/components/layout/animated-layout";
+
+import Image from 'next/image';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import Link from 'next/link';
+import Script from 'next/script';
+
+import ClientLayout from '@/components/client-layout';
+import { Footer } from '@/components/footer';
+import { Header } from '@/components/header';
+import { AnimatedLayout } from '@/components/layout/animated-layout';
+import { Web3Provider } from '@/components/providers/web3-provider';
+import { QueryProvider } from '@/components/query-provider';
+import { ThemeProvider } from '@/components/theme-provider';
+import { Toaster } from '@/components/ui/toaster';
 
 // Optimize font loading
-const inter = Inter({ 
-  subsets: ["latin"],
-  display: "swap",
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
   preload: true,
-  fallback: ['system-ui', 'sans-serif']
+  fallback: ['system-ui', 'sans-serif'],
 });
 
+// Build-time environment variable validation
+const requiredEnvVars = [
+  'NEXT_PUBLIC_URL',
+  'NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME',
+  'NEXT_PUBLIC_VERSION',
+  'NEXT_PUBLIC_IMAGE_URL',
+  'NEXT_PUBLIC_SPLASH_IMAGE_URL',
+  'NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR'
+];
+
+// Validate required environment variables at build time
+for (const envVar of requiredEnvVars) {
+  if (!process.env[envVar]) {
+    throw new Error(`Missing required environment variable: ${envVar}`);
+  }
+}
+
 // Get quick boot script content
-const getQuickBootScript = () => {
+function getQuickBootScript(): string {
   try {
     const filePath = path.join(process.cwd(), 'public', 'quick-boot.js');
     return fs.readFileSync(filePath, 'utf8');
@@ -38,18 +59,19 @@ const getQuickBootScript = () => {
 const quickBootScript = getQuickBootScript();
 
 export const metadata: Metadata = {
-  title: "GroqTales - AI-Generated Story NFTs",
-  description: "Create, mint, and share AI-generated stories as NFTs on the Monad blockchain.",
+  title: 'GroqTales - AI-Generated Story NFTs',
+  description:
+    'Create, mint, and share AI-generated stories as NFTs on the Monad blockchain.',
   // Performance-focused metadata
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#111111" }
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#111111' },
   ],
   viewport: {
-    width: "device-width",
+    width: 'device-width',
     initialScale: 1,
-    maximumScale: 5
-  }
+    maximumScale: 5,
+  },
 };
 
 export default function RootLayout({
@@ -62,19 +84,31 @@ export default function RootLayout({
       <head>
         {/* Inline critical JS for fastest possible execution */}
         <script dangerouslySetInnerHTML={{ __html: quickBootScript }} />
-        
+
         {/* Preload critical resources */}
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+
         {/* Optimize for performance */}
         <meta name="color-scheme" content="light dark" />
-        
+
         {/* Performance optimization scripts */}
-        <Script id="theme-fix" src="/theme-fix.js" strategy="beforeInteractive" />
-        <Script id="performance-fix" src="/performance-fix.js" strategy="afterInteractive" />
+        <Script
+          id="theme-fix"
+          src="/theme-fix.js"
+          strategy="beforeInteractive"
+        />
+        <Script
+          id="performance-fix"
+          src="/performance-fix.js"
+          strategy="afterInteractive"
+        />
       </head>
       <body className={`${inter.className} optimize-paint`}>
         <Web3Provider>
@@ -90,7 +124,9 @@ export default function RootLayout({
                 <ClientLayout>
                   <div className="min-h-screen bg-background flex flex-col">
                     <Header />
-                    <main className="container mx-auto px-4 py-6 flex-grow">{children}</main>
+                    <main className="container mx-auto px-4 py-6 flex-grow">
+                      {children}
+                    </main>
                     <Footer />
                   </div>
                 </ClientLayout>

@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 
 /**
  * Types for the Groq API responses
- */
+
 type GroqModels = {
   [key: string]: string;
 };
@@ -34,7 +34,7 @@ type UseGroqResult = {
 
 /**
  * Hook for interacting with the Groq AI service
- */
+
 export function useGroq(): UseGroqResult {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,7 +44,7 @@ export function useGroq(): UseGroqResult {
 
   /**
    * Fetch available Groq models
-   */
+
   const fetchModels = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -53,27 +53,26 @@ export function useGroq(): UseGroqResult {
       const response = await fetch('/api/groq/models');
       if (!response.ok) {
         throw new Error(`Failed to fetch models: ${response.statusText}`);
-      }
-
+}
       const data = await response.json();
       setAvailableModels(data.models);
       setDefaultModel(data.default);
-      
+
       // Set model names if provided
       if (data.modelNames) {
         setModelNames(data.modelNames);
-      }
+}
     } catch (err: any) {
       setError(err.message || 'Failed to fetch models');
       console.error('Error fetching Groq models:', err);
     } finally {
       setIsLoading(false);
-    }
+}
   }, []);
 
   /**
    * Test connection to Groq API
-   */
+
   const testConnection = useCallback(async (apiKey?: string, useSpecialModel = true): Promise<{success: boolean, message: string, model?: string}> => {
     try {
       setIsLoading(true);
@@ -81,12 +80,11 @@ export function useGroq(): UseGroqResult {
 
       const url = `/api/groq/models?action=test&special=${useSpecialModel}&apiKey=${apiKey || ''}`;
       const response = await fetch(url);
-      
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Connection test failed');
-      }
-
+}
       const data = await response.json();
       return {
         success: data.success,
@@ -102,12 +100,12 @@ export function useGroq(): UseGroqResult {
       };
     } finally {
       setIsLoading(false);
-    }
+}
   }, []);
 
   /**
    * Generate content with Groq
-   */
+
   const generate = useCallback(
     async (prompt: string, model?: string, options?: GenerateOptions): Promise<string> => {
       try {
@@ -134,8 +132,7 @@ export function useGroq(): UseGroqResult {
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.error || 'Failed to generate content');
-        }
-
+}
         const data = await response.json();
         return data.result;
       } catch (err: any) {
@@ -144,14 +141,14 @@ export function useGroq(): UseGroqResult {
         throw err;
       } finally {
         setIsLoading(false);
-      }
+}
     },
     [defaultModel]
   );
 
   /**
    * Analyze content with Groq
-   */
+
   const analyze = useCallback(async (content: string, apiKey?: string): Promise<any> => {
     try {
       setIsLoading(true);
@@ -172,8 +169,7 @@ export function useGroq(): UseGroqResult {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to analyze content');
-      }
-
+}
       const data = await response.json();
       return data.result;
     } catch (err: any) {
@@ -182,12 +178,12 @@ export function useGroq(): UseGroqResult {
       throw err;
     } finally {
       setIsLoading(false);
-    }
+}
   }, []);
 
   /**
    * Generate story ideas with Groq
-   */
+
   const generateIdeas = useCallback(
     async (genre: string, theme?: string, length: 'short' | 'medium' | 'long' = 'medium', apiKey?: string): Promise<any[]> => {
       try {
@@ -211,8 +207,7 @@ export function useGroq(): UseGroqResult {
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.error || 'Failed to generate story ideas');
-        }
-
+}
         const data = await response.json();
         return data.result;
       } catch (err: any) {
@@ -221,14 +216,14 @@ export function useGroq(): UseGroqResult {
         throw err;
       } finally {
         setIsLoading(false);
-      }
+}
     },
     []
   );
 
   /**
    * Improve content with Groq
-   */
+
   const improve = useCallback(async (content: string, focus?: string, apiKey?: string): Promise<string> => {
     try {
       setIsLoading(true);
@@ -250,8 +245,7 @@ export function useGroq(): UseGroqResult {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to improve content');
-      }
-
+}
       const data = await response.json();
       return data.result;
     } catch (err: any) {
@@ -260,7 +254,7 @@ export function useGroq(): UseGroqResult {
       throw err;
     } finally {
       setIsLoading(false);
-    }
+}
   }, []);
 
   return {
@@ -276,4 +270,4 @@ export function useGroq(): UseGroqResult {
     error,
     fetchModels,
   };
-} 
+}

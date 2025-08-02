@@ -3,7 +3,7 @@ import { getDb } from './db';
 async function initializeDatabase() {
   try {
     const db = await getDb();
-    
+
     // Create collections
     await db.createCollection('users');
     await db.createCollection('stories');
@@ -40,10 +40,8 @@ async function initializeDatabase() {
     throw error;
   }
 }
-
 // Only run initialization in development
 if (process.env.NODE_ENV === 'development') {
   initializeDatabase().catch(console.error);
 }
-
-export default initializeDatabase; 
+export default initializeDatabase;

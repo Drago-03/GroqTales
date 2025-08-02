@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  useMiniKit,
-  useAddFrame,
-  useOpenUrl,
-} from "@/lib/mini-kit-mock";
+import { useMiniKit, useAddFrame, useOpenUrl } from "@/lib/mini-kit-mock";
 import {
   Name,
   Identity,

@@ -20,9 +20,12 @@ const config: Config = {
     },
     extend: {
       backgroundImage: {
-        'community-pattern': 'radial-gradient(circle at 50% 50%, rgba(var(--primary), 0.08) 1px, transparent 1px), radial-gradient(circle at 100% 100%, rgba(var(--primary), 0.08) 1px, transparent 1px)',
-        'hero-gradient': 'linear-gradient(to right bottom, rgba(var(--primary), 0.1), transparent)',
-        'card-gradient': 'linear-gradient(to right bottom, rgba(var(--primary), 0.05), transparent)',
+        'community-pattern':
+          'radial-gradient(circle at 50% 50%, rgba(var(--primary), 0.08) 1px, transparent 1px), radial-gradient(circle at 100% 100%, rgba(var(--primary), 0.08) 1px, transparent 1px)',
+        'hero-gradient':
+          'linear-gradient(to right bottom, rgba(var(--primary), 0.1), transparent)',
+        'card-gradient':
+          'linear-gradient(to right bottom, rgba(var(--primary), 0.05), transparent)',
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },
       backgroundSize: {
@@ -95,7 +98,7 @@ const config: Config = {
             height: '0',
           },
         },
-        'float': {
+        float: {
           '0%, 100%': {
             transform: 'translateY(0)',
           },
@@ -124,7 +127,7 @@ const config: Config = {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'spin-slow': 'spin 3s linear infinite',
-        'float': 'float 4s ease-in-out infinite',
+        float: 'float 4s ease-in-out infinite',
         'float-delayed': 'float-delayed 5s ease-in-out infinite 1s',
         'float-slow': 'float-slow 6s ease-in-out infinite',
       },

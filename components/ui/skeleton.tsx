@@ -1,6 +1,5 @@
-import { cn } from '@/lib/utils';
-
-function Skeleton({
+import React from "react";
+import { cn } from '@/lib/utils'; Skeleton({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
@@ -11,5 +10,4 @@ function Skeleton({
     />
   );
 }
-
 export { Skeleton };

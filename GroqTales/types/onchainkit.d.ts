@@ -1,4 +1,4 @@
-declare module '@coinbase/onchainkit/transaction' {
+declare module "@coinbase/onchainkit/transaction" {
   export interface TransactionError {
     shortMessage: string;
     message: string;
@@ -21,6 +21,6 @@ declare module '@coinbase/onchainkit/transaction' {
   export const TransactionStatus: React.FC<any>;
 }
 
-declare module '@coinbase/onchainkit/minikit' {
+declare module "@coinbase/onchainkit/minikit" {
   export function useNotification(): any;
-} 
+}
