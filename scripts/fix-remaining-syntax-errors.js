@@ -10,7 +10,7 @@ const criticalFiles = [
   'app/create/ai-story/metadata.ts',
   'components/community-feed.tsx',
   'components/loading-screen.tsx',
-  'app/cookies/page.tsx'
+  'app/cookies/page.tsx',
 ];
 
 let totalFixed = 0;
@@ -41,7 +41,11 @@ function fixFile(filePath) {
     }
 
     // Fix duplicate React imports
-    if (content.match(/import React from "react";\s*\n.*import \* as React from 'react';/)) {
+    if (
+      content.match(
+        /import React from "react";\s*\n.*import \* as React from 'react';/
+      )
+    ) {
       content = content.replace(/import React from "react";\s*\n/, '');
       modified = true;
       console.log(`  ✅ Fixed duplicate React import in ${filePath}`);
@@ -49,20 +53,29 @@ function fixFile(filePath) {
 
     // Fix misplaced "use client" directives
     if (content.match(/import.*?\n"use client";/)) {
-      content = content.replace(/(import.*?\n)"use client";/, '"use client";\n\n$1');
+      content = content.replace(
+        /(import.*?\n)"use client";/,
+        '"use client";\n\n$1'
+      );
       modified = true;
       console.log(`  ✅ Fixed misplaced "use client" directive in ${filePath}`);
     }
 
     // Fix malformed function declarations
     if (content.match(/\}\s+\w+\s+function\s+\w+\(/)) {
-      content = content.replace(/(\})\s+(\w+)\s+(function\s+\w+\()/g, '$1\n\n// $2\n$3');
+      content = content.replace(
+        /(\})\s+(\w+)\s+(function\s+\w+\()/g,
+        '$1\n\n// $2\n$3'
+      );
       modified = true;
       console.log(`  ✅ Fixed malformed function declaration in ${filePath}`);
     }
 
     // Fix missing function keywords
-    if (content.match(/\w+\([^)]*\)\s*\{/) && !content.match(/function\s+\w+\([^)]*\)\s*\{/)) {
+    if (
+      content.match(/\w+\([^)]*\)\s*\{/) &&
+      !content.match(/function\s+\w+\([^)]*\)\s*\{/)
+    ) {
       content = content.replace(/(\w+)\(([^)]*)\)\s*\{/g, 'function $1($2) {');
       modified = true;
       console.log(`  ✅ Fixed missing function keyword in ${filePath}`);
@@ -73,14 +86,13 @@ function fixFile(filePath) {
       totalFixed++;
       console.log(`  💾 Updated ${filePath}\n`);
     }
-
   } catch (error) {
     console.error(`❌ Error processing ${filePath}:`, error.message);
   }
 }
 
 // Process critical files
-criticalFiles.forEach(file => {
+criticalFiles.forEach((file) => {
   const fullPath = path.join(process.cwd(), file);
   console.log(`🔍 Processing ${file}...`);
   fixFile(fullPath);

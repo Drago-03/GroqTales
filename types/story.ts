@@ -72,7 +72,7 @@ export enum StoryStatus {
   PUBLISHED = 'published',
   ARCHIVED = 'archived',
   DELETED = 'deleted',
-  MODERATED = 'moderated'
+  MODERATED = 'moderated',
 }
 
 /**
@@ -82,7 +82,7 @@ export enum StoryType {
   TEXT = 'text',
   VISUAL = 'visual',
   COMIC = 'comic',
-  INTERACTIVE = 'interactive'
+  INTERACTIVE = 'interactive',
 }
 
 /**
@@ -217,7 +217,7 @@ export enum InteractionType {
   SHARE = 'share',
   BOOKMARK = 'bookmark',
   RATE = 'rate',
-  REPORT = 'report'
+  REPORT = 'report',
 }
 
 /**

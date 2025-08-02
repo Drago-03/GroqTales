@@ -49,7 +49,7 @@ export enum UserRole {
   USER = 'user',
   CREATOR = 'creator',
   MODERATOR = 'moderator',
-  ADMIN = 'admin'
+  ADMIN = 'admin',
 }
 
 /**
@@ -59,7 +59,7 @@ export enum UserStatus {
   ACTIVE = 'active',
   INACTIVE = 'inactive',
   SUSPENDED = 'suspended',
-  BANNED = 'banned'
+  BANNED = 'banned',
 }
 
 /**
@@ -166,7 +166,7 @@ export enum ActivityType {
   NFT_CREATED = 'nft_created',
   NFT_PURCHASED = 'nft_purchased',
   NFT_SOLD = 'nft_sold',
-  PROFILE_UPDATED = 'profile_updated'
+  PROFILE_UPDATED = 'profile_updated',
 }
 
 export default {};

@@ -1,86 +1,92 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card } from "@/components/ui/card";
-import { Loader2, BookOpen, Sparkles } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import { useWallet } from "@/hooks/use-wallet";
+import { Loader2, BookOpen, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast';
+import { useWallet } from '@/hooks/use-wallet';
 
 const genres = [
-  "Fantasy",
-  "Science Fiction",
-  "Mystery",
-  "Romance",
-  "Horror",
-  "Adventure"
+  'Fantasy',
+  'Science Fiction',
+  'Mystery',
+  'Romance',
+  'Horror',
+  'Adventure',
 ];
 
-  export function StoryGenerator() {
-  const [prompt, setPrompt] = useState("");
-  const [genre, setGenre] = useState("");
+export function StoryGenerator() {
+  const [prompt, setPrompt] = useState('');
+  const [genre, setGenre] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
-  const [generatedStory, setGeneratedStory] = useState("");
+  const [generatedStory, setGeneratedStory] = useState('');
   const { toast } = useToast();
   const { address } = useWallet();
 
   const handleGenerate = async () => {
     if (!address) {
       toast({
-        title: "Wallet Required",
-        description: "Please connect your wallet to generate stories",
-        variant: "destructive",
+        title: 'Wallet Required',
+        description: 'Please connect your wallet to generate stories',
+        variant: 'destructive',
       });
       return;
-}
+    }
     setIsGenerating(true);
     try {
-      const response = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt, genre, creator: address }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to generate story");
-}
+        throw new Error('Failed to generate story');
+      }
       const data = await response.json();
       setGeneratedStory(data.story);
       toast({
-        title: "Story Generated",
-        description: "Your story has been created successfully!",
+        title: 'Story Generated',
+        description: 'Your story has been created successfully!',
       });
     } catch (error) {
-      console.error("Failed to generate story:", error);
+      console.error('Failed to generate story:', error);
       toast({
-        title: "Generation Failed",
-        description: "Failed to generate story. Please try again.",
-        variant: "destructive",
+        title: 'Generation Failed',
+        description: 'Failed to generate story. Please try again.',
+        variant: 'destructive',
       });
     } finally {
       setIsGenerating(false);
-}
+    }
   };
 
   const handleMint = async () => {
     if (!address) {
       toast({
-        title: "Wallet Required",
-        description: "Please connect your wallet to mint NFTs",
-        variant: "destructive",
+        title: 'Wallet Required',
+        description: 'Please connect your wallet to mint NFTs',
+        variant: 'destructive',
       });
       return;
-}
+    }
     setIsMinting(true);
     try {
       // Upload to IPFS
-      const ipfsResponse = await fetch("/api/upload", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const ipfsResponse = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           story: generatedStory,
           genre,
@@ -89,14 +95,14 @@ const genres = [
       });
 
       if (!ipfsResponse.ok) {
-        throw new Error("Failed to upload to IPFS");
-}
+        throw new Error('Failed to upload to IPFS');
+      }
       const { metadataUri } = await ipfsResponse.json();
 
       // Mint NFT
-      const mintResponse = await fetch("/api/mint", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const mintResponse = await fetch('/api/mint', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           metadataUri,
           creator: address,
@@ -104,22 +110,22 @@ const genres = [
       });
 
       if (!mintResponse.ok) {
-        throw new Error("Failed to mint NFT");
-}
+        throw new Error('Failed to mint NFT');
+      }
       toast({
-        title: "NFT Minted",
-        description: "Your story has been successfully minted as an NFT!",
+        title: 'NFT Minted',
+        description: 'Your story has been successfully minted as an NFT!',
       });
     } catch (error) {
-      console.error("Failed to mint NFT:", error);
+      console.error('Failed to mint NFT:', error);
       toast({
-        title: "Minting Failed",
-        description: "Failed to mint NFT. Please try again.",
-        variant: "destructive",
+        title: 'Minting Failed',
+        description: 'Failed to mint NFT. Please try again.',
+        variant: 'destructive',
       });
     } finally {
       setIsMinting(false);
-}
+    }
   };
 
   return (
@@ -190,7 +196,7 @@ const genres = [
                   Minting...
                 </>
               ) : (
-                "Mint as NFT"
+                'Mint as NFT'
               )}
             </Button>
           </div>

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { createContext, useContext, ReactNode } from "react";
+import React, { createContext, useContext, ReactNode } from 'react';
 
 // Mock TransactionResponse and TransactionError types
 export type TransactionResponse = {
@@ -41,29 +41,34 @@ type TransactionProps = {
 
 // Main Transaction component
 
-export function Transaction({ children, calls, onSuccess, onError }: TransactionProps) {
+export function Transaction({
+  children,
+  calls,
+  onSuccess,
+  onError,
+}: TransactionProps) {
   // Mock implementation
   const execute = async () => {
     // Simulate transaction
-    console.log("Executing transaction with calls:", calls);
+    console.log('Executing transaction with calls:', calls);
 
     try {
       // Mock successful transaction after 2 seconds
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       const response = {
         transactionReceipts: [
-          { transactionHash: `0x${Math.random().toString(16).slice(2)}` }
-        ]
+          { transactionHash: `0x${Math.random().toString(16).slice(2)}` },
+        ],
       };
 
       if (onSuccess) onSuccess(response);
       return response;
     } catch (error) {
-      const txError = { message: "Transaction failed", code: 4001 };
+      const txError = { message: 'Transaction failed', code: 4001 };
       if (onError) onError(txError);
       throw txError;
-}
+    }
   };
 
   const value = {
@@ -90,7 +95,7 @@ type TransactionButtonProps = {
   children?: ReactNode;
 };
 
-  export function TransactionToastAction() {
+export function TransactionToastAction() {
   const { isSuccess } = useTransaction();
 
   if (isSuccess) {
@@ -99,6 +104,6 @@ type TransactionButtonProps = {
         View
       </button>
     );
-}
+  }
   return null;
 }

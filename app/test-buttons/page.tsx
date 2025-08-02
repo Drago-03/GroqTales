@@ -1,9 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
+import React from 'react';
 
-
-import AIStoryGenerator from "@/components/ai-story-generator";
+import AIStoryGenerator from '@/components/ai-story-generator';
 
 export default function TestButtonsPage() {
   return (

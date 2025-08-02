@@ -1,25 +1,26 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
-import { 
-  Heart, 
-  MessageCircle, 
-  Share2, 
-  ChevronUp, 
-  ChevronDown, 
-  BookOpen, 
-  Users, 
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Heart,
+  MessageCircle,
+  Share2,
+  ChevronUp,
+  ChevronDown,
+  BookOpen,
+  Users,
   TrendingUp,
   Filter,
-  Search
-} from "lucide-react";
+  Search,
+} from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast';
 
 interface CommunityPost {
   id: string;
@@ -56,71 +57,108 @@ interface Comment {
 }
 
 const mockUsers = [
-  { id: 1, name: "Alex Chen", avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
-  { id: 2, name: "Sarah Johnson", avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
-  { id: 3, name: "Michael Brown", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
-  { id: 4, name: "Emily Davis", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" },
-  { id: 5, name: "David Wilson", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" }
+  {
+    id: 1,
+    name: 'Alex Chen',
+    avatar:
+      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3',
+  },
+  {
+    id: 2,
+    name: 'Sarah Johnson',
+    avatar:
+      'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3',
+  },
+  {
+    id: 3,
+    name: 'Michael Brown',
+    avatar:
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3',
+  },
+  {
+    id: 4,
+    name: 'Emily Davis',
+    avatar:
+      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3',
+  },
+  {
+    id: 5,
+    name: 'David Wilson',
+    avatar:
+      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3',
+  },
 ];
 
 const mockPosts: CommunityPost[] = [
   {
-    id: "1",
-    author: { id: "1", name: "Alex Chen", avatar: mockUsers[0].avatar, verified: true },
-    title: "The Chronicles of Ethereal Realms",
-    content: "Just finished my latest fantasy epic! It's a tale of magic, adventure, and the bonds that transcend worlds. The story follows a young mage who discovers that reality itself is just one layer of an infinite multiverse...",
-    genre: ["Fantasy", "Adventure"],
+    id: '1',
+    author: {
+      id: '1',
+      name: 'Alex Chen',
+      avatar: mockUsers[0].avatar,
+      verified: true,
+    },
+    title: 'The Chronicles of Ethereal Realms',
+    content:
+      "Just finished my latest fantasy epic! It's a tale of magic, adventure, and the bonds that transcend worlds. The story follows a young mage who discovers that reality itself is just one layer of an infinite multiverse...",
+    genre: ['Fantasy', 'Adventure'],
     timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
     likes: 142,
     comments: 23,
     shares: 8,
-    type: "story",
-    storyPreview: "In the beginning, there was only the Void...",
-    tags: ["epic-fantasy", "multiverse", "magic"],
+    type: 'story',
+    storyPreview: 'In the beginning, there was only the Void...',
+    tags: ['epic-fantasy', 'multiverse', 'magic'],
     userLiked: false,
-    userVote: null
+    userVote: null,
   },
   {
-    id: "2",
-    author: { id: "2", name: "Sarah Johnson", avatar: mockUsers[1].avatar },
-    content: "What are everyone's thoughts on AI-generated stories vs human-written ones? I've been experimenting with both and finding interesting parallels in creativity patterns.",
+    id: '2',
+    author: { id: '2', name: 'Sarah Johnson', avatar: mockUsers[1].avatar },
+    content:
+      "What are everyone's thoughts on AI-generated stories vs human-written ones? I've been experimenting with both and finding interesting parallels in creativity patterns.",
     timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000),
     likes: 89,
     comments: 45,
     shares: 12,
-    type: "discussion",
-    tags: ["ai-writing", "creativity", "discussion"],
+    type: 'discussion',
+    tags: ['ai-writing', 'creativity', 'discussion'],
     userLiked: true,
-    userVote: "up"
+    userVote: 'up',
   },
   {
-    id: "3",
-    author: { id: "3", name: "Michael Brown", avatar: mockUsers[2].avatar },
-    title: "Neon Dreams: A Cyberpunk Tale",
-    content: "Set in Neo-Tokyo 2087, this story explores the thin line between humanity and technology. When memories can be bought and sold, what defines who we really are?",
-    genre: ["Cyberpunk", "Sci-Fi"],
+    id: '3',
+    author: { id: '3', name: 'Michael Brown', avatar: mockUsers[2].avatar },
+    title: 'Neon Dreams: A Cyberpunk Tale',
+    content:
+      'Set in Neo-Tokyo 2087, this story explores the thin line between humanity and technology. When memories can be bought and sold, what defines who we really are?',
+    genre: ['Cyberpunk', 'Sci-Fi'],
     timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000),
     likes: 76,
     comments: 18,
     shares: 5,
-    type: "story",
-    storyPreview: "The neon lights reflected off the rain-slicked streets...",
-    tags: ["cyberpunk", "neo-tokyo", "identity"],
+    type: 'story',
+    storyPreview: 'The neon lights reflected off the rain-slicked streets...',
+    tags: ['cyberpunk', 'neo-tokyo', 'identity'],
     userLiked: false,
-    userVote: null
-  }
+    userVote: null,
+  },
 ];
 
-function PostActions({ post, onVote, onCommentClick }: { 
-  post: CommunityPost; 
-  onVote: (postId: string, vote: 'up' | 'down' | null) => void; 
-  onCommentClick: (postId: string) => void; 
+function PostActions({
+  post,
+  onVote,
+  onCommentClick,
+}: {
+  post: CommunityPost;
+  onVote: (postId: string, vote: 'up' | 'down' | null) => void;
+  onCommentClick: (postId: string) => void;
 }) {
   return (
     <div className="flex items-center justify-between text-muted-foreground pt-3 border-t">
       <div className="flex items-center space-x-2">
         <Button
-          variant={post.userVote === 'up' ? "default" : "ghost"}
+          variant={post.userVote === 'up' ? 'default' : 'ghost'}
           size="sm"
           onClick={() => onVote(post.id, post.userVote === 'up' ? null : 'up')}
           className="flex items-center space-x-1"
@@ -128,11 +166,13 @@ function PostActions({ post, onVote, onCommentClick }: {
           <ChevronUp className="h-4 w-4" />
           <span>{post.likes}</span>
         </Button>
-        
+
         <Button
-          variant={post.userVote === 'down' ? "destructive" : "ghost"}
+          variant={post.userVote === 'down' ? 'destructive' : 'ghost'}
           size="sm"
-          onClick={() => onVote(post.id, post.userVote === 'down' ? null : 'down')}
+          onClick={() =>
+            onVote(post.id, post.userVote === 'down' ? null : 'down')
+          }
         >
           <ChevronDown className="h-4 w-4" />
         </Button>
@@ -149,7 +189,11 @@ function PostActions({ post, onVote, onCommentClick }: {
           <span>{post.comments}</span>
         </Button>
 
-        <Button variant="ghost" size="sm" className="flex items-center space-x-1">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="flex items-center space-x-1"
+        >
           <Share2 className="h-4 w-4" />
           <span>{post.shares}</span>
         </Button>
@@ -158,16 +202,22 @@ function PostActions({ post, onVote, onCommentClick }: {
   );
 }
 
-function PostCard({ post, onVote, onCommentClick }: { 
-  post: CommunityPost; 
-  onVote: (postId: string, vote: 'up' | 'down' | null) => void; 
-  onCommentClick: (postId: string) => void; 
+function PostCard({
+  post,
+  onVote,
+  onCommentClick,
+}: {
+  post: CommunityPost;
+  onVote: (postId: string, vote: 'up' | 'down' | null) => void;
+  onCommentClick: (postId: string) => void;
 }) {
   const formatTimeAgo = (date: Date) => {
     const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
-    if (diffInHours < 1) return "Just now";
+    const diffInHours = Math.floor(
+      (now.getTime() - date.getTime()) / (1000 * 60 * 60)
+    );
+
+    if (diffInHours < 1) return 'Just now';
     if (diffInHours < 24) return `${diffInHours}h ago`;
     return `${Math.floor(diffInHours / 24)}d ago`;
   };
@@ -190,7 +240,9 @@ function PostCard({ post, onVote, onCommentClick }: {
                 <div className="flex items-center space-x-2">
                   <h4 className="font-medium">{post.author.name}</h4>
                   {post.author.verified && (
-                    <Badge variant="secondary" className="text-xs">Verified</Badge>
+                    <Badge variant="secondary" className="text-xs">
+                      Verified
+                    </Badge>
                   )}
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -208,7 +260,7 @@ function PostCard({ post, onVote, onCommentClick }: {
           {post.title && (
             <h3 className="text-lg font-semibold mb-2">{post.title}</h3>
           )}
-          
+
           <p className="text-muted-foreground mb-3 leading-relaxed">
             {post.content}
           </p>
@@ -239,7 +291,11 @@ function PostCard({ post, onVote, onCommentClick }: {
             </div>
           )}
 
-          <PostActions post={post} onVote={onVote} onCommentClick={onCommentClick} />
+          <PostActions
+            post={post}
+            onVote={onVote}
+            onCommentClick={onCommentClick}
+          />
         </CardContent>
       </Card>
     </motion.div>
@@ -248,25 +304,27 @@ function PostCard({ post, onVote, onCommentClick }: {
 
 export default function CommunityFeed() {
   const [posts, setPosts] = useState<CommunityPost[]>(mockPosts);
-  const [filter, setFilter] = useState<'all' | 'stories' | 'discussions'>('all');
+  const [filter, setFilter] = useState<'all' | 'stories' | 'discussions'>(
+    'all'
+  );
   const [sortBy, setSortBy] = useState<'recent' | 'popular'>('recent');
   const { toast } = useToast();
 
   const handleVote = (postId: string, vote: 'up' | 'down' | null) => {
-    setPosts(prevPosts => 
-      prevPosts.map(post => {
+    setPosts((prevPosts) =>
+      prevPosts.map((post) => {
         if (post.id === postId) {
           const currentVote = post.userVote;
           let newLikes = post.likes;
-          
+
           // Adjust likes based on vote changes
           if (currentVote === 'up' && vote !== 'up') newLikes--;
           if (currentVote !== 'up' && vote === 'up') newLikes++;
-          
+
           return {
             ...post,
             userVote: vote,
-            likes: newLikes
+            likes: newLikes,
           };
         }
         return post;
@@ -275,20 +333,20 @@ export default function CommunityFeed() {
 
     if (vote === 'up') {
       toast({
-        title: "Upvoted!",
-        description: "Thanks for supporting the community.",
+        title: 'Upvoted!',
+        description: 'Thanks for supporting the community.',
       });
     }
   };
 
   const handleCommentClick = (postId: string) => {
     toast({
-      title: "Comments",
-      description: "Comment functionality coming soon!",
+      title: 'Comments',
+      description: 'Comment functionality coming soon!',
     });
   };
 
-  const filteredPosts = posts.filter(post => {
+  const filteredPosts = posts.filter((post) => {
     if (filter === 'all') return true;
     if (filter === 'stories') return post.type === 'story';
     if (filter === 'discussions') return post.type === 'discussion';
@@ -326,7 +384,7 @@ export default function CommunityFeed() {
               {(['all', 'stories', 'discussions'] as const).map((f) => (
                 <Button
                   key={f}
-                  variant={filter === f ? "default" : "ghost"}
+                  variant={filter === f ? 'default' : 'ghost'}
                   size="sm"
                   onClick={() => setFilter(f)}
                   className="capitalize"
@@ -345,7 +403,7 @@ export default function CommunityFeed() {
             {(['recent', 'popular'] as const).map((s) => (
               <Button
                 key={s}
-                variant={sortBy === s ? "default" : "ghost"}
+                variant={sortBy === s ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setSortBy(s)}
                 className="capitalize"

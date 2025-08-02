@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+
 import clientPromise from './mongodb';
 
 /**
@@ -9,7 +10,7 @@ export async function getDb() {
   const db = client.db(process.env.MONGODB_DB_NAME);
   return db;
 }
-  /**
+/**
    * Retrieves collection data
    * 
 
@@ -34,7 +35,11 @@ export async function findOne(collectionName: string, query: any) {
 /**
  * Find multiple documents in a collection
  */
-export async function find(collectionName: string, query: any = {}, options: any = {}) {
+export async function find(
+  collectionName: string,
+  query: any = {},
+  options: any = {}
+) {
   try {
     const collection = await getCollection(collectionName);
     return await collection.find(query, options).toArray();
@@ -60,7 +65,11 @@ export async function insertOne(collectionName: string, document: any) {
 /**
  * Update one document in a collection
  */
-export async function updateOne(collectionName: string, query: any, update: any) {
+export async function updateOne(
+  collectionName: string,
+  query: any,
+  update: any
+) {
   try {
     const collection = await getCollection(collectionName);
     return await collection.updateOne(query, update);
@@ -82,7 +91,7 @@ export async function deleteOne(collectionName: string, query: any) {
     throw error;
   }
 }
-  /**
+/**
    * Updates existing one
    * 
 

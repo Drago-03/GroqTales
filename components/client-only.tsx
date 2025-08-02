@@ -1,14 +1,12 @@
 'use client';
 
-import React from "react";
-
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface ClientOnlyProps {
   children: React.ReactNode;
   fallback?: React.ReactNode;
 }
-  export function ClientOnly({ children, fallback = null }: ClientOnlyProps) {
+export function ClientOnly({ children, fallback = null }: ClientOnlyProps) {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
@@ -17,7 +15,7 @@ interface ClientOnlyProps {
 
   if (!hasMounted) {
     return <>{fallback}</>;
-}
+  }
   return <>{children}</>;
 }
 export default ClientOnly;

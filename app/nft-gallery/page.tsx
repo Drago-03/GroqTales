@@ -1,25 +1,26 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
-import { useWeb3 } from "@/components/providers/web3-provider";
-import { 
-  Heart, 
-  Eye, 
-  ShoppingCart, 
-  Search, 
-  Filter, 
-  TrendingUp, 
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Heart,
+  Eye,
+  ShoppingCart,
+  Search,
+  Filter,
+  TrendingUp,
   Star,
   Palette,
   BookOpen,
-  Users
-} from "lucide-react";
+  Users,
+} from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { useWeb3 } from '@/components/providers/web3-provider';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
 
 interface NFTStory {
   id: string;
@@ -34,61 +35,83 @@ interface NFTStory {
   isTop10?: boolean;
   sales?: number;
   description: string;
-  rarity?: "Common" | "Rare" | "Epic" | "Legendary";
+  rarity?: 'Common' | 'Rare' | 'Epic' | 'Legendary';
 }
 
 const featuredNFTs: NFTStory[] = [
   {
-    id: "1",
+    id: '1',
     title: "The Last Dragon's Tale",
-    author: "Elena Stormweaver",
-    authorAvatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Elena&backgroundColor=f3e8ff",
-    coverImage: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=1200&fit=crop&q=80",
-    price: "2.5 ETH",
+    author: 'Elena Stormweaver',
+    authorAvatar:
+      'https://api.dicebear.com/7.x/bottts/svg?seed=Elena&backgroundColor=f3e8ff',
+    coverImage:
+      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=1200&fit=crop&q=80',
+    price: '2.5 ETH',
     likes: 1247,
     views: 15420,
-    genre: "Epic Fantasy",
+    genre: 'Epic Fantasy',
     isTop10: true,
     sales: 156,
-    description: "An epic tale of the last dragon and the young mage destined to either save or destroy the realm.",
-    rarity: "Legendary"
+    description:
+      'An epic tale of the last dragon and the young mage destined to either save or destroy the realm.',
+    rarity: 'Legendary',
   },
   {
-    id: "2",
-    title: "Neon Shadows",
-    author: "Marcus Cyberpunk",
-    authorAvatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Marcus&backgroundColor=e0f2fe",
-    coverImage: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=1200&fit=crop&q=80",
-    price: "1.8 ETH",
+    id: '2',
+    title: 'Neon Shadows',
+    author: 'Marcus Cyberpunk',
+    authorAvatar:
+      'https://api.dicebear.com/7.x/bottts/svg?seed=Marcus&backgroundColor=e0f2fe',
+    coverImage:
+      'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=1200&fit=crop&q=80',
+    price: '1.8 ETH',
     likes: 892,
     views: 12300,
-    genre: "Cyberpunk",
+    genre: 'Cyberpunk',
     isTop10: true,
     sales: 89,
-    description: "A gritty cyberpunk noir set in Neo-Tokyo where memories are currency and identity is fluid.",
-    rarity: "Epic"
+    description:
+      'A gritty cyberpunk noir set in Neo-Tokyo where memories are currency and identity is fluid.',
+    rarity: 'Epic',
   },
   {
-    id: "3",
-    title: "The Quantum Paradox",
-    author: "Dr. Sarah Chen",
-    authorAvatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Sarah&backgroundColor=fef3c7",
-    coverImage: "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=800&h=1200&fit=crop&q=80",
-    price: "3.2 ETH",
+    id: '3',
+    title: 'The Quantum Paradox',
+    author: 'Dr. Sarah Chen',
+    authorAvatar:
+      'https://api.dicebear.com/7.x/bottts/svg?seed=Sarah&backgroundColor=fef3c7',
+    coverImage:
+      'https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=800&h=1200&fit=crop&q=80',
+    price: '3.2 ETH',
     likes: 1456,
     views: 18750,
-    genre: "Hard Sci-Fi",
+    genre: 'Hard Sci-Fi',
     isTop10: true,
     sales: 203,
-    description: "A mind-bending exploration of quantum mechanics and parallel universes through the eyes of a brilliant physicist.",
-    rarity: "Legendary"
-  }
+    description:
+      'A mind-bending exploration of quantum mechanics and parallel universes through the eyes of a brilliant physicist.',
+    rarity: 'Legendary',
+  },
 ];
 
 function generateAdditionalNFTs(): NFTStory[] {
-  const genres = ["Fantasy", "Sci-Fi", "Mystery", "Romance", "Thriller", "Horror", "Adventure"];
-  const rarities: NFTStory["rarity"][] = ["Common", "Rare", "Epic", "Legendary"];
-  
+  const genres = [
+    'Fantasy',
+    'Sci-Fi',
+    'Mystery',
+    'Romance',
+    'Thriller',
+    'Horror',
+    'Adventure',
+  ];
+  const rarities: NFTStory['rarity'][] = [
+    'Common',
+    'Rare',
+    'Epic',
+    'Legendary',
+  ];
+
   return Array.from({ length: 20 }, (_, index) => ({
     id: `nft-${index + 4}`,
     title: `Story Collection #${index + 4}`,
@@ -101,21 +124,29 @@ function generateAdditionalNFTs(): NFTStory[] {
     genre: genres[Math.floor(Math.random() * genres.length)],
     sales: Math.floor(Math.random() * 100) + 10,
     description: `A captivating ${genres[Math.floor(Math.random() * genres.length)].toLowerCase()} story that will keep you on the edge of your seat.`,
-    rarity: rarities[Math.floor(Math.random() * rarities.length)]
+    rarity: rarities[Math.floor(Math.random() * rarities.length)],
   }));
 }
 
-function NFTCard({ nft, onLike, onPurchase }: { 
-  nft: NFTStory; 
-  onLike: (id: string) => void; 
-  onPurchase: (id: string) => void; 
+function NFTCard({
+  nft,
+  onLike,
+  onPurchase,
+}: {
+  nft: NFTStory;
+  onLike: (id: string) => void;
+  onPurchase: (id: string) => void;
 }) {
   const getRarityColor = (rarity?: string) => {
     switch (rarity) {
-      case "Legendary": return "text-yellow-500 border-yellow-500";
-      case "Epic": return "text-purple-500 border-purple-500";
-      case "Rare": return "text-blue-500 border-blue-500";
-      default: return "text-gray-500 border-gray-500";
+      case 'Legendary':
+        return 'text-yellow-500 border-yellow-500';
+      case 'Epic':
+        return 'text-purple-500 border-purple-500';
+      case 'Rare':
+        return 'text-blue-500 border-blue-500';
+      default:
+        return 'text-gray-500 border-gray-500';
     }
   };
 
@@ -140,7 +171,10 @@ function NFTCard({ nft, onLike, onPurchase }: {
             </Badge>
           )}
           {nft.rarity && (
-            <Badge variant="outline" className={`absolute top-2 right-2 ${getRarityColor(nft.rarity)}`}>
+            <Badge
+              variant="outline"
+              className={`absolute top-2 right-2 ${getRarityColor(nft.rarity)}`}
+            >
               {nft.rarity}
             </Badge>
           )}
@@ -198,10 +232,7 @@ function NFTCard({ nft, onLike, onPurchase }: {
               <Heart className="w-4 h-4 mr-1" />
               Like
             </Button>
-            <Button
-              onClick={() => onPurchase(nft.id)}
-              className="flex-1"
-            >
+            <Button onClick={() => onPurchase(nft.id)} className="flex-1">
               <ShoppingCart className="w-4 h-4 mr-1" />
               Buy Now
             </Button>
@@ -214,9 +245,9 @@ function NFTCard({ nft, onLike, onPurchase }: {
 
 export default function NFTGalleryPage() {
   const [nfts, setNfts] = useState<NFTStory[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedGenre, setSelectedGenre] = useState<string>("all");
-  const [sortBy, setSortBy] = useState<"price" | "likes" | "recent">("likes");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedGenre, setSelectedGenre] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<'price' | 'likes' | 'recent'>('likes');
   const [loading, setLoading] = useState(true);
 
   const { toast } = useToast();
@@ -235,60 +266,66 @@ export default function NFTGalleryPage() {
   const handleLike = (id: string) => {
     if (!connected) {
       toast({
-        title: "Connect Wallet",
-        description: "Please connect your wallet to like this story",
-        variant: "destructive",
+        title: 'Connect Wallet',
+        description: 'Please connect your wallet to like this story',
+        variant: 'destructive',
       });
       return;
     }
 
-    setNfts(prev => prev.map(nft => 
-      nft.id === id ? { ...nft, likes: nft.likes + 1 } : nft
-    ));
+    setNfts((prev) =>
+      prev.map((nft) =>
+        nft.id === id ? { ...nft, likes: nft.likes + 1 } : nft
+      )
+    );
 
     toast({
-      title: "Liked!",
-      description: "You liked this story",
+      title: 'Liked!',
+      description: 'You liked this story',
     });
   };
 
   const handlePurchase = (id: string) => {
     if (!connected) {
       toast({
-        title: "Connect Wallet",
-        description: "Please connect your wallet to purchase this NFT",
-        variant: "destructive",
+        title: 'Connect Wallet',
+        description: 'Please connect your wallet to purchase this NFT',
+        variant: 'destructive',
       });
       return;
     }
 
     toast({
-      title: "Purchase Initiated",
-      description: "Starting the NFT purchase process...",
+      title: 'Purchase Initiated',
+      description: 'Starting the NFT purchase process...',
     });
   };
 
-  const filteredNFTs = nfts.filter(nft => {
-    const matchesSearch = nft.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         nft.author.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesGenre = selectedGenre === "all" || nft.genre === selectedGenre;
+  const filteredNFTs = nfts.filter((nft) => {
+    const matchesSearch =
+      nft.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      nft.author.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesGenre = selectedGenre === 'all' || nft.genre === selectedGenre;
     return matchesSearch && matchesGenre;
   });
 
   const sortedNFTs = [...filteredNFTs].sort((a, b) => {
     switch (sortBy) {
-      case "price":
+      case 'price':
         return parseFloat(b.price) - parseFloat(a.price);
-      case "likes":
+      case 'likes':
         return b.likes - a.likes;
-      case "recent":
-        return parseInt(b.id.split('-')[1] || '0') - parseInt(a.id.split('-')[1] || '0');
+      case 'recent':
+        return (
+          parseInt(b.id.split('-')[1] || '0') -
+          parseInt(a.id.split('-')[1] || '0')
+        );
       default:
         return 0;
     }
   });
 
-  const genres = ["all", ...Array.from(new Set(nfts.map(nft => nft.genre)))];
+  const genres = ['all', ...Array.from(new Set(nfts.map((nft) => nft.genre)))];
 
   if (loading) {
     return (
@@ -311,7 +348,8 @@ export default function NFTGalleryPage() {
           <span>NFT Story Gallery</span>
         </h1>
         <p className="text-muted-foreground">
-          Discover, collect, and trade unique story NFTs from talented creators worldwide
+          Discover, collect, and trade unique story NFTs from talented creators
+          worldwide
         </p>
       </div>
 
@@ -328,23 +366,25 @@ export default function NFTGalleryPage() {
               />
             </div>
           </div>
-          
+
           <div className="flex gap-2">
             <select
               value={selectedGenre}
               onChange={(e) => setSelectedGenre(e.target.value)}
               className="px-3 py-2 border border-input bg-background rounded-md text-sm"
             >
-              {genres.map(genre => (
+              {genres.map((genre) => (
                 <option key={genre} value={genre}>
-                  {genre === "all" ? "All Genres" : genre}
+                  {genre === 'all' ? 'All Genres' : genre}
                 </option>
               ))}
             </select>
 
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as "price" | "likes" | "recent")}
+              onChange={(e) =>
+                setSortBy(e.target.value as 'price' | 'likes' | 'recent')
+              }
               className="px-3 py-2 border border-input bg-background rounded-md text-sm"
             >
               <option value="likes">Most Liked</option>

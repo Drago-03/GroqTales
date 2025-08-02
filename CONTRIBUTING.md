@@ -2,7 +2,9 @@
 
 [![GSSOC'25](https://img.shields.io/badge/GSSOC'25-Read%20More-orange?style=flat-square)](./GSSOC'25.md)
 
-Thank you for your interest in contributing to **GroqTales**, an AI-powered Web3 storytelling platform! We welcome developers, writers, designers, and blockchain enthusiasts to help us build a creative, open, and secure platform. Please read this guide before getting started.
+Thank you for your interest in contributing to **GroqTales**, an AI-powered Web3 storytelling
+platform! We welcome developers, writers, designers, and blockchain enthusiasts to help us build a
+creative, open, and secure platform. Please read this guide before getting started.
 
 ---
 
@@ -25,13 +27,16 @@ Thank you for your interest in contributing to **GroqTales**, an AI-powered Web3
 
 ## GSSOC'25
 
-Are you contributing as part of **GirlScript Summer of Code 2025**? Please see our [GSSOC'25.md](./GSSOC'25.md) for program-specific guidelines, communication channels, and task lists.
+Are you contributing as part of **GirlScript Summer of Code 2025**? Please see our
+[GSSOC'25.md](./GSSOC'25.md) for program-specific guidelines, communication channels, and task
+lists.
 
 ---
 
 ## Code of Conduct
 
-We are committed to providing a welcoming and inclusive environment for everyone. By participating, you agree to:
+We are committed to providing a welcoming and inclusive environment for everyone. By participating,
+you agree to:
 
 - Be respectful of different viewpoints and experiences.
 - Gracefully accept constructive criticism.
@@ -48,8 +53,10 @@ You can contribute in several ways:
 
 - **Reporting Bugs:** Use the `bug_report.md` template and provide detailed steps to reproduce.
 - **Suggesting Features/Enhancements:** Use the `feature.md` template to propose new ideas.
-- **Code Contributions:** Pick up issues labeled `good first issue`, `easy`, `medium`, or `hard` based on your experience.
-- **Web3/Blockchain Issues:** Use the `web3_issue.md` template for blockchain/NFT-related contributions.
+- **Code Contributions:** Pick up issues labeled `good first issue`, `easy`, `medium`, or `hard`
+  based on your experience.
+- **Web3/Blockchain Issues:** Use the `web3_issue.md` template for blockchain/NFT-related
+  contributions.
 - **Security Reports:** Use the `security.md` template for vulnerabilities.
 - **Documentation:** Help improve this README, the Wiki, or code comments.
 - **Testing:** Write or improve tests for higher code quality.
@@ -58,7 +65,8 @@ You can contribute in several ways:
 
 ## Using Issue Templates
 
-**Before opening any issue or pull request, you must use the relevant template provided in `.github/ISSUE_TEMPLATE/`.**  
+**Before opening any issue or pull request, you must use the relevant template provided in
+`.github/ISSUE_TEMPLATE/`.**  
 Templates include:
 
 - `bug_report.md` – For bugs or unexpected behavior
@@ -68,7 +76,8 @@ Templates include:
 - `basic.md` – For small tasks, typos, or minor requests
 - `other.md` – For anything not covered above
 
-**Please fill out all required sections in the template to help us triage and resolve your issue quickly.**
+**Please fill out all required sections in the template to help us triage and resolve your issue
+quickly.**
 
 ---
 
@@ -77,34 +86,38 @@ Templates include:
 To get started with development:
 
 1. **Clone the Repository:**
-    ```bash
-    git clone https://github.com/Drago-03/GroqTales.git
-    cd GroqTales
-    ```
+
+   ```bash
+   git clone https://github.com/Drago-03/GroqTales.git
+   cd GroqTales
+   ```
 
 2. **Install Dependencies:**  
    Ensure you have Node.js (v16+) and npm or yarn.
-    ```bash
-    npm install
-    # or
-    yarn install
-    ```
+
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
 3. **Set Up Environment Variables:**  
    Copy `.env.example` to `.env.local` and fill in required values.
-    ```bash
-    cp .env.example .env.local
-    ```
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
    - `GROQ_API_KEY` – Groq AI key (required)
    - `UNSPLASH_API_KEY` – (Optional) for placeholder visuals
    - `MONAD_RPC_URL` – Monad blockchain endpoint
 
 4. **Run the Development Server:**
-    ```bash
-    npm run dev
-    # or
-    yarn dev
-    ```
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
    Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
@@ -138,8 +151,10 @@ GroqTales/
 ```
 
 **Architecture Notes:**
+
 - **Frontend:** Built with Next.js, React, TailwindCSS, and shadcn/ui for a modern, responsive UI.
-- **Backend:** Node.js API routes handle authentication, story generation, and blockchain interactions.
+- **Backend:** Node.js API routes handle authentication, story generation, and blockchain
+  interactions.
 - **Blockchain:** Monad SDK and Solidity smart contracts manage NFT minting and ownership.
 - **AI:** Groq API powers story and comic generation.
 - **Database:** MongoDB stores user data, stories, and metadata.
@@ -150,7 +165,8 @@ GroqTales/
 ## Coding Guidelines
 
 - **JavaScript/TypeScript:** Follow the Airbnb Style Guide.
-- **React/Next.js:** Use functional components and hooks. Follow Next.js routing and data-fetching conventions.
+- **React/Next.js:** Use functional components and hooks. Follow Next.js routing and data-fetching
+  conventions.
 - **Formatting:** Use Prettier (`npm run format`).
 - **Linting:** Use ESLint (`npm run lint`).
 - **Commits:** Use descriptive commit messages (Conventional Commits format preferred).
@@ -161,18 +177,18 @@ GroqTales/
 ## Pull Request Process
 
 1. **Fork the Repo & Create a Branch:**
-    ```bash
-    git checkout -b feature/your-feature
-    ```
+   ```bash
+   git checkout -b feature/your-feature
+   ```
 2. **Make Your Changes:**  
    Test locally and ensure all new code is covered by tests.
 3. **Update Documentation:**  
    Update relevant docs and comments.
 4. **Run Tests & Linting:**
-    ```bash
-    npm run test
-    npm run lint
-    ```
+   ```bash
+   npm run test
+   npm run lint
+   ```
 5. **Push & Open a PR:**  
    Push your branch and open a Pull Request using the template. Reference related issues.
 6. **Label Your PR:**  
@@ -199,12 +215,14 @@ GroqTales/
 To help maintainers and the community, **always tag your issues and PRs** with relevant labels:
 
 - **Difficulty:** `easy`, `medium`, `hard`, `good first issue`
-- **Type:** `bug`, `feature`, `enhancement`, `documentation`, `security`, `web3`, `NFT`, `UI/UX`, etc.
+- **Type:** `bug`, `feature`, `enhancement`, `documentation`, `security`, `web3`, `NFT`, `UI/UX`,
+  etc.
 - **Area:** `frontend`, `backend`, `blockchain`, `devops`, `database`, etc.
 - **Programs:** `GSSOC'25`, `LGM-SOC`, `MLH`, `HackinCodes`, `cWoc`, `FOSS Hack`, `Indie Hub`, etc.
 - **Status:** `in progress`, `blocked`, `needs review`, `help wanted`
 
-**If you are participating in a specific open source program (like GSSOC'25), make sure to add that label to your issues/PRs.**
+**If you are participating in a specific open source program (like GSSOC'25), make sure to add that
+label to your issues/PRs.**
 
 ---
 
@@ -212,14 +230,17 @@ To help maintainers and the community, **always tag your issues and PRs** with r
 
 - Update or add documentation for any new features or changes.
 - Add inline comments for complex logic.
-- Keep the [Wiki](https://github.com/Drago-03/GroqTales/wiki) up to date for setup, usage, and architecture.
+- Keep the [Wiki](https://github.com/Drago-03/GroqTales/wiki) up to date for setup, usage, and
+  architecture.
 
 ---
 
 ## Community & Support
 
-- **Discord:** [Join our Discord server](https://discord.gg/JK29FZRm) for real-time help and collaboration.
-- **Discussions:** Use [GitHub Discussions](https://github.com/Drago-03/GroqTales/discussions) for ideas and Q&A.
+- **Discord:** [Join our Discord server](https://discord.gg/JK29FZRm) for real-time help and
+  collaboration.
+- **Discussions:** Use [GitHub Discussions](https://github.com/Drago-03/GroqTales/discussions) for
+  ideas and Q&A.
 - **Security:** For vulnerabilities, see [SECURITY.md](./SECURITY.md).
 
 ---

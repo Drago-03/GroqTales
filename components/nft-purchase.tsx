@@ -1,14 +1,21 @@
-"use client";
+'use client';
 
-import React from "react";
+import { Sparkles } from 'lucide-react';
+import React from 'react';
 
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useWeb3Auth } from '@/hooks/use-web3-auth';
 
-import { useWeb3Auth } from "@/hooks/use-web3-auth";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sparkles } from "lucide-react";
-
-  export function NFTPurchase({ nftId, nftTitle, price }: { nftId: string, nftTitle: string, price: string }) {
+export function NFTPurchase({
+  nftId,
+  nftTitle,
+  price,
+}: {
+  nftId: string;
+  nftTitle: string;
+  price: string;
+}) {
   const { address, isConnected } = useWeb3Auth();
 
   if (!isConnected || !address) {
@@ -21,16 +28,18 @@ import { Sparkles } from "lucide-react";
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-center text-muted-foreground">Connect wallet to purchase this NFT</p>
+          <p className="text-center text-muted-foreground">
+            Connect wallet to purchase this NFT
+          </p>
         </CardContent>
       </Card>
     );
-}
+  }
   // Placeholder purchase action
   const handlePurchase = () => {
     if (typeof window !== 'undefined') {
       alert(`Purchased ${nftTitle} for ${price} ETH! (This is a mock action)`);
-}
+    }
   };
 
   return (

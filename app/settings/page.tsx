@@ -1,13 +1,26 @@
-import React from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Switch } from "@/components/ui/switch"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import React from 'react';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
 
 export default function SettingsPage() {
   return (
@@ -28,7 +41,9 @@ export default function SettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Profile Information</CardTitle>
-              <CardDescription>Update your personal information and public profile</CardDescription>
+              <CardDescription>
+                Update your personal information and public profile
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex flex-col md:flex-row gap-4 items-start">
@@ -56,7 +71,10 @@ export default function SettingsPage() {
 
                   <div className="space-y-2">
                     <Label htmlFor="bio">Bio</Label>
-                    <Textarea id="bio" defaultValue="Digital storyteller and NFT enthusiast" />
+                    <Textarea
+                      id="bio"
+                      defaultValue="Digital storyteller and NFT enthusiast"
+                    />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -97,13 +115,19 @@ export default function SettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Account Settings</CardTitle>
-              <CardDescription>Manage your account credentials and security</CardDescription>
+              <CardDescription>
+                Manage your account credentials and security
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="email">Email Address</Label>
-                  <Input id="email" type="email" defaultValue="jane.doe@example.com" />
+                  <Input
+                    id="email"
+                    type="email"
+                    defaultValue="jane.doe@example.com"
+                  />
                 </div>
 
                 <div className="space-y-2">
@@ -118,7 +142,9 @@ export default function SettingsPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="confirm-password">Confirm New Password</Label>
+                    <Label htmlFor="confirm-password">
+                      Confirm New Password
+                    </Label>
                     <Input id="confirm-password" type="password" />
                   </div>
                 </div>
@@ -128,7 +154,9 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Two-factor Authentication</h4>
-                    <p className="text-sm text-muted-foreground">Add an extra layer of security to your account</p>
+                    <p className="text-sm text-muted-foreground">
+                      Add an extra layer of security to your account
+                    </p>
                   </div>
                   <Switch />
                 </div>
@@ -136,7 +164,9 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Login Notifications</h4>
-                    <p className="text-sm text-muted-foreground">Receive alerts when someone logs into your account</p>
+                    <p className="text-sm text-muted-foreground">
+                      Receive alerts when someone logs into your account
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -151,14 +181,18 @@ export default function SettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Notification Preferences</CardTitle>
-              <CardDescription>Manage how and when you receive notifications</CardDescription>
+              <CardDescription>
+                Manage how and when you receive notifications
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">New Story Comments</h4>
-                    <p className="text-sm text-muted-foreground">When someone comments on your stories</p>
+                    <p className="text-sm text-muted-foreground">
+                      When someone comments on your stories
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -166,7 +200,9 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">New Followers</h4>
-                    <p className="text-sm text-muted-foreground">When someone follows your profile</p>
+                    <p className="text-sm text-muted-foreground">
+                      When someone follows your profile
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -174,7 +210,9 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Story Likes</h4>
-                    <p className="text-sm text-muted-foreground">When someone likes your stories</p>
+                    <p className="text-sm text-muted-foreground">
+                      When someone likes your stories
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -182,7 +220,9 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">NFT Purchases</h4>
-                    <p className="text-sm text-muted-foreground">When someone purchases your NFT stories</p>
+                    <p className="text-sm text-muted-foreground">
+                      When someone purchases your NFT stories
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -190,7 +230,9 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Platform Updates</h4>
-                    <p className="text-sm text-muted-foreground">News and updates about GroqTales</p>
+                    <p className="text-sm text-muted-foreground">
+                      News and updates about GroqTales
+                    </p>
                   </div>
                   <Switch />
                 </div>
@@ -198,7 +240,9 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Marketing Emails</h4>
-                    <p className="text-sm text-muted-foreground">Promotions and marketing messages</p>
+                    <p className="text-sm text-muted-foreground">
+                      Promotions and marketing messages
+                    </p>
                   </div>
                   <Switch />
                 </div>
@@ -211,15 +255,26 @@ export default function SettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Wallet Settings</CardTitle>
-              <CardDescription>Manage your crypto wallet and NFT preferences</CardDescription>
+              <CardDescription>
+                Manage your crypto wallet and NFT preferences
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="wallet-address">Connected Wallet Address</Label>
+                  <Label htmlFor="wallet-address">
+                    Connected Wallet Address
+                  </Label>
                   <div className="flex">
-                    <Input id="wallet-address" defaultValue="0x1a2b3c4d5e6f7g8h9i0j..." readOnly className="flex-1" />
-                    <Button variant="outline" className="ml-2">Disconnect</Button>
+                    <Input
+                      id="wallet-address"
+                      defaultValue="0x1a2b3c4d5e6f7g8h9i0j..."
+                      readOnly
+                      className="flex-1"
+                    />
+                    <Button variant="outline" className="ml-2">
+                      Disconnect
+                    </Button>
                   </div>
                 </div>
 
@@ -241,7 +296,9 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Show NFT Badge on Stories</h4>
-                    <p className="text-sm text-muted-foreground">Display NFT ownership badge on your profile</p>
+                    <p className="text-sm text-muted-foreground">
+                      Display NFT ownership badge on your profile
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -249,7 +306,10 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Auto-mint Popular Stories</h4>
-                    <p className="text-sm text-muted-foreground">Automatically create NFTs for stories that reach popularity thresholds</p>
+                    <p className="text-sm text-muted-foreground">
+                      Automatically create NFTs for stories that reach
+                      popularity thresholds
+                    </p>
                   </div>
                   <Switch />
                 </div>
@@ -264,7 +324,9 @@ export default function SettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Appearance Settings</CardTitle>
-              <CardDescription>Customize how GroqTales looks for you</CardDescription>
+              <CardDescription>
+                Customize how GroqTales looks for you
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-4">
@@ -304,7 +366,9 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Reduce Animations</h4>
-                    <p className="text-sm text-muted-foreground">Minimize motion effects throughout the interface</p>
+                    <p className="text-sm text-muted-foreground">
+                      Minimize motion effects throughout the interface
+                    </p>
                   </div>
                   <Switch />
                 </div>
@@ -319,14 +383,18 @@ export default function SettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Privacy Settings</CardTitle>
-              <CardDescription>Control your data and privacy preferences</CardDescription>
+              <CardDescription>
+                Control your data and privacy preferences
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Profile Visibility</h4>
-                    <p className="text-sm text-muted-foreground">Who can see your profile</p>
+                    <p className="text-sm text-muted-foreground">
+                      Who can see your profile
+                    </p>
                   </div>
                   <Select defaultValue="public">
                     <SelectTrigger className="w-[180px]">
@@ -343,7 +411,9 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Story Comments</h4>
-                    <p className="text-sm text-muted-foreground">Who can comment on your stories</p>
+                    <p className="text-sm text-muted-foreground">
+                      Who can comment on your stories
+                    </p>
                   </div>
                   <Select defaultValue="everyone">
                     <SelectTrigger className="w-[180px]">
@@ -360,15 +430,21 @@ export default function SettingsPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="font-medium">Data Collection</h4>
-                    <p className="text-sm text-muted-foreground">Allow analytics to improve your experience</p>
+                    <p className="text-sm text-muted-foreground">
+                      Allow analytics to improve your experience
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="font-medium">Personalized Recommendations</h4>
-                    <p className="text-sm text-muted-foreground">Show content based on your interests</p>
+                    <h4 className="font-medium">
+                      Personalized Recommendations
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      Show content based on your interests
+                    </p>
                   </div>
                   <Switch defaultChecked />
                 </div>
@@ -380,7 +456,10 @@ export default function SettingsPage() {
                   <Button variant="outline" className="w-full justify-start">
                     Download Your Data
                   </Button>
-                  <Button variant="outline" className="w-full justify-start text-red-500 hover:text-red-700">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start text-red-500 hover:text-red-700"
+                  >
                     Delete Account
                   </Button>
                 </div>
@@ -390,5 +469,5 @@ export default function SettingsPage() {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

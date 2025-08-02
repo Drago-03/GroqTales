@@ -1,14 +1,13 @@
-"use client";
+'use client';
 
-import React from "react";
+import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
 
-import { useState, useEffect } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import CommunityFeed from "@/components/community-feed";
-import LoadingScreen from "@/components/loading-screen";
-import { motion } from "framer-motion";
+import CommunityFeed from '@/components/community-feed';
+import LoadingScreen from '@/components/loading-screen';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function CommunityPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,9 +23,9 @@ export default function CommunityPage() {
 
   if (isLoading) {
     return <LoadingScreen message="Loading community hub..." />;
-}
+  }
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}

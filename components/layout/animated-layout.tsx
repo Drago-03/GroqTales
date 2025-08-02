@@ -1,11 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
+import React, { ReactNode } from 'react';
 
-
-import { ReactNode } from "react";
-import { GalaxyBackground } from "@/components/galaxy-background";
-import { cn } from "@/lib/utils";
+import { GalaxyBackground } from '@/components/galaxy-background';
+import { cn } from '@/lib/utils';
 
 interface AnimatedLayoutProps {
   children: ReactNode;
@@ -13,9 +11,13 @@ interface AnimatedLayoutProps {
   className?: string;
 }
 
-export function AnimatedLayout({ children, disableAnimation = false, className }: AnimatedLayoutProps) {
+export function AnimatedLayout({
+  children,
+  disableAnimation = false,
+  className,
+}: AnimatedLayoutProps) {
   return (
-    <div className={cn("relative min-h-screen overflow-hidden", className)}>
+    <div className={cn('relative min-h-screen overflow-hidden', className)}>
       {/* Galaxy background */}
       {!disableAnimation && <GalaxyBackground />}
 
@@ -23,10 +25,7 @@ export function AnimatedLayout({ children, disableAnimation = false, className }
       <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] pointer-events-none" />
 
       {/* Main content container */}
-      <div className={cn(
-        "relative z-10 min-h-screen w-full",
-        className
-      )}>
+      <div className={cn('relative z-10 min-h-screen w-full', className)}>
         {children}
       </div>
     </div>

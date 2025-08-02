@@ -9,7 +9,7 @@ console.log('🔧 Fixing final critical syntax errors...\n');
 const criticalFiles = [
   'components/splash-screen.tsx',
   'components/story-analysis.tsx',
-  'components/providers/web3-provider.tsx'
+  'components/providers/web3-provider.tsx',
 ];
 
 function fixCriticalFile(filePath) {
@@ -19,7 +19,7 @@ function fixCriticalFile(filePath) {
       console.log(`⚠️  File not found: ${filePath}`);
       return false;
     }
-    
+
     let content = fs.readFileSync(fullPath, 'utf8');
     let modified = false;
     const originalContent = content;
@@ -27,13 +27,17 @@ function fixCriticalFile(filePath) {
     console.log(`🔍 Processing ${filePath}...`);
 
     // Fix motion import issues - ensure framer-motion is imported
-    if (content.includes('<motion.') && !content.includes('import { motion }')) {
+    if (
+      content.includes('<motion.') &&
+      !content.includes('import { motion }')
+    ) {
       const importIndex = content.indexOf('import');
       if (importIndex !== -1) {
         const firstImportLine = content.indexOf('\n', importIndex);
-        content = content.slice(0, firstImportLine + 1) + 
-                 'import { motion } from "framer-motion";\n' + 
-                 content.slice(firstImportLine + 1);
+        content =
+          content.slice(0, firstImportLine + 1) +
+          'import { motion } from "framer-motion";\n' +
+          content.slice(firstImportLine + 1);
         modified = true;
         console.log(`  ✅ Added missing motion import`);
       }
@@ -42,15 +46,19 @@ function fixCriticalFile(filePath) {
     // Fix interface definition issues - ensure proper TypeScript syntax
     if (filePath.includes('story-analysis.tsx')) {
       // Fix malformed interface property definitions
-      content = content.replace(/(\s+)\/\*\*([^*]|\*(?!\/))*\*\/\s*(\w+\??):\s*string;/g, 
+      content = content.replace(
+        /(\s+)\/\*\*([^*]|\*(?!\/))*\*\/\s*(\w+\??):\s*string;/g,
         (match, indent, comment, prop) => {
           return `${indent}/** ${comment.replace(/\/\*\*|\*\//g, '').trim()} */\n${indent}${prop}: string;`;
-        });
-      
+        }
+      );
+
       // Fix any remaining malformed comment patterns
-      content = content.replace(/\/\*\*\s*([^*]|\*(?!\/))*\*\/\s*(\w+\??)\s*:\s*string;/g, 
-        '/** $1 */\n  $2: string;');
-      
+      content = content.replace(
+        /\/\*\*\s*([^*]|\*(?!\/))*\*\/\s*(\w+\??)\s*:\s*string;/g,
+        '/** $1 */\n  $2: string;'
+      );
+
       modified = true;
       console.log(`  ✅ Fixed interface definition syntax`);
     }
@@ -68,16 +76,21 @@ function fixCriticalFile(filePath) {
     }
 
     // General fixes for all files
-    
+
     // Fix misplaced 'use client' directives
     if (content.match(/import.*?\n['"]use client['"];/)) {
-      content = content.replace(/(import.*?\n)['"]use client['"];(\s*\n)/, '"use client";\n\n$1$2');
+      content = content.replace(
+        /(import.*?\n)['"]use client['"];(\s*\n)/,
+        '"use client";\n\n$1$2'
+      );
       modified = true;
       console.log(`  ✅ Fixed misplaced 'use client' directive`);
     }
 
     // Fix unterminated block comments
-    const unteriminatedComments = content.match(/\/\*\*[^*]*(?:\*(?!\/)[^*]*)*$/gm);
+    const unteriminatedComments = content.match(
+      /\/\*\*[^*]*(?:\*(?!\/)[^*]*)*$/gm
+    );
     if (unteriminatedComments) {
       content = content.replace(/\/\*\*[^*]*(?:\*(?!\/)[^*]*)*$/gm, '');
       modified = true;
@@ -85,8 +98,10 @@ function fixCriticalFile(filePath) {
     }
 
     // Fix malformed JSDoc comments in interface definitions
-    content = content.replace(/\/\*\*\s*([^*]|\*(?!\/))*\s*(\w+\??)\s*:\s*string;/g, 
-      '/** $1 */\n  $2: string;');
+    content = content.replace(
+      /\/\*\*\s*([^*]|\*(?!\/))*\s*(\w+\??)\s*:\s*string;/g,
+      '/** $1 */\n  $2: string;'
+    );
 
     if (modified) {
       fs.writeFileSync(fullPath, content);
@@ -96,7 +111,6 @@ function fixCriticalFile(filePath) {
       console.log(`  ℹ️  No changes needed for ${filePath}\n`);
       return false;
     }
-
   } catch (error) {
     console.error(`❌ Error processing ${filePath}:`, error.message);
     return false;

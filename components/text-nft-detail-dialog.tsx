@@ -1,13 +1,25 @@
-"use client";
+'use client';
 
-import React from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useToast } from "@/components/ui/use-toast";
-import { useWeb3 } from "@/components/providers/web3-provider";
-import { Heart, Eye, MessageSquare, Share2, BookOpen, Download, Gift, ShoppingCart, Sparkles, Lock } from "lucide-react";
+import {
+  Heart,
+  Eye,
+  MessageSquare,
+  Share2,
+  BookOpen,
+  Download,
+  Gift,
+  ShoppingCart,
+  Sparkles,
+  Lock,
+} from 'lucide-react';
+import React from 'react';
+
+import { useWeb3 } from '@/components/providers/web3-provider';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { useToast } from '@/components/ui/use-toast';
 
 interface TextNFT {
   id: number;
@@ -21,7 +33,7 @@ interface TextNFT {
   wordCount: number;
   genre: string;
   readTime: string;
-  rarity: "common" | "uncommon" | "rare" | "legendary";
+  rarity: 'common' | 'uncommon' | 'rare' | 'legendary';
   description: string;
   excerpt: string;
   tags: string[];
@@ -36,34 +48,44 @@ interface TextNFTDetailDialogProps {
   onPurchase: (story: TextNFT) => void;
 }
 
-export function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDetailDialogProps) {
+export function TextNFTDetailDialog({
+  story,
+  isOpen,
+  onClose,
+  onPurchase,
+}: TextNFTDetailDialogProps) {
   const { account } = useWeb3();
   const { toast } = useToast();
 
   const handlePurchase = () => {
     if (!account) {
       toast({
-        title: "Wallet not connected",
-        description: "Please connect your wallet to purchase NFTs.",
-        variant: "destructive",
+        title: 'Wallet not connected',
+        description: 'Please connect your wallet to purchase NFTs.',
+        variant: 'destructive',
       });
       return;
     }
 
     onPurchase(story);
     toast({
-      title: "Purchase initiated",
+      title: 'Purchase initiated',
       description: `Purchasing "${story.title}" for ${story.price} ETH`,
     });
   };
 
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
-      case "common": return "bg-gray-500 text-white";
-      case "uncommon": return "bg-green-500 text-white";
-      case "rare": return "bg-blue-500 text-white";
-      case "legendary": return "bg-amber-500 text-white";
-      default: return "bg-gray-500 text-white";
+      case 'common':
+        return 'bg-gray-500 text-white';
+      case 'uncommon':
+        return 'bg-green-500 text-white';
+      case 'rare':
+        return 'bg-blue-500 text-white';
+      case 'legendary':
+        return 'bg-amber-500 text-white';
+      default:
+        return 'bg-gray-500 text-white';
     }
   };
 
@@ -80,15 +102,17 @@ export function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: Text
                     {story.rarity}
                   </Badge>
                 </div>
-                
+
                 <h2 className="text-2xl font-bold mb-4">{story.title}</h2>
-                
+
                 <div className="prose dark:prose-invert max-w-none">
                   <p className="text-muted-foreground mb-4">{story.excerpt}</p>
-                  
+
                   {story.isOwned ? (
                     <div className="space-y-4">
-                      <p>Full story content would be displayed here for owners...</p>
+                      <p>
+                        Full story content would be displayed here for owners...
+                      </p>
                       <Button className="w-full">
                         <Download className="w-4 h-4 mr-2" />
                         Download Full Story
@@ -189,16 +213,14 @@ export function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: Text
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <div className="text-2xl font-bold">{story.price} ETH</div>
-                    <div className="text-sm text-muted-foreground">Current Price</div>
+                    <div className="text-sm text-muted-foreground">
+                      Current Price
+                    </div>
                   </div>
                 </div>
 
                 {!story.isOwned ? (
-                  <Button 
-                    onClick={handlePurchase}
-                    className="w-full"
-                    size="lg"
-                  >
+                  <Button onClick={handlePurchase} className="w-full" size="lg">
                     <ShoppingCart className="w-4 h-4 mr-2" />
                     Purchase NFT
                   </Button>

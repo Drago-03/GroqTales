@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React from "react";
+import { Lock, AlertCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
 
-
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -12,25 +12,23 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Lock, AlertCircle } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/components/ui/use-toast';
 
 interface AdminLoginModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
-  export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const router = useRouter();
   const { toast } = useToast();
-  const [redirectPath, setRedirectPath] = useState("/admin/dashboard");
+  const [redirectPath, setRedirectPath] = useState('/admin/dashboard');
 
   // Check for the current path when the modal opens
   useEffect(() => {
@@ -39,8 +37,8 @@ interface AdminLoginModalProps {
       const path = window.location.pathname;
       if (path.startsWith('/admin/') && path !== '/admin/login') {
         setRedirectPath(path);
-}
-}
+      }
+    }
   }, [open]);
 
   // Generate a secure token for session management
@@ -54,14 +52,16 @@ interface AdminLoginModalProps {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError('');
     setIsLoading(true);
 
     try {
       // In a real implementation, this would call an API endpoint
       // For demo purposes, using simple credential check
-      if ((username === "admin" && password === "groqtales") || 
-          (username === "GT001" && password === "admin123")) {
+      if (
+        (username === 'admin' && password === 'groqtales') ||
+        (username === 'GT001' && password === 'admin123')
+      ) {
         // Create a secure session token
         const sessionToken = generateSessionToken(username);
 
@@ -69,12 +69,12 @@ interface AdminLoginModalProps {
         setupAdminSession(username, sessionToken);
 
         toast({
-          title: "Login successful",
-          description: "Redirecting to admin dashboard..."
+          title: 'Login successful',
+          description: 'Redirecting to admin dashboard...',
         });
 
         // Build redirect URL with token
-        const redirectWithToken = redirectPath.includes('?') 
+        const redirectWithToken = redirectPath.includes('?')
           ? `${redirectPath}&sessionToken=${sessionToken}`
           : `${redirectPath}?sessionToken=${sessionToken}`;
 
@@ -84,14 +84,14 @@ interface AdminLoginModalProps {
           router.push(redirectWithToken);
         }, 1000);
       } else {
-        setError("Invalid username or password");
-}
+        setError('Invalid username or password');
+      }
     } catch (err) {
-      console.error("Login error:", err);
-      setError("An error occurred. Please try again.");
+      console.error('Login error:', err);
+      setError('An error occurred. Please try again.');
     } finally {
       setIsLoading(false);
-}
+    }
   };
 
   // Function to set up a robust admin session
@@ -106,25 +106,25 @@ interface AdminLoginModalProps {
           localStorage.setItem('employeeId', employeeId);
           localStorage.setItem('adminSessionToken', sessionToken);
           localStorage.setItem('adminSessionTimestamp', Date.now().toString());
-}
+        }
         // Secondary storage - cookies for cross-tab consistency
         if (typeof document !== 'undefined') {
           const expirationDate = new Date();
           expirationDate.setHours(expirationDate.getHours() + 24); // 24-hour expiration
           document.cookie = `adminSessionActive=true; path=/; expires=${expirationDate.toUTCString()}`;
           document.cookie = `adminSessionToken=${sessionToken}; path=/; expires=${expirationDate.toUTCString()}`;
-}
+        }
         // Tertiary - session storage as another option
         if (window.sessionStorage) {
           sessionStorage.setItem('adminSession', 'true');
-}
-}
-      console.log("Admin session established for:", employeeId);
+        }
+      }
+      console.log('Admin session established for:', employeeId);
     } catch (error) {
-      console.error("Failed to set up admin session:", error);
+      console.error('Failed to set up admin session:', error);
       // Continue with the login even if localStorage fails
       // The URL token will still work as a fallback
-}
+    }
   };
 
   return (
@@ -183,7 +183,7 @@ interface AdminLoginModalProps {
               Cancel
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Logging in..." : "Login"}
+              {isLoading ? 'Logging in...' : 'Login'}
             </Button>
           </DialogFooter>
         </form>

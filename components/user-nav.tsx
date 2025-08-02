@@ -1,31 +1,32 @@
-"use client";
+'use client';
 
-import React from "react";
+import { Wallet, User, Settings, LogOut } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
 
+import { useWeb3 } from '@/components/providers/web3-provider';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuGroup,
+} from '@/components/ui/dropdown-menu';
+import { useToast } from '@/components/ui/use-toast';
 
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger, 
-  DropdownMenuLabel, 
-  DropdownMenuGroup 
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Wallet, User, Settings, LogOut } from "lucide-react";
-import Link from "next/link";
-import { useWeb3 } from "@/components/providers/web3-provider";
-import { useToast } from "@/components/ui/use-toast";
-
-  export function UserNav() {
+export function UserNav() {
   const { account, connectWallet, disconnectWallet } = useWeb3();
   const { toast } = useToast();
 
   // Truncate wallet address for display
   const truncateAddress = (address: string) => {
-    return address ? `${address.substring(0, 6)}...${address.substring(address.length - 4)}` : '';
+    return address
+      ? `${address.substring(0, 6)}...${address.substring(address.length - 4)}`
+      : '';
   };
 
   const handleConnect = async () => {
@@ -34,11 +35,11 @@ import { useToast } from "@/components/ui/use-toast";
     } catch (error) {
       console.error('Failed to connect wallet:', error);
       toast({
-        title: "Connection Failed",
-        description: "Could not connect wallet. Please try again.",
-        variant: "destructive",
+        title: 'Connection Failed',
+        description: 'Could not connect wallet. Please try again.',
+        variant: 'destructive',
       });
-}
+    }
   };
 
   return (
@@ -78,7 +79,9 @@ import { useToast } from "@/components/ui/use-toast";
               <span>Disconnect Wallet</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuLabel>Wallet: {truncateAddress(account)}</DropdownMenuLabel>
+            <DropdownMenuLabel>
+              Wallet: {truncateAddress(account)}
+            </DropdownMenuLabel>
           </>
         ) : (
           <DropdownMenuItem onClick={handleConnect}>

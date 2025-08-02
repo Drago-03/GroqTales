@@ -1,26 +1,45 @@
-"use client";
+'use client';
 
-import React from "react";
-
-
-import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  ArrowLeft,
+  Heart,
+  ThumbsUp,
+  ThumbsDown,
+  Eye,
+  Share,
+  PenSquare,
+  MessageSquare,
+  Award,
+  Star,
+  Calendar,
+  Cpu,
+  VerifiedIcon,
+} from 'lucide-react';
 import { Metadata } from 'next';
-import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Heart, ThumbsUp, ThumbsDown, Eye, Share, PenSquare, MessageSquare, Award, Star, Calendar, Cpu, VerifiedIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import Link from 'next/link';
+import React, { useState, useEffect } from 'react';
+
+import { getGenreBySlug } from '@/components/genre-selector';
+import { useWeb3 } from '@/components/providers/web3-provider';
+import StoryCard from '@/components/story-card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { getGenreBySlug } from '@/components/genre-selector';
-import { fetchStoryById } from '@/lib/mock-data';
-import StoryCard from '@/components/story-card';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useWeb3 } from '@/components/providers/web3-provider';
+import { fetchStoryById } from '@/lib/mock-data';
 
 interface Comment {
   id: string;
@@ -40,7 +59,9 @@ export default function StoryPage({ params }: { params: { id: string } }) {
   const [activeTab, setActiveTab] = useState('details');
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState<Comment[]>([]);
-  const [voteStatus, setVoteStatus] = useState<'upvote' | 'downvote' | null>(null);
+  const [voteStatus, setVoteStatus] = useState<'upvote' | 'downvote' | null>(
+    null
+  );
   const [upvotes, setUpvotes] = useState(0);
   const [downvotes, setDownvotes] = useState(0);
   const [isSharing, setIsSharing] = useState(false);
@@ -56,12 +77,12 @@ export default function StoryPage({ params }: { params: { id: string } }) {
         const storyData = fetchStoryById(params.id);
         if (!storyData) {
           toast({
-            title: "Story Not Found",
+            title: 'Story Not Found',
             description: "The story you're looking for doesn't exist.",
-            variant: "destructive"
+            variant: 'destructive',
           });
           return;
-}
+        }
         setStory(storyData);
         setUpvotes(storyData.likes || 0);
         setDownvotes(Math.floor((storyData.likes || 100) * 0.2)); // Mock downvotes data
@@ -70,29 +91,29 @@ export default function StoryPage({ params }: { params: { id: string } }) {
         const mockComments: Comment[] = [
           {
             id: '1',
-            text: "This story is absolutely mesmerizing! The world-building is so detailed.",
-            author: "CreativeMind",
+            text: 'This story is absolutely mesmerizing! The world-building is so detailed.',
+            author: 'CreativeMind',
             authorAvatar: `https://api.dicebear.com/7.x/personas/svg?seed=CreativeMind`,
             timestamp: new Date(Date.now() - 8640000), // 1 day ago
             likes: 24,
-            isVerified: true
+            isVerified: true,
           },
           {
             id: '2',
             text: "The character development in this piece is outstanding. I felt so connected to the protagonist's journey.",
-            author: "StoryLover",
+            author: 'StoryLover',
             authorAvatar: `https://api.dicebear.com/7.x/personas/svg?seed=StoryLover`,
             timestamp: new Date(Date.now() - 172800000), // 2 days ago
-            likes: 18
+            likes: 18,
           },
           {
             id: '3',
             text: "I'm inspired to create my own story after reading this masterpiece!",
-            author: "NewWriter",
+            author: 'NewWriter',
             authorAvatar: `https://api.dicebear.com/7.x/personas/svg?seed=NewWriter`,
             timestamp: new Date(Date.now() - 259200000), // 3 days ago
-            likes: 12
-}
+            likes: 12,
+          },
         ];
 
         setComments(mockComments);
@@ -101,15 +122,15 @@ export default function StoryPage({ params }: { params: { id: string } }) {
         const relatedData = fetchStoryById(params.id, 4, true);
         setRelatedStories(relatedData || []);
       } catch (error) {
-        console.error("Error fetching story:", error);
+        console.error('Error fetching story:', error);
         toast({
-          title: "Error",
-          description: "Failed to load story details. Please try again.",
-          variant: "destructive"
+          title: 'Error',
+          description: 'Failed to load story details. Please try again.',
+          variant: 'destructive',
         });
       } finally {
         setIsLoading(false);
-}
+      }
     };
 
     fetchData();
@@ -119,42 +140,42 @@ export default function StoryPage({ params }: { params: { id: string } }) {
   const handleVote = (type: 'upvote' | 'downvote') => {
     if (!account) {
       toast({
-        title: "Please connect your wallet",
-        description: "You need to connect your wallet to vote on stories.",
+        title: 'Please connect your wallet',
+        description: 'You need to connect your wallet to vote on stories.',
       });
       return;
-}
+    }
     // If already voted the same way, remove the vote
     if (voteStatus === type) {
       setVoteStatus(null);
       if (type === 'upvote') {
-        setUpvotes(prev => prev - 1);
+        setUpvotes((prev) => prev - 1);
       } else {
-        setDownvotes(prev => prev - 1);
-}
-}
+        setDownvotes((prev) => prev - 1);
+      }
+    }
     // If changing vote
     else if (voteStatus !== null) {
       setVoteStatus(type);
       if (type === 'upvote') {
-        setUpvotes(prev => prev + 1);
-        setDownvotes(prev => prev - 1);
+        setUpvotes((prev) => prev + 1);
+        setDownvotes((prev) => prev - 1);
       } else {
-        setDownvotes(prev => prev + 1);
-        setUpvotes(prev => prev - 1);
-}
-}
+        setDownvotes((prev) => prev + 1);
+        setUpvotes((prev) => prev - 1);
+      }
+    }
     // If voting for the first time
     else {
       setVoteStatus(type);
       if (type === 'upvote') {
-        setUpvotes(prev => prev + 1);
+        setUpvotes((prev) => prev + 1);
       } else {
-        setDownvotes(prev => prev + 1);
-}
-}
+        setDownvotes((prev) => prev + 1);
+      }
+    }
     toast({
-      title: type === 'upvote' ? "Upvoted!" : "Downvoted",
+      title: type === 'upvote' ? 'Upvoted!' : 'Downvoted',
       description: `You have ${type === 'upvote' ? 'upvoted' : 'downvoted'} this story.`,
     });
   };
@@ -165,29 +186,30 @@ export default function StoryPage({ params }: { params: { id: string } }) {
 
     if (!account) {
       toast({
-        title: "Please connect your wallet",
-        description: "You need to connect your wallet to comment on stories.",
+        title: 'Please connect your wallet',
+        description: 'You need to connect your wallet to comment on stories.',
       });
       return;
-}
+    }
     if (!commentText.trim()) return;
 
     const newComment: Comment = {
       id: Date.now().toString(),
       text: commentText,
-      author: account.substring(0, 6) + '...' + account.substring(account.length - 4),
+      author:
+        account.substring(0, 6) + '...' + account.substring(account.length - 4),
       authorAvatar: `https://api.dicebear.com/7.x/personas/svg?seed=${account}`,
       authorAddress: account,
       timestamp: new Date(),
-      likes: 0
+      likes: 0,
     };
 
-    setComments(prev => [newComment, ...prev]);
+    setComments((prev) => [newComment, ...prev]);
     setCommentText('');
 
     toast({
-      title: "Comment added",
-      description: "Your comment has been added successfully.",
+      title: 'Comment added',
+      description: 'Your comment has been added successfully.',
     });
   };
 
@@ -195,15 +217,15 @@ export default function StoryPage({ params }: { params: { id: string } }) {
   const handleCommentLike = (commentId: string) => {
     if (!account) {
       toast({
-        title: "Please connect your wallet",
-        description: "You need to connect your wallet to like comments.",
+        title: 'Please connect your wallet',
+        description: 'You need to connect your wallet to like comments.',
       });
       return;
-}
-    setComments(prev => 
-      prev.map(comment => 
-        comment.id === commentId 
-          ? { ...comment, likes: comment.likes + 1 } 
+    }
+    setComments((prev) =>
+      prev.map((comment) =>
+        comment.id === commentId
+          ? { ...comment, likes: comment.likes + 1 }
           : comment
       )
     );
@@ -222,15 +244,15 @@ export default function StoryPage({ params }: { params: { id: string } }) {
       } else {
         await navigator.clipboard.writeText(window.location.href);
         toast({
-          title: "Link copied!",
-          description: "Story link copied to clipboard",
+          title: 'Link copied!',
+          description: 'Story link copied to clipboard',
         });
-}
+      }
     } catch (error) {
-      console.error("Error sharing:", error);
+      console.error('Error sharing:', error);
     } finally {
       setIsSharing(false);
-}
+    }
   };
 
   // Loading state
@@ -243,7 +265,7 @@ export default function StoryPage({ params }: { params: { id: string } }) {
         </div>
       </div>
     );
-}
+  }
   // Not found state
   if (!story) {
     return (
@@ -251,7 +273,9 @@ export default function StoryPage({ params }: { params: { id: string } }) {
         <Card>
           <CardHeader>
             <CardTitle>Story Not Found</CardTitle>
-            <CardDescription>The story you're looking for doesn't exist.</CardDescription>
+            <CardDescription>
+              The story you're looking for doesn't exist.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <Link href="/nft-gallery">
@@ -264,11 +288,11 @@ export default function StoryPage({ params }: { params: { id: string } }) {
         </Card>
       </div>
     );
-}
+  }
   const genre = getGenreBySlug(story.genre);
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -293,11 +317,11 @@ export default function StoryPage({ params }: { params: { id: string } }) {
             >
               <Card className="mb-8 overflow-hidden">
                 <div className="relative aspect-video w-full overflow-hidden">
-                  <Image 
-                    src={story.coverImage} 
+                  <Image
+                    src={story.coverImage}
                     alt={story.title}
                     fill
-                    className="object-cover hover:scale-105 transition-transform duration-700" 
+                    className="object-cover hover:scale-105 transition-transform duration-700"
                     priority
                   />
                   {story.isTop10 && (
@@ -311,7 +335,9 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">{story.title}</CardTitle>
+                      <CardTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">
+                        {story.title}
+                      </CardTitle>
                       <CardDescription className="text-lg">
                         By {story.author} • {new Date().toLocaleDateString()}
                       </CardDescription>
@@ -320,12 +346,12 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                     <div>
                       {genre && (
                         <Link href={`/genres/${genre.slug}`}>
-                          <Badge 
-                            className="ml-2" 
-                            style={{ 
-                              backgroundColor: genre.color + '20', 
-                              color: genre.color, 
-                              border: `1px solid ${genre.color}`
+                          <Badge
+                            className="ml-2"
+                            style={{
+                              backgroundColor: genre.color + '20',
+                              color: genre.color,
+                              border: `1px solid ${genre.color}`,
                             }}
                           >
                             {genre.name}
@@ -338,34 +364,52 @@ export default function StoryPage({ params }: { params: { id: string } }) {
 
                 <CardContent>
                   <div className="prose max-w-none dark:prose-invert">
-                    {story.description.split('\n\n').map((paragraph: string, index: number) => (
-                      <p key={index}>{paragraph}</p>
-                    ))}
+                    {story.description
+                      .split('\n\n')
+                      .map((paragraph: string, index: number) => (
+                        <p key={index}>{paragraph}</p>
+                      ))}
                   </div>
 
                   <div className="flex items-center justify-between mt-8">
                     <div className="flex items-center space-x-4">
                       <div className="flex items-center space-x-2">
-                        <Button 
-                          variant={voteStatus === 'upvote' ? "default" : "outline"} 
+                        <Button
+                          variant={
+                            voteStatus === 'upvote' ? 'default' : 'outline'
+                          }
                           size="sm"
                           onClick={() => handleVote('upvote')}
-                          className={voteStatus === 'upvote' ? "bg-green-600 hover:bg-green-700" : ""}
+                          className={
+                            voteStatus === 'upvote'
+                              ? 'bg-green-600 hover:bg-green-700'
+                              : ''
+                          }
                         >
                           <ThumbsUp className="h-4 w-4 mr-2" />
                           {upvotes}
                         </Button>
-                        <Button 
-                          variant={voteStatus === 'downvote' ? "default" : "outline"} 
+                        <Button
+                          variant={
+                            voteStatus === 'downvote' ? 'default' : 'outline'
+                          }
                           size="sm"
                           onClick={() => handleVote('downvote')}
-                          className={voteStatus === 'downvote' ? "bg-red-600 hover:bg-red-700" : ""}
+                          className={
+                            voteStatus === 'downvote'
+                              ? 'bg-red-600 hover:bg-red-700'
+                              : ''
+                          }
                         >
                           <ThumbsDown className="h-4 w-4 mr-2" />
                           {downvotes}
                         </Button>
                       </div>
-                      <Button variant="outline" size="sm" onClick={() => setActiveTab('comments')}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setActiveTab('comments')}
+                      >
                         <MessageSquare className="h-4 w-4 mr-2" />
                         {comments.length}
                       </Button>
@@ -375,7 +419,12 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                       </div>
                     </div>
 
-                    <Button variant="outline" size="sm" onClick={handleShare} disabled={isSharing}>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleShare}
+                      disabled={isSharing}
+                    >
                       <Share className="h-4 w-4 mr-2" />
                       Share
                     </Button>
@@ -389,10 +438,16 @@ export default function StoryPage({ params }: { params: { id: string } }) {
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.2 }}
             >
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
+              <Tabs
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="mb-8"
+              >
                 <TabsList className="grid grid-cols-2 mb-4">
                   <TabsTrigger value="details">Story Details</TabsTrigger>
-                  <TabsTrigger value="comments">Comments ({comments.length})</TabsTrigger>
+                  <TabsTrigger value="comments">
+                    Comments ({comments.length})
+                  </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="details">
@@ -400,8 +455,12 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                     <CardContent className="pt-6">
                       <div className="space-y-6">
                         <div>
-                          <h3 className="text-lg font-semibold mb-2">About this Story</h3>
-                          <p className="text-muted-foreground">{story.description}</p>
+                          <h3 className="text-lg font-semibold mb-2">
+                            About this Story
+                          </h3>
+                          <p className="text-muted-foreground">
+                            {story.description}
+                          </p>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
@@ -413,7 +472,9 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                             </p>
                           </div>
                           <div className="space-y-2">
-                            <h4 className="text-sm font-medium">Generated With</h4>
+                            <h4 className="text-sm font-medium">
+                              Generated With
+                            </h4>
                             <p className="text-sm flex items-center">
                               <Cpu className="h-4 w-4 mr-2 text-muted-foreground" />
                               Groq LLM
@@ -436,8 +497,8 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                     <CardContent>
                       <form onSubmit={handleCommentSubmit} className="mb-6">
                         <div className="space-y-4">
-                          <Textarea 
-                            placeholder="Share your thoughts on this story..." 
+                          <Textarea
+                            placeholder="Share your thoughts on this story..."
                             value={commentText}
                             onChange={(e) => setCommentText(e.target.value)}
                             className="min-h-24"
@@ -467,11 +528,15 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                               <div className="flex space-x-4">
                                 <Avatar>
                                   <AvatarImage src={comment.authorAvatar} />
-                                  <AvatarFallback>{comment.author[0]}</AvatarFallback>
+                                  <AvatarFallback>
+                                    {comment.author[0]}
+                                  </AvatarFallback>
                                 </Avatar>
                                 <div className="flex-1">
                                   <div className="flex items-center">
-                                    <h4 className="font-medium">{comment.author}</h4>
+                                    <h4 className="font-medium">
+                                      {comment.author}
+                                    </h4>
                                     {comment.isVerified && (
                                       <VerifiedIcon className="h-4 w-4 ml-1 text-primary" />
                                     )}
@@ -480,10 +545,12 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                                     {comment.timestamp.toLocaleString()}
                                   </p>
                                   <p className="text-sm mb-3">{comment.text}</p>
-                                  <Button 
-                                    variant="ghost" 
-                                    size="sm" 
-                                    onClick={() => handleCommentLike(comment.id)}
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() =>
+                                      handleCommentLike(comment.id)
+                                    }
                                     disabled={!account}
                                   >
                                     <Heart className="h-3.5 w-3.5 mr-1" />
@@ -516,15 +583,23 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                 <CardContent>
                   <div className="flex items-center space-x-4 mb-4">
                     <Avatar className="h-16 w-16 border-2 border-primary">
-                      <AvatarImage src={`https://api.dicebear.com/7.x/personas/svg?seed=${story.author}`} />
-                      <AvatarFallback>{story.author.substring(0, 2).toUpperCase()}</AvatarFallback>
+                      <AvatarImage
+                        src={`https://api.dicebear.com/7.x/personas/svg?seed=${story.author}`}
+                      />
+                      <AvatarFallback>
+                        {story.author.substring(0, 2).toUpperCase()}
+                      </AvatarFallback>
                     </Avatar>
                     <div>
                       <div className="flex items-center">
-                        <h3 className="font-semibold text-lg">{story.author}</h3>
+                        <h3 className="font-semibold text-lg">
+                          {story.author}
+                        </h3>
                         <VerifiedIcon className="h-4 w-4 ml-1 text-primary" />
                       </div>
-                      <p className="text-sm text-muted-foreground">Creator • Author • Artist</p>
+                      <p className="text-sm text-muted-foreground">
+                        Creator • Author • Artist
+                      </p>
                       <div className="flex items-center mt-1">
                         <Star className="h-3.5 w-3.5 text-yellow-500 mr-1" />
                         <Star className="h-3.5 w-3.5 text-yellow-500 mr-1" />
@@ -536,7 +611,10 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                     </div>
                   </div>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Creative storyteller specializing in {genre?.name || 'various genres'} with a passion for immersive narratives. Has created over 35 original stories on GroqTales.
+                    Creative storyteller specializing in{' '}
+                    {genre?.name || 'various genres'} with a passion for
+                    immersive narratives. Has created over 35 original stories
+                    on GroqTales.
                   </p>
                   <div className="grid grid-cols-3 gap-2 mb-4 text-center">
                     <div className="bg-muted/30 rounded p-2">
@@ -552,8 +630,15 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                       <p className="text-xs text-muted-foreground">Views</p>
                     </div>
                   </div>
-                  <Button variant="outline" className="w-full mb-2">Follow Creator</Button>
-                  <Button variant="default" className="w-full theme-gradient-bg">View All Stories</Button>
+                  <Button variant="outline" className="w-full mb-2">
+                    Follow Creator
+                  </Button>
+                  <Button
+                    variant="default"
+                    className="w-full theme-gradient-bg"
+                  >
+                    View All Stories
+                  </Button>
                 </CardContent>
               </Card>
 
@@ -577,7 +662,9 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Created</span>
-                      <span className="font-medium">{new Date().toLocaleDateString()}</span>
+                      <span className="font-medium">
+                        {new Date().toLocaleDateString()}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Royalty</span>
@@ -586,10 +673,12 @@ export default function StoryPage({ params }: { params: { id: string } }) {
 
                     <Separator />
 
-                    <Button className="w-full theme-gradient-bg">Purchase NFT</Button>
+                    <Button className="w-full theme-gradient-bg">
+                      Purchase NFT
+                    </Button>
 
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       className="w-full flex items-center justify-center"
                       onClick={() => {
                         // Direct navigation with URL parameters
@@ -624,13 +713,17 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                 transition={{ delay: index * 0.1, duration: 0.3 }}
                 whileHover={{ y: -5 }}
               >
-                <StoryCard story={relatedStory} hideLink={false} showCreateButton={true} />
+                <StoryCard
+                  story={relatedStory}
+                  hideLink={false}
+                  showCreateButton={true}
+                />
               </motion.div>
             ))}
           </div>
 
           <div className="mt-10 text-center">
-            <Button 
+            <Button
               className="theme-gradient-bg text-white"
               onClick={() => {
                 // Direct navigation with URL parameters

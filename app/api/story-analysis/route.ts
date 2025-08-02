@@ -1,18 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateStoryContent } from '@/lib/groq-service';
-import { GROQ_MODELS } from '@/lib/groq-service';
+
+import { generateStoryContent, GROQ_MODELS } from '@/lib/groq-service';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { content, title, genre, analysisType = 'standard', model = GROQ_MODELS.LLAMA_3_70B, apiKey } = body;
+    const {
+      content,
+      title,
+      genre,
+      analysisType = 'standard',
+      model = GROQ_MODELS.LLAMA_3_70B,
+      apiKey,
+    } = body;
     if (!content) {
-      return NextResponse.json({ error: 'Story content is required' }, { status: 400 });
-}
+      return NextResponse.json(
+        { error: 'Story content is required' },
+        { status: 400 }
+      );
+    }
     let prompt = '';
     let systemPrompt = '';
     switch (analysisType.toLowerCase()) {
       case 'standard':
-        systemPrompt = 'You are a literary analyst with expertise in story structure, character development, and thematic analysis.';
+        systemPrompt =
+          'You are a literary analyst with expertise in story structure, character development, and thematic analysis.';
         prompt = `
           Analyze the following ${genre || 'story'} titled "${title || 'Untitled Story'}" and provide a detailed analysis, including:
           1. Plot Structure: Identify the introduction, rising action, climax, falling action, and resolution
@@ -27,7 +38,8 @@ export async function POST(request: NextRequest) {
         `;
         break;
       case 'critique':
-        systemPrompt = 'You are an experienced literary critic with a keen eye for both strengths and weaknesses in creative writing.';
+        systemPrompt =
+          'You are an experienced literary critic with a keen eye for both strengths and weaknesses in creative writing.';
         prompt = `
           Provide a constructive critique of the following ${genre || 'story'} titled "${title || 'Untitled Story'}", covering:
           1. Overall Impression: Your general assessment of the story's quality and impact
@@ -42,7 +54,8 @@ export async function POST(request: NextRequest) {
         `;
         break;
       case 'audience':
-        systemPrompt = 'You are a market research specialist in the publishing industry with expertise in audience demographics and reader preferences.';
+        systemPrompt =
+          'You are a market research specialist in the publishing industry with expertise in audience demographics and reader preferences.';
         prompt = `
           Analyze the following ${genre || 'story'} titled "${title || 'Untitled Story'}" and provide an audience analysis:
           1. Target Demographics: Age range, interests, and reading preferences of the likely target audience
@@ -57,7 +70,8 @@ export async function POST(request: NextRequest) {
         `;
         break;
       case 'development':
-        systemPrompt = 'You are a developmental editor who helps writers refine and improve their work.';
+        systemPrompt =
+          'You are a developmental editor who helps writers refine and improve their work.';
         prompt = `
           Provide developmental editing feedback for the following ${genre || 'story'} titled "${title || 'Untitled Story'}":
           1. Story Structure: Assessment and recommendations for plot structure and pacing
@@ -72,15 +86,19 @@ export async function POST(request: NextRequest) {
         `;
         break;
       default:
-        return NextResponse.json({
-          error: 'Invalid analysis type. Supported types: standard, critique, audience, development'
-        }, { status: 400 });
-}
+        return NextResponse.json(
+          {
+            error:
+              'Invalid analysis type. Supported types: standard, critique, audience, development',
+          },
+          { status: 400 }
+        );
+    }
     const analysisResult = await generateStoryContent(prompt, model, {
       temperature: 0.2,
       max_tokens: 2000,
       system_prompt: systemPrompt,
-      apiKey
+      apiKey,
     });
     // Parse the JSON response
     const jsonMatch = analysisResult.match(/\{[\s\S]*\}/);
@@ -89,16 +107,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         success: true,
         analysis: { rawText: analysisResult },
-        format: 'text'
+        format: 'text',
       });
-}
+    }
     try {
       const analysis = JSON.parse(jsonMatch[0]);
       return NextResponse.json({
         success: true,
         analysis,
         format: 'json',
-        analysisType
+        analysisType,
       });
     } catch (parseError) {
       // If JSON parsing fails, return the raw text
@@ -106,14 +124,17 @@ export async function POST(request: NextRequest) {
         success: true,
         analysis: { rawText: analysisResult },
         format: 'text',
-        analysisType
+        analysisType,
       });
-}
+    }
   } catch (error: any) {
     console.error('Story analysis error:', error);
     return NextResponse.json(
-      { error: error.message || 'An error occurred while processing your request' },
+      {
+        error:
+          error.message || 'An error occurred while processing your request',
+      },
       { status: 500 }
     );
-}
+  }
 }

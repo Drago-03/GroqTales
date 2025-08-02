@@ -1,17 +1,25 @@
-"use client";
+'use client';
 
-import React from "react";
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  ArrowLeft,
+  Upload,
+  Wallet,
+  Bell,
+  Shield,
+  EyeOff,
+  AtSign,
+  Copy,
+} from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
-
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import Link from "next/link";
-import Image from "next/image";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { ArrowLeft, Upload, Wallet, Bell, Shield, EyeOff, AtSign, Copy } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -19,7 +27,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -28,42 +36,33 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Separator } from "@/components/ui/separator";
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
-} from "@/components/ui/tabs";
-import { Switch } from "@/components/ui/switch";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
 
 const profileFormSchema = z.object({
   username: z
     .string()
-    .min(3, { message: "Username must be at least 3 characters." })
-    .max(30, { message: "Username must be less than 30 characters." }),
+    .min(3, { message: 'Username must be at least 3 characters.' })
+    .max(30, { message: 'Username must be less than 30 characters.' }),
   displayName: z
     .string()
-    .min(2, { message: "Display name must be at least 2 characters." })
-    .max(50, { message: "Display name must be less than 50 characters." }),
-  email: z
-    .string()
-    .email({ message: "Please enter a valid email address." }),
+    .min(2, { message: 'Display name must be at least 2 characters.' })
+    .max(50, { message: 'Display name must be less than 50 characters.' }),
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
   bio: z
     .string()
-    .max(250, { message: "Bio must be less than 250 characters." })
+    .max(250, { message: 'Bio must be less than 250 characters.' })
     .optional(),
   primaryGenre: z.string().optional(),
 });
@@ -72,46 +71,61 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 // Sample user data for demonstration
 const defaultValues: ProfileFormValues = {
-  username: "alex_storyteller",
-  displayName: "Alexandra Chen",
-  email: "alex@example.com",
-  bio: "Digital storyteller | AI enthusiast | Web3 explorer | Creating immersive narratives at the intersection of technology and imagination.",
-  primaryGenre: "sci-fi",
+  username: 'alex_storyteller',
+  displayName: 'Alexandra Chen',
+  email: 'alex@example.com',
+  bio: 'Digital storyteller | AI enthusiast | Web3 explorer | Creating immersive narratives at the intersection of technology and imagination.',
+  primaryGenre: 'sci-fi',
 };
 
 export default function SettingsPage() {
-  const [avatar, setAvatar] = useState<string>("https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3");
+  const [avatar, setAvatar] = useState<string>(
+    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3'
+  );
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const onSubmit = (data: ProfileFormValues) => {
     // In a real app, this would save the data to the server
     console.log(data);
     // Show success message or redirect
-}
+  };
   return (
     <div className="container max-w-5xl mx-auto py-12 px-4 min-h-screen">
       <div className="mb-8">
         <Button variant="ghost" asChild className="mb-4">
-          <Link href="/profile" className="flex items-center text-muted-foreground">
+          <Link
+            href="/profile"
+            className="flex items-center text-muted-foreground"
+          >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Profile
           </Link>
         </Button>
         <h1 className="text-4xl font-bold gradient-heading mb-2">Settings</h1>
-        <p className="text-muted-foreground">Manage your account preferences and settings</p>
+        <p className="text-muted-foreground">
+          Manage your account preferences and settings
+        </p>
       </div>
 
       <Tabs defaultValue="profile" className="w-full">
         <TabsList className="grid grid-cols-4 w-full md:w-auto mb-8">
-          <TabsTrigger value="profile" className="text-sm">Profile</TabsTrigger>
-          <TabsTrigger value="notifications" className="text-sm">Notifications</TabsTrigger>
-          <TabsTrigger value="wallet" className="text-sm">Wallet</TabsTrigger>
-          <TabsTrigger value="privacy" className="text-sm">Privacy</TabsTrigger>
+          <TabsTrigger value="profile" className="text-sm">
+            Profile
+          </TabsTrigger>
+          <TabsTrigger value="notifications" className="text-sm">
+            Notifications
+          </TabsTrigger>
+          <TabsTrigger value="wallet" className="text-sm">
+            Wallet
+          </TabsTrigger>
+          <TabsTrigger value="privacy" className="text-sm">
+            Privacy
+          </TabsTrigger>
         </TabsList>
 
         {/* Profile Settings */}
@@ -126,7 +140,10 @@ export default function SettingsPage() {
               </CardHeader>
               <CardContent>
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-8"
+                  >
                     <div className="space-y-8">
                       <div className="flex flex-col items-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6">
                         <div className="relative group">
@@ -139,7 +156,9 @@ export default function SettingsPage() {
                           </div>
                         </div>
                         <div className="space-y-2 w-full max-w-sm">
-                          <FormLabel className="text-sm font-medium">Profile Picture</FormLabel>
+                          <FormLabel className="text-sm font-medium">
+                            Profile Picture
+                          </FormLabel>
                           <div className="flex gap-2">
                             <Button
                               variant="outline"
@@ -171,7 +190,9 @@ export default function SettingsPage() {
                             <FormLabel>Username</FormLabel>
                             <FormControl>
                               <div className="flex items-center">
-                                <span className="text-muted-foreground mr-1 text-sm">@</span>
+                                <span className="text-muted-foreground mr-1 text-sm">
+                                  @
+                                </span>
                                 <Input placeholder="username" {...field} />
                               </div>
                             </FormControl>
@@ -207,7 +228,11 @@ export default function SettingsPage() {
                           <FormItem>
                             <FormLabel>Email</FormLabel>
                             <FormControl>
-                              <Input type="email" placeholder="email@example.com" {...field} />
+                              <Input
+                                type="email"
+                                placeholder="email@example.com"
+                                {...field}
+                              />
                             </FormControl>
                             <FormDescription>
                               Used for notifications and account recovery.
@@ -231,7 +256,12 @@ export default function SettingsPage() {
                               />
                             </FormControl>
                             <FormDescription>
-                              <span className={`${field.value?.length || 0 > 200 ? "text-warning" : ""}`}>{field.value?.length || 0}</span>/250 characters
+                              <span
+                                className={`${field.value?.length || 0 > 200 ? 'text-warning' : ''}`}
+                              >
+                                {field.value?.length || 0}
+                              </span>
+                              /250 characters
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -254,18 +284,25 @@ export default function SettingsPage() {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                <SelectItem value="sci-fi">Science Fiction</SelectItem>
+                                <SelectItem value="sci-fi">
+                                  Science Fiction
+                                </SelectItem>
                                 <SelectItem value="fantasy">Fantasy</SelectItem>
                                 <SelectItem value="mystery">Mystery</SelectItem>
                                 <SelectItem value="horror">Horror</SelectItem>
                                 <SelectItem value="romance">Romance</SelectItem>
-                                <SelectItem value="historical">Historical Fiction</SelectItem>
-                                <SelectItem value="thriller">Thriller</SelectItem>
+                                <SelectItem value="historical">
+                                  Historical Fiction
+                                </SelectItem>
+                                <SelectItem value="thriller">
+                                  Thriller
+                                </SelectItem>
                                 <SelectItem value="other">Other</SelectItem>
                               </SelectContent>
                             </Select>
                             <FormDescription>
-                              This will be displayed on your profile and help with story recommendations.
+                              This will be displayed on your profile and help
+                              with story recommendations.
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -301,7 +338,10 @@ export default function SettingsPage() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="comments" className="text-sm font-medium">
+                        <label
+                          htmlFor="comments"
+                          className="text-sm font-medium"
+                        >
                           Story Comments
                         </label>
                         <p className="text-sm text-muted-foreground">
@@ -325,7 +365,10 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="followers" className="text-sm font-medium">
+                        <label
+                          htmlFor="followers"
+                          className="text-sm font-medium"
+                        >
                           New Followers
                         </label>
                         <p className="text-sm text-muted-foreground">
@@ -337,7 +380,10 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="nft-sale" className="text-sm font-medium">
+                        <label
+                          htmlFor="nft-sale"
+                          className="text-sm font-medium"
+                        >
                           NFT Sales
                         </label>
                         <p className="text-sm text-muted-foreground">
@@ -349,7 +395,10 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="newsletter" className="text-sm font-medium">
+                        <label
+                          htmlFor="newsletter"
+                          className="text-sm font-medium"
+                        >
                           Platform Updates
                         </label>
                         <p className="text-sm text-muted-foreground">
@@ -368,11 +417,15 @@ export default function SettingsPage() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="app-comments" className="text-sm font-medium">
+                        <label
+                          htmlFor="app-comments"
+                          className="text-sm font-medium"
+                        >
                           Story Comments
                         </label>
                         <p className="text-sm text-muted-foreground">
-                          Show notifications when someone comments on your stories
+                          Show notifications when someone comments on your
+                          stories
                         </p>
                       </div>
                       <Switch id="app-comments" defaultChecked />
@@ -380,7 +433,10 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="app-likes" className="text-sm font-medium">
+                        <label
+                          htmlFor="app-likes"
+                          className="text-sm font-medium"
+                        >
                           Story Likes
                         </label>
                         <p className="text-sm text-muted-foreground">
@@ -392,7 +448,10 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="app-followers" className="text-sm font-medium">
+                        <label
+                          htmlFor="app-followers"
+                          className="text-sm font-medium"
+                        >
                           New Followers
                         </label>
                         <p className="text-sm text-muted-foreground">
@@ -404,7 +463,10 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="app-messages" className="text-sm font-medium">
+                        <label
+                          htmlFor="app-messages"
+                          className="text-sm font-medium"
+                        >
                           Direct Messages
                         </label>
                         <p className="text-sm text-muted-foreground">
@@ -441,12 +503,21 @@ export default function SettingsPage() {
                       <Wallet className="h-8 w-8 text-primary" />
                     </div>
                     <div className="flex-grow">
-                      <h3 className="text-lg font-medium mb-1">Connected Wallet</h3>
+                      <h3 className="text-lg font-medium mb-1">
+                        Connected Wallet
+                      </h3>
                       <div className="flex items-center gap-2 mb-2">
-                        <Badge variant="outline" className="bg-primary/10 font-mono text-xs py-1">
+                        <Badge
+                          variant="outline"
+                          className="bg-primary/10 font-mono text-xs py-1"
+                        >
                           0x1a2b3c4d5e6f7890abcdef1234567890abcdef12
                         </Badge>
-                        <Button variant="ghost" size="sm" className="h-6 w-6 p-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 w-6 p-1"
+                        >
                           <Copy className="h-4 w-4" />
                         </Button>
                       </div>
@@ -456,7 +527,9 @@ export default function SettingsPage() {
                       </div>
                     </div>
                     <div>
-                      <Button variant="outline" size="sm">Disconnect</Button>
+                      <Button variant="outline" size="sm">
+                        Disconnect
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -468,11 +541,15 @@ export default function SettingsPage() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="auto-sign" className="text-sm font-medium">
+                        <label
+                          htmlFor="auto-sign"
+                          className="text-sm font-medium"
+                        >
                           Auto-sign NFT Transactions
                         </label>
                         <p className="text-sm text-muted-foreground">
-                          Automatically sign transactions below 0.01 ETH without prompting
+                          Automatically sign transactions below 0.01 ETH without
+                          prompting
                         </p>
                       </div>
                       <Switch id="auto-sign" />
@@ -480,7 +557,10 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="nft-visibility" className="text-sm font-medium">
+                        <label
+                          htmlFor="nft-visibility"
+                          className="text-sm font-medium"
+                        >
                           NFT Public Visibility
                         </label>
                         <p className="text-sm text-muted-foreground">
@@ -492,7 +572,10 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="gas-optimization" className="text-sm font-medium">
+                        <label
+                          htmlFor="gas-optimization"
+                          className="text-sm font-medium"
+                        >
                           Gas Fee Optimization
                         </label>
                         <p className="text-sm text-muted-foreground">
@@ -515,13 +598,19 @@ export default function SettingsPage() {
                           <AtSign className="h-4 w-4 text-emerald-500" />
                         </div>
                         <div>
-                          <p className="text-sm font-medium">Story NFT Minted</p>
-                          <p className="text-xs text-muted-foreground">Feb 23, 2023</p>
+                          <p className="text-sm font-medium">
+                            Story NFT Minted
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            Feb 23, 2023
+                          </p>
                         </div>
                       </div>
                       <div className="text-sm text-right">
                         <p className="font-medium">Beyond the Quantum Veil</p>
-                        <p className="text-xs text-muted-foreground">0.05 ETH gas fee</p>
+                        <p className="text-xs text-muted-foreground">
+                          0.05 ETH gas fee
+                        </p>
                       </div>
                     </div>
 
@@ -531,13 +620,21 @@ export default function SettingsPage() {
                           <AtSign className="h-4 w-4 text-blue-500" />
                         </div>
                         <div>
-                          <p className="text-sm font-medium">Story NFT Minted</p>
-                          <p className="text-xs text-muted-foreground">Jan 12, 2023</p>
+                          <p className="text-sm font-medium">
+                            Story NFT Minted
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            Jan 12, 2023
+                          </p>
                         </div>
                       </div>
                       <div className="text-sm text-right">
-                        <p className="font-medium">Whispers of the Digital Forest</p>
-                        <p className="text-xs text-muted-foreground">0.03 ETH gas fee</p>
+                        <p className="font-medium">
+                          Whispers of the Digital Forest
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          0.03 ETH gas fee
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -569,7 +666,10 @@ export default function SettingsPage() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="profile-visibility" className="text-sm font-medium">
+                        <label
+                          htmlFor="profile-visibility"
+                          className="text-sm font-medium"
+                        >
                           Public Profile
                         </label>
                         <p className="text-sm text-muted-foreground">
@@ -581,7 +681,10 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="story-comments" className="text-sm font-medium">
+                        <label
+                          htmlFor="story-comments"
+                          className="text-sm font-medium"
+                        >
                           Story Comments
                         </label>
                         <p className="text-sm text-muted-foreground">
@@ -593,7 +696,10 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="show-activity" className="text-sm font-medium">
+                        <label
+                          htmlFor="show-activity"
+                          className="text-sm font-medium"
+                        >
                           Activity Feed
                         </label>
                         <p className="text-sm text-muted-foreground">
@@ -605,7 +711,10 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="show-reading" className="text-sm font-medium">
+                        <label
+                          htmlFor="show-reading"
+                          className="text-sm font-medium"
+                        >
                           Reading History
                         </label>
                         <p className="text-sm text-muted-foreground">
@@ -624,7 +733,10 @@ export default function SettingsPage() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="two-factor" className="text-sm font-medium">
+                        <label
+                          htmlFor="two-factor"
+                          className="text-sm font-medium"
+                        >
                           Two-Factor Authentication
                         </label>
                         <p className="text-sm text-muted-foreground">
@@ -632,13 +744,22 @@ export default function SettingsPage() {
                         </p>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-amber-500 border-amber-200 bg-amber-50">Not Enabled</Badge>
+                        <Badge
+                          variant="outline"
+                          className="text-amber-500 border-amber-200 bg-amber-50"
+                        >
+                          Not Enabled
+                        </Badge>
                         <Switch id="two-factor" />
                       </div>
                     </div>
 
                     <div className="mt-4">
-                      <Button variant="outline" className="w-full sm:w-auto flex items-center gap-2" size="sm">
+                      <Button
+                        variant="outline"
+                        className="w-full sm:w-auto flex items-center gap-2"
+                        size="sm"
+                      >
                         <Shield className="h-4 w-4" />
                         <span>Change Password</span>
                       </Button>
@@ -653,11 +774,15 @@ export default function SettingsPage() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="data-collection" className="text-sm font-medium">
+                        <label
+                          htmlFor="data-collection"
+                          className="text-sm font-medium"
+                        >
                           Usage Data Collection
                         </label>
                         <p className="text-sm text-muted-foreground">
-                          Allow us to collect anonymous usage data to improve the platform
+                          Allow us to collect anonymous usage data to improve
+                          the platform
                         </p>
                       </div>
                       <Switch id="data-collection" defaultChecked />
@@ -665,11 +790,15 @@ export default function SettingsPage() {
 
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
-                        <label htmlFor="personalization" className="text-sm font-medium">
+                        <label
+                          htmlFor="personalization"
+                          className="text-sm font-medium"
+                        >
                           Content Personalization
                         </label>
                         <p className="text-sm text-muted-foreground">
-                          Allow us to use your reading history to personalize recommendations
+                          Allow us to use your reading history to personalize
+                          recommendations
                         </p>
                       </div>
                       <Switch id="personalization" defaultChecked />
@@ -677,11 +806,17 @@ export default function SettingsPage() {
                   </div>
 
                   <div className="flex gap-4">
-                    <Button variant="outline" className="flex items-center gap-2" size="sm">
+                    <Button
+                      variant="outline"
+                      className="flex items-center gap-2"
+                      size="sm"
+                    >
                       <EyeOff className="h-4 w-4" />
                       <span>Download My Data</span>
                     </Button>
-                    <Button variant="destructive" size="sm">Delete Account</Button>
+                    <Button variant="destructive" size="sm">
+                      Delete Account
+                    </Button>
                   </div>
                 </div>
               </CardContent>

@@ -38,10 +38,10 @@ async function initializeDatabase() {
   } catch (error) {
     console.error('Error initializing database:', error);
     throw error;
-}
+  }
 }
 // Only run initialization in development
 if (process.env.NODE_ENV === 'development') {
   initializeDatabase().catch(console.error);
 }
-export default initializeDatabase; 
+export default initializeDatabase;

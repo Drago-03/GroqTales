@@ -51,7 +51,7 @@ export enum NFTStatus {
   ACTIVE = 'active',
   SOLD = 'sold',
   BURNED = 'burned',
-  SUSPENDED = 'suspended'
+  SUSPENDED = 'suspended',
 }
 
 /**
@@ -61,7 +61,7 @@ export enum NFTType {
   STORY = 'story',
   COMIC = 'comic',
   ARTWORK = 'artwork',
-  COLLECTIBLE = 'collectible'
+  COLLECTIBLE = 'collectible',
 }
 
 /**
@@ -162,7 +162,7 @@ export enum TransactionType {
   LISTING = 'listing',
   DELISTING = 'delisting',
   OFFER = 'offer',
-  OFFER_ACCEPTED = 'offer_accepted'
+  OFFER_ACCEPTED = 'offer_accepted',
 }
 
 /**
@@ -171,7 +171,7 @@ export enum TransactionType {
 export enum TransactionStatus {
   PENDING = 'pending',
   CONFIRMED = 'confirmed',
-  FAILED = 'failed'
+  FAILED = 'failed',
 }
 
 /**
@@ -201,7 +201,7 @@ export enum ListingStatus {
   ACTIVE = 'active',
   SOLD = 'sold',
   CANCELLED = 'cancelled',
-  EXPIRED = 'expired'
+  EXPIRED = 'expired',
 }
 
 /**
@@ -210,7 +210,7 @@ export enum ListingStatus {
 export enum ListingType {
   FIXED_PRICE = 'fixed_price',
   AUCTION = 'auction',
-  DUTCH_AUCTION = 'dutch_auction'
+  DUTCH_AUCTION = 'dutch_auction',
 }
 
 /**
@@ -239,7 +239,7 @@ export enum OfferStatus {
   ACCEPTED = 'accepted',
   REJECTED = 'rejected',
   CANCELLED = 'cancelled',
-  EXPIRED = 'expired'
+  EXPIRED = 'expired',
 }
 
 /**
@@ -265,7 +265,7 @@ export enum WalletProvider {
   METAMASK = 'metamask',
   WALLET_CONNECT = 'wallet_connect',
   COINBASE = 'coinbase',
-  INJECTED = 'injected'
+  INJECTED = 'injected',
 }
 
 /**
@@ -307,7 +307,7 @@ export enum ContractType {
   ERC721 = 'ERC721',
   ERC1155 = 'ERC1155',
   MARKETPLACE = 'marketplace',
-  ROYALTY = 'royalty'
+  ROYALTY = 'royalty',
 }
 
 export default {};

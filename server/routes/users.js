@@ -15,11 +15,11 @@ router.get('/profile', async (req, res) => {
       email: 'user@example.com',
       preferences: {
         favoriteGenres: ['fantasy', 'sci-fi'],
-        theme: 'dark'
+        theme: 'dark',
       },
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
-    
+
     res.json(profile);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -30,12 +30,12 @@ router.get('/profile', async (req, res) => {
 router.put('/profile', async (req, res) => {
   try {
     const updates = req.body;
-    
+
     const updatedProfile = {
       ...updates,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
-    
+
     res.json(updatedProfile);
   } catch (error) {
     res.status(500).json({ error: error.message });

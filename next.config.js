@@ -9,11 +9,11 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   poweredByHeader: false,
-  
+
   // Performance optimizations
   compress: true,
   optimizeFonts: true,
-  
+
   // Image optimization
   images: {
     unoptimized: false,

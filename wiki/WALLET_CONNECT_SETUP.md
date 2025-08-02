@@ -1,6 +1,7 @@
 # Setting Up WalletConnect for GroqTales
 
-This document provides guidance on how to properly set up WalletConnect for your GroqTales application.
+This document provides guidance on how to properly set up WalletConnect for your GroqTales
+application.
 
 ## Getting a WalletConnect Project ID
 
@@ -23,7 +24,8 @@ Replace `YOUR_PROJECT_ID_HERE` with the Project ID you copied from WalletConnect
 
 - The 'DEMO_PROJECT_ID' provided in the code is a placeholder and will not work for production.
 - In development, you may see a warning about the projectId being undefined or invalid.
-- For production deployment, make sure to set the environment variable properly in your hosting platform.
+- For production deployment, make sure to set the environment variable properly in your hosting
+  platform.
 
 ## Environment Variables in NextJS
 
@@ -34,4 +36,4 @@ If you're using Vercel to deploy your application:
 3. Add `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID` as the key and your Project ID as the value
 4. Redeploy your application
 
-For other hosting providers, refer to their documentation on how to set environment variables. 
+For other hosting providers, refer to their documentation on how to set environment variables.

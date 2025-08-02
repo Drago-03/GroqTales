@@ -1,16 +1,15 @@
-"use client";
+'use client';
 
-import React from "react";
+import { Github } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
 
-
-import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Github } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 
 // Floating GitHub button component
 const FloatingGithub = () => (
-  <Link 
+  <Link
     href="https://github.com/Drago-03/GroqTales.git"
     target="_blank"
     className="fixed bottom-24 right-6 p-3 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-50"
@@ -49,9 +48,10 @@ export default function TermsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p>
-                By accessing and using GroqTales ("the Platform"), you agree to be bound by these
-                Terms of Service and all applicable laws and regulations. If you do not agree with
-                any of these terms, you are prohibited from using or accessing the Platform.
+                By accessing and using GroqTales ("the Platform"), you agree to
+                be bound by these Terms of Service and all applicable laws and
+                regulations. If you do not agree with any of these terms, you
+                are prohibited from using or accessing the Platform.
               </p>
             </CardContent>
           </Card>
@@ -63,23 +63,24 @@ export default function TermsPage() {
             <CardContent className="space-y-4">
               <h3 className="text-lg font-semibold">2.1 Account Creation</h3>
               <p>
-                To access certain features of the Platform, you must create an account. You agree
-                to provide accurate, current, and complete information during registration and to
-                update such information to keep it accurate, current, and complete.
+                To access certain features of the Platform, you must create an
+                account. You agree to provide accurate, current, and complete
+                information during registration and to update such information
+                to keep it accurate, current, and complete.
               </p>
 
               <h3 className="text-lg font-semibold">2.2 Account Security</h3>
               <p>
-                You are responsible for maintaining the confidentiality of your account and
-                password. You agree to accept responsibility for all activities that occur under
-                your account.
+                You are responsible for maintaining the confidentiality of your
+                account and password. You agree to accept responsibility for all
+                activities that occur under your account.
               </p>
 
               <h3 className="text-lg font-semibold">2.3 Wallet Integration</h3>
               <p>
-                The Platform integrates with Monad blockchain wallets. You are responsible for
-                all activities conducted through your connected wallet and for maintaining its
-                security.
+                The Platform integrates with Monad blockchain wallets. You are
+                responsible for all activities conducted through your connected
+                wallet and for maintaining its security.
               </p>
             </CardContent>
           </Card>
@@ -89,24 +90,29 @@ export default function TermsPage() {
               <CardTitle>3. Content and NFTs</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <h3 className="text-lg font-semibold">3.1 AI-Generated Content</h3>
+              <h3 className="text-lg font-semibold">
+                3.1 AI-Generated Content
+              </h3>
               <p>
-                Stories generated through our Groq AI system are subject to certain usage rights.
-                While you own the NFTs you mint, the underlying AI model and technology remain
-                the property of their respective owners.
+                Stories generated through our Groq AI system are subject to
+                certain usage rights. While you own the NFTs you mint, the
+                underlying AI model and technology remain the property of their
+                respective owners.
               </p>
 
               <h3 className="text-lg font-semibold">3.2 NFT Ownership</h3>
               <p>
-                Purchasing a story NFT grants you ownership of the token on the Monad blockchain.
-                This ownership is subject to the terms of the smart contract and does not
-                necessarily confer copyright or other intellectual property rights.
+                Purchasing a story NFT grants you ownership of the token on the
+                Monad blockchain. This ownership is subject to the terms of the
+                smart contract and does not necessarily confer copyright or
+                other intellectual property rights.
               </p>
 
               <h3 className="text-lg font-semibold">3.3 Content Guidelines</h3>
               <p>
-                Users must not generate, mint, or trade content that is illegal, harmful,
-                threatening, abusive, harassing, defamatory, or otherwise objectionable.
+                Users must not generate, mint, or trade content that is illegal,
+                harmful, threatening, abusive, harassing, defamatory, or
+                otherwise objectionable.
               </p>
             </CardContent>
           </Card>
@@ -117,13 +123,13 @@ export default function TermsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p>
-                The Platform charges fees for certain services, including NFT minting and
-                trading. All fees are clearly displayed before transactions and are
-                non-refundable unless required by law.
+                The Platform charges fees for certain services, including NFT
+                minting and trading. All fees are clearly displayed before
+                transactions and are non-refundable unless required by law.
               </p>
               <p>
-                Transaction fees on the Monad blockchain (gas fees) are separate from Platform
-                fees and are determined by network conditions.
+                Transaction fees on the Monad blockchain (gas fees) are separate
+                from Platform fees and are determined by network conditions.
               </p>
             </CardContent>
           </Card>
@@ -134,9 +140,10 @@ export default function TermsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p>
-                We reserve the right to terminate or suspend your account and access to the
-                Platform immediately, without prior notice or liability, for any reason
-                whatsoever, including without limitation if you breach the Terms.
+                We reserve the right to terminate or suspend your account and
+                access to the Platform immediately, without prior notice or
+                liability, for any reason whatsoever, including without
+                limitation if you breach the Terms.
               </p>
             </CardContent>
           </Card>
@@ -147,14 +154,14 @@ export default function TermsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p>
-                The Platform is provided "as is" without any warranties, expressed or implied.
-                We do not guarantee uninterrupted access to the Platform or that it will be
-                free from errors.
+                The Platform is provided "as is" without any warranties,
+                expressed or implied. We do not guarantee uninterrupted access
+                to the Platform or that it will be free from errors.
               </p>
               <p>
-                We are not responsible for any losses or damages arising from your use of
-                the Platform, including but not limited to direct, indirect, incidental,
-                consequential, or punitive damages.
+                We are not responsible for any losses or damages arising from
+                your use of the Platform, including but not limited to direct,
+                indirect, incidental, consequential, or punitive damages.
               </p>
             </CardContent>
           </Card>
@@ -165,17 +172,17 @@ export default function TermsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p>
-                We reserve the right to modify these terms at any time. We will notify users
-                of any material changes via email or through the Platform. Continued use of
-                the Platform after such modifications constitutes acceptance of the updated
-                terms.
+                We reserve the right to modify these terms at any time. We will
+                notify users of any material changes via email or through the
+                Platform. Continued use of the Platform after such modifications
+                constitutes acceptance of the updated terms.
               </p>
             </CardContent>
           </Card>
 
           <div className="text-center text-sm text-muted-foreground">
             <p>
-              For questions about these Terms of Service, please contact us at{" "}
+              For questions about these Terms of Service, please contact us at{' '}
               <Link href="/contact" className="text-primary hover:underline">
                 support@groqtales.com
               </Link>

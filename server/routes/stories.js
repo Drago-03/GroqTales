@@ -10,7 +10,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const { page = 1, limit = 10, genre, author } = req.query;
-    
+
     // Placeholder implementation - replace with actual database queries
     const stories = {
       data: [],
@@ -18,10 +18,10 @@ router.get('/', async (req, res) => {
         page: parseInt(page),
         limit: parseInt(limit),
         total: 0,
-        pages: 0
-      }
+        pages: 0,
+      },
     };
-    
+
     res.json(stories);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const { title, content, genre, author } = req.body;
-    
+
     // Placeholder implementation
     const story = {
       id: Date.now().toString(),
@@ -40,9 +40,9 @@ router.post('/', async (req, res) => {
       content,
       genre,
       author,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
-    
+
     res.status(201).json(story);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -53,7 +53,7 @@ router.post('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     // Placeholder implementation
     const story = {
       id,
@@ -61,9 +61,9 @@ router.get('/:id', async (req, res) => {
       content: 'Story content...',
       genre: 'fantasy',
       author: 'AI Assistant',
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
-    
+
     res.json(story);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -74,7 +74,7 @@ router.get('/:id', async (req, res) => {
 router.post('/generate', async (req, res) => {
   try {
     const { prompt, genre, length, style } = req.body;
-    
+
     // Placeholder implementation - integrate with Groq API
     const generatedStory = {
       id: Date.now().toString(),
@@ -85,10 +85,10 @@ router.post('/generate', async (req, res) => {
         prompt,
         length,
         style,
-        generatedAt: new Date().toISOString()
-      }
+        generatedAt: new Date().toISOString(),
+      },
     };
-    
+
     res.json(generatedStory);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -99,7 +99,7 @@ router.post('/generate', async (req, res) => {
 router.post('/:id/analyze', async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     // Placeholder implementation - integrate with analysis service
     const analysis = {
       storyId: id,
@@ -107,9 +107,9 @@ router.post('/:id/analyze', async (req, res) => {
       themes: ['adventure', 'friendship'],
       readabilityScore: 8.5,
       wordCount: 1500,
-      analyzedAt: new Date().toISOString()
+      analyzedAt: new Date().toISOString(),
     };
-    
+
     res.json(analysis);
   } catch (error) {
     res.status(500).json({ error: error.message });

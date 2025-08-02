@@ -1,15 +1,20 @@
-"use client";
+'use client';
 
-import React from "react";
+import { Loader2, RefreshCw, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 
-
-import { useState, useEffect } from "react";
-import { useStoryRecommendations } from "@/hooks/use-story-recommendations";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Loader2, RefreshCw, Sparkles } from "lucide-react";
-import StoryCard from "@/components/story-card";
-import { useToast } from "@/components/ui/use-toast";
+import StoryCard from '@/components/story-card';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { useToast } from '@/components/ui/use-toast';
+import { useStoryRecommendations } from '@/hooks/use-story-recommendations';
 
 interface StoryRecommendationsProps {
   storyId: string;
@@ -22,18 +27,19 @@ interface StoryRecommendationsProps {
   apiKey?: string;
   onStoryClick?: (story: any) => void;
 }
-  export function StoryRecommendations({
+export function StoryRecommendations({
   storyId,
   content,
   keywords,
   genre,
-  title = "Recommended Stories",
+  title = 'Recommended Stories',
   limit = 4,
   className,
   apiKey,
-  onStoryClick
+  onStoryClick,
 }: StoryRecommendationsProps) {
-  const { getRecommendations, recommendations, isLoading, error } = useStoryRecommendations();
+  const { getRecommendations, recommendations, isLoading, error } =
+    useStoryRecommendations();
   const { toast } = useToast();
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -41,7 +47,7 @@ interface StoryRecommendationsProps {
     if (storyId && !isInitialized) {
       loadRecommendations();
       setIsInitialized(true);
-}
+    }
   }, [storyId, isInitialized]);
 
   const loadRecommendations = async () => {
@@ -52,23 +58,23 @@ interface StoryRecommendationsProps {
         keywords,
         genre,
         limit,
-        apiKey
+        apiKey,
       });
     } catch (err: any) {
       toast({
-        title: "Error",
-        description: err.message || "Failed to load recommendations",
-        variant: "destructive",
+        title: 'Error',
+        description: err.message || 'Failed to load recommendations',
+        variant: 'destructive',
       });
-}
+    }
   };
 
   const handleRefresh = async () => {
     await loadRecommendations();
     toast({
-      title: "Recommendations Refreshed",
-      description: "Story recommendations have been updated",
-      variant: "default",
+      title: 'Recommendations Refreshed',
+      description: 'Story recommendations have been updated',
+      variant: 'default',
     });
   };
 
@@ -79,13 +85,14 @@ interface StoryRecommendationsProps {
       author = story.author.name || story.author.username;
     } else {
       author = story.author || 'Unknown';
-}
+    }
     return {
       id: story._id.toString(),
       title: story.title,
       content: story.content,
-      author: author,
-      authorAvatar: typeof story.author === 'object' ? story.author.avatar : undefined,
+      author,
+      authorAvatar:
+        typeof story.author === 'object' ? story.author.avatar : undefined,
       description: story.summary,
       genre: story.genre,
       coverImage: story.coverImage,
@@ -114,9 +121,9 @@ interface StoryRecommendationsProps {
         ) : error ? (
           <div className="text-center py-8 text-destructive">
             <p>{error}</p>
-            <Button 
-              variant="outline" 
-              className="mt-4" 
+            <Button
+              variant="outline"
+              className="mt-4"
               onClick={loadRecommendations}
             >
               Try Again
@@ -127,9 +134,9 @@ interface StoryRecommendationsProps {
             <p className="text-muted-foreground">
               No recommendations found. Try refreshing or changing your content.
             </p>
-            <Button 
-              variant="outline" 
-              className="mt-4" 
+            <Button
+              variant="outline"
+              className="mt-4"
               onClick={loadRecommendations}
             >
               Find Recommendations
@@ -138,7 +145,10 @@ interface StoryRecommendationsProps {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {recommendations.map((story) => (
-              <div key={story._id.toString()} onClick={() => onStoryClick && onStoryClick(story)}>
+              <div
+                key={story._id.toString()}
+                onClick={() => onStoryClick && onStoryClick(story)}
+              >
                 <StoryCard
                   story={mapToStoryCardFormat(story)}
                   viewMode="grid"

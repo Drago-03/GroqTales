@@ -1,26 +1,30 @@
-"use client";
+'use client';
 
-import React from "react";
+import { Loader2, Upload } from 'lucide-react';
+import React, { useState } from 'react';
 
-
-import { useState } from "react";
-import { StorySummary } from "@/components/story-summary";
-import StoryAnalysis from "@/components/story-analysis";
-import { StoryRecommendations } from "@/components/story-recommendations";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Loader2, Upload } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import StoryAnalysis from '@/components/story-analysis';
+import { StoryRecommendations } from '@/components/story-recommendations';
+import { StorySummary } from '@/components/story-summary';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
 
 export default function StoryToolsPage() {
-  const [storyId, setStoryId] = useState("demo-story-" + Date.now());
-  const [storyTitle, setStoryTitle] = useState("");
-  const [storyGenre, setStoryGenre] = useState("");
-  const [storyContent, setStoryContent] = useState("");
-  const [activeTab, setActiveTab] = useState("editor");
+  const [storyId, setStoryId] = useState('demo-story-' + Date.now());
+  const [storyTitle, setStoryTitle] = useState('');
+  const [storyGenre, setStoryGenre] = useState('');
+  const [storyContent, setStoryContent] = useState('');
+  const [activeTab, setActiveTab] = useState('editor');
   const [isLoading, setIsLoading] = useState(false);
   const [summaryKeywords, setSummaryKeywords] = useState<string[]>([]);
 
@@ -38,19 +42,19 @@ export default function StoryToolsPage() {
         const firstLine = text.split('\n')[0].trim();
         if (firstLine && firstLine.length < 100) {
           setStoryTitle(firstLine);
-}
-}
+        }
+      }
     } catch (error) {
-      console.error("Error reading file:", error);
+      console.error('Error reading file:', error);
     } finally {
       setIsLoading(false);
-}
+    }
   };
 
   const handleSummaryGenerated = (summary: any) => {
     if (summary?.keywords) {
       setSummaryKeywords(summary.keywords);
-}
+    }
   };
 
   return (
@@ -117,7 +121,9 @@ export default function StoryToolsPage() {
                 <div className="flex justify-between items-center">
                   <Button
                     variant="outline"
-                    onClick={() => document.getElementById('file-upload')?.click()}
+                    onClick={() =>
+                      document.getElementById('file-upload')?.click()
+                    }
                     className="flex items-center gap-2"
                     disabled={isLoading}
                   >
@@ -137,7 +143,7 @@ export default function StoryToolsPage() {
                   </Button>
 
                   <Button
-                    onClick={() => setActiveTab("summary")}
+                    onClick={() => setActiveTab('summary')}
                     disabled={!storyContent || storyContent.length < 100}
                   >
                     Continue to Summary
@@ -157,12 +163,12 @@ export default function StoryToolsPage() {
             <StorySummary
               storyId={storyId}
               content={storyContent}
-              title={storyTitle || "Story Summary"}
+              title={storyTitle || 'Story Summary'}
               onSummaryGenerated={handleSummaryGenerated}
             />
 
             <div className="flex justify-end mt-4">
-              <Button onClick={() => setActiveTab("analysis")}>
+              <Button onClick={() => setActiveTab('analysis')}>
                 Continue to Analysis
               </Button>
             </div>
@@ -176,7 +182,7 @@ export default function StoryToolsPage() {
             />
 
             <div className="flex justify-end mt-4">
-              <Button onClick={() => setActiveTab("recommendations")}>
+              <Button onClick={() => setActiveTab('recommendations')}>
                 Continue to Recommendations
               </Button>
             </div>
@@ -192,7 +198,7 @@ export default function StoryToolsPage() {
             />
 
             <div className="flex justify-end mt-4">
-              <Button onClick={() => setActiveTab("editor")}>
+              <Button onClick={() => setActiveTab('editor')}>
                 Back to Editor
               </Button>
             </div>
@@ -203,22 +209,27 @@ export default function StoryToolsPage() {
           <h2 className="text-xl font-semibold mb-4">About These Tools</h2>
           <div className="space-y-4 text-sm">
             <p>
-              These writer's tools use Groq's powerful large language models to analyze and enhance your stories. 
-              The tools process your story text to generate summaries, detailed analysis, and find similar stories 
-              based on themes and content.
+              These writer's tools use Groq's powerful large language models to
+              analyze and enhance your stories. The tools process your story
+              text to generate summaries, detailed analysis, and find similar
+              stories based on themes and content.
             </p>
             <p>
-              <strong>AI Summary:</strong> Generates a concise summary of your story along with key points, sentiment analysis, and keywords.
+              <strong>AI Summary:</strong> Generates a concise summary of your
+              story along with key points, sentiment analysis, and keywords.
             </p>
             <p>
-              <strong>Story Analysis:</strong> Provides comprehensive feedback on plot structure, character development, themes, and style.
+              <strong>Story Analysis:</strong> Provides comprehensive feedback
+              on plot structure, character development, themes, and style.
             </p>
             <p>
-              <strong>Recommendations:</strong> Suggests similar stories based on content, themes, and genre to inspire your writing.
+              <strong>Recommendations:</strong> Suggests similar stories based
+              on content, themes, and genre to inspire your writing.
             </p>
             <p className="text-xs text-muted-foreground">
-              Note: Your story content is processed through our secure API and temporarily stored for analysis purposes. 
-              We do not permanently store or share your original content.
+              Note: Your story content is processed through our secure API and
+              temporarily stored for analysis purposes. We do not permanently
+              store or share your original content.
             </p>
           </div>
         </div>

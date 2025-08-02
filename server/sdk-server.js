@@ -1,6 +1,6 @@
 /**
  * GroqTales SDK Server
- * 
+ *
  * Dedicated server for SDK endpoints and developer integrations
  */
 
@@ -14,10 +14,12 @@ const PORT = process.env.PORT || 3002;
 
 // Security and middleware
 app.use(helmet());
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+    credentials: true,
+  })
+);
 app.use(compression());
 app.use(express.json({ limit: '10mb' }));
 

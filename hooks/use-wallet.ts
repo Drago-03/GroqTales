@@ -1,26 +1,27 @@
-"use client"
+'use client';
 
 import { useState, useEffect } from 'react';
+
 import { useToast } from '@/components/ui/use-toast';
 
-  export function useWallet() {
-  const [address, setAddress] = useState<string>("");
+export function useWallet() {
+  const [address, setAddress] = useState<string>('');
   const { toast } = useToast();
 
   useEffect(() => {
     const checkConnection = async () => {
-      if (typeof window.ethereum !== "undefined") {
+      if (typeof window.ethereum !== 'undefined') {
         try {
           const accounts = await window.ethereum.request({
-            method: "eth_accounts",
+            method: 'eth_accounts',
           });
           if (accounts.length > 0) {
             setAddress(accounts[0]);
-}
+          }
         } catch (error) {
-          console.error("Failed to check wallet connection:", error);
-}
-}
+          console.error('Failed to check wallet connection:', error);
+        }
+      }
     };
 
     checkConnection();
@@ -29,44 +30,47 @@ import { useToast } from '@/components/ui/use-toast';
       if (accounts.length > 0) {
         setAddress(accounts[0]);
         toast({
-          title: "Wallet Connected",
+          title: 'Wallet Connected',
           description: `Connected to ${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`,
         });
       } else {
-        setAddress("");
+        setAddress('');
         toast({
-          title: "Wallet Disconnected",
-          description: "Your wallet has been disconnected",
-          variant: "destructive",
+          title: 'Wallet Disconnected',
+          description: 'Your wallet has been disconnected',
+          variant: 'destructive',
         });
-}
+      }
     };
 
     if (window.ethereum) {
-      window.ethereum.on("accountsChanged", handleAccountsChanged);
-}
+      window.ethereum.on('accountsChanged', handleAccountsChanged);
+    }
     return () => {
       if (window.ethereum) {
-        window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
-}
+        window.ethereum.removeListener(
+          'accountsChanged',
+          handleAccountsChanged
+        );
+      }
     };
   }, [toast]);
 
   const connect = async () => {
-    if (typeof window.ethereum !== "undefined") {
+    if (typeof window.ethereum !== 'undefined') {
       try {
         const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
+          method: 'eth_requestAccounts',
         });
         setAddress(accounts[0]);
         return accounts[0];
       } catch (error) {
-        console.error("Failed to connect wallet:", error);
+        console.error('Failed to connect wallet:', error);
         throw error;
-}
+      }
     } else {
-      throw new Error("MetaMask not installed");
-}
+      throw new Error('MetaMask not installed');
+    }
   };
 
   return { address, connect };

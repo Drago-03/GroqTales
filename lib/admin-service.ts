@@ -1,4 +1,4 @@
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from '@/components/ui/use-toast';
 
 // Types
 interface AdminAction {
@@ -81,8 +81,8 @@ export async function performAdminAction(action: Omit<AdminAction, 'timestamp'>)
  * Get the admin's recent actions (for the dashboard)
  */
 export function getAdminActions(): AdminAction[] {
-  return [...adminActions].sort((a, b) => 
-    b.timestamp.getTime() - a.timestamp.getTime()
+  return [...adminActions].sort(
+    (a, b) => b.timestamp.getTime() - a.timestamp.getTime()
   );
 }
 /**
@@ -100,42 +100,42 @@ export function useAdminInteractions() {
   const likeStory = async (storyId: string) => {
     const success = await performAdminAction({
       type: 'like',
-      storyId
+      storyId,
     });
 
     if (success) {
       toast({
-        title: "Action successful",
-        description: "You liked this story as GroqTales admin"
+        title: 'Action successful',
+        description: 'You liked this story as GroqTales admin',
       });
     } else {
       toast({
-        variant: "destructive",
-        title: "Action failed",
-        description: "Could not like this story"
+        variant: 'destructive',
+        title: 'Action failed',
+        description: 'Could not like this story',
       });
-}
+    }
     return success;
   };
 
   const dislikeStory = async (storyId: string) => {
     const success = await performAdminAction({
       type: 'dislike',
-      storyId
+      storyId,
     });
 
     if (success) {
       toast({
-        title: "Action successful",
-        description: "You disliked this story as GroqTales admin"
+        title: 'Action successful',
+        description: 'You disliked this story as GroqTales admin',
       });
     } else {
       toast({
-        variant: "destructive",
-        title: "Action failed",
-        description: "Could not dislike this story"
+        variant: 'destructive',
+        title: 'Action failed',
+        description: 'Could not dislike this story',
       });
-}
+    }
     return success;
   };
 
@@ -143,63 +143,63 @@ export function useAdminInteractions() {
     const success = await performAdminAction({
       type: 'comment',
       storyId,
-      content
+      content,
     });
 
     if (success) {
       toast({
-        title: "Comment added",
-        description: "Your admin comment has been added"
+        title: 'Comment added',
+        description: 'Your admin comment has been added',
       });
     } else {
       toast({
-        variant: "destructive",
-        title: "Comment failed",
-        description: "Could not add your comment"
+        variant: 'destructive',
+        title: 'Comment failed',
+        description: 'Could not add your comment',
       });
-}
+    }
     return success;
   };
 
   const deleteStory = async (storyId: string) => {
     const success = await performAdminAction({
       type: 'delete',
-      storyId
+      storyId,
     });
 
     if (success) {
       toast({
-        title: "Story deleted",
-        description: "The story has been removed"
+        title: 'Story deleted',
+        description: 'The story has been removed',
       });
     } else {
       toast({
-        variant: "destructive",
-        title: "Delete failed",
-        description: "Could not delete the story"
+        variant: 'destructive',
+        title: 'Delete failed',
+        description: 'Could not delete the story',
       });
-}
+    }
     return success;
   };
 
   const createPost = async (content: string) => {
     const success = await performAdminAction({
       type: 'post',
-      content
+      content,
     });
 
     if (success) {
       toast({
-        title: "Post created",
-        description: "Your admin post has been published"
+        title: 'Post created',
+        description: 'Your admin post has been published',
       });
     } else {
       toast({
-        variant: "destructive",
-        title: "Post failed",
-        description: "Could not create your post"
+        variant: 'destructive',
+        title: 'Post failed',
+        description: 'Could not create your post',
       });
-}
+    }
     return success;
   };
 
@@ -211,6 +211,6 @@ export function useAdminInteractions() {
     dislikeStory,
     commentOnStory,
     deleteStory,
-    createPost
+    createPost,
   };
 }

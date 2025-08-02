@@ -1,45 +1,57 @@
-"use client";
+'use client';
 
-import React from "react";
+import { motion } from 'framer-motion';
+import {
+  ThumbsUp,
+  MessageSquare,
+  Eye,
+  TrendingUp,
+  BookOpen,
+  PenSquare,
+} from 'lucide-react';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
 
-
-import { useEffect, useState } from "react";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ThumbsUp, MessageSquare, Eye, TrendingUp, BookOpen, PenSquare } from "lucide-react";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import StoryCard from "@/components/story-card";
+import StoryCard from '@/components/story-card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 
 // Generate mock trending stories for the homepage
 const getMockTrendingStories = () => {
-  const genres = ["Science Fiction", "Fantasy", "Mystery", "Romance", "Horror"];
+  const genres = ['Science Fiction', 'Fantasy', 'Mystery', 'Romance', 'Horror'];
   const titles = [
-    "The Last Memory Collector",
-    "Whispers of the Ancient Forest",
-    "Neon Dreams in the Digital Age",
+    'The Last Memory Collector',
+    'Whispers of the Ancient Forest',
+    'Neon Dreams in the Digital Age',
     "The Time Traveler's Daughter",
-    "Echoes of Tomorrow",
-    "The Silent Symphony"
+    'Echoes of Tomorrow',
+    'The Silent Symphony',
   ];
 
   return Array.from({ length: 6 }, (_, i) => ({
     id: `story-${i + 1}`,
     title: titles[i],
     author: {
-      name: ["Emily Johnson", "Michael Chen", "Sarah Williams", "David Rodriguez", "Olivia Taylor", "James Wilson"][i],
-      avatar: `https://api.dicebear.com/7.x/personas/svg?seed=person${i + 1}`
+      name: [
+        'Emily Johnson',
+        'Michael Chen',
+        'Sarah Williams',
+        'David Rodriguez',
+        'Olivia Taylor',
+        'James Wilson',
+      ][i],
+      avatar: `https://api.dicebear.com/7.x/personas/svg?seed=person${i + 1}`,
     },
     genre: genres[Math.floor(Math.random() * genres.length)],
     likes: Math.floor(Math.random() * 500) + 100,
     comments: Math.floor(Math.random() * 50) + 10,
     views: Math.floor(Math.random() * 5000) + 1000,
-    coverImage: `https://picsum.photos/seed/${i + 1}/800/600`
+    coverImage: `https://picsum.photos/seed/${i + 1}/800/600`,
   }));
 };
 
-  export function TrendingStories() {
+export function TrendingStories() {
   const [stories, setStories] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -56,7 +68,7 @@ const getMockTrendingStories = () => {
     // Direct navigation with URL parameters
     if (typeof window !== 'undefined') {
       window.location.href = `/create/ai-story?source=trending&genre=${encodeURIComponent(genre)}&format=nft`;
-}
+    }
   };
 
   return (
@@ -79,7 +91,7 @@ const getMockTrendingStories = () => {
                 View All
               </Button>
             </Link>
-            <Button 
+            <Button
               onClick={() => handleCreateSimilar('fantasy')}
               className="theme-gradient-bg text-white"
             >
@@ -109,16 +121,13 @@ const getMockTrendingStories = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
-                whileHover={{ 
-                  y: -5, 
-                  transition: { duration: 0.2 } 
+                whileHover={{
+                  y: -5,
+                  transition: { duration: 0.2 },
                 }}
                 className="h-full"
               >
-                <StoryCard 
-                  story={story} 
-                  showCreateButton={true}
-                />
+                <StoryCard story={story} showCreateButton={true} />
               </motion.div>
             ))}
           </div>

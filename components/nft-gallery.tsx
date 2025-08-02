@@ -1,10 +1,16 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useState, useEffect } from "react";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Loader2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 interface Story {
   id: string;
@@ -16,7 +22,7 @@ interface Story {
   price: number;
   salesCount: number;
 }
-  export function NFTGallery() {
+export function NFTGallery() {
   const [stories, setStories] = useState<Story[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -26,18 +32,21 @@ interface Story {
 
   const fetchStories = async () => {
     try {
-      const response = await fetch("/api/stories");
+      const response = await fetch('/api/stories');
       const data = await response.json();
       setStories(data);
     } catch (error) {
-      console.error("Failed to fetch stories:", error);
+      console.error('Failed to fetch stories:', error);
     } finally {
       setIsLoading(false);
-}
+    }
   };
 
   // Add a filter for best sellers based on a hypothetical salesCount property
-  const bestSellers = stories?.filter(story => story.salesCount > 0).sort((a, b) => b.salesCount - a.salesCount) || [];
+  const bestSellers =
+    stories
+      ?.filter((story) => story.salesCount > 0)
+      .sort((a, b) => b.salesCount - a.salesCount) || [];
 
   if (isLoading) {
     return (
@@ -45,7 +54,7 @@ interface Story {
         <Loader2 className="h-8 w-8 animate-spin" />
       </div>
     );
-}
+  }
   return (
     <div className="flex flex-col gap-6 px-2 py-6 max-w-7xl mx-auto">
       <h2 className="text-2xl font-bold text-foreground pl-2">NFT Gallery</h2>
@@ -65,9 +74,15 @@ interface Story {
                 <p className="line-clamp-3">{story.content}</p>
               </CardContent>
               <CardFooter className="flex justify-between items-center">
-                <span className="text-sm text-muted-foreground">By {story.author}</span>
-                <span className="text-sm font-medium">Price: {story.price} ETH</span>
-                <Button variant="outline" size="sm">View Details</Button>
+                <span className="text-sm text-muted-foreground">
+                  By {story.author}
+                </span>
+                <span className="text-sm font-medium">
+                  Price: {story.price} ETH
+                </span>
+                <Button variant="outline" size="sm">
+                  View Details
+                </Button>
               </CardFooter>
             </Card>
           ))

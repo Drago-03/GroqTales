@@ -1,11 +1,14 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-  export function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
 
   // Only process admin routes
-  if (pathname.startsWith('/admin/dashboard') || pathname.startsWith('/admin/settings')) {
+  if (
+    pathname.startsWith('/admin/dashboard') ||
+    pathname.startsWith('/admin/settings')
+  ) {
     // Check for admin session token in URL first (most reliable)
     const sessionTokenInUrl = searchParams.get('sessionToken');
 
@@ -32,13 +35,17 @@ import type { NextRequest } from 'next/server';
       });
 
       return response;
-}
+    }
     // If no token in URL, check for cookie
     const adminSessionCookie = request.cookies.get('adminSessionActive');
     const adminSessionToken = request.cookies.get('adminSessionToken');
 
     // If no admin session, redirect to login
-    if (!adminSessionCookie || adminSessionCookie.value !== 'true' || !adminSessionToken) {
+    if (
+      !adminSessionCookie ||
+      adminSessionCookie.value !== 'true' ||
+      !adminSessionToken
+    ) {
       const url = request.nextUrl.clone();
       url.pathname = '/admin/login';
 
@@ -46,7 +53,7 @@ import type { NextRequest } from 'next/server';
       url.searchParams.set('returnUrl', pathname);
 
       return NextResponse.redirect(url);
-}
+    }
     // If admin session is valid, ensure it persists by extending the cookie
     const response = NextResponse.next();
 
@@ -70,11 +77,11 @@ import type { NextRequest } from 'next/server';
     });
 
     return response;
-}
+  }
   // Return for all other paths
   return NextResponse.next();
 }
 export const config = {
   // Only run middleware on admin routes
-  matcher: ['/admin/:path*']
-}; 
+  matcher: ['/admin/:path*'],
+};

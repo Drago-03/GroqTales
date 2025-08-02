@@ -11,9 +11,5 @@ function MockMiniKitProvider({ children }: { children: ReactNode }) {
 }
 
 export function Providers(props: { children: ReactNode }) {
-  return (
-    <MockMiniKitProvider>
-      {props.children}
-    </MockMiniKitProvider>
-  );
+  return <MockMiniKitProvider>{props.children}</MockMiniKitProvider>;
 }

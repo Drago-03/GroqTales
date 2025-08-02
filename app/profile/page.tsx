@@ -1,19 +1,10 @@
-"use client";
+'use client';
 
-import React from "react";
-
-
-import Link from "next/link";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
-  Settings, 
-  BookOpen, 
-  Bookmark, 
-  Activity, 
+import {
+  Settings,
+  BookOpen,
+  Bookmark,
+  Activity,
   CheckCircle2,
   Users,
   Wallet,
@@ -21,39 +12,53 @@ import {
   Eye,
   Heart,
   Github,
-  MessageSquare
-} from "lucide-react";
+  MessageSquare,
+} from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 // Sample user data
 const userData = {
-  name: "Alex Thompson",
-  username: "@alexstoryteller",
-  avatar: "/avatars/alex.jpg",
-  bio: "Web3 storyteller exploring the intersection of AI and blockchain. Creating unique narrative experiences one story at a time.",
-  joinDate: "March 2024",
+  name: 'Alex Thompson',
+  username: '@alexstoryteller',
+  avatar: '/avatars/alex.jpg',
+  bio: 'Web3 storyteller exploring the intersection of AI and blockchain. Creating unique narrative experiences one story at a time.',
+  joinDate: 'March 2024',
   isVerified: true,
   storiesCount: 15,
   followers: 1240,
   following: 384,
-  walletAddress: "0x1234...5678",
-  badges: ["Top Creator", "Early Adopter", "Story Master"],
-  favoriteGenres: ["Science Fiction", "Fantasy", "Mystery"],
+  walletAddress: '0x1234...5678',
+  badges: ['Top Creator', 'Early Adopter', 'Story Master'],
+  favoriteGenres: ['Science Fiction', 'Fantasy', 'Mystery'],
   totalViews: 25600,
-  totalLikes: 3200
+  totalLikes: 3200,
 };
 
 // Sample story data
 const userStories = [
   {
     id: 1,
-    title: "The Last Algorithm",
-    excerpt: "In a world where AI has evolved beyond human comprehension...",
-    coverImage: "/stories/algorithm-cover.jpg",
-    date: "2 days ago",
-    genre: "Science Fiction",
+    title: 'The Last Algorithm',
+    excerpt: 'In a world where AI has evolved beyond human comprehension...',
+    coverImage: '/stories/algorithm-cover.jpg',
+    date: '2 days ago',
+    genre: 'Science Fiction',
     likes: 342,
     comments: 28,
-    isNFT: true
+    isNFT: true,
   },
   // ... more stories
 ];
@@ -61,21 +66,21 @@ const userStories = [
 const savedStories = [
   {
     id: 1,
-    title: "Echoes of Tomorrow",
-    excerpt: "The quantum resonance chamber hummed with possibility...",
-    coverImage: "/stories/echoes-cover.jpg",
-    date: "1 week ago",
-    genre: "Science Fiction",
+    title: 'Echoes of Tomorrow',
+    excerpt: 'The quantum resonance chamber hummed with possibility...',
+    coverImage: '/stories/echoes-cover.jpg',
+    date: '1 week ago',
+    genre: 'Science Fiction',
     likes: 567,
     comments: 45,
-    isNFT: true
+    isNFT: true,
   },
   // ... more stories
 ];
 
 // Floating GitHub button component
 const FloatingGithub = () => (
-  <Link 
+  <Link
     href="https://github.com/Drago-03/GroqTales.git"
     target="_blank"
     className="fixed bottom-24 right-6 p-3 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-50"
@@ -98,15 +103,13 @@ const StoryCard = ({ story }: any) => (
   <Card className="overflow-hidden hover:shadow-lg transition-shadow">
     <div className="aspect-video relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
-      <img 
-        src={story.coverImage} 
+      <img
+        src={story.coverImage}
         alt={story.title}
         className="w-full h-full object-cover"
       />
       {story.isNFT && (
-        <Badge className="absolute top-2 right-2 z-20">
-          NFT
-        </Badge>
+        <Badge className="absolute top-2 right-2 z-20">NFT</Badge>
       )}
     </div>
     <CardContent className="p-4">
@@ -150,7 +153,9 @@ export default function ProfilePage() {
                     <CheckCircle2 className="w-5 h-5 text-primary" />
                   )}
                 </div>
-                <p className="text-muted-foreground mb-4">{userData.username}</p>
+                <p className="text-muted-foreground mb-4">
+                  {userData.username}
+                </p>
                 <p className="text-sm mb-4">{userData.bio}</p>
                 <div className="flex flex-wrap gap-2">
                   {userData.badges.map((badge) => (
@@ -267,7 +272,9 @@ export default function ProfilePage() {
             <Card>
               <CardHeader>
                 <CardTitle>Recent Activity</CardTitle>
-                <CardDescription>Your latest interactions on the platform</CardDescription>
+                <CardDescription>
+                  Your latest interactions on the platform
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 {/* Activity feed would go here */}

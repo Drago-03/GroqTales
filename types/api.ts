@@ -249,7 +249,12 @@ export interface StoryNFT extends BaseEntity {
   updatedAt: Date;
 }
 
-export type BlockchainNetwork = 'ethereum' | 'polygon' | 'base' | 'monad' | 'arbitrum';
+export type BlockchainNetwork =
+  | 'ethereum'
+  | 'polygon'
+  | 'base'
+  | 'monad'
+  | 'arbitrum';
 
 export interface NFTMetadata {
   name: string;
@@ -264,7 +269,12 @@ export interface NFTMetadata {
 export interface NFTAttribute {
   traitType: string;
   value: string | number;
-  displayType?: 'string' | 'number' | 'boost_number' | 'boost_percentage' | 'date';
+  displayType?:
+    | 'string'
+    | 'number'
+    | 'boost_number'
+    | 'boost_percentage'
+    | 'date';
 }
 
 export interface NFTProperties {
@@ -277,7 +287,13 @@ export interface NFTProperties {
   transferable: boolean;
 }
 
-export type NFTRarity = 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary' | 'mythic';
+export type NFTRarity =
+  | 'common'
+  | 'uncommon'
+  | 'rare'
+  | 'epic'
+  | 'legendary'
+  | 'mythic';
 
 export interface NFTOwnership {
   currentOwner: string;
@@ -345,7 +361,7 @@ export interface Activity extends BaseEntity {
   createdAt: Date;
 }
 
-export type ActivityType = 
+export type ActivityType =
   | 'story_created'
   | 'story_published'
   | 'story_liked'
@@ -373,7 +389,12 @@ export interface Comment extends BaseEntity {
   updatedAt: Date;
 }
 
-export type CommentStatus = 'active' | 'edited' | 'deleted' | 'hidden' | 'flagged';
+export type CommentStatus =
+  | 'active'
+  | 'edited'
+  | 'deleted'
+  | 'hidden'
+  | 'flagged';
 
 export interface CommentStats {
   likes: number;
@@ -414,7 +435,7 @@ export interface DateRange {
   to: Date;
 }
 
-export type SortField = 
+export type SortField =
   | 'createdAt'
   | 'updatedAt'
   | 'publishedAt'
@@ -432,5 +453,3 @@ export type SortOrder = 'asc' | 'desc';
 export type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 export type RequiredFields<T, K extends keyof T> = T & Required<Pick<T, K>>;
 export type PartialExcept<T, K extends keyof T> = Partial<T> & Pick<T, K>;
-
-

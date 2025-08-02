@@ -1,23 +1,27 @@
-"use client";
+'use client';
 
-import React from "react";
+import { Loader2 } from 'lucide-react';
+import React, { useState } from 'react';
 
-
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 
 interface TextStoryFormProps {
   onSuccess: () => void;
 }
-  export function TextStoryForm({ onSuccess }: TextStoryFormProps) {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [genre, setGenre] = useState("");
+export function TextStoryForm({ onSuccess }: TextStoryFormProps) {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [genre, setGenre] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,13 +30,13 @@ interface TextStoryFormProps {
 
     try {
       // TODO: Implement story submission
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated API call
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
       onSuccess();
     } catch (error) {
-      console.error("Failed to submit story:", error);
+      console.error('Failed to submit story:', error);
     } finally {
       setIsSubmitting(false);
-}
+    }
   };
 
   return (
@@ -79,14 +83,18 @@ interface TextStoryFormProps {
         />
       </div>
 
-      <Button type="submit" disabled={!title || !content || !genre || isSubmitting} className="w-full">
+      <Button
+        type="submit"
+        disabled={!title || !content || !genre || isSubmitting}
+        className="w-full"
+      >
         {isSubmitting ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             Submitting...
           </>
         ) : (
-          "Submit Story"
+          'Submit Story'
         )}
       </Button>
     </form>

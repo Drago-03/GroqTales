@@ -1,8 +1,8 @@
-import { useAccount, useConnect, useDisconnect, useSignMessage } from 'wagmi';
-import { SiweMessage } from 'siwe';
 import { useState } from 'react';
+import { SiweMessage } from 'siwe';
+import { useAccount, useConnect, useDisconnect, useSignMessage } from 'wagmi';
 
-  export function useWeb3Auth() {
+export function useWeb3Auth() {
   const { address, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
@@ -42,11 +42,11 @@ import { useState } from 'react';
 
       return await response.json();
     } catch (error) {
-      console.error('Failed to sign in:', error);
+      if (process.env.NODE_ENV === "development") console.error('Failed to sign in:', error);
       throw error;
     } finally {
       setIsSigningIn(false);
-}
+    }
   };
 
   const generateNonce = async () => {

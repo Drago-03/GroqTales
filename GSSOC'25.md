@@ -12,24 +12,29 @@
 
 ## 🚀 Welcome, GSSOC'25 Contributors!
 
-Thank you for choosing GroqTales as your open-source project for **GirlScript Summer of Code 2025**! We’re thrilled to have you on board and can’t wait to build something amazing together.
+Thank you for choosing GroqTales as your open-source project for **GirlScript Summer of Code 2025**!
+We’re thrilled to have you on board and can’t wait to build something amazing together.
 
 ---
 
 ## 📚 About GSSOC'25
 
-GirlScript Summer of Code (GSSOC) is a three-month-long open-source program by [GirlScript Foundation](https://girlscript.tech/) that encourages students to contribute to real-world projects, learn collaboratively, and grow their technical and teamwork skills.
+GirlScript Summer of Code (GSSOC) is a three-month-long open-source program by
+[GirlScript Foundation](https://girlscript.tech/) that encourages students to contribute to
+real-world projects, learn collaboratively, and grow their technical and teamwork skills.
 
 ---
 
 ## 📝 Getting Started
 
-1. **Read the [Contributing Guide](./CONTRIBUTING.md)**
-   <br>Understand our workflow, coding standards, and how to use issue templates and labels.
+1. **Read the [Contributing Guide](./CONTRIBUTING.md)** <br>Understand our workflow, coding
+   standards, and how to use issue templates and labels.
 
 2. **Join our Community:**
-   - [Discord Server](https://discord.gg/JK29FZRm) – For real-time help, project discussions, and team announcements.
-   - [GitHub Discussions](https://github.com/Drago-03/GroqTales/discussions) – For questions, ideas, and collaboration.
+   - [Discord Server](https://discord.gg/JK29FZRm) – For real-time help, project discussions, and
+     team announcements.
+   - [GitHub Discussions](https://github.com/Drago-03/GroqTales/discussions) – For questions, ideas,
+     and collaboration.
 
 3. **Find Issues:**
    - Look for issues labeled with:<br>
@@ -47,20 +52,22 @@ GirlScript Summer of Code (GSSOC) is a three-month-long open-source program by [
 
 4. **Use Issue & PR Templates:**
    - Always use the required templates when opening an issue or pull request.
-   - Tag your PR with `GSSOC'25` and other relevant labels (e.g., `frontend`, `backend`, `bug`, `feature`, `medium`, `hard`).
+   - Tag your PR with `GSSOC'25` and other relevant labels (e.g., `frontend`, `backend`, `bug`,
+     `feature`, `medium`, `hard`).
 
 ---
 
 ## 💡 Project Ideas
 
-- **Main project ideas and tasks will be released soon!**
-  <br>Keep an eye on the Issues tab and our Discord for announcements.
+- **Main project ideas and tasks will be released soon!** <br>Keep an eye on the Issues tab and our
+  Discord for announcements.
 
 ---
 
 ## 🏆 Recognition & Rewards
 
-- All accepted contributors will be listed in the [Contributors](./CONTRIBUTORS.md) section and on our project site.
+- All accepted contributors will be listed in the [Contributors](./CONTRIBUTORS.md) section and on
+  our project site.
 - Outstanding contributions may be featured in the community and considered for special shout-outs.
 
 ---

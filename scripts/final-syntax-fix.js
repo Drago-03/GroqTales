@@ -10,18 +10,22 @@ console.log('🔧 Final comprehensive syntax error fix...\n');
 function findAllFiles(dir, extensions = ['.ts', '.tsx']) {
   let results = [];
   const files = fs.readdirSync(dir);
-  
+
   for (const file of files) {
     const filePath = path.join(dir, file);
     const stat = fs.statSync(filePath);
-    
-    if (stat.isDirectory() && !file.startsWith('.') && file !== 'node_modules') {
+
+    if (
+      stat.isDirectory() &&
+      !file.startsWith('.') &&
+      file !== 'node_modules'
+    ) {
       results = results.concat(findAllFiles(filePath, extensions));
-    } else if (extensions.some(ext => file.endsWith(ext))) {
+    } else if (extensions.some((ext) => file.endsWith(ext))) {
       results.push(filePath);
     }
   }
-  
+
   return results;
 }
 
@@ -29,7 +33,7 @@ function findAllFiles(dir, extensions = ['.ts', '.tsx']) {
 function fixCriticalSyntaxErrors(filePath) {
   try {
     if (!fs.existsSync(filePath)) return false;
-    
+
     let content = fs.readFileSync(filePath, 'utf8');
     let modified = false;
     const originalContent = content;
@@ -42,12 +46,16 @@ function fixCriticalSyntaxErrors(filePath) {
 
     // 2. Fix misplaced "use client" directives
     if (content.match(/import.*?\n"use client";/)) {
-      content = content.replace(/(import.*?\n)"use client";(\s*\n)/, '"use client";\n\n$1$2');
+      content = content.replace(
+        /(import.*?\n)"use client";(\s*\n)/,
+        '"use client";\n\n$1$2'
+      );
       modified = true;
     }
 
     // 3. Fix duplicate React imports
-    const reactImportPattern = /import React from ["']react["'];\s*\n.*?import \* as React from ['"]react['"];/;
+    const reactImportPattern =
+      /import React from ["']react["'];\s*\n.*?import \* as React from ['"]react['"];/;
     if (content.match(reactImportPattern)) {
       content = content.replace(/import React from ["']react["'];\s*\n/, '');
       modified = true;
@@ -55,14 +63,20 @@ function fixCriticalSyntaxErrors(filePath) {
 
     // 4. Fix malformed function declarations (missing function keyword)
     const malformedFunctionPattern = /^(\s*)(\w+)\s*\(([^)]*)\)\s*\{/gm;
-    content = content.replace(malformedFunctionPattern, (match, indent, name, params) => {
-      // Skip if it's already a proper function declaration or method
-      if (content.includes(`function ${name}`) || content.includes(`${name}:`)) {
-        return match;
+    content = content.replace(
+      malformedFunctionPattern,
+      (match, indent, name, params) => {
+        // Skip if it's already a proper function declaration or method
+        if (
+          content.includes(`function ${name}`) ||
+          content.includes(`${name}:`)
+        ) {
+          return match;
+        }
+        modified = true;
+        return `${indent}function ${name}(${params}) {`;
       }
-      modified = true;
-      return `${indent}function ${name}(${params}) {`;
-    });
+    );
 
     // 5. Fix missing closing braces in objects/functions
     const openBraces = (content.match(/\{/g) || []).length;
@@ -88,7 +102,9 @@ function fixCriticalSyntaxErrors(filePath) {
 
     if (modified) {
       fs.writeFileSync(filePath, content);
-      console.log(`  ✅ Fixed syntax errors in ${path.relative(process.cwd(), filePath)}`);
+      console.log(
+        `  ✅ Fixed syntax errors in ${path.relative(process.cwd(), filePath)}`
+      );
       return true;
     }
 
@@ -121,7 +137,9 @@ try {
   execSync('npx tsc --noEmit --skipLibCheck', { stdio: 'pipe' });
   console.log('✅ TypeScript syntax check passed!');
 } catch (error) {
-  console.log('⚠️  Some TypeScript errors remain (this is expected for missing modules)');
+  console.log(
+    '⚠️  Some TypeScript errors remain (this is expected for missing modules)'
+  );
 }
 
 console.log('\n🚀 Ready to test build!');

@@ -1,15 +1,25 @@
-"use client";
+'use client';
 
-import React from "react";
+import {
+  Github,
+  Wallet,
+  ArrowRight,
+  BookOpen,
+  Sparkles,
+  Users,
+  Shield,
+  DollarSign,
+  MessageSquare,
+  Check,
+  Trophy,
+} from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
 
-
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { LoadingAnimation } from "@/components/loading-animation";
-import { Github, Wallet, ArrowRight, BookOpen, Sparkles, Users, Shield, DollarSign, MessageSquare, Check, Trophy } from "lucide-react";
+import { LoadingAnimation } from '@/components/loading-animation';
+import { Button } from '@/components/ui/button';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -33,7 +43,9 @@ export default function LandingPage() {
       // Check if MetaMask is installed
       if (typeof window.ethereum !== 'undefined') {
         // Request account access
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const accounts = await window.ethereum.request({
+          method: 'eth_requestAccounts',
+        });
         setAccount(accounts[0]);
 
         // Redirect to home page after successful login
@@ -42,13 +54,13 @@ export default function LandingPage() {
         }, 1000);
       } else {
         alert('Please install MetaMask to use this feature!');
-}
+      }
     } catch (error) {
       console.error('Error connecting to MetaMask', error);
       alert('Failed to connect to MetaMask.');
     } finally {
       setIsConnecting(false);
-}
+    }
   };
 
   // Loading screen
@@ -64,7 +76,7 @@ export default function LandingPage() {
         <LoadingAnimation message="Welcome to GroqTales" />
       </div>
     );
-}
+  }
   return (
     <div className="min-h-screen flex flex-col">
       {/* Floating doodles */}
@@ -78,21 +90,32 @@ export default function LandingPage() {
       <main className="flex-1 container mx-auto px-4 py-20 flex flex-col lg:flex-row items-center justify-between relative z-10">
         <div className="lg:w-1/2 mb-12 lg:mb-0">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-            Share Your Stories in the <span className="gradient-heading">Web3</span> Era
+            Share Your Stories in the{' '}
+            <span className="gradient-heading">Web3</span> Era
           </h1>
           <p className="text-lg text-muted-foreground mb-8 max-w-lg">
-            GroqTales is a decentralized platform where storytellers can create, share, and monetize their content through NFTs.
+            GroqTales is a decentralized platform where storytellers can create,
+            share, and monetize their content through NFTs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             {account ? (
-              <Button size="lg" className="theme-gradient-bg text-white border-0 hover:opacity-90" asChild>
+              <Button
+                size="lg"
+                className="theme-gradient-bg text-white border-0 hover:opacity-90"
+                asChild
+              >
                 <Link href="/">
                   <ArrowRight className="mr-2 h-5 w-5" />
                   Enter App
                 </Link>
               </Button>
             ) : (
-              <Button size="lg" onClick={connectWallet} disabled={isConnecting} className="theme-gradient-bg text-white border-0 hover:opacity-90">
+              <Button
+                size="lg"
+                onClick={connectWallet}
+                disabled={isConnecting}
+                className="theme-gradient-bg text-white border-0 hover:opacity-90"
+              >
                 {isConnecting ? (
                   <LoadingAnimation message="Connecting..." />
                 ) : (
@@ -118,7 +141,9 @@ export default function LandingPage() {
               <div className="aspect-[4/3] relative mb-4 overflow-hidden rounded-md bg-muted">
                 <div className="absolute inset-0 theme-gradient-bg opacity-20"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xl text-muted-foreground">Story Preview</span>
+                  <span className="text-xl text-muted-foreground">
+                    Story Preview
+                  </span>
                 </div>
               </div>
               <div className="space-y-2">
@@ -142,7 +167,9 @@ export default function LandingPage() {
       {/* Features section */}
       <section className="bg-muted/30 py-20 relative z-10">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 gradient-heading">Key Features</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 gradient-heading">
+            Key Features
+          </h2>
 
           {/* Animated Feature Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 animate-features">
@@ -150,8 +177,13 @@ export default function LandingPage() {
               <div className="w-12 h-12 mb-4 rounded-full theme-gradient-bg opacity-80 flex items-center justify-center">
                 <BookOpen className="h-6 w-6 text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Decentralized Stories</h3>
-              <p className="text-muted-foreground">Create and share your stories on a decentralized platform that you own.</p>
+              <h3 className="text-xl font-semibold mb-2">
+                Decentralized Stories
+              </h3>
+              <p className="text-muted-foreground">
+                Create and share your stories on a decentralized platform that
+                you own.
+              </p>
             </div>
 
             <div className="bg-card border border-border p-6 rounded-lg shadow-sm transform hover:scale-105 transition-transform duration-300">
@@ -159,7 +191,10 @@ export default function LandingPage() {
                 <Wallet className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-2">NFT Integration</h3>
-              <p className="text-muted-foreground">Turn your best stories into NFTs and monetize your creative work.</p>
+              <p className="text-muted-foreground">
+                Turn your best stories into NFTs and monetize your creative
+                work.
+              </p>
             </div>
 
             <div className="bg-card border border-border p-6 rounded-lg shadow-sm transform hover:scale-105 transition-transform duration-300">
@@ -167,7 +202,10 @@ export default function LandingPage() {
                 <ArrowRight className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Community Access</h3>
-              <p className="text-muted-foreground">Browse stories anonymously or connect with wallet for full features.</p>
+              <p className="text-muted-foreground">
+                Browse stories anonymously or connect with wallet for full
+                features.
+              </p>
             </div>
           </div>
 
@@ -178,15 +216,23 @@ export default function LandingPage() {
                 <Sparkles className="h-5 w-5 text-white" />
               </div>
               <h4 className="text-lg font-semibold mb-2">AI-Powered Writing</h4>
-              <p className="text-sm text-muted-foreground">Get creative suggestions and overcome writer's block with AI assistance.</p>
+              <p className="text-sm text-muted-foreground">
+                Get creative suggestions and overcome writer's block with AI
+                assistance.
+              </p>
             </div>
 
             <div className="bg-card border border-border p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
               <div className="w-10 h-10 mb-3 rounded-full theme-gradient-bg opacity-80 flex items-center justify-center">
                 <Users className="h-5 w-5 text-white" />
               </div>
-              <h4 className="text-lg font-semibold mb-2">Collaborative Writing</h4>
-              <p className="text-sm text-muted-foreground">Create stories together with other writers in real-time collaboration.</p>
+              <h4 className="text-lg font-semibold mb-2">
+                Collaborative Writing
+              </h4>
+              <p className="text-sm text-muted-foreground">
+                Create stories together with other writers in real-time
+                collaboration.
+              </p>
             </div>
 
             <div className="bg-card border border-border p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
@@ -194,7 +240,9 @@ export default function LandingPage() {
                 <Shield className="h-5 w-5 text-white" />
               </div>
               <h4 className="text-lg font-semibold mb-2">Rights Protection</h4>
-              <p className="text-sm text-muted-foreground">Protect your intellectual property with blockchain verification.</p>
+              <p className="text-sm text-muted-foreground">
+                Protect your intellectual property with blockchain verification.
+              </p>
             </div>
 
             <div className="bg-card border border-border p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
@@ -202,7 +250,9 @@ export default function LandingPage() {
                 <DollarSign className="h-5 w-5 text-white" />
               </div>
               <h4 className="text-lg font-semibold mb-2">Multiple Revenue</h4>
-              <p className="text-sm text-muted-foreground">Earn through NFT sales, tips, subscriptions, and royalties.</p>
+              <p className="text-sm text-muted-foreground">
+                Earn through NFT sales, tips, subscriptions, and royalties.
+              </p>
             </div>
           </div>
 
@@ -255,26 +305,44 @@ export default function LandingPage() {
         {/* Add styles for animations */}
         <style jsx>{`
           @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-}
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
           @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-}
+            from {
+              opacity: 0;
+              transform: translateY(40px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
           .animate-features > div {
             animation: fadeIn 0.6s ease-out forwards;
-}
-          .animate-features > div:nth-child(1) { animation-delay: 0.2s; }
-          .animate-features > div:nth-child(2) { animation-delay: 0.4s; }
-          .animate-features > div:nth-child(3) { animation-delay: 0.6s; }
+          }
+          .animate-features > div:nth-child(1) {
+            animation-delay: 0.2s;
+          }
+          .animate-features > div:nth-child(2) {
+            animation-delay: 0.4s;
+          }
+          .animate-features > div:nth-child(3) {
+            animation-delay: 0.6s;
+          }
 
           .animate-fade-in {
             animation: fadeIn 0.8s ease-out 0.8s forwards;
-}
+          }
           .animate-slide-up {
             animation: slideUp 0.8s ease-out 1s forwards;
-}
+          }
         `}</style>
       </section>
     </div>

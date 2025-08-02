@@ -31,28 +31,37 @@
 
 ## 🚀 What is GroqTales?
 
-GroqTales is an open-source, AI-powered Web3 storytelling platform. Writers and artists can generate immersive narratives or comic-style stories using Groq AI, then mint and trade them as NFTs on the Monad blockchain. With a focus on ownership, authenticity, and community, GroqTales bridges the world of creative writing, generative AI, and decentralized technology.
+GroqTales is an open-source, AI-powered Web3 storytelling platform. Writers and artists can generate
+immersive narratives or comic-style stories using Groq AI, then mint and trade them as NFTs on the
+Monad blockchain. With a focus on ownership, authenticity, and community, GroqTales bridges the
+world of creative writing, generative AI, and decentralized technology.
 
 ---
 
 ## 🌟 Features
 
 - **AI-Driven Story & Comic Generation**  
-  Use Groq AI to generate stories or comic panel outlines by specifying title, genre, setting, characters, and themes. Both text and comic formats are supported.
+  Use Groq AI to generate stories or comic panel outlines by specifying title, genre, setting,
+  characters, and themes. Both text and comic formats are supported.
 - **NFT Minting on Monad Blockchain**  
-  Seamlessly mint your stories as NFTs on Monad (Testnet live, Mainnet coming soon). Each NFT proves authenticity, ownership, and collectibility.
+  Seamlessly mint your stories as NFTs on Monad (Testnet live, Mainnet coming soon). Each NFT proves
+  authenticity, ownership, and collectibility.
 - **Community Gallery**  
-  Publish your stories publicly, browse the gallery, and interact with other creators. Stories can be shared freely or as NFTs.
+  Publish your stories publicly, browse the gallery, and interact with other creators. Stories can
+  be shared freely or as NFTs.
 - **Customizable Prompts & Creativity Levels**  
-  Fine-tune AI output by adjusting prompts, genres, outlines, and creativity settings to match your vision.
+  Fine-tune AI output by adjusting prompts, genres, outlines, and creativity settings to match your
+  vision.
 - **Wallet Integration**  
-  Connect with MetaMask, WalletConnect, or Ledger for secure publishing and minting. Wallet is required for NFT actions.
+  Connect with MetaMask, WalletConnect, or Ledger for secure publishing and minting. Wallet is
+  required for NFT actions.
 - **Real-Time Story Streaming**  
   Watch your story unfold in real-time as Groq AI generates each segment.
 - **Mobile-Friendly & Responsive UI**  
   Built with modern web technologies for a seamless experience on any device.
 - **Extensible & Open Source**  
-  Modular codebase with clear separation of frontend, backend, and smart contract logic. Contributions are welcome!
+  Modular codebase with clear separation of frontend, backend, and smart contract logic.
+  Contributions are welcome!
 
 ---
 
@@ -82,13 +91,14 @@ npm run dev
 2. Connect your wallet (optional; required for minting/publishing)
 3. Generate your story → Publish or Mint as NFT
 
-See the [Wiki](https://github.com/Drago-03/GroqTales/wiki) for configuration, environment variables, and deployment details.
+See the [Wiki](https://github.com/Drago-03/GroqTales/wiki) for configuration, environment variables,
+and deployment details.
 
 ---
 
 ## 🧑‍💻 For Developers
 
-- **Folder Structure:**  
+- **Folder Structure:**
   - `/app` – Next.js application (pages, UI, routes)
   - `/components` – Reusable React components
   - `/contracts` – Solidity smart contracts for NFT minting
@@ -97,25 +107,26 @@ See the [Wiki](https://github.com/Drago-03/GroqTales/wiki) for configuration, en
   - `/test` and `/tests` – Test scripts and sample data
   - `/scripts` – Automation and deployment scripts
 
-- **Environment Variables:**  
+- **Environment Variables:**
   - `GROQ_API_KEY` – Your Groq AI API key
   - `UNSPLASH_API_KEY` – (Optional) for placeholder visuals
   - `MONAD_RPC_URL` – Monad blockchain RPC endpoint
 
-- **Smart Contract Deployment:**  
+- **Smart Contract Deployment:**
   - Contracts are written in Solidity and can be deployed to Monad Testnet/Mainnet.
   - See `/contracts` and `/scripts` for deployment instructions.
 
-- **Extending AI Models:**  
+- **Extending AI Models:**
   - AI logic is modular—add support for new models or prompt types in `/lib` and `/components`.
 
-- **Testing:**  
+- **Testing:**
   - Frontend: Use Jest/React Testing Library.
   - Smart Contracts: Use Hardhat/Foundry for Solidity tests.
 
-- **Contributions:**  
+- **Contributions:**
   - Issues are tagged by difficulty, area, and technology for easy onboarding.
-  - Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [CONTRIBUTORS.md](CONTRIBUTORS.md) before submitting PRs.
+  - Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [CONTRIBUTORS.md](CONTRIBUTORS.md) before
+    submitting PRs.
 
 ---
 
@@ -125,6 +136,7 @@ GroqTales is community-powered!
 We welcome all contributions—whether you're a developer, designer, writer, or blockchain enthusiast.
 
 **How You Can Help:**
+
 - Tackle issues labeled `good first issue` (great for newcomers)
 - Enhance story-generation logic, outlines, or UI design
 - Add support for new AI models or blockchains
@@ -133,6 +145,7 @@ We welcome all contributions—whether you're a developer, designer, writer, or 
 - Write or improve documentation and tests
 
 **What’s in It for You:**
+
 - Build your open-source portfolio
 - Feature your work in the contributors section
 - Community recognition and GitHub Sponsors eligibility
@@ -154,7 +167,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## 👥 Contributors
 
-We value every contribution! Please read our [CONTRIBUTORS.md](CONTRIBUTORS.md) file before making your first contribution to understand our guidelines and recognition process.
+We value every contribution! Please read our [CONTRIBUTORS.md](CONTRIBUTORS.md) file before making
+your first contribution to understand our guidelines and recognition process.
 
 ### Project Contributors
 
@@ -171,20 +185,33 @@ Thanks to these amazing people for making GroqTales better!
 ## 📚 Documentation & Architecture
 
 ### Core Documentation
-- **Architecture Overview:** [ARCHITECTURE.md](ARCHITECTURE.md) - Comprehensive system design and technical architecture
-- **Project Wiki:** [GitHub Wiki](https://github.com/Drago-03/GroqTales/wiki) - Detailed guides and documentation
-- **API Documentation:** [Wiki/API](https://github.com/Drago-03/GroqTales/wiki/API) - Backend API reference
-- **Smart Contracts:** [Wiki/Blockchain](https://github.com/Drago-03/GroqTales/wiki/Blockchain) - Contract documentation
+
+- **Architecture Overview:** [ARCHITECTURE.md](ARCHITECTURE.md) - Comprehensive system design and
+  technical architecture
+- **Project Wiki:** [GitHub Wiki](https://github.com/Drago-03/GroqTales/wiki) - Detailed guides and
+  documentation
+- **API Documentation:** [Wiki/API](https://github.com/Drago-03/GroqTales/wiki/API) - Backend API
+  reference
+- **Smart Contracts:** [Wiki/Blockchain](https://github.com/Drago-03/GroqTales/wiki/Blockchain) -
+  Contract documentation
 
 ### System Architecture
-- **Frontend Architecture:** [ARCHITECTURE.md#frontend](ARCHITECTURE.md#frontend-architecture) - Next.js application structure
-- **Backend Architecture:** [ARCHITECTURE.md#backend](ARCHITECTURE.md#backend-architecture) - API and service design  
-- **Blockchain Integration:** [ARCHITECTURE.md#blockchain](ARCHITECTURE.md#blockchain-architecture) - Web3 and smart contract integration
+
+- **Frontend Architecture:** [ARCHITECTURE.md#frontend](ARCHITECTURE.md#frontend-architecture) -
+  Next.js application structure
+- **Backend Architecture:** [ARCHITECTURE.md#backend](ARCHITECTURE.md#backend-architecture) - API
+  and service design
+- **Blockchain Integration:**
+  [ARCHITECTURE.md#blockchain](ARCHITECTURE.md#blockchain-architecture) - Web3 and smart contract
+  integration
 - **AI Integration:** [ARCHITECTURE.md#ai](ARCHITECTURE.md#ai-architecture) - Groq AI implementation
-- **System Diagrams:** [ARCHITECTURE.md#diagrams](ARCHITECTURE.md#system-diagrams) - Mermaid flowcharts and architecture diagrams
+- **System Diagrams:** [ARCHITECTURE.md#diagrams](ARCHITECTURE.md#system-diagrams) - Mermaid
+  flowcharts and architecture diagrams
 
 ### Development Resources
-- **Setup Guide:** [Wiki/Development-Setup](https://github.com/Drago-03/GroqTales/wiki/Development-Setup)
+
+- **Setup Guide:**
+  [Wiki/Development-Setup](https://github.com/Drago-03/GroqTales/wiki/Development-Setup)
 - **Contributing:** [CONTRIBUTING.md](CONTRIBUTING.md) - How to contribute to the project
 - **Code of Conduct:** [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) - Community guidelines
 - **Security Policy:** [SECURITY.md](SECURITY.md) - Security practices and vulnerability reporting
@@ -214,7 +241,8 @@ For vulnerabilities or security-related issues, please refer to [SECURITY.md](SE
 
 ## 📢 Note
 
-_GroqTales currently operates on Monad Testnet for NFT minting. Mainnet support coming soon—stay tuned!_
+_GroqTales currently operates on Monad Testnet for NFT minting. Mainnet support coming soon—stay
+tuned!_
 
 ---
 

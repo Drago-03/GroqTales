@@ -1,24 +1,44 @@
-"use client";
+'use client';
 
-import React from "react";
+import { motion, AnimatePresence } from 'framer-motion';
 
+import { Textarea } from '@/components/ui/textarea';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useToast } from '@/components/ui/use-toast';
+import { useWeb3 } from '@/components/providers/web3-provider';
+import {
+  Search,
+  Book,
+  ShoppingCart,
+  FileText,
+  Clock,
+  Heart,
+  Eye,
+  ArrowUpDown,
+} from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useState, useEffect } from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import { PageHeader } from "../../components/page-header";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useToast } from "@/components/ui/use-toast";
-import { useWeb3 } from "@/components/providers/web3-provider";
-import { Search, Book, ShoppingCart, FileText, Clock, Heart, Eye, ArrowUpDown } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PageHeader } from '../../components/page-header';
 
 interface TextNFT {
   id: number;
@@ -42,117 +62,145 @@ interface TextNFT {
 const textNFTs: TextNFT[] = [
   {
     id: 1,
-    title: "The Silent Echo",
-    author: "WordWeaver",
-    authorAvatar: "https://api.dicebear.com/7.x/micah/svg?seed=WordWeaver",
-    coverImage: "https://images.unsplash.com/photo-1579547621706-1a9c79d5c9f1?w=800&h=1200&fit=crop&q=80",
-    price: "0.25 ETH",
+    title: 'The Silent Echo',
+    author: 'WordWeaver',
+    authorAvatar: 'https://api.dicebear.com/7.x/micah/svg?seed=WordWeaver',
+    coverImage:
+      'https://images.unsplash.com/photo-1579547621706-1a9c79d5c9f1?w=800&h=1200&fit=crop&q=80',
+    price: '0.25 ETH',
     likes: 543,
     views: 2100,
     wordCount: 12500,
-    genre: "Mystery",
-    readTime: "35 min",
-    description: "A psychological thriller about a detective who discovers that the crime he's investigating may have been committed by himself in a dissociative state.",
-    excerpt: "The rain fell like whispered confessions against the window pane as Detective Morrows stared at the evidence board. Something familiar lurked in the handwriting analysis, something that sent chills down his spine...",
-    tags: ["mystery", "thriller", "psychological"],
+    genre: 'Mystery',
+    readTime: '35 min',
+    description:
+      "A psychological thriller about a detective who discovers that the crime he's investigating may have been committed by himself in a dissociative state.",
+    excerpt:
+      'The rain fell like whispered confessions against the window pane as Detective Morrows stared at the evidence board. Something familiar lurked in the handwriting analysis, something that sent chills down his spine...',
+    tags: ['mystery', 'thriller', 'psychological'],
     isOwned: false,
-    owner: ""
+    owner: '',
   },
   {
     id: 2,
-    title: "Quantum Whispers",
-    author: "PhysicsPhiction",
-    authorAvatar: "https://api.dicebear.com/7.x/micah/svg?seed=PhysicsPhiction",
-    coverImage: "https://images.unsplash.com/photo-1534841090574-cba2d662b62e?w=800&h=1200&fit=crop&q=80",
-    price: "0.18 ETH",
+    title: 'Quantum Whispers',
+    author: 'PhysicsPhiction',
+    authorAvatar: 'https://api.dicebear.com/7.x/micah/svg?seed=PhysicsPhiction',
+    coverImage:
+      'https://images.unsplash.com/photo-1534841090574-cba2d662b62e?w=800&h=1200&fit=crop&q=80',
+    price: '0.18 ETH',
     likes: 328,
     views: 1230,
     wordCount: 8700,
-    genre: "Sci-Fi",
-    readTime: "25 min",
-    description: "When a physicist develops a way to hear quantum particles, she discovers they're carrying messages from parallel universes.",
-    excerpt: "Dr. Lin adjusted the frequency on her quantum resonator. The static cleared, and for the first time in human history, someone heard the voice of a particle. 'Help us,' it said distinctly, 'your world is next.'",
-    tags: ["sci-fi", "quantum physics", "parallel worlds"],
+    genre: 'Sci-Fi',
+    readTime: '25 min',
+    description:
+      "When a physicist develops a way to hear quantum particles, she discovers they're carrying messages from parallel universes.",
+    excerpt:
+      "Dr. Lin adjusted the frequency on her quantum resonator. The static cleared, and for the first time in human history, someone heard the voice of a particle. 'Help us,' it said distinctly, 'your world is next.'",
+    tags: ['sci-fi', 'quantum physics', 'parallel worlds'],
     isOwned: false,
-    owner: ""
+    owner: '',
   },
   {
     id: 3,
-    title: "Gossamer Dreams",
-    author: "NightScribe",
-    authorAvatar: "https://api.dicebear.com/7.x/micah/svg?seed=NightScribe",
-    coverImage: "https://images.unsplash.com/photo-1633296546629-ec2b3142384c?w=800&h=1200&fit=crop&q=80",
-    price: "0.31 ETH",
+    title: 'Gossamer Dreams',
+    author: 'NightScribe',
+    authorAvatar: 'https://api.dicebear.com/7.x/micah/svg?seed=NightScribe',
+    coverImage:
+      'https://images.unsplash.com/photo-1633296546629-ec2b3142384c?w=800&h=1200&fit=crop&q=80',
+    price: '0.31 ETH',
     likes: 712,
     views: 3405,
     wordCount: 15200,
-    genre: "Fantasy",
-    readTime: "45 min",
-    description: "A weaver discovers she can embroider dreams into reality, but each creation comes with an unforeseen consequence.",
-    excerpt: "Eliza's needle glinted in the candlelight as she wove the golden thread through the tapestry. As the final stitch fell into place, the phoenix she had embroidered lifted from the cloth, its wings trailing fire across her small cottage...",
-    tags: ["fantasy", "magic", "consequences"],
+    genre: 'Fantasy',
+    readTime: '45 min',
+    description:
+      'A weaver discovers she can embroider dreams into reality, but each creation comes with an unforeseen consequence.',
+    excerpt:
+      "Eliza's needle glinted in the candlelight as she wove the golden thread through the tapestry. As the final stitch fell into place, the phoenix she had embroidered lifted from the cloth, its wings trailing fire across her small cottage...",
+    tags: ['fantasy', 'magic', 'consequences'],
     isOwned: false,
-    owner: ""
+    owner: '',
   },
   {
     id: 4,
-    title: "Analog Heart",
-    author: "RetroFuturist",
-    authorAvatar: "https://api.dicebear.com/7.x/micah/svg?seed=RetroFuturist",
-    coverImage: "https://images.unsplash.com/photo-1610513519265-947f119a2141?w=800&h=1200&fit=crop&q=80",
-    price: "0.22 ETH",
+    title: 'Analog Heart',
+    author: 'RetroFuturist',
+    authorAvatar: 'https://api.dicebear.com/7.x/micah/svg?seed=RetroFuturist',
+    coverImage:
+      'https://images.unsplash.com/photo-1610513519265-947f119a2141?w=800&h=1200&fit=crop&q=80',
+    price: '0.22 ETH',
     likes: 489,
     views: 1875,
     wordCount: 10300,
-    genre: "Cyberpunk",
-    readTime: "30 min",
-    description: "In a world where human emotions are digitized and traded, one woman discovers her emotions are stubbornly analog.",
-    excerpt: "Everyone had their EmoCores installed by age thirteen. But when they tried to install mine, the technician's face went pale. 'It's rejecting the digital interface,' he whispered to my parents. 'Her emotions... they're analog.'",
-    tags: ["cyberpunk", "emotions", "technology"],
+    genre: 'Cyberpunk',
+    readTime: '30 min',
+    description:
+      'In a world where human emotions are digitized and traded, one woman discovers her emotions are stubbornly analog.',
+    excerpt:
+      "Everyone had their EmoCores installed by age thirteen. But when they tried to install mine, the technician's face went pale. 'It's rejecting the digital interface,' he whispered to my parents. 'Her emotions... they're analog.'",
+    tags: ['cyberpunk', 'emotions', 'technology'],
     isOwned: false,
-    owner: ""
+    owner: '',
   },
   {
     id: 5,
-    title: "The Last Letter",
-    author: "HistoryPen",
-    authorAvatar: "https://api.dicebear.com/7.x/micah/svg?seed=HistoryPen",
-    coverImage: "https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=800&h=1200&fit=crop&q=80",
-    price: "0.28 ETH",
+    title: 'The Last Letter',
+    author: 'HistoryPen',
+    authorAvatar: 'https://api.dicebear.com/7.x/micah/svg?seed=HistoryPen',
+    coverImage:
+      'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=800&h=1200&fit=crop&q=80',
+    price: '0.28 ETH',
     likes: 602,
     views: 2760,
     wordCount: 13800,
-    genre: "Historical Fiction",
-    readTime: "40 min",
-    description: "A long-lost letter from World War II changes the course of a family's history when it's discovered generations later.",
-    excerpt: "The attic smelled of dust and secrets. As Maria unfolded the brittle yellow paper, the handwriting of her great-grandmother materialized like a ghost. 'My dearest Wilhelm,' it began, 'if you are reading this, then what I have done has saved your life, but cost me mine...'",
-    tags: ["historical", "wwii", "family secrets"],
+    genre: 'Historical Fiction',
+    readTime: '40 min',
+    description:
+      "A long-lost letter from World War II changes the course of a family's history when it's discovered generations later.",
+    excerpt:
+      "The attic smelled of dust and secrets. As Maria unfolded the brittle yellow paper, the handwriting of her great-grandmother materialized like a ghost. 'My dearest Wilhelm,' it began, 'if you are reading this, then what I have done has saved your life, but cost me mine...'",
+    tags: ['historical', 'wwii', 'family secrets'],
     isOwned: false,
-    owner: ""
+    owner: '',
   },
   {
     id: 6,
-    title: "Ephemeral",
-    author: "MindScriptor",
-    authorAvatar: "https://api.dicebear.com/7.x/micah/svg?seed=MindScriptor",
-    coverImage: "https://images.unsplash.com/photo-1628788835388-415ee2fa9576?w=800&h=1200&fit=crop&q=80",
-    price: "0.33 ETH",
+    title: 'Ephemeral',
+    author: 'MindScriptor',
+    authorAvatar: 'https://api.dicebear.com/7.x/micah/svg?seed=MindScriptor',
+    coverImage:
+      'https://images.unsplash.com/photo-1628788835388-415ee2fa9576?w=800&h=1200&fit=crop&q=80',
+    price: '0.33 ETH',
     likes: 745,
     views: 3215,
     wordCount: 9500,
-    genre: "Philosophy",
-    readTime: "28 min",
-    description: "A philosopher develops a drug that allows people to experience time non-linearly, with profound implications for human understanding.",
-    excerpt: "Dr. Eliana Wright held the small blue pill between her fingers. 'This will temporarily untether you from sequential time,' she explained. 'You'll experience past, present, and future simultaneously. Are you prepared for that kind of perspective?'",
-    tags: ["philosophy", "time", "consciousness"],
+    genre: 'Philosophy',
+    readTime: '28 min',
+    description:
+      'A philosopher develops a drug that allows people to experience time non-linearly, with profound implications for human understanding.',
+    excerpt:
+      "Dr. Eliana Wright held the small blue pill between her fingers. 'This will temporarily untether you from sequential time,' she explained. 'You'll experience past, present, and future simultaneously. Are you prepared for that kind of perspective?'",
+    tags: ['philosophy', 'time', 'consciousness'],
     isOwned: false,
-    owner: ""
-}
+    owner: '',
+  },
 ];
 
 // Generate more text NFTs for demonstration
 function generateMoreTextNFTs(count: number): TextNFT[] {
-  const genres = ["Mystery", "Sci-Fi", "Fantasy", "Cyberpunk", "Historical Fiction", "Philosophy", "Romance", "Horror", "Thriller"];
+  const genres = [
+    'Mystery',
+    'Sci-Fi',
+    'Fantasy',
+    'Cyberpunk',
+    'Historical Fiction',
+    'Philosophy',
+    'Romance',
+    'Horror',
+    'Thriller',
+  ];
 
   return Array.from({ length: count }, (_, index) => {
     const id = index + textNFTs.length + 1;
@@ -174,9 +222,9 @@ function generateMoreTextNFTs(count: number): TextNFT[] {
       readTime,
       description: `A compelling ${genre.toLowerCase()} story that will keep you engaged throughout the reading experience.`,
       excerpt: `This is an excerpt from Story #${id}. The beginning of what promises to be an exciting journey through this ${genre.toLowerCase()} tale...`,
-      tags: [genre.toLowerCase(), "fiction", `tag${id}`],
+      tags: [genre.toLowerCase(), 'fiction', `tag${id}`],
       isOwned: false,
-      owner: ""
+      owner: '',
     };
   });
 }
@@ -189,30 +237,35 @@ interface TextNFTDetailDialogProps {
   onPurchase: (story: TextNFT) => void;
 }
 
-function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDetailDialogProps) {
+function TextNFTDetailDialog({
+  story,
+  isOpen,
+  onClose,
+  onPurchase,
+}: TextNFTDetailDialogProps) {
   const { account } = useWeb3();
   const { toast } = useToast();
 
   const handlePurchase = () => {
     if (!account) {
       toast({
-        title: "Connect Wallet",
-        description: "Please connect your wallet to purchase this NFT",
-        variant: "destructive",
+        title: 'Connect Wallet',
+        description: 'Please connect your wallet to purchase this NFT',
+        variant: 'destructive',
       });
       // Trigger wallet connection
-      document.getElementById("connect-wallet-button")?.click();
+      document.getElementById('connect-wallet-button')?.click();
       return;
-}
+    }
     toast({
-      title: "Processing Payment",
-      description: "Completing your purchase transaction...",
+      title: 'Processing Payment',
+      description: 'Completing your purchase transaction...',
     });
 
     // Simulate transaction processing
     setTimeout(() => {
       toast({
-        title: "Purchase Successful!",
+        title: 'Purchase Successful!',
         description: `You now own "${story.title}"`,
       });
 
@@ -229,7 +282,9 @@ function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDeta
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col top-0 translate-y-0 mt-4">
         <DialogHeader>
           <div className="flex items-center justify-between">
-            <DialogTitle className="text-2xl font-bold">{story.title}</DialogTitle>
+            <DialogTitle className="text-2xl font-bold">
+              {story.title}
+            </DialogTitle>
             <Badge>{story.genre}</Badge>
           </div>
           <DialogDescription className="flex items-center mt-2">
@@ -256,7 +311,9 @@ function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDeta
             <div className="mt-4 grid grid-cols-2 gap-2">
               <div className="border rounded p-2 text-center">
                 <p className="text-xs text-muted-foreground">Word Count</p>
-                <p className="font-medium">{story.wordCount.toLocaleString()}</p>
+                <p className="font-medium">
+                  {story.wordCount.toLocaleString()}
+                </p>
               </div>
               <div className="border rounded p-2 text-center">
                 <p className="text-xs text-muted-foreground">Read Time</p>
@@ -284,7 +341,10 @@ function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDeta
           </div>
 
           <div className="md:w-2/3 flex flex-col overflow-hidden">
-            <Tabs defaultValue="excerpt" className="flex-1 overflow-hidden flex flex-col">
+            <Tabs
+              defaultValue="excerpt"
+              className="flex-1 overflow-hidden flex flex-col"
+            >
               <TabsList>
                 <TabsTrigger value="excerpt">Excerpt</TabsTrigger>
                 <TabsTrigger value="about">About</TabsTrigger>
@@ -292,56 +352,115 @@ function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDeta
               <div className="flex-1 overflow-y-auto mt-4">
                 <TabsContent value="excerpt" className="m-0 h-full">
                   <div className="prose dark:prose-invert max-w-none">
-                    <h3 className="text-lg font-semibold mb-2">Story Excerpt</h3>
+                    <h3 className="text-lg font-semibold mb-2">
+                      Story Excerpt
+                    </h3>
                     <div className="bg-muted p-6 rounded-lg border border-border italic">
                       {story.excerpt}
                     </div>
                     <p className="mt-4 text-sm text-muted-foreground">
-                      Purchase this NFT to read the full story and get permanent access to the complete work.
+                      Purchase this NFT to read the full story and get permanent
+                      access to the complete work.
                     </p>
                   </div>
                 </TabsContent>
                 <TabsContent value="about" className="m-0 h-full">
                   <div className="space-y-4">
                     <div>
-                      <h3 className="text-lg font-semibold mb-2">About This Story</h3>
-                      <p className="text-muted-foreground">{story.description}</p>
+                      <h3 className="text-lg font-semibold mb-2">
+                        About This Story
+                      </h3>
+                      <p className="text-muted-foreground">
+                        {story.description}
+                      </p>
                     </div>
 
                     <div>
-                      <h3 className="text-lg font-semibold mb-2">Ownership Benefits</h3>
+                      <h3 className="text-lg font-semibold mb-2">
+                        Ownership Benefits
+                      </h3>
                       <ul className="space-y-2">
                         <li className="flex items-start">
                           <div className="mr-2 mt-0.5 h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center">
-                            <svg className="h-3 w-3 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            <svg
+                              className="h-3 w-3 text-green-600"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M5 13l4 4L19 7"
+                              />
                             </svg>
                           </div>
-                          <span>Full access to the complete story ({story.wordCount.toLocaleString()} words)</span>
+                          <span>
+                            Full access to the complete story (
+                            {story.wordCount.toLocaleString()} words)
+                          </span>
                         </li>
                         <li className="flex items-start">
                           <div className="mr-2 mt-0.5 h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center">
-                            <svg className="h-3 w-3 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            <svg
+                              className="h-3 w-3 text-green-600"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M5 13l4 4L19 7"
+                              />
                             </svg>
                           </div>
-                          <span>Digital ownership verified on the blockchain</span>
+                          <span>
+                            Digital ownership verified on the blockchain
+                          </span>
                         </li>
                         <li className="flex items-start">
                           <div className="mr-2 mt-0.5 h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center">
-                            <svg className="h-3 w-3 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            <svg
+                              className="h-3 w-3 text-green-600"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M5 13l4 4L19 7"
+                              />
                             </svg>
                           </div>
-                          <span>Direct contact with the author for feedback and discussions</span>
+                          <span>
+                            Direct contact with the author for feedback and
+                            discussions
+                          </span>
                         </li>
                         <li className="flex items-start">
                           <div className="mr-2 mt-0.5 h-5 w-5 rounded-full bg-green-500/20 flex items-center justify-center">
-                            <svg className="h-3 w-3 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            <svg
+                              className="h-3 w-3 text-green-600"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M5 13l4 4L19 7"
+                              />
                             </svg>
                           </div>
-                          <span>Ability to resell this NFT on the marketplace</span>
+                          <span>
+                            Ability to resell this NFT on the marketplace
+                          </span>
                         </li>
                       </ul>
                     </div>
@@ -367,12 +486,15 @@ function TextNFTDetailDialog({ story, isOpen, onClose, onPurchase }: TextNFTDeta
 }
 export default function TextStoriesPage() {
   const [stories, setStories] = useState<TextNFT[]>(allTextNFTs);
-  const [filteredStories, setFilteredStories] = useState<TextNFT[]>(allTextNFTs);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredStories, setFilteredStories] =
+    useState<TextNFT[]>(allTextNFTs);
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState<"price-asc" | "price-desc" | "length" | "popular">("popular");
-  const [minWordCount, setMinWordCount] = useState<number | "">("");
-  const [maxWordCount, setMaxWordCount] = useState<number | "">("");
+  const [sortBy, setSortBy] = useState<
+    'price-asc' | 'price-desc' | 'length' | 'popular'
+  >('popular');
+  const [minWordCount, setMinWordCount] = useState<number | ''>('');
+  const [maxWordCount, setMaxWordCount] = useState<number | ''>('');
   const [selectedStory, setSelectedStory] = useState<TextNFT | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
@@ -384,45 +506,56 @@ export default function TextStoriesPage() {
 
     // Apply search filter
     if (searchTerm) {
-      result = result.filter(story => 
-        story.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        story.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        story.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        story.tags.some(tag => tag.includes(searchTerm.toLowerCase()))
+      result = result.filter(
+        (story) =>
+          story.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          story.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          story.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          story.tags.some((tag) => tag.includes(searchTerm.toLowerCase()))
       );
-}
+    }
     // Apply genre filter
     if (selectedGenre) {
-      result = result.filter(story => story.genre === selectedGenre);
-}
+      result = result.filter((story) => story.genre === selectedGenre);
+    }
     // Apply word count filters
-    if (minWordCount !== "") {
-      result = result.filter(story => story.wordCount >= Number(minWordCount));
-}
-    if (maxWordCount !== "") {
-      result = result.filter(story => story.wordCount <= Number(maxWordCount));
-}
+    if (minWordCount !== '') {
+      result = result.filter(
+        (story) => story.wordCount >= Number(minWordCount)
+      );
+    }
+    if (maxWordCount !== '') {
+      result = result.filter(
+        (story) => story.wordCount <= Number(maxWordCount)
+      );
+    }
     // Apply sorting
     switch (sortBy) {
-      case "price-asc":
-        result = [...result].sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+      case 'price-asc':
+        result = [...result].sort(
+          (a, b) => parseFloat(a.price) - parseFloat(b.price)
+        );
         break;
-      case "price-desc":
-        result = [...result].sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+      case 'price-desc':
+        result = [...result].sort(
+          (a, b) => parseFloat(b.price) - parseFloat(a.price)
+        );
         break;
-      case "length":
+      case 'length':
         result = [...result].sort((a, b) => b.wordCount - a.wordCount);
         break;
-      case "popular":
+      case 'popular':
       default:
-        result = [...result].sort((a, b) => (b.likes + b.views) - (a.likes + a.views));
+        result = [...result].sort(
+          (a, b) => b.likes + b.views - (a.likes + a.views)
+        );
         break;
-}
+    }
     setFilteredStories(result);
   }, [stories, searchTerm, selectedGenre, sortBy, minWordCount, maxWordCount]);
 
   const getGenres = () => {
-    const genres = new Set(stories.map(story => story.genre));
+    const genres = new Set(stories.map((story) => story.genre));
     return Array.from(genres);
   };
 
@@ -434,20 +567,20 @@ export default function TextStoriesPage() {
   const handlePurchase = (story: TextNFT) => {
     if (!account) {
       toast({
-        title: "Connect Wallet",
-        description: "Please connect your wallet to purchase this NFT",
-        variant: "destructive",
+        title: 'Connect Wallet',
+        description: 'Please connect your wallet to purchase this NFT',
+        variant: 'destructive',
       });
       return;
-}
+    }
     // Update the story ownership in our state
-    const updatedStories = stories.map(s => 
+    const updatedStories = stories.map((s) =>
       s.id === story.id ? { ...s, isOwned: true, owner: account } : s
     );
     setStories(updatedStories);
 
     toast({
-      title: "Purchase Complete",
+      title: 'Purchase Complete',
       description: `You now own "${story.title}"`,
     });
   };
@@ -458,9 +591,9 @@ export default function TextStoriesPage() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-}
-}
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
@@ -469,11 +602,11 @@ export default function TextStoriesPage() {
       opacity: 1,
       y: 0,
       transition: {
-        type: "spring",
+        type: 'spring',
         stiffness: 260,
-        damping: 20
-}
-}
+        damping: 20,
+      },
+    },
   };
 
   return (
@@ -514,13 +647,15 @@ export default function TextStoriesPage() {
               <span className="mr-2 text-sm font-medium">Genre:</span>
               <select
                 className="p-2 rounded-md border bg-background text-sm flex-1"
-                value={selectedGenre || ""}
+                value={selectedGenre || ''}
                 onChange={(e) => setSelectedGenre(e.target.value || null)}
                 aria-label="Filter by genre"
               >
                 <option value="">All Genres</option>
-                {getGenres().map(genre => (
-                  <option key={genre} value={genre}>{genre}</option>
+                {getGenres().map((genre) => (
+                  <option key={genre} value={genre}>
+                    {genre}
+                  </option>
                 ))}
               </select>
             </div>
@@ -546,7 +681,9 @@ export default function TextStoriesPage() {
                 type="number"
                 placeholder="Min"
                 value={minWordCount}
-                onChange={(e) => setMinWordCount(e.target.value ? Number(e.target.value) : "")}
+                onChange={(e) =>
+                  setMinWordCount(e.target.value ? Number(e.target.value) : '')
+                }
                 className="w-24"
                 min="0"
                 aria-label="Minimum word count"
@@ -556,7 +693,9 @@ export default function TextStoriesPage() {
                 type="number"
                 placeholder="Max"
                 value={maxWordCount}
-                onChange={(e) => setMaxWordCount(e.target.value ? Number(e.target.value) : "")}
+                onChange={(e) =>
+                  setMaxWordCount(e.target.value ? Number(e.target.value) : '')
+                }
                 className="w-24"
                 min="0"
                 aria-label="Maximum word count"
@@ -570,7 +709,8 @@ export default function TextStoriesPage() {
       <div className="mb-8">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold">
-            {filteredStories.length} {filteredStories.length === 1 ? 'Story' : 'Stories'} Available
+            {filteredStories.length}{' '}
+            {filteredStories.length === 1 ? 'Story' : 'Stories'} Available
           </h2>
           <Link href="/nft-marketplace">
             <Button variant="outline" size="sm">
@@ -586,7 +726,10 @@ export default function TextStoriesPage() {
             animate={{ opacity: 1 }}
             className="p-12 text-center"
           >
-            <p className="text-muted-foreground">No stories found matching your criteria. Try adjusting your filters.</p>
+            <p className="text-muted-foreground">
+              No stories found matching your criteria. Try adjusting your
+              filters.
+            </p>
           </motion.div>
         ) : (
           <motion.div
@@ -597,12 +740,16 @@ export default function TextStoriesPage() {
           >
             <AnimatePresence>
               {filteredStories.map((story) => (
-                <motion.div 
+                <motion.div
                   key={story.id}
                   variants={itemVariants}
                   layout
                   onClick={() => handleStoryClick(story)}
-                  whileHover={{ y: -10, scale: 1.03, transition: { duration: 0.2 } }}
+                  whileHover={{
+                    y: -10,
+                    scale: 1.03,
+                    transition: { duration: 0.2 },
+                  }}
                   className="cursor-pointer"
                 >
                   <Card className="h-full flex flex-col overflow-hidden group">
@@ -619,8 +766,12 @@ export default function TextStoriesPage() {
                       </div>
 
                       <div className="absolute bottom-0 left-0 right-0 p-4">
-                        <h3 className="text-white font-bold text-lg line-clamp-2 drop-shadow-md">{story.title}</h3>
-                        <p className="text-white/80 text-sm mt-1 drop-shadow-md">by {story.author}</p>
+                        <h3 className="text-white font-bold text-lg line-clamp-2 drop-shadow-md">
+                          {story.title}
+                        </h3>
+                        <p className="text-white/80 text-sm mt-1 drop-shadow-md">
+                          by {story.author}
+                        </p>
                       </div>
                     </div>
 
@@ -633,7 +784,9 @@ export default function TextStoriesPage() {
                         <span>{story.readTime}</span>
                       </div>
 
-                      <p className="text-sm line-clamp-3">{story.description}</p>
+                      <p className="text-sm line-clamp-3">
+                        {story.description}
+                      </p>
                     </CardContent>
 
                     <CardFooter className="border-t p-4 flex items-center justify-between">
@@ -647,7 +800,10 @@ export default function TextStoriesPage() {
                           <span className="text-xs">{story.views}</span>
                         </div>
                       </div>
-                      <Badge variant="outline" className="bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400">
+                      <Badge
+                        variant="outline"
+                        className="bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400"
+                      >
                         {story.price}
                       </Badge>
                     </CardFooter>

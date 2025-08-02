@@ -1,10 +1,17 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Clock, User, BookOpen, Share2, Download, Heart } from "lucide-react";
+import { Clock, User, BookOpen, Share2, Download, Heart } from 'lucide-react';
+import React, { useState } from 'react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 interface StorySummaryProps {
   title: string;
@@ -31,14 +38,14 @@ export function StorySummary({
   onDownload,
   onLike,
   isLiked = false,
-  likeCount = 0
+  likeCount = 0,
 }: StorySummaryProps) {
   const [liked, setLiked] = useState(isLiked);
   const [likes, setLikes] = useState(likeCount);
 
   const handleLike = () => {
     setLiked(!liked);
-    setLikes(prev => liked ? prev - 1 : prev + 1);
+    setLikes((prev) => (liked ? prev - 1 : prev + 1));
     onLike?.();
   };
 
@@ -95,13 +102,23 @@ export function StorySummary({
         <CardFooter>
           <div className="flex gap-2 w-full">
             {onShare && (
-              <Button variant="outline" size="sm" onClick={onShare} className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onShare}
+                className="flex items-center gap-2"
+              >
                 <Share2 className="w-4 h-4" />
                 Share
               </Button>
             )}
             {onDownload && (
-              <Button variant="outline" size="sm" onClick={onDownload} className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onDownload}
+                className="flex items-center gap-2"
+              >
                 <Download className="w-4 h-4" />
                 Download
               </Button>

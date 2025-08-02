@@ -10,17 +10,17 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const { page = 1, limit = 10, category, priceRange } = req.query;
-    
+
     const nfts = {
       data: [],
       pagination: {
         page: parseInt(page),
         limit: parseInt(limit),
         total: 0,
-        pages: 0
-      }
+        pages: 0,
+      },
     };
-    
+
     res.json(nfts);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -31,15 +31,15 @@ router.get('/', async (req, res) => {
 router.post('/mint', async (req, res) => {
   try {
     const { storyId, metadata, price } = req.body;
-    
+
     const nft = {
       tokenId: Date.now().toString(),
       storyId,
       metadata,
       price,
-      mintedAt: new Date().toISOString()
+      mintedAt: new Date().toISOString(),
     };
-    
+
     res.status(201).json(nft);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -2,13 +2,13 @@
 
 /**
  * Documentation Improvement Script for GroqTales
- * 
+ *
  * This script automatically improves code documentation by:
  * - Adding JSDoc comments to functions without documentation
  * - Ensuring all components have proper TypeScript interfaces
  * - Validating README files and documentation structure
  * - Generating API documentation
- * 
+ *
  * Usage: node scripts/improve-docs.js
  */
 
@@ -24,7 +24,7 @@ class DocumentationImprover {
       filesProcessed: 0,
       functionsDocumented: 0,
       componentsDocumented: 0,
-      interfacesCreated: 0
+      interfacesCreated: 0,
     };
   }
 
@@ -33,17 +33,20 @@ class DocumentationImprover {
    */
   async run() {
     console.log('🚀 Starting documentation improvement process...\n');
-    
+
     try {
       await this.validateProject();
       await this.processSourceFiles();
       await this.generateApiDocs();
       await this.validateDocumentation();
-      
+
       this.printSummary();
       console.log('✅ Documentation improvement completed successfully!');
     } catch (error) {
-      console.error('❌ Error during documentation improvement:', error.message);
+      console.error(
+        '❌ Error during documentation improvement:',
+        error.message
+      );
       process.exit(1);
     }
   }
@@ -53,7 +56,7 @@ class DocumentationImprover {
    */
   async validateProject() {
     console.log('📋 Validating project structure...');
-    
+
     // Check if TypeScript is available
     try {
       execSync('npx tsc --version', { stdio: 'pipe' });
@@ -75,7 +78,7 @@ class DocumentationImprover {
    */
   async processSourceFiles() {
     console.log('\n📝 Processing source files for documentation...');
-    
+
     for (const dir of this.srcDirs) {
       const dirPath = path.join(this.projectRoot, dir);
       if (fs.existsSync(dirPath)) {
@@ -90,12 +93,16 @@ class DocumentationImprover {
    */
   async processDirectory(dirPath) {
     const items = fs.readdirSync(dirPath);
-    
+
     for (const item of items) {
       const itemPath = path.join(dirPath, item);
       const stat = fs.statSync(itemPath);
-      
-      if (stat.isDirectory() && !item.startsWith('.') && item !== 'node_modules') {
+
+      if (
+        stat.isDirectory() &&
+        !item.startsWith('.') &&
+        item !== 'node_modules'
+      ) {
         await this.processDirectory(itemPath);
       } else if (this.isSourceFile(item)) {
         await this.processFile(itemPath);
@@ -110,11 +117,13 @@ class DocumentationImprover {
    */
   isSourceFile(filename) {
     const extensions = ['.ts', '.tsx', '.js', '.jsx'];
-    return extensions.some(ext => filename.endsWith(ext)) && 
-           !filename.endsWith('.test.ts') && 
-           !filename.endsWith('.test.tsx') &&
-           !filename.endsWith('.spec.ts') &&
-           !filename.endsWith('.spec.tsx');
+    return (
+      extensions.some((ext) => filename.endsWith(ext)) &&
+      !filename.endsWith('.test.ts') &&
+      !filename.endsWith('.test.tsx') &&
+      !filename.endsWith('.spec.ts') &&
+      !filename.endsWith('.spec.tsx')
+    );
   }
 
   /**
@@ -135,24 +144,36 @@ class DocumentationImprover {
       }
 
       // Process functions and add JSDoc comments
-      const functionMatches = content.matchAll(/(?:export\s+)?(?:async\s+)?function\s+(\w+)/g);
+      const functionMatches = content.matchAll(
+        /(?:export\s+)?(?:async\s+)?function\s+(\w+)/g
+      );
       for (const match of functionMatches) {
         const functionName = match[1];
         if (!this.hasFunctionDocumentation(content, functionName)) {
           const docComment = this.generateFunctionDoc(functionName, content);
-          updatedContent = this.addFunctionDocumentation(updatedContent, functionName, docComment);
+          updatedContent = this.addFunctionDocumentation(
+            updatedContent,
+            functionName,
+            docComment
+          );
           hasChanges = true;
           this.stats.functionsDocumented++;
         }
       }
 
       // Process React components
-      const componentMatches = content.matchAll(/(?:export\s+)?(?:const|function)\s+(\w+).*?(?:React\.FC|JSX\.Element|\:\s*React\.Component)/g);
+      const componentMatches = content.matchAll(
+        /(?:export\s+)?(?:const|function)\s+(\w+).*?(?:React\.FC|JSX\.Element|\:\s*React\.Component)/g
+      );
       for (const match of componentMatches) {
         const componentName = match[1];
         if (!this.hasComponentDocumentation(content, componentName)) {
           const docComment = this.generateComponentDoc(componentName, content);
-          updatedContent = this.addComponentDocumentation(updatedContent, componentName, docComment);
+          updatedContent = this.addComponentDocumentation(
+            updatedContent,
+            componentName,
+            docComment
+          );
           hasChanges = true;
           this.stats.componentsDocumented++;
         }
@@ -160,7 +181,9 @@ class DocumentationImprover {
 
       if (hasChanges) {
         fs.writeFileSync(filePath, updatedContent);
-        console.log(`  📝 Updated documentation in ${path.relative(this.projectRoot, filePath)}`);
+        console.log(
+          `  📝 Updated documentation in ${path.relative(this.projectRoot, filePath)}`
+        );
       }
 
       this.stats.filesProcessed++;
@@ -177,7 +200,7 @@ class DocumentationImprover {
   generateFileHeader(filePath) {
     const relativePath = path.relative(this.projectRoot, filePath);
     const filename = path.basename(filePath);
-    
+
     return `/**
  * @fileoverview ${this.generateFileDescription(filename)}
  * @module ${relativePath.replace(/\//g, '.')}
@@ -212,13 +235,15 @@ class DocumentationImprover {
   hasFunctionDocumentation(content, functionName) {
     const functionIndex = content.indexOf(`function ${functionName}`);
     if (functionIndex === -1) return false;
-    
+
     const beforeFunction = content.substring(0, functionIndex);
     const lastDocComment = beforeFunction.lastIndexOf('/**');
     const lastLineComment = beforeFunction.lastIndexOf('//');
-    
-    return lastDocComment > lastLineComment && 
-           beforeFunction.substring(lastDocComment).includes('*/');
+
+    return (
+      lastDocComment > lastLineComment &&
+      beforeFunction.substring(lastDocComment).includes('*/')
+    );
   }
 
   /**
@@ -252,15 +277,24 @@ class DocumentationImprover {
    * @returns {string} Function description
    */
   generateFunctionDescription(functionName) {
-    if (functionName.startsWith('handle')) return `Handles ${functionName.substring(6).toLowerCase()} events`;
-    if (functionName.startsWith('get')) return `Retrieves ${functionName.substring(3).toLowerCase()} data`;
-    if (functionName.startsWith('set')) return `Sets ${functionName.substring(3).toLowerCase()} value`;
-    if (functionName.startsWith('create')) return `Creates new ${functionName.substring(6).toLowerCase()}`;
-    if (functionName.startsWith('update')) return `Updates existing ${functionName.substring(6).toLowerCase()}`;
-    if (functionName.startsWith('delete')) return `Deletes ${functionName.substring(6).toLowerCase()}`;
-    if (functionName.startsWith('validate')) return `Validates ${functionName.substring(8).toLowerCase()}`;
-    if (functionName.startsWith('format')) return `Formats ${functionName.substring(6).toLowerCase()}`;
-    if (functionName.startsWith('parse')) return `Parses ${functionName.substring(5).toLowerCase()}`;
+    if (functionName.startsWith('handle'))
+      return `Handles ${functionName.substring(6).toLowerCase()} events`;
+    if (functionName.startsWith('get'))
+      return `Retrieves ${functionName.substring(3).toLowerCase()} data`;
+    if (functionName.startsWith('set'))
+      return `Sets ${functionName.substring(3).toLowerCase()} value`;
+    if (functionName.startsWith('create'))
+      return `Creates new ${functionName.substring(6).toLowerCase()}`;
+    if (functionName.startsWith('update'))
+      return `Updates existing ${functionName.substring(6).toLowerCase()}`;
+    if (functionName.startsWith('delete'))
+      return `Deletes ${functionName.substring(6).toLowerCase()}`;
+    if (functionName.startsWith('validate'))
+      return `Validates ${functionName.substring(8).toLowerCase()}`;
+    if (functionName.startsWith('format'))
+      return `Formats ${functionName.substring(6).toLowerCase()}`;
+    if (functionName.startsWith('parse'))
+      return `Parses ${functionName.substring(5).toLowerCase()}`;
     return `Implements ${functionName} functionality`;
   }
 
@@ -288,7 +322,10 @@ class DocumentationImprover {
    * @returns {string} Updated content
    */
   addFunctionDocumentation(content, functionName, docComment) {
-    const functionRegex = new RegExp(`(\\s*)((?:export\\s+)?(?:async\\s+)?function\\s+${functionName})`, 'g');
+    const functionRegex = new RegExp(
+      `(\\s*)((?:export\\s+)?(?:async\\s+)?function\\s+${functionName})`,
+      'g'
+    );
     return content.replace(functionRegex, `$1${docComment}\n$1$2`);
   }
 
@@ -300,7 +337,10 @@ class DocumentationImprover {
    * @returns {string} Updated content
    */
   addComponentDocumentation(content, componentName, docComment) {
-    const componentRegex = new RegExp(`(\\s*)((?:export\\s+)?(?:const|function)\\s+${componentName})`, 'g');
+    const componentRegex = new RegExp(
+      `(\\s*)((?:export\\s+)?(?:const|function)\\s+${componentName})`,
+      'g'
+    );
     return content.replace(componentRegex, `$1${docComment}\n$1$2`);
   }
 
@@ -309,20 +349,25 @@ class DocumentationImprover {
    */
   async generateApiDocs() {
     console.log('\n📚 Generating API documentation...');
-    
+
     try {
       // Check if TypeDoc is available
       execSync('npx typedoc --version', { stdio: 'pipe' });
-      
+
       // Generate documentation
-      execSync('npx typedoc --out docs/api --entryPoints app lib components --exclude "**/*.test.*" --exclude "**/*.spec.*"', {
-        cwd: this.projectRoot,
-        stdio: 'pipe'
-      });
-      
+      execSync(
+        'npx typedoc --out docs/api --entryPoints app lib components --exclude "**/*.test.*" --exclude "**/*.spec.*"',
+        {
+          cwd: this.projectRoot,
+          stdio: 'pipe',
+        }
+      );
+
       console.log('  ✅ API documentation generated in docs/api/');
     } catch (error) {
-      console.warn('  ⚠️  Could not generate API docs. Install TypeDoc: npm install -D typedoc');
+      console.warn(
+        '  ⚠️  Could not generate API docs. Install TypeDoc: npm install -D typedoc'
+      );
     }
   }
 
@@ -331,12 +376,12 @@ class DocumentationImprover {
    */
   async validateDocumentation() {
     console.log('\n🔍 Validating documentation...');
-    
+
     const requiredFiles = [
       'README.md',
       'CONTRIBUTING.md',
       'ARCHITECTURE.md',
-      'CHANGELOG.md'
+      'CHANGELOG.md',
     ];
 
     for (const file of requiredFiles) {
@@ -357,13 +402,17 @@ class DocumentationImprover {
   async validateMarkdownFile(filePath) {
     const content = fs.readFileSync(filePath, 'utf8');
     const filename = path.basename(filePath);
-    
+
     // Check for required sections based on file type
     if (filename === 'README.md') {
       const requiredSections = ['# ', '## Installation', '## Usage'];
       this.validateSections(content, requiredSections, filename);
     } else if (filename === 'CONTRIBUTING.md') {
-      const requiredSections = ['# Contributing', '## Getting Started', '## Development'];
+      const requiredSections = [
+        '# Contributing',
+        '## Getting Started',
+        '## Development',
+      ];
       this.validateSections(content, requiredSections, filename);
     }
   }

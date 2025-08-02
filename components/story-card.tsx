@@ -1,16 +1,28 @@
-"use client";
+'use client';
 
-import React from "react";
+import { motion } from 'framer-motion';
+import {
+  Heart,
+  MessageSquare,
+  Share2,
+  Sparkles,
+  PenSquare,
+  ArrowUpRight,
+  Eye,
+} from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React from 'react';
 
-
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Heart, MessageSquare, Share2, Sparkles, PenSquare, ArrowUpRight, Eye } from "lucide-react";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 interface StoryAuthor {
   name: string;
@@ -36,24 +48,36 @@ interface Story {
 }
 interface StoryCardProps {
   story: Story;
-  viewMode?: "grid" | "list";
+  viewMode?: 'grid' | 'list';
   hideLink?: boolean;
   showCreateButton?: boolean;
 }
 
-export function StoryCard({ story, viewMode = "grid", hideLink = false, showCreateButton = false }: StoryCardProps) {
+export function StoryCard({
+  story,
+  viewMode = 'grid',
+  hideLink = false,
+  showCreateButton = false,
+}: StoryCardProps) {
   const router = useRouter();
-  
+
   // Extract author information
-  const authorName = typeof story.author === 'string' ? story.author : story.author?.name || 'Anonymous';
-  const authorAvatar = typeof story.author === 'string' ? story.authorAvatar : story.author?.avatar || story.authorAvatar;
-  const storyContent = story.content || story.description || 'No content available';
+  const authorName =
+    typeof story.author === 'string'
+      ? story.author
+      : story.author?.name || 'Anonymous';
+  const authorAvatar =
+    typeof story.author === 'string'
+      ? story.authorAvatar
+      : story.author?.avatar || story.authorAvatar;
+  const storyContent =
+    story.content || story.description || 'No content available';
   const isGrid = viewMode === 'grid';
-  
+
   const handleViewNFT = () => {
     router.push(`/story/${story.id}`);
   };
-  
+
   const handleCreateSimilar = () => {
     router.push(`/create?similar=${story.id}`);
   };
@@ -63,13 +87,13 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
       <div className="relative">
         {story.coverImage || story.image ? (
           <div className="relative h-48 overflow-hidden rounded-t-lg">
-            <img 
-              src={story.coverImage || story.image} 
+            <img
+              src={story.coverImage || story.image}
               alt={story.title}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
             <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black/40">
-              <motion.button 
+              <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-white text-black px-3 py-1.5 rounded-lg text-sm font-medium flex items-center"
@@ -85,7 +109,7 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
           </div>
         )}
       </div>
-      
+
       <div className="flex-1">
         <CardHeader className="p-4 pb-2">
           <div className="flex items-center space-x-2">
@@ -95,10 +119,14 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
             </Avatar>
             <p className="text-sm font-medium">{authorName}</p>
           </div>
-          <h3 className="text-lg font-semibold mt-2 line-clamp-2 group-hover:text-amber-800 dark:group-hover:text-amber-300 text-gray-800 dark:text-white transition-colors duration-200">{story.title}</h3>
+          <h3 className="text-lg font-semibold mt-2 line-clamp-2 group-hover:text-amber-800 dark:group-hover:text-amber-300 text-gray-800 dark:text-white transition-colors duration-200">
+            {story.title}
+          </h3>
         </CardHeader>
         <CardContent className="p-4 pt-0">
-          <p className="text-gray-700 dark:text-muted-foreground text-sm line-clamp-2">{storyContent}</p>
+          <p className="text-gray-700 dark:text-muted-foreground text-sm line-clamp-2">
+            {storyContent}
+          </p>
         </CardContent>
         <CardFooter className="p-4 pt-0 flex justify-between">
           <div className="flex space-x-4 text-sm text-gray-600 dark:text-muted-foreground">
@@ -126,10 +154,10 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
               </span>
             )}
             {showCreateButton && (
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="h-6 w-6" 
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6"
                 title="Create Similar Story"
                 onClick={handleCreateSimilar}
               >
@@ -144,18 +172,26 @@ export function StoryCard({ story, viewMode = "grid", hideLink = false, showCrea
 
   return (
     <motion.div
-      whileHover={{ y: -5, scale: 1.02, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
+      whileHover={{
+        y: -5,
+        scale: 1.02,
+        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+      }}
       transition={{ duration: 0.2 }}
       className="nft-pulse"
     >
-      <Card className={cn(
-        "overflow-hidden transition-all duration-200 hover:shadow-md group",
-        isGrid ? "h-full" : "flex gap-4"
-      )}>
+      <Card
+        className={cn(
+          'overflow-hidden transition-all duration-200 hover:shadow-md group',
+          isGrid ? 'h-full' : 'flex gap-4'
+        )}
+      >
         {hideLink ? (
           <div className="block">{cardContent}</div>
         ) : (
-          <div className="block cursor-pointer" onClick={handleViewNFT}>{cardContent}</div>
+          <div className="block cursor-pointer" onClick={handleViewNFT}>
+            {cardContent}
+          </div>
         )}
       </Card>
     </motion.div>

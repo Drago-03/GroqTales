@@ -109,12 +109,13 @@ export async function generateAndMintAIStory(
     const { generateStoryContent } = await import('./groq-service');
 
     // Generate system prompt based on genre
-    let systemPrompt = "You are a creative writer tasked with writing an engaging, original story.";
+    let systemPrompt =
+      'You are a creative writer tasked with writing an engaging, original story.';
     if (genre) {
       systemPrompt += ` The story should be in the ${genre.replace('-', ' ')} genre.`;
-}
+    }
     // Generate the story content using Groq
-    console.log("Generating story with Groq...");
+    console.log('Generating story with Groq...');
     const storyContent = await generateStoryContent(
       prompt,
       undefined, // Use default model
@@ -122,8 +123,8 @@ export async function generateAndMintAIStory(
         temperature: 0.7,
         max_tokens: 3000,
         system_prompt: systemPrompt,
-        apiKey // Pass the custom API key if provided
-}
+        apiKey, // Pass the custom API key if provided
+      }
     );
 
     // Extract a title from the first line if not provided
@@ -136,43 +137,44 @@ export async function generateAndMintAIStory(
           storyTitle = firstLine.substring(2).trim();
         } else if (firstLine) {
           storyTitle = firstLine.trim();
-}
-}
+        }
+      }
       // Clean the title if it exists
       if (storyTitle) {
         storyTitle = storyTitle.replace(/["']/g, '').trim();
-}
-}
+      }
+    }
     // Generate a short excerpt
-    const excerpt = storyContent.length > 150 
-      ? storyContent.substring(0, 150) + "..."
-      : storyContent;
+    const excerpt =
+      storyContent.length > 150
+        ? storyContent.substring(0, 150) + '...'
+        : storyContent;
 
     // Create metadata
     const metadata: StoryMetadata = {
-      title: storyTitle || "Untitled AI Story",
+      title: storyTitle || 'Untitled AI Story',
       description: excerpt,
       content: storyContent,
       excerpt,
-      author: "AI Generated",
+      author: 'AI Generated',
       authorAddress,
       coverImage: `https://source.unsplash.com/random/800x600/?${genre || 'story'}`,
-      genre: genre || "fiction",
+      genre: genre || 'fiction',
       createdAt: new Date().toISOString(),
-      aiModel: "Groq AI",
+      aiModel: 'Groq AI',
       aiPrompt: prompt,
-      tags: genre ? [genre] : ["fiction"]
+      tags: genre ? [genre] : ['fiction'],
     };
 
     // Pin metadata to IPFS
-    console.log("Uploading to IPFS...");
+    console.log('Uploading to IPFS...');
     const ipfsHash = await pinToIPFS(metadata);
 
     // Mint the NFT
-    console.log("Minting NFT...");
+    console.log('Minting NFT...');
     return await mintStoryNFT(metadata, authorAddress, signer);
   } catch (error) {
-    console.error("Error in generateAndMintAIStory:", error);
+    console.error('Error in generateAndMintAIStory:', error);
     throw error;
   }
 }
@@ -180,19 +182,23 @@ export async function generateAndMintAIStory(
 /**
  * Mint a story NFT on the Monad blockchain
  */
-export async function mintStoryNFT(metadata: any, authorAddress: string, signer?: any) {
+export async function mintStoryNFT(
+  metadata: any,
+  authorAddress: string,
+  signer?: any
+) {
   try {
     return {
       success: true,
       message: 'NFT minting placeholder - implementation needed',
       tokenId: '1',
-      transactionHash: '0x123...'
+      transactionHash: '0x123...',
     };
   } catch (error) {
     console.error('Error minting story NFT:', error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: error instanceof Error ? error.message : 'Unknown error',
     };
   }
 }
@@ -210,15 +216,15 @@ export async function getStoryNFT(tokenId: string) {
         owner: '0x123...',
         metadata: {
           title: 'Placeholder Story',
-          description: 'Placeholder description'
-        }
-      }
+          description: 'Placeholder description',
+        },
+      },
     };
   } catch (error) {
     console.error('Error getting story NFT:', error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: error instanceof Error ? error.message : 'Unknown error',
     };
   }
 }

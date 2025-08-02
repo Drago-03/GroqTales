@@ -1,16 +1,23 @@
-"use client";
+'use client';
 
-import React from "react";
+import {
+  Github,
+  Shield,
+  Lock,
+  Eye,
+  Database,
+  Bell,
+  Trash2,
+} from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
 
-
-import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Github, Shield, Lock, Eye, Database, Bell, Trash2 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 
 // Floating GitHub button component
 const FloatingGithub = () => (
-  <Link 
+  <Link
     href="https://github.com/Drago-03/GroqTales.git"
     target="_blank"
     className="fixed bottom-24 right-6 p-3 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-50"
@@ -36,9 +43,7 @@ const PrivacySection = ({ icon: Icon, title, children }: any) => (
       </div>
       <CardTitle>{title}</CardTitle>
     </CardHeader>
-    <CardContent className="space-y-4">
-      {children}
-    </CardContent>
+    <CardContent className="space-y-4">{children}</CardContent>
   </Card>
 );
 
@@ -69,9 +74,12 @@ export default function PrivacyPage() {
               <li>Stories and content you create or interact with</li>
             </ul>
 
-            <h3 className="text-lg font-semibold mt-4">1.2 Automatically Collected Information</h3>
+            <h3 className="text-lg font-semibold mt-4">
+              1.2 Automatically Collected Information
+            </h3>
             <p>
-              We automatically collect certain information when you use the Platform:
+              We automatically collect certain information when you use the
+              Platform:
             </p>
             <ul className="list-disc pl-6 space-y-2">
               <li>Device and browser information</li>
@@ -94,8 +102,8 @@ export default function PrivacyPage() {
 
           <PrivacySection icon={Eye} title="3. Information Sharing">
             <p>
-              We do not sell your personal information. We may share your information in the
-              following circumstances:
+              We do not sell your personal information. We may share your
+              information in the following circumstances:
             </p>
             <ul className="list-disc pl-6 space-y-2">
               <li>With your consent</li>
@@ -107,13 +115,15 @@ export default function PrivacyPage() {
 
           <PrivacySection icon={Database} title="4. Data Storage and Security">
             <p>
-              We implement appropriate technical and organizational measures to protect your
-              personal information. However, no method of transmission over the internet or
-              electronic storage is 100% secure.
+              We implement appropriate technical and organizational measures to
+              protect your personal information. However, no method of
+              transmission over the internet or electronic storage is 100%
+              secure.
             </p>
             <p className="mt-2">
-              Your blockchain transactions are publicly visible on the Monad network, but we
-              protect your private account information using industry-standard encryption.
+              Your blockchain transactions are publicly visible on the Monad
+              network, but we protect your private account information using
+              industry-standard encryption.
             </p>
           </PrivacySection>
 
@@ -130,16 +140,17 @@ export default function PrivacyPage() {
 
           <PrivacySection icon={Trash2} title="6. Data Retention">
             <p>
-              We retain your personal information for as long as necessary to provide our
-              services and comply with legal obligations. When we no longer need personal
-              information, we securely delete or anonymize it.
+              We retain your personal information for as long as necessary to
+              provide our services and comply with legal obligations. When we no
+              longer need personal information, we securely delete or anonymize
+              it.
             </p>
           </PrivacySection>
 
           <div className="text-center text-sm text-muted-foreground">
             <p>
-              For questions about our Privacy Policy or to exercise your privacy rights,
-              please contact us at{" "}
+              For questions about our Privacy Policy or to exercise your privacy
+              rights, please contact us at{' '}
               <Link href="/contact" className="text-primary hover:underline">
                 privacy@groqtales.com
               </Link>

@@ -1,12 +1,8 @@
-import React from "react";
-export default function TextStoriesLayout({ 
+import React from 'react';
+export default function TextStoriesLayout({
   children,
- }: { 
+}: {
   children: React.ReactNode;
- }) {
-  return (
-    <section className="flex min-h-screen flex-col">
-      {children}
-    </section>
-  );
+}) {
+  return <section className="flex min-h-screen flex-col">{children}</section>;
 }

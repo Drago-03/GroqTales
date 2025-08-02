@@ -1,6 +1,7 @@
 # GroqTales Enterprise Architecture
 
 ## Table of Contents
+
 - [Overview](#overview)
 - [System Architecture](#system-architecture)
 - [Frontend Architecture](#frontend-architecture)
@@ -17,9 +18,13 @@
 
 ## Overview
 
-GroqTales is an enterprise-grade AI-powered Web3 storytelling platform built with modern technologies and architectural best practices. The system follows a microservices-inspired modular architecture with clear separation of concerns, enabling scalability, maintainability, and extensibility.
+GroqTales is an enterprise-grade AI-powered Web3 storytelling platform built with modern
+technologies and architectural best practices. The system follows a microservices-inspired modular
+architecture with clear separation of concerns, enabling scalability, maintainability, and
+extensibility.
 
 ### Core Technologies
+
 - **Frontend**: Next.js 14 with App Router, React 18, TypeScript
 - **Styling**: Tailwind CSS, shadcn/ui components
 - **Backend**: Next.js API Routes, Node.js runtime
@@ -39,33 +44,33 @@ graph TB
     API --> AI[🤖 AI Services]
     API --> DB[🗄️ Database]
     API --> Blockchain[⛓️ Blockchain]
-    
+
     subgraph "Frontend Layer"
         Frontend --> NextJS[Next.js 14]
         NextJS --> React[React 18]
         NextJS --> TailwindCSS[Tailwind CSS]
         NextJS --> Components[shadcn/ui]
     end
-    
+
     subgraph "API Layer"
         API --> Routes[API Routes]
         Routes --> Auth[Authentication]
         Routes --> Validation[Data Validation]
         Routes --> Middleware[Middleware]
     end
-    
+
     subgraph "AI Services"
         AI --> Groq[Groq API]
         AI --> Processing[Story Processing]
         AI --> Generation[Content Generation]
     end
-    
+
     subgraph "Data Layer"
         DB --> MongoDB[(MongoDB)]
         DB --> Models[Data Models]
         DB --> Queries[Query Layer]
     end
-    
+
     subgraph "Blockchain Layer"
         Blockchain --> Monad[Monad Network]
         Blockchain --> Contracts[Smart Contracts]
@@ -82,28 +87,28 @@ graph TD
     App[App Root] --> Layout[Layout Components]
     App --> Pages[Page Components]
     App --> Providers[Context Providers]
-    
+
     Layout --> Header[Header]
     Layout --> Footer[Footer]
     Layout --> Navigation[Navigation]
-    
+
     Pages --> Home[Home Page]
     Pages --> Create[Story Creation]
     Pages --> Gallery[Story Gallery]
     Pages --> Profile[User Profile]
     Pages --> Admin[Admin Dashboard]
-    
+
     Create --> AIGenerator[AI Story Generator]
     Create --> Forms[Story Forms]
     Create --> Preview[Story Preview]
-    
+
     subgraph "Shared Components"
         UI[UI Components]
         Features[Feature Components]
         Hooks[Custom Hooks]
         Utils[Utility Functions]
     end
-    
+
     Pages --> UI
     Layout --> UI
     UI --> Features
@@ -118,16 +123,16 @@ graph LR
     Component[React Component] --> LocalState[Local State]
     Component --> Context[React Context]
     Component --> Hooks[Custom Hooks]
-    
+
     Context --> AuthContext[Auth Context]
     Context --> ThemeContext[Theme Context]
     Context --> WalletContext[Wallet Context]
-    
+
     Hooks --> useStory[useStory]
     Hooks --> useWallet[useWallet]
     Hooks --> useAuth[useAuth]
     Hooks --> useAI[useAI]
-    
+
     LocalState --> useState[useState]
     LocalState --> useEffect[useEffect]
     LocalState --> useReducer[useReducer]
@@ -142,7 +147,7 @@ graph TB
     Client[Client Request] --> Router[Next.js Router]
     Router --> Middleware[Middleware Stack]
     Middleware --> Handler[Route Handler]
-    
+
     subgraph "Middleware Stack"
         Auth[Authentication]
         CORS[CORS Policy]
@@ -150,22 +155,22 @@ graph TB
         Validation[Request Validation]
         Logging[Request Logging]
     end
-    
+
     Handler --> Services[Business Services]
     Services --> Database[Database Layer]
     Services --> External[External APIs]
-    
+
     subgraph "Business Services"
         StoryService[Story Service]
         UserService[User Service]
         NFTService[NFT Service]
         AIService[AI Service]
     end
-    
+
     Database --> MongoDB[(MongoDB)]
     External --> GroqAPI[Groq AI API]
     External --> BlockchainAPI[Blockchain API]
-    
+
     Services --> Response[API Response]
     Response --> Client
 ```
@@ -183,7 +188,7 @@ erDiagram
         date createdAt
         date updatedAt
     }
-    
+
     Story {
         string id PK
         string userId FK
@@ -197,7 +202,7 @@ erDiagram
         date createdAt
         date updatedAt
     }
-    
+
     NFT {
         string id PK
         string storyId FK
@@ -208,7 +213,7 @@ erDiagram
         object metadata
         date mintedAt
     }
-    
+
     Comment {
         string id PK
         string storyId FK
@@ -216,14 +221,14 @@ erDiagram
         string content
         date createdAt
     }
-    
+
     Like {
         string id PK
         string storyId FK
         string userId FK
         date createdAt
     }
-    
+
     User ||--o{ Story : creates
     Story ||--o| NFT : "can be minted as"
     Story ||--o{ Comment : "has many"
@@ -244,17 +249,17 @@ sequenceDiagram
     participant Wallet
     participant Contract
     participant Blockchain
-    
+
     User->>Frontend: Create Story
     Frontend->>User: Request Wallet Connection
     User->>Wallet: Connect Wallet
     Wallet->>Frontend: Wallet Connected
-    
+
     User->>Frontend: Mint as NFT
     Frontend->>Wallet: Request Transaction Signature
     Wallet->>User: Confirm Transaction
     User->>Wallet: Sign Transaction
-    
+
     Wallet->>Contract: Execute Mint Function
     Contract->>Blockchain: Submit Transaction
     Blockchain->>Contract: Transaction Confirmed
@@ -270,25 +275,25 @@ graph TB
     StoryNFT --> Ownable[Ownable Access Control]
     StoryNFT --> Pausable[Pausable Functionality]
     StoryNFT --> Royalties[Royalty Management]
-    
+
     subgraph "Core Functions"
         Mint[mint Function]
         Transfer[transfer Functions]
         Metadata[tokenURI Function]
         Burn[burn Function]
     end
-    
+
     StoryNFT --> Mint
     StoryNFT --> Transfer
     StoryNFT --> Metadata
     StoryNFT --> Burn
-    
+
     subgraph "Events"
         StoryMinted[StoryMinted Event]
         MetadataUpdate[MetadataUpdate Event]
         Transfer[Transfer Event]
     end
-    
+
     Mint --> StoryMinted
     Metadata --> MetadataUpdate
     Transfer --> Transfer
@@ -303,26 +308,26 @@ flowchart TD
     UserInput[User Story Input] --> Validation[Input Validation]
     Validation --> PromptBuilder[Prompt Builder]
     PromptBuilder --> GroqAPI[Groq AI API]
-    
+
     GroqAPI --> Stream[Streaming Response]
     Stream --> Parser[Content Parser]
     Parser --> Formatter[Content Formatter]
     Formatter --> Preview[Story Preview]
-    
+
     Preview --> UserReview{User Review}
     UserReview -->|Approve| Save[Save Story]
     UserReview -->|Regenerate| PromptBuilder
     UserReview -->|Edit| Editor[Story Editor]
-    
+
     Save --> Database[(Database)]
     Editor --> Save
-    
+
     subgraph "AI Processing"
         PromptBuilder --> GenrePrompts[Genre-specific Prompts]
         PromptBuilder --> CreativityLevel[Creativity Parameters]
         PromptBuilder --> ContentType[Text/Comic Format]
     end
-    
+
     subgraph "Content Processing"
         Parser --> TextProcessor[Text Processing]
         Parser --> ComicProcessor[Comic Panel Processing]
@@ -438,57 +443,57 @@ graph TB
         Mobile[Mobile Browser]
         PWA[Progressive Web App]
     end
-    
+
     subgraph "CDN & Edge"
         Vercel[Vercel Edge Network]
         CDN[Static Assets CDN]
     end
-    
+
     subgraph "Application Layer"
         NextJS[Next.js Application]
         SSR[Server-Side Rendering]
         API[API Routes]
         Middleware[Middleware Stack]
     end
-    
+
     subgraph "Service Layer"
         AuthService[Authentication Service]
         StoryService[Story Service]
         NFTService[NFT Service]
         AIService[AI Service]
     end
-    
+
     subgraph "Data Layer"
         MongoDB[(MongoDB Atlas)]
         Redis[(Redis Cache)]
         IPFS[(IPFS Storage)]
     end
-    
+
     subgraph "External Services"
         GroqAI[Groq AI API]
         Monad[Monad Blockchain]
         Unsplash[Unsplash API]
         Web3Provider[Web3 Provider]
     end
-    
+
     Browser --> Vercel
     Mobile --> Vercel
     PWA --> CDN
-    
+
     Vercel --> NextJS
     NextJS --> SSR
     NextJS --> API
     API --> Middleware
-    
+
     Middleware --> AuthService
     Middleware --> StoryService
     Middleware --> NFTService
     Middleware --> AIService
-    
+
     StoryService --> MongoDB
     AuthService --> Redis
     NFTService --> IPFS
-    
+
     AIService --> GroqAI
     NFTService --> Monad
     StoryService --> Unsplash
@@ -530,38 +535,38 @@ graph LR
         GalleryPage[Gallery Page]
         ProfilePage[Profile Page]
     end
-    
+
     subgraph "Feature Components"
         AIGenerator[AI Story Generator]
         StoryCard[Story Card]
         WalletConnect[Wallet Connect]
         StoryFeed[Story Feed]
     end
-    
+
     subgraph "UI Components"
         Button[Button]
         Modal[Modal]
         Form[Form]
         Card[Card]
     end
-    
+
     subgraph "Hooks & Context"
         useAuth[useAuth Hook]
         useWallet[useWallet Hook]
         useStory[useStory Hook]
         ThemeContext[Theme Context]
     end
-    
+
     HomePage --> StoryFeed
     CreatePage --> AIGenerator
     GalleryPage --> StoryCard
     ProfilePage --> WalletConnect
-    
+
     AIGenerator --> Form
     AIGenerator --> Button
     StoryCard --> Card
     WalletConnect --> Modal
-    
+
     AIGenerator --> useAuth
     WalletConnect --> useWallet
     StoryFeed --> useStory
@@ -580,20 +585,20 @@ sequenceDiagram
     participant AI
     participant DB
     participant Blockchain
-    
+
     User->>Frontend: Input story parameters
     Frontend->>API: POST /api/groq/generate
     API->>AI: Request story generation
     AI->>API: Return generated content
     API->>Frontend: Stream story content
     Frontend->>User: Display real-time generation
-    
+
     User->>Frontend: Approve story
     Frontend->>API: POST /api/stories/create
     API->>DB: Save story data
     DB->>API: Confirm save
     API->>Frontend: Return story ID
-    
+
     User->>Frontend: Mint as NFT
     Frontend->>Blockchain: Request NFT mint
     Blockchain->>Frontend: Transaction hash
@@ -614,13 +619,13 @@ sequenceDiagram
     participant API
     participant Auth
     participant DB
-    
+
     User->>Frontend: Click Connect Wallet
     Frontend->>Wallet: Request connection
     Wallet->>User: Show connection prompt
     User->>Wallet: Approve connection
     Wallet->>Frontend: Return wallet address
-    
+
     Frontend->>API: POST /api/auth/wallet
     API->>Auth: Verify wallet signature
     Auth->>DB: Check/create user
@@ -642,55 +647,55 @@ graph TB
         CORS[CORS Protection]
         XSS[XSS Prevention]
     end
-    
+
     subgraph "Application Security"
         Auth[Authentication]
         AuthZ[Authorization]
         RateLimit[Rate Limiting]
         InputValid[Input Validation]
     end
-    
+
     subgraph "API Security"
         JWT[JWT Tokens]
         CSRF[CSRF Protection]
         APIKeys[API Key Management]
         Encryption[Data Encryption]
     end
-    
+
     subgraph "Infrastructure Security"
         WAF[Web Application Firewall]
         DDoS[DDoS Protection]
         SSL[SSL/TLS]
         Monitoring[Security Monitoring]
     end
-    
+
     subgraph "Blockchain Security"
         SmartContract[Smart Contract Audits]
         WalletSec[Wallet Security]
         TxValid[Transaction Validation]
         MultiSig[Multi-signature]
     end
-    
+
     Client --> CSP
     Client --> HTTPS
     Client --> CORS
     Client --> XSS
-    
+
     Application --> Auth
     Application --> AuthZ
     Application --> RateLimit
     Application --> InputValid
-    
+
     API --> JWT
     API --> CSRF
     API --> APIKeys
     API --> Encryption
-    
+
     Infrastructure --> WAF
     Infrastructure --> DDoS
     Infrastructure --> SSL
     Infrastructure --> Monitoring
-    
+
     Blockchain --> SmartContract
     Blockchain --> WalletSec
     Blockchain --> TxValid
@@ -708,29 +713,29 @@ graph LR
         Git[Git Repository]
         LocalTest[Local Testing]
     end
-    
+
     subgraph "CI/CD Pipeline"
         GitHub[GitHub Actions]
         Build[Build Process]
         Test[Automated Tests]
         Deploy[Deployment]
     end
-    
+
     subgraph "Production"
         Vercel[Vercel Platform]
         Edge[Edge Functions]
         CDN[Global CDN]
         Monitor[Monitoring]
     end
-    
+
     Dev --> Git
     Git --> LocalTest
     LocalTest --> GitHub
-    
+
     GitHub --> Build
     Build --> Test
     Test --> Deploy
-    
+
     Deploy --> Vercel
     Vercel --> Edge
     Vercel --> CDN
@@ -746,29 +751,29 @@ graph TB
         DevDB[Local MongoDB]
         DevAPI[Development APIs]
     end
-    
+
     subgraph "Staging Environment"
         StagingApp[Staging App]
         StagingDB[Staging Database]
         TestNet[Monad Testnet]
     end
-    
+
     subgraph "Production Environment"
         ProdApp[Production App]
         ProdDB[Production Database]
         MainNet[Monad Mainnet]
         ProdCDN[Production CDN]
     end
-    
+
     DevLocal --> StagingApp
     StagingApp --> ProdApp
-    
+
     DevDB --> StagingDB
     StagingDB --> ProdDB
-    
+
     DevAPI --> TestNet
     TestNet --> MainNet
-    
+
     ProdApp --> ProdCDN
 ```
 
@@ -782,11 +787,11 @@ graph TB
     EdgeCache --> BrowserCache[Browser Cache]
     BrowserCache --> CDN[CDN Cache]
     CDN --> AppCache[Application Cache]
-    
+
     AppCache --> Redis[Redis Cache]
     AppCache --> Memory[Memory Cache]
     AppCache --> Database[Database]
-    
+
     subgraph "Cache Layers"
         L1[L1: Browser Cache]
         L2[L2: CDN Cache]
@@ -794,7 +799,7 @@ graph TB
         L4[L4: Application Cache]
         L5[L5: Database Cache]
     end
-    
+
     subgraph "Cache Strategies"
         StaticAssets[Static Assets - Long TTL]
         APIResponses[API Responses - Short TTL]
@@ -813,26 +818,26 @@ graph LR
         ImageOpt[Image Optimization]
         Bundle[Bundle Optimization]
     end
-    
+
     subgraph "Backend Optimization"
         APICache[API Caching]
         DBQuery[Database Optimization]
         Compression[Response Compression]
         EdgeFunc[Edge Functions]
     end
-    
+
     subgraph "Infrastructure Optimization"
         CDNOpt[CDN Optimization]
         LoadBalance[Load Balancing]
         AutoScale[Auto Scaling]
         Monitor[Performance Monitoring]
     end
-    
+
     CodeSplit --> APICache
     LazyLoad --> DBQuery
     ImageOpt --> Compression
     Bundle --> EdgeFunc
-    
+
     APICache --> CDNOpt
     DBQuery --> LoadBalance
     Compression --> AutoScale
@@ -881,20 +886,20 @@ flowchart TD
     Feature --> Code[Write Code]
     Code --> Test[Local Testing]
     Test --> PR[Create Pull Request]
-    
+
     PR --> AutoCheck[Automated Checks]
     AutoCheck --> Build[Build Verification]
     AutoCheck --> Lint[Code Linting]
     AutoCheck --> Tests[Test Suite]
-    
+
     Build --> Review[Code Review]
     Lint --> Review
     Tests --> Review
-    
+
     Review --> Approve[Approve PR]
     Review --> Changes[Request Changes]
     Changes --> Code
-    
+
     Approve --> Merge[Merge to Develop]
     Merge --> Deploy[Deploy to Staging]
     Deploy --> QA[QA Testing]
@@ -916,6 +921,5 @@ flowchart TD
 
 ---
 
-*Last Updated: January 2, 2025*
-*Version: 1.1.0*
-*For more detailed information, visit our [GitHub Wiki](https://github.com/Drago-03/GroqTales/wiki)*
+_Last Updated: January 2, 2025_ _Version: 1.1.0_ _For more detailed information, visit our
+[GitHub Wiki](https://github.com/Drago-03/GroqTales/wiki)_

@@ -9,18 +9,22 @@ console.log('🔧 Fixing "function if" syntax errors...\n');
 function findAllFiles(dir, extensions = ['.ts', '.tsx']) {
   let results = [];
   const files = fs.readdirSync(dir);
-  
+
   for (const file of files) {
     const filePath = path.join(dir, file);
     const stat = fs.statSync(filePath);
-    
-    if (stat.isDirectory() && !file.startsWith('.') && file !== 'node_modules') {
+
+    if (
+      stat.isDirectory() &&
+      !file.startsWith('.') &&
+      file !== 'node_modules'
+    ) {
       results = results.concat(findAllFiles(filePath, extensions));
-    } else if (extensions.some(ext => file.endsWith(ext))) {
+    } else if (extensions.some((ext) => file.endsWith(ext))) {
       results.push(filePath);
     }
   }
-  
+
   return results;
 }
 
@@ -28,7 +32,7 @@ function findAllFiles(dir, extensions = ['.ts', '.tsx']) {
 function fixFunctionIfErrors(filePath) {
   try {
     if (!fs.existsSync(filePath)) return false;
-    
+
     let content = fs.readFileSync(filePath, 'utf8');
     let modified = false;
     const originalContent = content;
@@ -47,11 +51,18 @@ function fixFunctionIfErrors(filePath) {
       /function switch\s*\(/g,
       /function try\s*\{/g,
       /function catch\s*\(/g,
-      /function finally\s*\{/g
+      /function finally\s*\{/g,
     ];
 
     malformedPatterns.forEach((pattern, index) => {
-      const replacements = ['while (', 'for (', 'switch (', 'try {', 'catch (', 'finally {'];
+      const replacements = [
+        'while (',
+        'for (',
+        'switch (',
+        'try {',
+        'catch (',
+        'finally {',
+      ];
       if (content.match(pattern)) {
         content = content.replace(pattern, replacements[index]);
         modified = true;
@@ -60,7 +71,9 @@ function fixFunctionIfErrors(filePath) {
 
     if (modified) {
       fs.writeFileSync(filePath, content);
-      console.log(`  ✅ Fixed "function if" errors in ${path.relative(process.cwd(), filePath)}`);
+      console.log(
+        `  ✅ Fixed "function if" errors in ${path.relative(process.cwd(), filePath)}`
+      );
       return true;
     }
 

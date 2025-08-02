@@ -1,20 +1,19 @@
-"use client";
+'use client';
 
-import React from "react";
+import { Wallet } from 'lucide-react';
+import React from 'react';
 
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useWeb3Auth } from '@/hooks/use-web3-auth';
 
-import { useWeb3Auth } from "@/hooks/use-web3-auth";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Wallet } from "lucide-react";
-
-  export function WalletBalance() {
+export function WalletBalance() {
   const { address, isConnected } = useWeb3Auth();
 
   if (!isConnected || !address) {
     return null;
-}
+  }
   // Placeholder balance - replace with actual API call in future
-  const mockBalance = "0.00 ETH";
+  const mockBalance = '0.00 ETH';
 
   return (
     <Card className="nft-pulse w-full max-w-xs mx-auto">

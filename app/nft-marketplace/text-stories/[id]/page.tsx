@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useParams, useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft } from 'lucide-react';
+import { useParams, useRouter } from 'next/navigation';
+import React from 'react';
+
+import { Button } from '@/components/ui/button';
 
 export default function TextStoryDetailPage() {
   const params = useParams();
@@ -14,11 +15,7 @@ export default function TextStoryDetailPage() {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <Button 
-            onClick={() => router.back()} 
-            variant="outline" 
-            size="sm"
-          >
+          <Button onClick={() => router.back()} variant="outline" size="sm">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Marketplace
           </Button>
@@ -30,11 +27,10 @@ export default function TextStoryDetailPage() {
             <h1 className="text-3xl font-bold text-gray-900">
               Text Story Detail
             </h1>
-            <p className="text-gray-600">
-              Story ID: {params.id}
-            </p>
+            <p className="text-gray-600">Story ID: {params.id}</p>
             <p className="text-sm text-gray-500">
-              This page is under development. The full text story detail functionality will be implemented soon.
+              This page is under development. The full text story detail
+              functionality will be implemented soon.
             </p>
           </div>
         </div>

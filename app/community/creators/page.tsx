@@ -1,231 +1,241 @@
-"use client";
+'use client';
 
-import React from "react";
-
-import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { 
-  Users, 
-  Search, 
-  BookOpen, 
-  Star, 
-  Trophy, 
-  Bookmark, 
-  ChevronRight, 
+import { motion } from 'framer-motion';
+import {
+  Users,
+  Search,
+  BookOpen,
+  Star,
+  Trophy,
+  Bookmark,
+  ChevronRight,
   ChevronDown,
   Filter,
   Award,
   Crown,
   ThumbsUp,
-  TrendingUp
-} from "lucide-react";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+  TrendingUp,
+} from 'lucide-react';
+import Link from 'next/link';
+import React, { useState, useEffect } from 'react';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 // Generate mock top creators
 const getMockCreators = () => {
   return [
     {
-      id: "creator-1",
-      name: "Alex Morgan",
-      username: "@alexwrites",
-      avatar: "https://api.dicebear.com/7.x/personas/svg?seed=alex",
-      bio: "Sci-fi author exploring the boundaries of technology and humanity",
+      id: 'creator-1',
+      name: 'Alex Morgan',
+      username: '@alexwrites',
+      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=alex',
+      bio: 'Sci-fi author exploring the boundaries of technology and humanity',
       followers: 12800,
       stories: 24,
       featured: true,
       rating: 4.9,
-      tags: ["Science Fiction", "Cyberpunk", "AI"],
-      badge: "Elite",
+      tags: ['Science Fiction', 'Cyberpunk', 'AI'],
+      badge: 'Elite',
       nfts: 15,
-      joined: "2022-05-12",
-      achievements: ["Story of the Month", "1000+ Followers", "Featured Author"],
+      joined: '2022-05-12',
+      achievements: [
+        'Story of the Month',
+        '1000+ Followers',
+        'Featured Author',
+      ],
       totalLikes: 35200,
-      verified: true
+      verified: true,
     },
     {
-      id: "creator-2",
-      name: "Elena Kim",
-      username: "@elenakim",
-      avatar: "https://api.dicebear.com/7.x/personas/svg?seed=elena",
-      bio: "Fantasy storyteller weaving magical worlds and complex characters",
+      id: 'creator-2',
+      name: 'Elena Kim',
+      username: '@elenakim',
+      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=elena',
+      bio: 'Fantasy storyteller weaving magical worlds and complex characters',
       followers: 9400,
       stories: 18,
       featured: true,
       rating: 4.7,
-      tags: ["Fantasy", "Magic", "Adventure"],
-      badge: "Pro",
+      tags: ['Fantasy', 'Magic', 'Adventure'],
+      badge: 'Pro',
       nfts: 12,
-      joined: "2022-07-23",
-      achievements: ["Rising Star", "10+ NFTs", "Community Choice"],
+      joined: '2022-07-23',
+      achievements: ['Rising Star', '10+ NFTs', 'Community Choice'],
       totalLikes: 28700,
-      verified: true
+      verified: true,
     },
     {
-      id: "creator-3",
-      name: "Marcus Johnson",
-      username: "@marcuswrites",
-      avatar: "https://api.dicebear.com/7.x/personas/svg?seed=marcus",
-      bio: "Mystery and thriller author who loves to keep readers guessing",
+      id: 'creator-3',
+      name: 'Marcus Johnson',
+      username: '@marcuswrites',
+      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=marcus',
+      bio: 'Mystery and thriller author who loves to keep readers guessing',
       followers: 7600,
       stories: 15,
       featured: true,
       rating: 4.8,
-      tags: ["Mystery", "Thriller", "Suspense"],
-      badge: "Creator",
+      tags: ['Mystery', 'Thriller', 'Suspense'],
+      badge: 'Creator',
       nfts: 9,
-      joined: "2022-09-05",
-      achievements: ["Best Mystery", "5000+ Followers"],
+      joined: '2022-09-05',
+      achievements: ['Best Mystery', '5000+ Followers'],
       totalLikes: 18900,
-      verified: true
+      verified: true,
     },
     {
-      id: "creator-4",
-      name: "Sophia Chen",
-      username: "@sophiawrites",
-      avatar: "https://api.dicebear.com/7.x/personas/svg?seed=sophia",
-      bio: "Contemporary fiction focusing on cultural narratives and family",
+      id: 'creator-4',
+      name: 'Sophia Chen',
+      username: '@sophiawrites',
+      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=sophia',
+      bio: 'Contemporary fiction focusing on cultural narratives and family',
       followers: 6300,
       stories: 12,
       featured: true,
       rating: 4.6,
-      tags: ["Contemporary", "Cultural", "Drama"],
-      badge: "Creator",
+      tags: ['Contemporary', 'Cultural', 'Drama'],
+      badge: 'Creator',
       nfts: 7,
-      joined: "2023-01-17",
+      joined: '2023-01-17',
       achievements: ["Editor's Choice"],
       totalLikes: 14500,
-      verified: true
+      verified: true,
     },
     {
-      id: "creator-5",
-      name: "James Wilson",
-      username: "@jameswrites",
-      avatar: "https://api.dicebear.com/7.x/personas/svg?seed=james",
-      bio: "Historical fiction writer bringing the past to life through compelling narratives",
+      id: 'creator-5',
+      name: 'James Wilson',
+      username: '@jameswrites',
+      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=james',
+      bio: 'Historical fiction writer bringing the past to life through compelling narratives',
       followers: 5800,
       stories: 10,
       featured: false,
       rating: 4.5,
-      tags: ["Historical", "Drama", "War"],
-      badge: "Creator",
+      tags: ['Historical', 'Drama', 'War'],
+      badge: 'Creator',
       nfts: 5,
-      joined: "2023-02-28",
-      achievements: ["Best Historical Fiction"],
+      joined: '2023-02-28',
+      achievements: ['Best Historical Fiction'],
       totalLikes: 12300,
-      verified: false
+      verified: false,
     },
     {
-      id: "creator-6",
-      name: "Olivia Taylor",
-      username: "@oliviawrites",
-      avatar: "https://api.dicebear.com/7.x/personas/svg?seed=olivia",
-      bio: "Romance and drama storyteller exploring human connections and emotions",
+      id: 'creator-6',
+      name: 'Olivia Taylor',
+      username: '@oliviawrites',
+      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=olivia',
+      bio: 'Romance and drama storyteller exploring human connections and emotions',
       followers: 4900,
       stories: 9,
       featured: false,
       rating: 4.4,
-      tags: ["Romance", "Drama", "Contemporary"],
-      badge: "Creator",
+      tags: ['Romance', 'Drama', 'Contemporary'],
+      badge: 'Creator',
       nfts: 4,
-      joined: "2023-03-15",
-      achievements: ["Best Romance"],
+      joined: '2023-03-15',
+      achievements: ['Best Romance'],
       totalLikes: 10200,
-      verified: false
+      verified: false,
     },
     {
-      id: "creator-7",
-      name: "David Rodriguez",
-      username: "@davidwrites",
-      avatar: "https://api.dicebear.com/7.x/personas/svg?seed=david",
-      bio: "Speculative fiction author exploring alternate realities and futures",
+      id: 'creator-7',
+      name: 'David Rodriguez',
+      username: '@davidwrites',
+      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=david',
+      bio: 'Speculative fiction author exploring alternate realities and futures',
       followers: 4200,
       stories: 8,
       featured: false,
       rating: 4.3,
-      tags: ["Speculative", "Science Fiction", "Dystopian"],
-      badge: "Creator",
+      tags: ['Speculative', 'Science Fiction', 'Dystopian'],
+      badge: 'Creator',
       nfts: 3,
-      joined: "2023-04-22",
-      achievements: ["Rising Talent"],
+      joined: '2023-04-22',
+      achievements: ['Rising Talent'],
       totalLikes: 8700,
-      verified: false
+      verified: false,
     },
     {
-      id: "creator-8",
-      name: "Aisha Patel",
-      username: "@aishawrites",
-      avatar: "https://api.dicebear.com/7.x/personas/svg?seed=aisha",
-      bio: "YA fiction writer focusing on diverse characters and coming-of-age stories",
+      id: 'creator-8',
+      name: 'Aisha Patel',
+      username: '@aishawrites',
+      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=aisha',
+      bio: 'YA fiction writer focusing on diverse characters and coming-of-age stories',
       followers: 3800,
       stories: 7,
       featured: false,
       rating: 4.2,
-      tags: ["Young Adult", "Contemporary", "Coming of Age"],
-      badge: "Creator",
+      tags: ['Young Adult', 'Contemporary', 'Coming of Age'],
+      badge: 'Creator',
       nfts: 2,
-      joined: "2023-05-30",
-      achievements: ["New Voice"],
+      joined: '2023-05-30',
+      achievements: ['New Voice'],
       totalLikes: 7500,
-      verified: false
+      verified: false,
     },
     {
-      id: "creator-9",
-      name: "Michael Chen",
-      username: "@michaelwrites",
-      avatar: "https://api.dicebear.com/7.x/personas/svg?seed=michael",
-      bio: "Horror and supernatural fiction author creating chilling narratives",
+      id: 'creator-9',
+      name: 'Michael Chen',
+      username: '@michaelwrites',
+      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=michael',
+      bio: 'Horror and supernatural fiction author creating chilling narratives',
       followers: 3500,
       stories: 6,
       featured: false,
       rating: 4.1,
-      tags: ["Horror", "Supernatural", "Thriller"],
-      badge: "Creator",
+      tags: ['Horror', 'Supernatural', 'Thriller'],
+      badge: 'Creator',
       nfts: 2,
-      joined: "2023-06-14",
-      achievements: ["Best Horror"],
+      joined: '2023-06-14',
+      achievements: ['Best Horror'],
       totalLikes: 6800,
-      verified: false
+      verified: false,
     },
     {
-      id: "creator-10",
-      name: "Sarah Williams",
-      username: "@sarahwrites",
-      avatar: "https://api.dicebear.com/7.x/personas/svg?seed=sarah",
-      bio: "Poet and short story writer focusing on emotional depth and lyrical prose",
+      id: 'creator-10',
+      name: 'Sarah Williams',
+      username: '@sarahwrites',
+      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=sarah',
+      bio: 'Poet and short story writer focusing on emotional depth and lyrical prose',
       followers: 3200,
       stories: 15,
       featured: false,
       rating: 4.0,
-      tags: ["Poetry", "Literary", "Short Stories"],
-      badge: "Creator",
+      tags: ['Poetry', 'Literary', 'Short Stories'],
+      badge: 'Creator',
       nfts: 1,
-      joined: "2023-07-20",
-      achievements: ["Best Short Story Collection"],
+      joined: '2023-07-20',
+      achievements: ['Best Short Story Collection'],
       totalLikes: 6200,
-      verified: false
-}
+      verified: false,
+    },
   ];
 };
 
 export default function CreatorsPage() {
   const [creators, setCreators] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterOption, setFilterOption] = useState("all");
-  const [activeTab, setActiveTab] = useState("all");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterOption, setFilterOption] = useState('all');
+  const [activeTab, setActiveTab] = useState('all');
 
   useEffect(() => {
     // Simulate loading creators from an API
@@ -239,40 +249,45 @@ export default function CreatorsPage() {
   }, []);
 
   // Filter creators based on active tab, search term, and filter option
-  const filteredCreators = creators.filter(creator => {
-    // First filter by active tab
-    if (activeTab === "featured" && !creator.featured) return false;
-    if (activeTab === "verified" && !creator.verified) return false;
+  const filteredCreators = creators
+    .filter((creator) => {
+      // First filter by active tab
+      if (activeTab === 'featured' && !creator.featured) return false;
+      if (activeTab === 'verified' && !creator.verified) return false;
 
-    // Then filter by search term
-    if (searchTerm) {
-      const term = searchTerm.toLowerCase();
-      if (!creator.name.toLowerCase().includes(term) && 
+      // Then filter by search term
+      if (searchTerm) {
+        const term = searchTerm.toLowerCase();
+        if (
+          !creator.name.toLowerCase().includes(term) &&
           !creator.username.toLowerCase().includes(term) &&
           !creator.bio.toLowerCase().includes(term) &&
-          !creator.tags.some((tag: string) => tag.toLowerCase().includes(term))) {
+          !creator.tags.some((tag: string) => tag.toLowerCase().includes(term))
+        ) {
+          return false;
+        }
+      }
+      // Finally, filter by dropdown filter
+      if (filterOption === 'followers' && creator.followers < 5000)
         return false;
-}
-}
-    // Finally, filter by dropdown filter
-    if (filterOption === "followers" && creator.followers < 5000) return false;
-    if (filterOption === "stories" && creator.stories < 10) return false;
-    if (filterOption === "nfts" && creator.nfts < 5) return false;
+      if (filterOption === 'stories' && creator.stories < 10) return false;
+      if (filterOption === 'nfts' && creator.nfts < 5) return false;
 
-    return true;
-  }).sort((a, b) => b.followers - a.followers);
+      return true;
+    })
+    .sort((a, b) => b.followers - a.followers);
 
   // Function to render creator badges
   const renderBadge = (badge: string) => {
     switch (badge) {
-      case "Elite":
+      case 'Elite':
         return (
           <Badge className="bg-yellow-500/20 text-yellow-600 border-yellow-500">
             <Crown className="h-3 w-3 mr-1" />
             Elite
           </Badge>
         );
-      case "Pro":
+      case 'Pro':
         return (
           <Badge className="bg-blue-500/20 text-blue-600 border-blue-500">
             <Award className="h-3 w-3 mr-1" />
@@ -286,7 +301,7 @@ export default function CreatorsPage() {
             Creator
           </Badge>
         );
-}
+    }
   };
 
   const renderCreatorCard = (creator: any, index: number) => (
@@ -316,7 +331,16 @@ export default function CreatorsPage() {
               </Avatar>
               {creator.verified && (
                 <div className="absolute -bottom-1 -right-1 bg-blue-500 text-white rounded-full p-0.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-3 w-3"
+                  >
                     <polyline points="20 6 9 17 4 12"></polyline>
                   </svg>
                 </div>
@@ -327,11 +351,11 @@ export default function CreatorsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-semibold text-lg">{creator.name}</h3>
-                  <p className="text-sm text-muted-foreground">{creator.username}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {creator.username}
+                  </p>
                 </div>
-                <div>
-                  {renderBadge(creator.badge)}
-                </div>
+                <div>{renderBadge(creator.badge)}</div>
               </div>
 
               <p className="text-sm mt-2 line-clamp-2">{creator.bio}</p>
@@ -346,8 +370,14 @@ export default function CreatorsPage() {
 
               <div className="grid grid-cols-4 gap-2 mt-4">
                 <div className="flex flex-col items-center border rounded-md p-2">
-                  <span className="text-xs text-muted-foreground">Followers</span>
-                  <span className="font-medium">{creator.followers >= 1000 ? `${(creator.followers / 1000).toFixed(1)}k` : creator.followers}</span>
+                  <span className="text-xs text-muted-foreground">
+                    Followers
+                  </span>
+                  <span className="font-medium">
+                    {creator.followers >= 1000
+                      ? `${(creator.followers / 1000).toFixed(1)}k`
+                      : creator.followers}
+                  </span>
                 </div>
                 <div className="flex flex-col items-center border rounded-md p-2">
                   <span className="text-xs text-muted-foreground">Stories</span>
@@ -361,21 +391,32 @@ export default function CreatorsPage() {
                   <span className="text-xs text-muted-foreground">Rating</span>
                   <span className="font-medium flex items-center">
                     {creator.rating}
-                    <Star className="h-3 w-3 text-yellow-500 ml-1" fill="currentColor" />
+                    <Star
+                      className="h-3 w-3 text-yellow-500 ml-1"
+                      fill="currentColor"
+                    />
                   </span>
                 </div>
               </div>
 
               {creator.achievements.length > 0 && (
                 <div className="mt-4">
-                  <p className="text-xs text-muted-foreground mb-1">Achievements:</p>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    Achievements:
+                  </p>
                   <div className="flex flex-wrap gap-2">
-                    {creator.achievements.slice(0, 2).map((achievement: string, idx: number) => (
-                      <Badge key={idx} variant="secondary" className="text-xs">
-                        <Trophy className="h-3 w-3 mr-1 text-amber-500" />
-                        {achievement}
-                      </Badge>
-                    ))}
+                    {creator.achievements
+                      .slice(0, 2)
+                      .map((achievement: string, idx: number) => (
+                        <Badge
+                          key={idx}
+                          variant="secondary"
+                          className="text-xs"
+                        >
+                          <Trophy className="h-3 w-3 mr-1 text-amber-500" />
+                          {achievement}
+                        </Badge>
+                      ))}
                     {creator.achievements.length > 2 && (
                       <Badge variant="secondary" className="text-xs">
                         +{creator.achievements.length - 2} more
@@ -394,9 +435,9 @@ export default function CreatorsPage() {
                 <ChevronRight className="ml-1 h-4 w-4" />
               </Link>
             </Button>
-            <Button 
-              variant="default" 
-              size="sm" 
+            <Button
+              variant="default"
+              size="sm"
               className="theme-gradient-bg text-white border-0"
             >
               Follow
@@ -421,10 +462,7 @@ export default function CreatorsPage() {
           />
         </div>
         <div className="flex gap-2">
-          <Select
-            value={filterOption}
-            onValueChange={setFilterOption}
-          >
+          <Select value={filterOption} onValueChange={setFilterOption}>
             <SelectTrigger className="w-[140px]">
               <SelectValue placeholder="Filter" />
             </SelectTrigger>
@@ -476,7 +514,9 @@ export default function CreatorsPage() {
         </div>
       ) : filteredCreators.length > 0 ? (
         <div className="grid grid-cols-1 gap-6">
-          {filteredCreators.map((creator, index) => renderCreatorCard(creator, index))}
+          {filteredCreators.map((creator, index) =>
+            renderCreatorCard(creator, index)
+          )}
         </div>
       ) : (
         <div className="text-center py-12">
@@ -484,45 +524,57 @@ export default function CreatorsPage() {
             <Search className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
             <h3 className="text-xl font-semibold mb-2">No Creators Found</h3>
             <p className="text-muted-foreground mb-4">
-              We couldn't find any creators matching your search criteria. Try adjusting your filters or search terms.
+              We couldn't find any creators matching your search criteria. Try
+              adjusting your filters or search terms.
             </p>
-            <Button onClick={() => {
-              setSearchTerm("");
-              setFilterOption("all");
-              setActiveTab("all");
-            }}>
+            <Button
+              onClick={() => {
+                setSearchTerm('');
+                setFilterOption('all');
+                setActiveTab('all');
+              }}
+            >
               Clear Filters
             </Button>
           </div>
         </div>
       )}
 
-      {filteredCreators.length > 0 && filteredCreators.length < creators.length && (
-        <div className="text-center mt-4 text-sm text-muted-foreground">
-          Showing {filteredCreators.length} of {creators.length} creators
-        </div>
-      )}
+      {filteredCreators.length > 0 &&
+        filteredCreators.length < creators.length && (
+          <div className="text-center mt-4 text-sm text-muted-foreground">
+            Showing {filteredCreators.length} of {creators.length} creators
+          </div>
+        )}
 
       <div className="mt-12 p-6 border rounded-lg bg-muted/10">
         <h2 className="text-xl font-bold mb-3">Become a Featured Creator</h2>
         <p className="mb-4 text-muted-foreground">
-          Want to be featured among our top creators? Start publishing quality stories, engage with the community, and mint your content as NFTs to increase your visibility and followers.
+          Want to be featured among our top creators? Start publishing quality
+          stories, engage with the community, and mint your content as NFTs to
+          increase your visibility and followers.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div className="p-4 rounded-lg bg-muted/20 flex flex-col items-center text-center">
             <BookOpen className="h-8 w-8 text-primary mb-2" />
             <h3 className="font-medium mb-1">Publish Stories</h3>
-            <p className="text-sm text-muted-foreground">Create and share at least 5 high-quality stories</p>
+            <p className="text-sm text-muted-foreground">
+              Create and share at least 5 high-quality stories
+            </p>
           </div>
           <div className="p-4 rounded-lg bg-muted/20 flex flex-col items-center text-center">
             <TrendingUp className="h-8 w-8 text-primary mb-2" />
             <h3 className="font-medium mb-1">Grow Following</h3>
-            <p className="text-sm text-muted-foreground">Build a community of engaged followers</p>
+            <p className="text-sm text-muted-foreground">
+              Build a community of engaged followers
+            </p>
           </div>
           <div className="p-4 rounded-lg bg-muted/20 flex flex-col items-center text-center">
             <ThumbsUp className="h-8 w-8 text-primary mb-2" />
             <h3 className="font-medium mb-1">Get Recognized</h3>
-            <p className="text-sm text-muted-foreground">Earn likes, comments, and positive ratings</p>
+            <p className="text-sm text-muted-foreground">
+              Earn likes, comments, and positive ratings
+            </p>
           </div>
         </div>
         <div className="flex justify-center">

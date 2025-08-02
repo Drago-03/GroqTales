@@ -1,12 +1,5 @@
-"use client";
+'use client';
 
-import React from "react";
-
-import { useEffect, useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
 import {
   BarChart3,
   Users,
@@ -21,12 +14,24 @@ import {
   ThumbsUp,
   ThumbsDown,
   Trash2,
-  Send
-} from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
-import { getAdminActions } from "@/lib/admin-service";
-import { VerifiedBadge } from "@/components/verified-badge";
-import { useToast } from "@/components/ui/use-toast";
+  Send,
+} from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useEffect, useState, Suspense } from 'react';
+
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast';
+import { VerifiedBadge } from '@/components/verified-badge';
+import { getAdminActions } from '@/lib/admin-service';
 
 export default function DashboardPage() {
   return (
@@ -38,7 +43,7 @@ export default function DashboardPage() {
 function DashboardContent() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
-  const [newPost, setNewPost] = useState("");
+  const [newPost, setNewPost] = useState('');
   const [isPostLoading, setIsPostLoading] = useState(false);
   const { toast } = useToast();
   const [authError, setAuthError] = useState<string | null>(null);
@@ -52,41 +57,41 @@ function DashboardContent() {
         // Decode and validate the session token
         const decodedToken = JSON.parse(atob(sessionToken));
         const { employeeId, timestamp, signature } = decodedToken;
-        
+
         // Basic validation
         if (!employeeId || !timestamp || !signature) {
-          console.log("Invalid session token structure");
+          console.log('Invalid session token structure');
           router.push('/admin/login');
           return;
         }
-        
+
         // Check if token is expired (24 hours)
         const now = Date.now();
-        const isExpired = (now - timestamp) > (24 * 60 * 60 * 1000);
-        
+        const isExpired = now - timestamp > 24 * 60 * 60 * 1000;
+
         if (isExpired) {
-          console.log("Session token expired");
+          console.log('Session token expired');
           router.push('/admin/login');
           return;
         }
-        
+
         // Store valid session data
         if (typeof window !== 'undefined') {
           localStorage.setItem('adminSession', 'true');
           localStorage.setItem('employeeId', employeeId);
           localStorage.setItem('adminSessionTimestamp', now.toString());
-          document.cookie = "adminSessionActive=true; path=/; max-age=86400"; // 24 hours
+          document.cookie = 'adminSessionActive=true; path=/; max-age=86400'; // 24 hours
         }
-        
+
         setIsLoading(false);
         return;
       } catch (error) {
-        console.error("Error validating session token:", error);
+        console.error('Error validating session token:', error);
         router.push('/admin/login');
         return;
       }
     }
-    
+
     // Check existing authentication methods
     try {
       if (typeof window !== 'undefined') {
@@ -96,39 +101,52 @@ function DashboardContent() {
 
         const now = Date.now();
         // Check if session has expired (24 hours)
-        const isExpired = sessionTimestamp && (now - parseInt(sessionTimestamp)) > (24 * 60 * 60 * 1000);
+        const isExpired =
+          sessionTimestamp &&
+          now - parseInt(sessionTimestamp) > 24 * 60 * 60 * 1000;
 
         if (!adminSession || !employeeId || isExpired) {
           // Try to check cookie as fallback
-          const hasCookie = typeof document !== 'undefined' && document.cookie.split(';').some(c => c.trim().startsWith('adminSessionActive=true'));
+          const hasCookie =
+            typeof document !== 'undefined' &&
+            document.cookie
+              .split(';')
+              .some((c) => c.trim().startsWith('adminSessionActive=true'));
 
           if (!hasCookie) {
-            console.log("No valid admin session found, redirecting to login");
+            console.log('No valid admin session found, redirecting to login');
             router.push('/admin/login');
             return;
           }
         }
-        
+
         // Session exists and is valid, refresh it
         localStorage.setItem('adminSessionTimestamp', now.toString());
         if (typeof document !== 'undefined') {
-          document.cookie = "adminSessionActive=true; path=/; max-age=86400"; // 24 hours
+          document.cookie = 'adminSessionActive=true; path=/; max-age=86400'; // 24 hours
         }
-        
+
         // Set up periodic session refresh without depending on React state
-        const intervalId = window.setInterval(() => {
-          try {
-            if (typeof window !== 'undefined') {
-              localStorage.setItem('adminSessionTimestamp', Date.now().toString());
-              if (typeof document !== 'undefined') {
-                document.cookie = "adminSessionActive=true; path=/; max-age=86400";
+        const intervalId = window.setInterval(
+          () => {
+            try {
+              if (typeof window !== 'undefined') {
+                localStorage.setItem(
+                  'adminSessionTimestamp',
+                  Date.now().toString()
+                );
+                if (typeof document !== 'undefined') {
+                  document.cookie =
+                    'adminSessionActive=true; path=/; max-age=86400';
+                }
               }
+            } catch (error) {
+              console.error('Error refreshing session:', error);
+              // Not critical, will try again next interval
             }
-          } catch (error) {
-            console.error("Error refreshing session:", error);
-            // Not critical, will try again next interval
-          }
-        }, 15 * 60 * 1000); // 15 minutes
+          },
+          15 * 60 * 1000
+        ); // 15 minutes
 
         setIsLoading(false);
 
@@ -140,8 +158,8 @@ function DashboardContent() {
         return;
       }
     } catch (error) {
-      console.error("Error checking admin authentication:", error);
-      setAuthError("Authentication error. Please try logging in again.");
+      console.error('Error checking admin authentication:', error);
+      setAuthError('Authentication error. Please try logging in again.');
       setIsLoading(false);
       return;
     }
@@ -158,13 +176,13 @@ function DashboardContent() {
 
         // Expire all cookies
         if (typeof document !== 'undefined') {
-          document.cookie = "adminSessionActive=; path=/; max-age=0";
-}
-}
+          document.cookie = 'adminSessionActive=; path=/; max-age=0';
+        }
+      }
       // Show logout toast
       toast({
-        title: "Logged out successfully",
-        description: "You have been logged out of the admin dashboard"
+        title: 'Logged out successfully',
+        description: 'You have been logged out of the admin dashboard',
       });
 
       // Redirect after a short delay to ensure toast is shown
@@ -172,19 +190,20 @@ function DashboardContent() {
         router.push('/admin/login');
       }, 800);
     } catch (error) {
-      console.error("Error during logout:", error);
+      console.error('Error during logout:', error);
 
       // Redirect anyway, even if clearing storage failed
       toast({
-        variant: "destructive",
-        title: "Logout issue",
-        description: "There was a problem during logout, but you've been redirected to the login page."
+        variant: 'destructive',
+        title: 'Logout issue',
+        description:
+          "There was a problem during logout, but you've been redirected to the login page.",
       });
 
       setTimeout(() => {
         router.push('/admin/login');
       }, 800);
-}
+    }
   };
 
   const handleCreatePost = async (e: React.FormEvent) => {
@@ -194,28 +213,32 @@ function DashboardContent() {
     setIsPostLoading(true);
     try {
       // In a real app, this would call an API endpoint
-      await new Promise(resolve => setTimeout(resolve, 800)); // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 800)); // Simulate API call
 
       toast({
-        title: "Post created",
-        description: "Your admin post has been published"
+        title: 'Post created',
+        description: 'Your admin post has been published',
       });
 
-      setNewPost("");
+      setNewPost('');
     } catch (error) {
       toast({
-        variant: "destructive",
-        title: "Post failed",
-        description: "Could not create your post"
+        variant: 'destructive',
+        title: 'Post failed',
+        description: 'Could not create your post',
       });
     } finally {
       setIsPostLoading(false);
-}
+    }
   };
 
   if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
-}
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
   if (authError) {
     return (
       <div className="min-h-screen flex items-center justify-center flex-col gap-4">
@@ -223,7 +246,7 @@ function DashboardContent() {
           <h2 className="text-2xl font-bold mb-2">Authentication Error</h2>
           <p>{authError}</p>
         </div>
-        <Button 
+        <Button
           onClick={() => router.push('/admin/login')}
           className="theme-gradient-bg"
         >
@@ -231,18 +254,25 @@ function DashboardContent() {
         </Button>
       </div>
     );
-}
+  }
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold gradient-heading">Admin Dashboard</h1>
-            <p className="text-muted-foreground">Manage your GroqTales platform</p>
+            <h1 className="text-3xl font-bold gradient-heading">
+              Admin Dashboard
+            </h1>
+            <p className="text-muted-foreground">
+              Manage your GroqTales platform
+            </p>
           </div>
           <div className="flex gap-4">
-            <Button variant="outline" onClick={() => router.push('/admin/settings')}>
+            <Button
+              variant="outline"
+              onClick={() => router.push('/admin/settings')}
+            >
               <Settings className="w-4 h-4 mr-2" />
               Settings
             </Button>
@@ -338,7 +368,9 @@ function DashboardContent() {
               <Card>
                 <CardHeader>
                   <CardTitle>User Growth</CardTitle>
-                  <CardDescription>Monthly user acquisition stats</CardDescription>
+                  <CardDescription>
+                    Monthly user acquisition stats
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="h-[300px] flex items-center justify-center border rounded-lg">
@@ -380,7 +412,9 @@ function DashboardContent() {
               <Card>
                 <CardHeader>
                   <CardTitle>Create Admin Post</CardTitle>
-                  <CardDescription>Post as GroqTales admin to the community feed</CardDescription>
+                  <CardDescription>
+                    Post as GroqTales admin to the community feed
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleCreatePost} className="space-y-4">
@@ -403,7 +437,10 @@ function DashboardContent() {
                     />
 
                     <div className="flex justify-end">
-                      <Button type="submit" disabled={isPostLoading || !newPost.trim()}>
+                      <Button
+                        type="submit"
+                        disabled={isPostLoading || !newPost.trim()}
+                      >
                         {isPostLoading ? (
                           <>
                             <div className="w-4 h-4 mr-2 animate-spin rounded-full border-2 border-primary border-t-transparent" />
@@ -424,7 +461,9 @@ function DashboardContent() {
               <Card>
                 <CardHeader>
                   <CardTitle>Recent Admin Interactions</CardTitle>
-                  <CardDescription>Your recent activity on the platform</CardDescription>
+                  <CardDescription>
+                    Your recent activity on the platform
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -434,12 +473,25 @@ function DashboardContent() {
                       </div>
                     ) : (
                       getAdminActions().map((action, idx) => (
-                        <div key={idx} className="flex items-start gap-3 p-3 border rounded-lg">
-                          {action.type === 'like' && <ThumbsUp className="w-5 h-5 text-green-500" />}
-                          {action.type === 'dislike' && <ThumbsDown className="w-5 h-5 text-red-500" />}
-                          {action.type === 'comment' && <MessageSquare className="w-5 h-5 text-blue-500" />}
-                          {action.type === 'delete' && <Trash2 className="w-5 h-5 text-red-500" />}
-                          {action.type === 'post' && <Send className="w-5 h-5 text-purple-500" />}
+                        <div
+                          key={idx}
+                          className="flex items-start gap-3 p-3 border rounded-lg"
+                        >
+                          {action.type === 'like' && (
+                            <ThumbsUp className="w-5 h-5 text-green-500" />
+                          )}
+                          {action.type === 'dislike' && (
+                            <ThumbsDown className="w-5 h-5 text-red-500" />
+                          )}
+                          {action.type === 'comment' && (
+                            <MessageSquare className="w-5 h-5 text-blue-500" />
+                          )}
+                          {action.type === 'delete' && (
+                            <Trash2 className="w-5 h-5 text-red-500" />
+                          )}
+                          {action.type === 'post' && (
+                            <Send className="w-5 h-5 text-purple-500" />
+                          )}
 
                           <div className="flex-1">
                             <div className="flex items-center">
@@ -451,11 +503,16 @@ function DashboardContent() {
                             </div>
 
                             <p className="text-sm mt-1">
-                              {action.type === 'like' && `Liked story #${action.storyId}`}
-                              {action.type === 'dislike' && `Disliked story #${action.storyId}`}
-                              {action.type === 'comment' && `Commented on story #${action.storyId}: "${action.content}"`}
-                              {action.type === 'delete' && `Deleted story #${action.storyId}`}
-                              {action.type === 'post' && `Posted: "${action.content}"`}
+                              {action.type === 'like' &&
+                                `Liked story #${action.storyId}`}
+                              {action.type === 'dislike' &&
+                                `Disliked story #${action.storyId}`}
+                              {action.type === 'comment' &&
+                                `Commented on story #${action.storyId}: "${action.content}"`}
+                              {action.type === 'delete' &&
+                                `Deleted story #${action.storyId}`}
+                              {action.type === 'post' &&
+                                `Posted: "${action.content}"`}
                             </p>
                           </div>
                         </div>
@@ -471,7 +528,9 @@ function DashboardContent() {
             <Card>
               <CardHeader>
                 <CardTitle>Platform Reports</CardTitle>
-                <CardDescription>Detailed analytics and insights</CardDescription>
+                <CardDescription>
+                  Detailed analytics and insights
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="border rounded-lg p-4">

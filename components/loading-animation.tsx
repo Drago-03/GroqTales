@@ -1,19 +1,18 @@
-"use client";
+'use client';
 
-import React from "react";
-
-
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 interface LoadingAnimationProps {
   message?: string;
 }
-  export function LoadingAnimation({ message = "Loading..." }: LoadingAnimationProps) {
-  const [dots, setDots] = useState("");
+export function LoadingAnimation({
+  message = 'Loading...',
+}: LoadingAnimationProps) {
+  const [dots, setDots] = useState('');
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setDots((prev) => (prev.length >= 3 ? "" : prev + "."));
+      setDots((prev) => (prev.length >= 3 ? '' : prev + '.'));
     }, 400);
 
     return () => clearInterval(interval);

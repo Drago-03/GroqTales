@@ -11,7 +11,7 @@ router.get('/health', (req, res) => {
   res.json({
     status: 'healthy',
     sdk_version: process.env.SDK_VERSION || 'v1.0.0',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 
@@ -24,9 +24,9 @@ router.get('/docs', (req, res) => {
     endpoints: {
       stories: '/sdk/v1/stories',
       ai: '/sdk/v1/ai',
-      nft: '/sdk/v1/nft'
+      nft: '/sdk/v1/nft',
     },
-    documentation: 'https://docs.groqtales.com/sdk'
+    documentation: 'https://docs.groqtales.com/sdk',
   });
 });
 

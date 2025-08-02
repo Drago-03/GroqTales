@@ -1,11 +1,18 @@
-import React from "react";
+import { ArrowLeft } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import React from 'react';
+
 import { getGenreBySlug } from '@/components/genre-selector';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import StoryCard from '@/components/story-card';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { fetchPopularStoriesByGenre } from '@/lib/mock-data';
 
 function GenrePage({ params }: { params: { slug: string } }) {
@@ -17,7 +24,9 @@ function GenrePage({ params }: { params: { slug: string } }) {
         <Card>
           <CardHeader>
             <CardTitle>Genre Not Found</CardTitle>
-            <CardDescription>The genre you're looking for doesn't exist.</CardDescription>
+            <CardDescription>
+              The genre you're looking for doesn't exist.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <Link href="/genres">
@@ -30,7 +39,7 @@ function GenrePage({ params }: { params: { slug: string } }) {
         </Card>
       </div>
     );
-}
+  }
   const stories = fetchPopularStoriesByGenre(genre.slug, 12);
 
   return (
@@ -48,12 +57,19 @@ function GenrePage({ params }: { params: { slug: string } }) {
         <Card className="mb-10" style={{ backgroundColor: genre.color + '15' }}>
           <CardHeader>
             <div className="flex items-center gap-4">
-              <div className="h-12 w-12 rounded-full flex items-center justify-center" style={{ backgroundColor: genre.color }}>
+              <div
+                className="h-12 w-12 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: genre.color }}
+              >
                 {genre.icon}
               </div>
               <div>
-                <CardTitle className="text-3xl font-bold">{genre.name}</CardTitle>
-                <CardDescription className="text-lg">{genre.description}</CardDescription>
+                <CardTitle className="text-3xl font-bold">
+                  {genre.name}
+                </CardTitle>
+                <CardDescription className="text-lg">
+                  {genre.description}
+                </CardDescription>
               </div>
             </div>
           </CardHeader>
@@ -68,7 +84,9 @@ function GenrePage({ params }: { params: { slug: string } }) {
           </CardContent>
         </Card>
 
-        <h2 className="text-2xl font-bold mb-6">Popular {genre.name} Stories</h2>
+        <h2 className="text-2xl font-bold mb-6">
+          Popular {genre.name} Stories
+        </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {stories.map((story) => (

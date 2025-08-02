@@ -1,14 +1,19 @@
-"use client";
+'use client';
 
-import React from "react";
+import { Shield, Lock, AlertCircle } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useState, Suspense } from 'react';
 
-import { useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Lock, AlertCircle } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
 
 interface LoginForm {
   employeeId: string;
@@ -16,8 +21,8 @@ interface LoginForm {
 }
 // Mock admin credentials - In production, this would be handled by a secure backend
 const MOCK_ADMIN = {
-  employeeId: "GT001",
-  password: "admin123"
+  employeeId: 'GT001',
+  password: 'admin123',
 };
 
 export default function LoginPage() {
@@ -30,10 +35,10 @@ export default function LoginPage() {
 function LoginContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<LoginForm>({
-    employeeId: "",
-    password: ""
+    employeeId: '',
+    password: '',
   });
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
   const router = useRouter();
   const { toast } = useToast();
   const searchParams = useSearchParams();
@@ -43,11 +48,11 @@ function LoginContent() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-    setError(""); // Clear error when input changes
+    setError(''); // Clear error when input changes
   };
 
   // Generate a secure token for session management
@@ -62,62 +67,73 @@ function LoginContent() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
+    setError('');
 
     try {
       // Check for simple admin login
-      if (formData.employeeId === "admin" && formData.password === "groqtales") {
+      if (
+        formData.employeeId === 'admin' &&
+        formData.password === 'groqtales'
+      ) {
         // Set up a robust admin session with a secure token
         const sessionToken = generateSessionToken('admin');
-        setupAdminSession("admin", sessionToken);
+        setupAdminSession('admin', sessionToken);
 
         toast({
-          title: "Login Successful",
-          description: "Welcome to the admin dashboard"
+          title: 'Login Successful',
+          description: 'Welcome to the admin dashboard',
         });
 
         // Redirect with token in URL for more reliable session establishment
-        const redirectUrl = returnUrl.includes('?') 
+        const redirectUrl = returnUrl.includes('?')
           ? `${returnUrl}&sessionToken=${sessionToken}`
           : `${returnUrl}?sessionToken=${sessionToken}`;
 
         router.push(redirectUrl);
         return;
-}
+      }
       // Validate employee ID format for GT001 pattern
-      if (formData.employeeId !== "admin" && !formData.employeeId.match(/^GT\d{3}$/)) {
-        throw new Error("Invalid employee ID format. Should be GT followed by 3 digits (e.g., GT001) or 'admin'");
-}
+      if (
+        formData.employeeId !== 'admin' &&
+        !formData.employeeId.match(/^GT\d{3}$/)
+      ) {
+        throw new Error(
+          "Invalid employee ID format. Should be GT followed by 3 digits (e.g., GT001) or 'admin'"
+        );
+      }
       // In production, this would be an API call to validate credentials
-      if (formData.employeeId === MOCK_ADMIN.employeeId && formData.password === MOCK_ADMIN.password) {
+      if (
+        formData.employeeId === MOCK_ADMIN.employeeId &&
+        formData.password === MOCK_ADMIN.password
+      ) {
         // Set up a robust admin session with a secure token
         const sessionToken = generateSessionToken(formData.employeeId);
         setupAdminSession(formData.employeeId, sessionToken);
 
         toast({
-          title: "Login Successful",
-          description: "Welcome to the admin dashboard"
+          title: 'Login Successful',
+          description: 'Welcome to the admin dashboard',
         });
 
         // Redirect with token in URL for more reliable session establishment
-        const redirectUrl = returnUrl.includes('?') 
+        const redirectUrl = returnUrl.includes('?')
           ? `${returnUrl}&sessionToken=${sessionToken}`
           : `${returnUrl}?sessionToken=${sessionToken}`;
 
         router.push(redirectUrl);
       } else {
-        throw new Error("Invalid employee ID or password");
-}
+        throw new Error('Invalid employee ID or password');
+      }
     } catch (error: any) {
       setError(error.message);
       toast({
-        variant: "destructive",
-        title: "Login Failed",
+        variant: 'destructive',
+        title: 'Login Failed',
         description: error.message,
       });
     } finally {
       setIsLoading(false);
-}
+    }
   };
 
   // Function to set up a robust admin session
@@ -140,12 +156,12 @@ function LoginContent() {
       // Tertiary - session storage as another option
       sessionStorage.setItem('adminSession', 'true');
 
-      console.log("Admin session established for:", employeeId);
+      console.log('Admin session established for:', employeeId);
     } catch (error) {
       // If any storage mechanism fails, log but continue
       // The URL token will still work as a fallback
-      console.error("Error setting up storage for admin session:", error);
-}
+      console.error('Error setting up storage for admin session:', error);
+    }
   };
 
   return (
@@ -177,7 +193,8 @@ function LoginContent() {
                 className="font-mono"
               />
               <p className="text-xs text-muted-foreground">
-                Enter "GT001" with password "admin123" or "admin" with password "groqtales"
+                Enter "GT001" with password "admin123" or "admin" with password
+                "groqtales"
               </p>
             </div>
             <div className="space-y-2">

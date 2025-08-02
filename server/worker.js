@@ -1,6 +1,6 @@
 /**
  * GroqTales Background Worker
- * 
+ *
  * Handles background tasks like story processing, NFT metadata generation,
  * and other asynchronous operations
  */
