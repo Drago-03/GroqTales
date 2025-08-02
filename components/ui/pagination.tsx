@@ -143,3 +143,5 @@ export {
   PaginationNext,
   PaginationPrevious,
 };
+
+export { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious };

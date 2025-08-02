@@ -391,3 +391,5 @@ function getRandomComment(tag: string) {
   const comments = getCommentsByTag(tag);
   return comments[Math.floor(Math.random() * comments.length)];
 }
+
+export { CommunityFeed };

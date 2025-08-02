@@ -126,3 +126,5 @@ export {
   NavigationMenuIndicator,
   NavigationMenuViewport,
 };
+
+export { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuContent, NavigationMenuTrigger, NavigationMenuLink, NavigationMenuIndicator, NavigationMenuViewport };

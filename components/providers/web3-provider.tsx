@@ -487,5 +487,5 @@ declare global {
       removeListener: (eventName: string, callback: (...args: any[]) => void) => void;
       selectedAddress?: string;
     };
-}
+  }
 }

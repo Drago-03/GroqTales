@@ -9,6 +9,54 @@ interface SplashScreenProps {
   onComplete?: () => void;
   minDisplayTime?: number; // minimum time to display in ms
 }
+
+export function SplashScreen({ onComplete, minDisplayTime = 2000 }: SplashScreenProps) {
+  const [isVisible, setIsVisible] = useState(true);
+  const [currentTitleIndex, setCurrentTitleIndex] = useState(0);
+  
+  const bookTitles = [
+    "AI-Powered Stories",
+    "Blockchain NFTs", 
+    "Creative Writing",
+    "Digital Art"
+  ];
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+      setTimeout(() => {
+        onComplete?.();
+      }, 500); // Allow fade out animation
+    }, minDisplayTime);
+
+    return () => clearTimeout(timer);
+  }, [onComplete, minDisplayTime]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTitleIndex((prev) => (prev + 1) % bookTitles.length);
+    }, 800);
+
+    return () => clearInterval(interval);
+  }, [bookTitles.length]);
+
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background"
+        >
+          <div className="relative">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
+              className="relative w-32 h-32 mb-8"
+            >
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-24 h-24 rounded-full theme-gradient-bg flex items-center justify-center">
                   <BookOpen className="w-12 h-12 text-white" />
