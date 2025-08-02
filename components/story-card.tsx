@@ -39,18 +39,53 @@ interface StoryCardProps {
   viewMode?: "grid" | "list";
   hideLink?: boolean;
   showCreateButton?: boolean;
-}}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black/40">
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-white text-black px-3 py-1.5 rounded-lg text-sm font-medium flex items-center"
-            onClick={handleViewNFT}
-          >
-            View NFT <ArrowUpRight className="h-3.5 w-3.5 ml-1" />
-          </motion.button>
-        </div>
+}
+
+export function StoryCard({ story, viewMode = "grid", hideLink = false, showCreateButton = false }: StoryCardProps) {
+  const router = useRouter();
+  
+  // Extract author information
+  const authorName = typeof story.author === 'string' ? story.author : story.author?.name || 'Anonymous';
+  const authorAvatar = typeof story.author === 'string' ? story.authorAvatar : story.author?.avatar || story.authorAvatar;
+  const storyContent = story.content || story.description || 'No content available';
+  const isGrid = viewMode === 'grid';
+  
+  const handleViewNFT = () => {
+    router.push(`/story/${story.id}`);
+  };
+  
+  const handleCreateSimilar = () => {
+    router.push(`/create?similar=${story.id}`);
+  };
+
+  const cardContent = (
+    <>
+      <div className="relative">
+        {story.coverImage || story.image ? (
+          <div className="relative h-48 overflow-hidden rounded-t-lg">
+            <img 
+              src={story.coverImage || story.image} 
+              alt={story.title}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black/40">
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-white text-black px-3 py-1.5 rounded-lg text-sm font-medium flex items-center"
+                onClick={handleViewNFT}
+              >
+                View NFT <ArrowUpRight className="h-3.5 w-3.5 ml-1" />
+              </motion.button>
+            </div>
+          </div>
+        ) : (
+          <div className="h-48 bg-gradient-to-br from-amber-100 to-orange-200 dark:from-amber-900/20 dark:to-orange-900/20 rounded-t-lg flex items-center justify-center">
+            <Sparkles className="h-12 w-12 text-amber-600 dark:text-amber-400" />
+          </div>
+        )}
       </div>
+      
       <div className="flex-1">
         <CardHeader className="p-4 pb-2">
           <div className="flex items-center space-x-2">

@@ -254,3 +254,5 @@ interface StorySummaryProps {
     </Card>
   );
 }
+
+export default StorySummary;
