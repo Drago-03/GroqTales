@@ -2,7 +2,7 @@
 
 import { type ReactNode, useCallback, useMemo, useState } from "react";
 // yo fam, we need this for checking if the wallet is connected n stuff
-import { useAccount } from "../../lib/wagmi-mock";
+import { useAccount } from "../../../lib/wagmi-mock";
 import {
   Transaction, // fr fr this handles all our transaction logic
   TransactionButton, // no cap, this button be handling our tx submissions
