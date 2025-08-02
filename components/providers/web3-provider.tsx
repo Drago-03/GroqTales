@@ -370,7 +370,7 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
             { trait_type: "Type", value: Math.random() > 0.5 ? "Comic" : "Text" },
             { trait_type: "Rarity", value: ["Common", "Uncommon", "Rare", "Legendary"][Math.floor(Math.random() * 4)] }
           ]
-}
+        }
       }));
 
       return mockNFTs;
@@ -381,7 +381,7 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
         variant: "destructive",
       });
       throw error;
-}
+    }
   };
 
   // Check for existing connection on mount
@@ -392,11 +392,11 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
           const accounts = await window.ethereum.request({ method: "eth_accounts" });
           if (accounts && accounts.length > 0) {
             connectWallet();
-}
+          }
         } catch (error) {
           console.error("Error checking connection:", error);
-}
-}
+        }
+      }
     };
 
     checkConnection();
@@ -413,7 +413,7 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
       } else if (accounts[0] !== account) {
         // User switched accounts
         connectWallet();
-}
+      }
     };
 
     const handleChainChanged = () => {
@@ -434,7 +434,7 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
         window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
         window.ethereum.removeListener("chainChanged", handleChainChanged);
         window.ethereum.removeListener("disconnect", handleDisconnect);
-}
+      }
     };
   }, [account]);
 
@@ -452,7 +452,7 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
       }, 2000);
 
       return () => clearTimeout(timer);
-}
+    }
   }, [connected]);
 
   const value = {
