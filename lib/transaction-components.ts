@@ -143,9 +143,146 @@ export const TransactionToastIcon: React.FC<TransactionToastIconProps> = ({
 };
 
 /**
+ * Transaction toast label component
+ */
+export interface TransactionToastLabelProps {
+  children?: React.ReactNode;
+  className?: string;
+}
+
+export const TransactionToastLabel: React.FC<TransactionToastLabelProps> = ({
+  children,
+  className = ""
+}) => {
+  return (
+    <span className={`transaction-toast-label ${className}`}>
+      {children || 'Transaction'}
+    </span>
+  );
+};
+
+/**
  * Transaction status type
  */
 export type TransactionStatus = 'idle' | 'pending' | 'success' | 'error';
+
+/**
+ * Transaction error component
+ */
+export interface TransactionErrorProps {
+  error?: Error | string;
+  className?: string;
+}
+
+export const TransactionError: React.FC<TransactionErrorProps> = ({
+  error,
+  className = ""
+}) => {
+  const errorMessage = error instanceof Error ? error.message : error || 'Transaction failed';
+  
+  return (
+    <div className={`transaction-error ${className}`}>
+      <span className="error-message">{errorMessage}</span>
+    </div>
+  );
+};
+
+/**
+ * Transaction response component
+ */
+export interface TransactionResponseProps {
+  response?: any;
+  className?: string;
+}
+
+export const TransactionResponse: React.FC<TransactionResponseProps> = ({
+  response,
+  className = ""
+}) => {
+  return (
+    <div className={`transaction-response ${className}`}>
+      {response && (
+        <pre>{JSON.stringify(response, null, 2)}</pre>
+      )}
+    </div>
+  );
+};
+
+/**
+ * Transaction status action component
+ */
+export interface TransactionStatusActionProps {
+  onClick?: () => void;
+  children: React.ReactNode;
+  className?: string;
+}
+
+export const TransactionStatusAction: React.FC<TransactionStatusActionProps> = ({
+  onClick,
+  children,
+  className = ""
+}) => {
+  return (
+    <button onClick={onClick} className={`transaction-status-action ${className}`}>
+      {children}
+    </button>
+  );
+};
+
+/**
+ * Transaction status label component
+ */
+export interface TransactionStatusLabelProps {
+  status?: TransactionStatus;
+  children?: React.ReactNode;
+  className?: string;
+}
+
+export const TransactionStatusLabel: React.FC<TransactionStatusLabelProps> = ({
+  status = 'idle',
+  children,
+  className = ""
+}) => {
+  const getStatusText = () => {
+    switch (status) {
+      case 'pending':
+        return 'Pending';
+      case 'success':
+        return 'Success';
+      case 'error':
+        return 'Failed';
+      default:
+        return 'Ready';
+    }
+  };
+
+  return (
+    <span className={`transaction-status-label status-${status} ${className}`}>
+      {children || getStatusText()}
+    </span>
+  );
+};
+
+/**
+ * Transaction status component
+ */
+export interface TransactionStatusProps {
+  status?: TransactionStatus;
+  children?: React.ReactNode;
+  className?: string;
+}
+
+export const TransactionStatus: React.FC<TransactionStatusProps> = ({
+  status = 'idle',
+  children,
+  className = ""
+}) => {
+  return (
+    <div className={`transaction-status ${className}`}>
+      {children || <TransactionStatusLabel status={status} />}
+    </div>
+  );
+};
 
 /**
  * Transaction utilities
