@@ -1,8 +1,6 @@
 "use client";
 
 import React from "react";
-
-
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen, Sparkles, Wand2 } from "lucide-react";
