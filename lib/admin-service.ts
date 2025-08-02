@@ -79,7 +79,7 @@ export async function performAdminAction(action: Omit<AdminAction, 'timestamp'>)
 }
 /**
  * Get the admin's recent actions (for the dashboard)
-
+ */
 export function getAdminActions(): AdminAction[] {
   return [...adminActions].sort((a, b) => 
     b.timestamp.getTime() - a.timestamp.getTime()
@@ -87,13 +87,13 @@ export function getAdminActions(): AdminAction[] {
 }
 /**
  * Clear admin action history
-
+ */
 export function clearAdminActions(): void {
   adminActions = [];
 }
 /**
  * Hook for admin interactions that provides easy access to admin functionality
-
+ */
 export function useAdminInteractions() {
   const { toast } = useToast();
 
