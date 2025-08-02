@@ -1,6 +1,4 @@
 import React from "react";
-/**
-
 import { metadata } from "./metadata";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
