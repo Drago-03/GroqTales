@@ -295,7 +295,10 @@ function CreatePostForm() {
       </CardContent>
     </Card>
   );
-} to get comments based on tag function getCommentsByTag(tag: string) {
+}
+
+// Helper function to get comments based on tag
+function getCommentsByTag(tag: string) {
   const generalComments = [
     "Great post!",
     "Really interesting thoughts.",
