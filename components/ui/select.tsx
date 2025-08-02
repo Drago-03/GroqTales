@@ -119,5 +119,3 @@ export {
   SelectItem,
   SelectSeparator,
 };
-
-export { Select, SelectGroup, SelectValue, SelectTrigger, SelectContent, SelectLabel, SelectItem, SelectSeparator, SelectScrollUpButton, SelectScrollDownButton };
