@@ -45,7 +45,7 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-non-null-assertion': 'warn',
-    '@typescript-eslint/prefer-const': 'error',
+    'prefer-const': 'error',
     '@typescript-eslint/no-var-requires': 'error',
 
     // React specific rules

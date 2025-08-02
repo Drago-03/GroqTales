@@ -27,8 +27,25 @@ const inter = Inter({
   fallback: ['system-ui', 'sans-serif'],
 });
 
+// Build-time environment variable validation
+const requiredEnvVars = [
+  'NEXT_PUBLIC_URL',
+  'NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME',
+  'NEXT_PUBLIC_VERSION',
+  'NEXT_PUBLIC_IMAGE_URL',
+  'NEXT_PUBLIC_SPLASH_IMAGE_URL',
+  'NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR'
+];
+
+// Validate required environment variables at build time
+for (const envVar of requiredEnvVars) {
+  if (!process.env[envVar]) {
+    throw new Error(`Missing required environment variable: ${envVar}`);
+  }
+}
+
 // Get quick boot script content
-const getQuickBootScript = () => {
+function getQuickBootScript(): string {
   try {
     const filePath = path.join(process.cwd(), 'public', 'quick-boot.js');
     return fs.readFileSync(filePath, 'utf8');

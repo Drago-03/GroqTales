@@ -34,9 +34,9 @@ export interface StoryRecommendation {
  */
 export const GROQ_MODELS = {
   STORY_GENERATION: 'llama3-70b-8192',
-  STORY_ANALYSIS: 'llama3-8b-8192',
+  STORY_ANALYSIS: 'llama3-8b-8192-analysis',
   CONTENT_IMPROVEMENT: 'mixtral-8x7b-32768',
-  RECOMMENDATIONS: 'llama3-8b-8192'
+  RECOMMENDATIONS: 'llama3-8b-8192-recommendations'
 } as const
 
 /**

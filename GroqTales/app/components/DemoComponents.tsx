@@ -402,27 +402,12 @@ function TransactionCard() {
   const sendNotification = useNotification();
 
   const handleSuccess = useCallback(
-    async (response: {
-      transactionReceipts: { transactionHash: string }[];
-    }) => {
-      if (!response.transactionReceipts || response.transactionReceipts.length === 0) {
-        console.error('No transaction receipts found');
-        return;
-      }
-      
-      const firstReceipt = response.transactionReceipts[0];
-      if (!firstReceipt) {
-        console.error('First transaction receipt is undefined');
-        return;
-      }
-      
-      const transactionHash = firstReceipt.transactionHash;
-
-      console.log(`Transaction successful: ${transactionHash}`);
+    async (txHash: string) => {
+      console.log(`Transaction successful: ${txHash}`);
 
       await sendNotification({
         title: "Congratulations!",
-        body: `You sent your a transaction, ${transactionHash}!`,
+        body: `You sent a transaction, ${txHash}!`,
       });
     },
     [sendNotification],

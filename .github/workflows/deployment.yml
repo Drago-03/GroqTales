@@ -79,9 +79,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: pre-deployment
     if: needs.pre-deployment.outputs.should-deploy == 'true'
+    outputs:
+      preview_url: ${{ steps.deploy.outputs.preview_url }}
     environment:
       name: production
-      url: ${{ steps.deploy.outputs.preview-url }}
+      url: ${{ steps.deploy.outputs.preview_url }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -105,7 +107,7 @@ jobs:
         id: deploy
         run: |
           url=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
-          echo "preview-url=$url" >> $GITHUB_OUTPUT
+          echo "preview_url=$url" >> $GITHUB_OUTPUT
           echo "Deployed to: $url"
 
       - name: Update deployment status
@@ -117,7 +119,7 @@ jobs:
               repo: context.repo.repo,
               deployment_id: context.payload.deployment?.id || 0,
               state: 'success',
-              environment_url: '${{ steps.deploy.outputs.preview-url }}',
+              environment_url: '${{ steps.deploy.outputs.preview_url }}',
               description: 'Deployment successful'
             });
 
@@ -146,7 +148,7 @@ jobs:
       - name: Run E2E tests
         run: npm run test:e2e
         env:
-          BASE_URL: ${{ needs.deploy-vercel.outputs.preview-url }}
+          BASE_URL: ${{ needs.deploy-vercel.outputs.preview_url }}
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
@@ -170,9 +172,9 @@ jobs:
         uses: treosh/lighthouse-ci-action@v12
         with:
           urls: |
-            ${{ needs.deploy-vercel.outputs.preview-url }}
-            ${{ needs.deploy-vercel.outputs.preview-url }}/stories
-            ${{ needs.deploy-vercel.outputs.preview-url }}/gallery
+            ${{ needs.deploy-vercel.outputs.preview_url }}
+            ${{ needs.deploy-vercel.outputs.preview_url }}/stories
+            ${{ needs.deploy-vercel.outputs.preview_url }}/gallery
           configPath: './lighthouserc.json'
           uploadArtifacts: true
           temporaryPublicStorage: true
@@ -190,7 +192,7 @@ jobs:
       - name: OWASP ZAP Scan
         uses: zaproxy/action-full-scan@v0.8.0
         with:
-          target: ${{ needs.deploy-vercel.outputs.preview-url }}
+          target: ${{ needs.deploy-vercel.outputs.preview_url }}
           rules_file_name: '.zap/rules.tsv'
           cmd_options: '-a'
 
@@ -220,7 +222,7 @@ jobs:
         with:
           script: |
             const status = '${{ steps.status.outputs.status }}';
-            const deployUrl = '${{ needs.deploy-vercel.outputs.preview-url }}';
+            const deployUrl = '${{ needs.deploy-vercel.outputs.preview_url }}';
             
             let summary = `## 🚀 Deployment Summary\n\n`;
             summary += `**Status:** ${status === 'success' ? '✅ Success' : '❌ Failed'}\n`;

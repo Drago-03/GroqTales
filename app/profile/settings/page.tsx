@@ -257,7 +257,7 @@ export default function SettingsPage() {
                             </FormControl>
                             <FormDescription>
                               <span
-                                className={`${field.value?.length || 0 > 200 ? 'text-warning' : ''}`}
+                                className={`${(field.value?.length || 0) > 200 ? 'text-warning' : ''}`}
                               >
                                 {field.value?.length || 0}
                               </span>
