@@ -102,11 +102,18 @@ export async function POST(req: Request) {
     const wallet = new Wallet(PRIVATE_KEY, provider);
     const contract = new Contract(CONTRACT_ADDRESS, CONTRACT_ABI, wallet);
     // Get current mint price
+    if (!contract.mintPrice) {
+      throw new Error('Contract mintPrice method not available');
+    }
     const mintPrice = await contract.mintPrice();
     console.log('Current mint price:', mintPrice.toString());
+    
     // Mint the NFT on behalf of the user
     // In a production environment, this should be handled client-side or with a more secure backend setup
     console.log('Initiating mint transaction...');
+    if (!contract.mintStory) {
+      throw new Error('Contract mintStory method not available');
+    }
     const tx = await contract.mintStory(storyHash, metadataURI, {
       value: mintPrice,
       gasLimit: 200000,
