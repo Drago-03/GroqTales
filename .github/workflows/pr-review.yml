@@ -1,4 +1,4 @@
-name: 🤖 Automated PR Review & Analysis
+name: Automated PR Review and Analysis
 
 on:
   pull_request:

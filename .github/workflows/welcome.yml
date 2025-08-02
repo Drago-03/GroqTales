@@ -31,34 +31,37 @@ jobs:
             });
             
             if (issues.length === 1) {
+              const welcomeMessage = [
+                '## Welcome to GroqTales',
+                '',
+                `Thank you @${context.payload.issue.user.login} for opening your first issue. We appreciate your contribution to our community.`,
+                '',
+                '### Review Process',
+                '- Our team will review your issue within 24-48 hours',
+                '- We may request additional information or clarification',
+                '- For bug reports, please ensure reproduction steps are included',
+                '- For feature requests, we will discuss feasibility and implementation',
+                '',
+                '### Resources',
+                '- [Contributing Guide](./CONTRIBUTING.md)',
+                '- [Architecture Documentation](./ARCHITECTURE.md)',
+                '- [Code of Conduct](./CODE_OF_CONDUCT.md)',
+                '',
+                '### Support',
+                '- Browse existing issues and discussions',
+                '- Review our comprehensive documentation',
+                '- Ask questions as needed - our team is here to help',
+                '',
+                'Thank you for helping improve GroqTales.',
+                '',
+                '*This is an automated message. A maintainer will respond soon.*'
+              ].join('\n');
+              
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
-                body: `## Welcome to GroqTales!
-
-Thank you @${context.payload.issue.user.login} for opening your first issue! We're excited to have you as part of our community.
-
-### What happens next?
-- Our team will review your issue within 24-48 hours
-- We may ask for additional information or clarification
-- If this is a bug report, please ensure you've included reproduction steps
-- If this is a feature request, we'll discuss feasibility and implementation
-
-### Getting Started
-- Check out our [Contributing Guide](./CONTRIBUTING.md)
-- Review our [Architecture Documentation](./ARCHITECTURE.md)
-- Join our community discussions
-- Read our [Code of Conduct](./CODE_OF_CONDUCT.md)
-
-### Need Help?
-- Browse existing issues and discussions
-- Check our comprehensive documentation
-- Feel free to ask questions - we're here to help!
-
-Thank you for helping make GroqTales better!
-
-*This is an automated welcome message. A human maintainer will respond soon.*`
+                body: welcomeMessage
               });
             }
 
@@ -75,50 +78,54 @@ Thank you for helping make GroqTales better!
             });
             
             if (prs.length === 1) {
+              const welcomeMessage = [
+                '## Welcome to GroqTales Development',
+                '',
+                `Thank you @${context.payload.pull_request.user.login} for your first contribution. We appreciate you joining our development community.`,
+                '',
+                '### Review Process',
+                '- Automated checks will run (security, linting, tests, build verification)',
+                '- AI code review will provide initial feedback',
+                '- Human review from maintainers will follow',
+                '- We may request changes or improvements',
+                '',
+                '### Guidelines',
+                '- Follow our style guidelines (ESLint + Prettier)',
+                '- Add tests for new functionality',
+                '- Update documentation as needed',
+                '- Keep commits atomic and well-described',
+                '- Respond to feedback promptly',
+                '',
+                '### Resources',
+                '- [Architecture Guide](./ARCHITECTURE.md)',
+                '- [Contributing Guide](./CONTRIBUTING.md)',
+                '- [Testing Guide](./docs/testing.md)',
+                '- [Deployment Guide](./docs/deployment.md)',
+                '',
+                '### Quality Checks',
+                'Automated systems will verify:',
+                '- Security: Vulnerability scanning and dependency analysis',
+                '- Code Quality: ESLint, Prettier, TypeScript compliance',
+                '- Testing: Unit tests, integration tests, coverage requirements',
+                '- Performance: Bundle size analysis and performance metrics',
+                '- Build: Vercel deployment readiness',
+                '',
+                '### Support',
+                '- Comment on this PR with questions',
+                '- Review our documentation and guides',
+                '- Reference other merged PRs for examples',
+                '- Our maintainers are available to assist',
+                '',
+                'We appreciate your contribution.',
+                '',
+                '*This is an automated message. Review process will begin shortly.*'
+              ].join('\n');
+              
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
-                body: `## Welcome to GroqTales Development!
-
-Thank you @${context.payload.pull_request.user.login} for your first contribution! We're thrilled to have you join our development community.
-
-### Your PR Journey
-- Automated checks will run shortly (security, linting, tests, build verification)
-- AI code review will provide initial feedback
-- Human review from our maintainers will follow
-- Iteration - we may request changes or improvements
-
-### PR Guidelines
-- Ensure your code follows our style guidelines (ESLint + Prettier)
-- Add tests for new functionality
-- Update documentation if needed
-- Keep commits atomic and well-described
-- Be responsive to feedback and suggestions
-
-### Development Resources
-- [Architecture Guide](./ARCHITECTURE.md) - Understand our codebase structure
-- [Contributing Guide](./CONTRIBUTING.md) - Detailed contribution process
-- [Testing Guide](./docs/testing.md) - How to write and run tests
-- [Deployment Guide](./docs/deployment.md) - Understanding our deployment process
-
-### Quality Standards
-Our automated systems will check:
-- Security: Vulnerability scanning and dependency analysis
-- Code Quality: ESLint, Prettier, TypeScript compliance
-- Testing: Unit tests, integration tests, coverage requirements
-- Performance: Bundle size analysis and performance metrics
-- Build: Vercel deployment readiness
-
-### Need Help?
-- Comment on this PR with questions
-- Check our documentation and guides
-- Look at other merged PRs for examples
-- Our maintainers are here to help you succeed!
-
-We appreciate your contribution and look forward to working with you!
-
-*This is an automated welcome message. Our review process will begin shortly.*`
+                body: welcomeMessage
               });
             }
 
