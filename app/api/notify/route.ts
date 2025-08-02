@@ -1,12 +1,7 @@
-/**
-
 import { NextResponse } from 'next/server';
-
 // Make this file a module
 export {};
-
 // API route handler for sending notifications
-
 export async function POST(req: Request) {
   try {
     // Temporarily return a static response to bypass notification logic

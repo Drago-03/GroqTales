@@ -1,18 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getStoryNFT, mintStoryNFT, StoryMetadata } from '@/lib/monad-service';
 import { ethers } from 'ethers';
-
 // Private key for minting (NEVER do this in production, this should be managed by a secure service)
 // In this example context, we're using a dummy key for demonstration only
 const MINTER_PRIVATE_KEY = process.env.MINTER_PRIVATE_KEY || '0x0000000000000000000000000000000000000000000000000000000000000000';
-
-/**
-
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { action, metadata, ownerAddress, tokenId } = body;
-
     switch (action) {
       case 'mint': {
         if (!metadata || !ownerAddress) {
@@ -21,17 +16,15 @@ export async function POST(request: NextRequest) {
         // Wallet that will sign the transaction - server side
         const provider = new ethers.JsonRpcProvider(process.env.MONAD_RPC_URL);
         const signer = new ethers.Wallet(MINTER_PRIVATE_KEY, provider);
-
         // Mint the NFT
         const result = await mintStoryNFT(
           metadata as StoryMetadata,
           ownerAddress,
           signer
         );
-
-        return NextResponse.json({ 
-          success: true, 
-          nft: result 
+        return NextResponse.json({
+          success: true,
+          nft: result
         });
 }
       case 'fetch': {
@@ -39,13 +32,12 @@ export async function POST(request: NextRequest) {
           return NextResponse.json({ error: 'Token ID is required' }, { status: 400 });
 }
         const nft = await getStoryNFT(tokenId);
-
         if (!nft) {
           return NextResponse.json({ error: 'NFT not found' }, { status: 404 });
 }
-        return NextResponse.json({ 
-          success: true, 
-          nft 
+        return NextResponse.json({
+          success: true,
+          nft
         });
 }
       default:
@@ -54,7 +46,7 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error('Monad API error:', error);
     return NextResponse.json(
-      { 
+      {
         error: error.message || 'An error occurred while processing your request',
         success: false
       },
@@ -62,7 +54,6 @@ export async function POST(request: NextRequest) {
     );
 }
 }
-/**
 
 export async function GET() {
   try {

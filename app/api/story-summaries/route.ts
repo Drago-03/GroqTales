@@ -3,28 +3,11 @@ import { generateStoryContent } from '@/lib/groq-service';
 import { findOne, find, insertOne, updateOne, deleteOne, createObjectId } from '@/lib/db';
 import { GROQ_MODELS } from '@/lib/groq-service';
 import { ObjectId } from 'mongodb';
-
-interface StorySummary {
-  _id?: ObjectId;
-  storyId: ObjectId;
-  originalContent: string;
-  summary: string;
-  keyPoints: string[];
-  sentiment: string;
-  keywords: string[];
-  model: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
 const COLLECTION_NAME = 'story_summaries';
-
-/**
-
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { storyId, content, model = GROQ_MODELS.LLAMA_3_70B, apiKey } = body;
-
     if (!storyId) {
       return NextResponse.json({ error: 'Story ID is required' }, { status: 400 });
 }
@@ -32,12 +15,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Story content is required' }, { status: 400 });
 }
     // Check if summary already exists
-    const existingSummary = await findOne(COLLECTION_NAME, { 
-      storyId: createObjectId(storyId) 
+    const existingSummary = await findOne(COLLECTION_NAME, {
+      storyId: createObjectId(storyId)
     });
-
     if (existingSummary) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         error: 'Summary already exists for this story',
         summary: existingSummary
       }, { status: 409 });
@@ -49,7 +31,6 @@ export async function POST(request: NextRequest) {
       2. 5 key points from the story
       3. Overall sentiment (positive, negative, mixed, neutral)
       4. 10 keywords or tags that represent the content
-
       Format your response as valid JSON with the following structure:
       {
         "summary": "The summary text here...",
@@ -60,20 +41,17 @@ export async function POST(request: NextRequest) {
       Story:
       ${content.substring(0, 6000)}
     `;
-
     const analysisResult = await generateStoryContent(prompt, model, {
       temperature: 0.3,
       max_tokens: 1000,
       apiKey
     });
-
     // Parse the JSON response
     const jsonMatch = analysisResult.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       throw new Error("Failed to parse AI response as JSON");
 }
     const analysis = JSON.parse(jsonMatch[0]);
-
     // Create summary document
     const summaryDoc: StorySummary = {
       storyId: createObjectId(storyId),
@@ -86,10 +64,8 @@ export async function POST(request: NextRequest) {
       createdAt: new Date(),
       updatedAt: new Date()
     };
-
     // Save to database
     const result = await insertOne(COLLECTION_NAME, summaryDoc);
-
     return NextResponse.json({
       success: true,
       message: "Summary generated and stored successfully",
@@ -106,19 +82,16 @@ export async function POST(request: NextRequest) {
     );
 }
 }
-/**
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const storyId = searchParams.get('storyId');
-
     let query = {};
     if (storyId) {
       query = { storyId: createObjectId(storyId) };
 }
     const summaries = await find(COLLECTION_NAME, query);
-
     return NextResponse.json({
       success: true,
       summaries
@@ -131,30 +104,26 @@ export async function GET(request: NextRequest) {
     );
 }
 }
-/**
 
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
     const { id, content, regenerate, model = GROQ_MODELS.LLAMA_3_70B, apiKey } = body;
-
     if (!id) {
       return NextResponse.json({ error: 'Summary ID is required' }, { status: 400 });
 }
     // Find the existing summary
-    const existingSummary = await findOne(COLLECTION_NAME, { 
-      _id: createObjectId(id) 
+    const existingSummary = await findOne(COLLECTION_NAME, {
+      _id: createObjectId(id)
     });
-
     if (!existingSummary) {
-      return NextResponse.json({ 
-        error: 'Summary not found' 
+      return NextResponse.json({
+        error: 'Summary not found'
       }, { status: 404 });
 }
     let updatedSummary: Partial<StorySummary> = {
       updatedAt: new Date()
     };
-
     // If content is provided and regenerate is true, create a new summary
     if (content && regenerate) {
       const prompt = `
@@ -163,7 +132,6 @@ export async function PUT(request: NextRequest) {
         2. 5 key points from the story
         3. Overall sentiment (positive, negative, mixed, neutral)
         4. 10 keywords or tags that represent the content
-
         Format your response as valid JSON with the following structure:
         {
           "summary": "The summary text here...",
@@ -174,20 +142,17 @@ export async function PUT(request: NextRequest) {
         Story:
         ${content.substring(0, 6000)}
       `;
-
       const analysisResult = await generateStoryContent(prompt, model, {
         temperature: 0.3,
         max_tokens: 1000,
         apiKey
       });
-
       // Parse the JSON response
       const jsonMatch = analysisResult.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {
         throw new Error("Failed to parse AI response as JSON");
 }
       const analysis = JSON.parse(jsonMatch[0]);
-
       updatedSummary = {
         ...updatedSummary,
         originalContent: content.substring(0, 1000),
@@ -206,11 +171,10 @@ export async function PUT(request: NextRequest) {
 }
     // Update in database
     await updateOne(
-      COLLECTION_NAME, 
-      { _id: createObjectId(id) }, 
+      COLLECTION_NAME,
+      { _id: createObjectId(id) },
       updatedSummary
     );
-
     return NextResponse.json({
       success: true,
       message: "Summary updated successfully",
@@ -227,23 +191,20 @@ export async function PUT(request: NextRequest) {
     );
 }
 }
-/**
 
 export async function DELETE(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
-
     if (!id) {
       return NextResponse.json({ error: 'Summary ID is required' }, { status: 400 });
 }
-    const result = await deleteOne(COLLECTION_NAME, { 
-      _id: createObjectId(id) 
+    const result = await deleteOne(COLLECTION_NAME, {
+      _id: createObjectId(id)
     });
-
     if (result.deletedCount === 0) {
-      return NextResponse.json({ 
-        error: 'Summary not found or already deleted' 
+      return NextResponse.json({
+        error: 'Summary not found or already deleted'
       }, { status: 404 });
 }
     return NextResponse.json({
