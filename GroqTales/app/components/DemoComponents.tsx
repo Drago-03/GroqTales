@@ -6,16 +6,10 @@ import { useAccount } from "../../../lib/wagmi-mock";
 import {
   Transaction, // fr fr this handles all our transaction logic
   TransactionButton, // no cap, this button be handling our tx submissions
-  TransactionToast, // lowkey shows those sweet transaction notifications
-  TransactionToastAction,
-  TransactionToastIcon,
-  TransactionToastLabel,
-  TransactionError,
-  TransactionResponse,
+  TransactionStatus, // lowkey shows those sweet transaction notifications
   TransactionStatusAction,
   TransactionStatusLabel,
-  TransactionStatus,
-} from "../../lib/transaction-components";
+} from "../../../lib/transaction-components";
 import { useNotification } from "../../lib/mini-kit-mock";
 
 type ButtonProps = {
@@ -381,9 +375,7 @@ function TodoList() {
   );
 }
 
-function TransactionCard() {
-  const { address } = useAccount();
-
+export default DemoComponents;
   // Example transaction call - sending 0 ETH to self
   const calls = useMemo(
     () =>
@@ -402,7 +394,8 @@ function TransactionCard() {
   const sendNotification = useNotification();
 
   const handleSuccess = useCallback(
-    async (txHash: string) => {
+    async (response: { transactionReceipts: { transactionHash: string }[] }) => {
+      const txHash = response.transactionReceipts[0]?.transactionHash;
       console.log(`Transaction successful: ${txHash}`);
 
       await sendNotification({
