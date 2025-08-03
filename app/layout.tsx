@@ -37,10 +37,28 @@ const requiredEnvVars = [
   'NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR'
 ];
 
-// Validate required environment variables at build time
-for (const envVar of requiredEnvVars) {
-  if (!process.env[envVar]) {
-    throw new Error(`Missing required environment variable: ${envVar}`);
+// Validate required environment variables at build time (only in production)
+if (process.env.NODE_ENV === 'production') {
+  for (const envVar of requiredEnvVars) {
+    if (!process.env[envVar]) {
+      throw new Error(`Missing required environment variable: ${envVar}`);
+    }
+  }
+} else {
+  // In development, set default values for missing environment variables
+  const defaultEnvVars: Record<string, string> = {
+    'NEXT_PUBLIC_URL': 'http://localhost:3000',
+    'NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME': 'GroqTales',
+    'NEXT_PUBLIC_VERSION': '1.0.0',
+    'NEXT_PUBLIC_IMAGE_URL': 'https://groqtales.com/images',
+    'NEXT_PUBLIC_SPLASH_IMAGE_URL': 'https://groqtales.com/splash.jpg',
+    'NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR': '#1a1a2e'
+  };
+  
+  for (const envVar of requiredEnvVars) {
+    if (!process.env[envVar]) {
+      process.env[envVar] = defaultEnvVars[envVar];
+    }
   }
 }
 
