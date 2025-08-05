@@ -155,6 +155,8 @@ jobs:
     if: always()
     steps:
       - name: Check all jobs status
+        id: status-check
+        continue-on-error: true
         run: |
           if [[ "${{ needs.security-scan.result }}" == "success" && 
                 "${{ needs.code-quality.result }}" == "success" && 
@@ -162,10 +164,12 @@ jobs:
                 "${{ needs.ai-code-review.result }}" == "success" && 
                 "${{ needs.performance-analysis.result }}" == "success" ]]; then
             echo "✅ All checks passed! PR is ready for review."
-            exit 0
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "message=✅ All checks passed! PR is ready for review." >> $GITHUB_OUTPUT
           else
             echo "❌ Some checks failed. Please review and fix issues."
-            exit 1
+            echo "status=failure" >> $GITHUB_OUTPUT
+            echo "message=❌ Some checks failed. Please review and fix issues." >> $GITHUB_OUTPUT
           fi
 
       - name: Comment PR status
@@ -222,3 +226,9 @@ jobs:
                 body: body
               });
             }
+
+      - name: Fail job if checks failed
+        if: steps.status-check.outputs.status == 'failure'
+        run: |
+          echo "${{ steps.status-check.outputs.message }}"
+          exit 1

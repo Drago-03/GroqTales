@@ -513,11 +513,12 @@ export default function NFTGalleryPage() {
 
   const sortedNFTs = [...filteredNFTs].sort((a, b) => {
     switch (sortBy) {
-      case 'price':
+      case 'price': {
         // Extract numeric value from price strings (remove "ETH" and other non-numeric characters)
         const priceA = parseFloat(a.price.replace(/[^\d.]/g, '')) || 0;
         const priceB = parseFloat(b.price.replace(/[^\d.]/g, '')) || 0;
         return priceB - priceA;
+      }
       case 'likes':
         return b.likes - a.likes;
       case 'recent':
