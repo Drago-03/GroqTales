@@ -276,7 +276,7 @@ export default function SettingsPage() {
                             <FormLabel>Primary Genre</FormLabel>
                             <Select
                               onValueChange={field.onChange}
-                              defaultValue={field.value || ''}
+                              defaultValue={field.value ?? ''}
                             >
                               <FormControl>
                                 <SelectTrigger>

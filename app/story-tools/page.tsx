@@ -39,7 +39,8 @@ export default function StoryToolsPage() {
 
       // Try to extract title from first line if not set
       if (!storyTitle) {
-        const firstLine = text.split('\n')[0].trim();
+        const lines = text.split('\n');
+        const firstLine = lines.length > 0 ? lines[0].trim() : '';
         if (firstLine && firstLine.length < 100) {
           setStoryTitle(firstLine);
         }
