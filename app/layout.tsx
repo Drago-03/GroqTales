@@ -30,7 +30,7 @@ const inter = Inter({
 // Build-time environment variable validation
 const requiredEnvVars = [
   'NEXT_PUBLIC_URL',
-  'NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME',
+  // 'NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME', // Commented out OnChain references
   'NEXT_PUBLIC_VERSION',
   'NEXT_PUBLIC_IMAGE_URL',
   'NEXT_PUBLIC_SPLASH_IMAGE_URL',
@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === 'production') {
   // In development, set default values for missing environment variables
   const defaultEnvVars: Record<string, string> = {
     'NEXT_PUBLIC_URL': 'http://localhost:3000',
-    'NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME': 'GroqTales',
+    // 'NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME': 'GroqTales', // Commented out OnChain references
     'NEXT_PUBLIC_VERSION': '1.0.0',
     'NEXT_PUBLIC_IMAGE_URL': 'https://groqtales.com/images',
     'NEXT_PUBLIC_SPLASH_IMAGE_URL': 'https://groqtales.com/splash.jpg',
