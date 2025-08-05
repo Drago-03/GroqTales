@@ -1,16 +1,12 @@
-import { ethers } from 'ethers';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getStoryNFT, mintStoryNFT, StoryMetadata } from '@/lib/monad-service';
-// Private key for minting (NEVER do this in production, this should be managed by a secure service)
-// In this example context, we're using a dummy key for demonstration only
-const MINTER_PRIVATE_KEY =
-  process.env.MINTER_PRIVATE_KEY ||
-  '0x0000000000000000000000000000000000000000000000000000000000000000';
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { action, metadata, ownerAddress, tokenId } = body;
+    
     switch (action) {
       case 'mint': {
         if (!metadata || !ownerAddress) {
@@ -19,28 +15,19 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           );
         }
-        // Check MONAD_RPC_URL before provider creation
-        if (!process.env.MONAD_RPC_URL) {
-          return NextResponse.json(
-            { error: 'MONAD_RPC_URL environment variable is not configured' },
-            { status: 500 }
-          );
-        }
-
-        // Wallet that will sign the transaction - server side
-        const provider = new ethers.JsonRpcProvider(process.env.MONAD_RPC_URL);
-        const signer = new ethers.Wallet(MINTER_PRIVATE_KEY, provider);
-        // Mint the NFT
+        
+        // Mint the NFT with correct parameters
         const result = await mintStoryNFT(
           metadata as StoryMetadata,
-          ownerAddress,
-          signer
+          ownerAddress
         );
+        
         return NextResponse.json({
           success: true,
           nft: result,
         });
       }
+      
       case 'fetch': {
         if (!tokenId) {
           return NextResponse.json(
@@ -48,15 +35,18 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           );
         }
+        
         const nft = await getStoryNFT(tokenId);
         if (!nft) {
           return NextResponse.json({ error: 'NFT not found' }, { status: 404 });
         }
+        
         return NextResponse.json({
           success: true,
           nft,
         });
       }
+      
       default:
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
     }
