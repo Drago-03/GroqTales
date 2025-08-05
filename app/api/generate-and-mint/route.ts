@@ -1,11 +1,6 @@
-import { ethers } from 'ethers';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { generateAndMintAIStory } from '@/lib/monad-service';
-// Private key for minting (NEVER do this in production)
-const MINTER_PRIVATE_KEY =
-  process.env.MINTER_PRIVATE_KEY ||
-  '0x0000000000000000000000000000000000000000000000000000000000000000';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -19,16 +14,10 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    // Initialize signer with the server's private key
-    const provider = new ethers.JsonRpcProvider(
-      process.env.MONAD_RPC_URL || 'https://rpc.testnet.monad.xyz/json-rpc'
-    );
-    const signer = new ethers.Wallet(MINTER_PRIVATE_KEY, provider);
     // Generate content with Groq and mint as NFT
     const mintedNFT = await generateAndMintAIStory(
       prompt,
       ownerAddress,
-      signer,
       title,
       genre,
       apiKey
