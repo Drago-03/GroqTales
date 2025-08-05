@@ -220,11 +220,7 @@ function AIStoryContent() {
           </div>
         </div>
 
-        <AIStoryGenerator
-          initialGenre={genre}
-          initialFormat={format}
-          showWelcome={!!source}
-        />
+        <AIStoryGenerator />
 
         <div className="mt-12 p-6 border rounded-xl bg-muted/30">
           <h2 className="text-xl font-semibold mb-4">About This Feature</h2>
