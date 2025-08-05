@@ -58,8 +58,58 @@ export function ComicNFTDetailDialog({
   onPurchase,
 }: ComicNFTDetailDialogProps) {
   const [currentPreviewImage, setCurrentPreviewImage] = useState(0);
+  const [activeTab, setActiveTab] = useState('details');
   const { account } = useWeb3();
   const { toast } = useToast();
+
+  const handlePreviewButtonClick = (e: React.MouseEvent, action: () => void) => {
+    e.stopPropagation();
+    action();
+  };
+
+  const prevPreviewImage = () => {
+    setCurrentPreviewImage((prev) => 
+      prev === 0 ? comic.previewImages.length - 1 : prev - 1
+    );
+  };
+
+  const nextPreviewImage = () => {
+    setCurrentPreviewImage((prev) => 
+      prev === comic.previewImages.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const getRarityColor = (rarity: 'common' | 'uncommon' | 'rare' | 'legendary') => {
+    switch (rarity) {
+      case 'common':
+        return 'bg-gray-500 text-white';
+      case 'uncommon':
+        return 'bg-green-500 text-white';
+      case 'rare':
+        return 'bg-blue-500 text-white';
+      case 'legendary':
+        return 'bg-purple-500 text-white';
+      default:
+        return 'bg-gray-500 text-white';
+    }
+  };
+
+  const handlePurchase = () => {
+    if (!account) {
+      toast({
+        title: "Wallet not connected",
+        description: "Please connect your wallet to make a purchase.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    onPurchase();
+    toast({
+      title: "Purchase initiated",
+      description: `Processing purchase of ${comic.title} for ${comic.price}`,
+    });
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

@@ -32,6 +32,38 @@ export default function StoryDetailsDialog({
   onComment,
   onLike,
 }: StoryDetailsDialogProps) {
+  const { account } = useWeb3();
+  const { toast } = useToast();
+
+  const handlePurchase = () => {
+    if (!account) {
+      toast({
+        title: "Connect Wallet",
+        description: "Please connect your wallet to purchase this NFT",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (onPurchase) {
+      onPurchase();
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="relative">
+            {story.image && (
+              <div className="aspect-[4/3] relative rounded-lg overflow-hidden">
+                <img
+                  src={story.image}
+                  alt={story.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
             {story.price && (
               <div className="absolute top-4 right-4 bg-black/80 text-white px-3 py-1.5 rounded-full text-sm font-medium flex items-center">
                 <ShoppingCart className="h-3.5 w-3.5 mr-1.5 text-amber-400" />

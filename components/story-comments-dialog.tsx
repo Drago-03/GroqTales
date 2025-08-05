@@ -51,6 +51,38 @@ export default function StoryCommentsDialog({
   isWalletConnected = false,
   isAdmin = false,
 }: StoryCommentsDialogProps) {
+  const [newComment, setNewComment] = useState('');
+  const { account } = useWeb3();
+
+  const formatTimestamp = (timestamp: Date | string) => {
+    const date = new Date(timestamp);
+    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  const handleConnectWallet = () => {
+    // Connect wallet functionality would be implemented by parent component
+    // For now, we just close the dialog
+    onClose();
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newComment.trim()) {
+      onAddComment(newComment.trim());
+      setNewComment('');
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-2xl max-h-[80vh] flex flex-col">
+        <DialogHeader>
+          <DialogTitle>Comments on "{storyTitle}"</DialogTitle>
+          <DialogDescription>
+            Join the discussion about this story
+          </DialogDescription>
+        </DialogHeader>
+
         <div className="flex-1 overflow-y-auto py-4">
           {comments.length === 0 ? (
             <div className="text-center text-muted-foreground py-8">
