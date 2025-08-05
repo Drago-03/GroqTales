@@ -40,7 +40,7 @@ function GenrePage({ params }: { params: { slug: string } }) {
       </div>
     );
   }
-  
+
   const stories = fetchPopularStoriesByGenre(genre.slug, 12);
 
   return (

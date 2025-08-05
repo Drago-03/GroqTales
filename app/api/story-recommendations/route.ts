@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { find, findOne, createObjectId } from '@/lib/db';
-import { generateStoryContent, GROQ_MODELS } from '@/lib/groq-service';
+import { generateContentCustom, GROQ_MODELS } from '@/lib/groq-service';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
       keywords,
       genre,
       limit = 5,
-      model = GROQ_MODELS.LLAMA_3_70B,
+      model = GROQ_MODELS.RECOMMENDATIONS,
       apiKey,
     } = body;
     if (!storyId) {
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       promptParts.push(`Genre: ${genre}`);
     }
     // Create a simplified list of available stories to choose from
-    const availableStories = dbStories.map((story) => ({
+    const availableStories = dbStories.map((story: any) => ({
       id: story._id.toString(),
       title: story.title,
       summary: story.summary,
@@ -70,9 +70,10 @@ export async function POST(request: NextRequest) {
       in order of relevance:
       ["id1", "id2", "id3", ...]
     `;
-    const recommendationResult = await generateStoryContent(prompt, model, {
+    const recommendationResult = await generateContentCustom(prompt, {
+      model,
       temperature: 0.3,
-      max_tokens: 1000,
+      maxTokens: 1000,
       apiKey,
     });
     // Parse the JSON response
@@ -95,7 +96,7 @@ export async function POST(request: NextRequest) {
     const recommendedStories: any[] = [];
     for (const id of recommendedIds.slice(0, limit)) {
       try {
-        const story = dbStories.find((s) => s._id.toString() === id);
+        const story = dbStories.find((s: any) => s._id.toString() === id);
         if (story) {
           recommendedStories.push(story);
         }
@@ -106,9 +107,9 @@ export async function POST(request: NextRequest) {
     // If we couldn't get enough recommendations, add some random ones
     if (recommendedStories.length < limit) {
       const remainingStories = dbStories.filter(
-        (story) =>
+        (story: any) =>
           !recommendedStories.some(
-            (rec) => rec._id.toString() === story._id.toString()
+            (rec: any) => rec._id.toString() === story._id.toString()
           )
       );
       const shuffled = [...remainingStories].sort(() => 0.5 - Math.random());

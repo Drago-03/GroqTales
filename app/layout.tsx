@@ -4,9 +4,9 @@ import './globals.css';
 import fs from 'fs';
 import path from 'path';
 
-import Image from 'next/image';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
 
@@ -14,7 +14,7 @@ import ClientLayout from '@/components/client-layout';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { AnimatedLayout } from '@/components/layout/animated-layout';
-import { Web3Provider } from '@/components/providers/web3-provider';
+import { Web3Provider } from '@/components/providers/web3-provider'; // DISABLED VERSION FOR PRODUCTION
 import { QueryProvider } from '@/components/query-provider';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
@@ -34,7 +34,7 @@ const requiredEnvVars = [
   'NEXT_PUBLIC_VERSION',
   'NEXT_PUBLIC_IMAGE_URL',
   'NEXT_PUBLIC_SPLASH_IMAGE_URL',
-  'NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR'
+  'NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR',
 ];
 
 // Validate required environment variables at build time (only in production)
@@ -47,14 +47,14 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   // In development, set default values for missing environment variables
   const defaultEnvVars: Record<string, string> = {
-    'NEXT_PUBLIC_URL': 'http://localhost:3000',
+    NEXT_PUBLIC_URL: 'http://localhost:3000',
     // 'NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME': 'GroqTales', // Commented out OnChain references
-    'NEXT_PUBLIC_VERSION': '1.0.0',
-    'NEXT_PUBLIC_IMAGE_URL': 'https://groqtales.com/images',
-    'NEXT_PUBLIC_SPLASH_IMAGE_URL': 'https://groqtales.com/splash.jpg',
-    'NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR': '#1a1a2e'
+    NEXT_PUBLIC_VERSION: '1.0.0',
+    NEXT_PUBLIC_IMAGE_URL: 'https://groqtales.com/images',
+    NEXT_PUBLIC_SPLASH_IMAGE_URL: 'https://groqtales.com/splash.jpg',
+    NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR: '#1a1a2e',
   };
-  
+
   for (const envVar of requiredEnvVars) {
     if (!process.env[envVar]) {
       process.env[envVar] = defaultEnvVars[envVar];
@@ -71,7 +71,7 @@ function getQuickBootScript(): string {
     console.warn('Could not read quick-boot.js:', e);
     return ''; // Return empty string if file reading fails
   }
-};
+}
 
 // Quick boot script to prevent flashing and improve initial load
 const quickBootScript = getQuickBootScript();

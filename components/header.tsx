@@ -23,13 +23,11 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/components/ui/use-toast';
 import { UserNav } from '@/components/user-nav';
-
+import WalletConnect from '@/components/wallet-connect';
 import { cn } from '@/lib/utils';
+
 import { CreateStoryDialog } from './create-story-dialog';
 import { ThemeToggle } from './theme-toggle';
-
-
-import WalletConnect from '@/components/wallet-connect';
 
 // Type definitions for nav items
 type NavSubItem = {

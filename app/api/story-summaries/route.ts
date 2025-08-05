@@ -1,6 +1,19 @@
 import { ObjectId } from 'mongodb';
 import { NextRequest, NextResponse } from 'next/server';
 
+interface StorySummary {
+  _id?: ObjectId | string;
+  storyId: ObjectId | string;
+  originalContent: string;
+  summary: string;
+  keyPoints: string[];
+  sentiment: string;
+  keywords: string[];
+  model: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 import {
   findOne,
   find,
@@ -9,12 +22,17 @@ import {
   deleteOne,
   createObjectId,
 } from '@/lib/db';
-import { generateStoryContent, GROQ_MODELS } from '@/lib/groq-service';
+import { generateContentCustom, GROQ_MODELS } from '@/lib/groq-service';
 const COLLECTION_NAME = 'story_summaries';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { storyId, content, model = GROQ_MODELS.LLAMA_3_70B, apiKey } = body;
+    const {
+      storyId,
+      content,
+      model = GROQ_MODELS.STORY_GENERATION,
+      apiKey,
+    } = body;
     if (!storyId) {
       return NextResponse.json(
         { error: 'Story ID is required' },
@@ -57,9 +75,10 @@ export async function POST(request: NextRequest) {
       Story:
       ${content.substring(0, 6000)}
     `;
-    const analysisResult = await generateStoryContent(prompt, model, {
+    const analysisResult = await generateContentCustom(prompt, {
+      model,
       temperature: 0.3,
-      max_tokens: 1000,
+      maxTokens: 1000,
       apiKey,
     });
     // Parse the JSON response
@@ -131,7 +150,7 @@ export async function PUT(request: NextRequest) {
       id,
       content,
       regenerate,
-      model = GROQ_MODELS.LLAMA_3_70B,
+      model = GROQ_MODELS.STORY_GENERATION,
       apiKey,
     } = body;
     if (!id) {
@@ -173,9 +192,10 @@ export async function PUT(request: NextRequest) {
         Story:
         ${content.substring(0, 6000)}
       `;
-      const analysisResult = await generateStoryContent(prompt, model, {
+      const analysisResult = await generateContentCustom(prompt, {
+        model,
         temperature: 0.3,
-        max_tokens: 1000,
+        maxTokens: 1000,
         apiKey,
       });
       // Parse the JSON response

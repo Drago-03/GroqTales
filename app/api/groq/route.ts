@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
           length,
           tone: options?.tone,
           characters: options?.characters,
-          setting: options?.setting
+          setting: options?.setting,
         });
         break;
       case 'analyze':
@@ -108,7 +108,8 @@ export async function GET(request: NextRequest) {
       modelNames: {
         [GROQ_MODELS.STORY_GENERATION]: 'Llama 3 (70B) - Story Generation',
         [GROQ_MODELS.STORY_ANALYSIS]: 'Llama 3 (8B) - Story Analysis',
-        [GROQ_MODELS.CONTENT_IMPROVEMENT]: 'Mixtral (8x7B) - Content Improvement',
+        [GROQ_MODELS.CONTENT_IMPROVEMENT]:
+          'Mixtral (8x7B) - Content Improvement',
         [GROQ_MODELS.RECOMMENDATIONS]: 'Llama 3 (8B) - Recommendations',
       },
     });

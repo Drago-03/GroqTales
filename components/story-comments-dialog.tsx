@@ -39,7 +39,18 @@ interface StoryCommentsDialogProps {
   onLikeComment?: (commentId: string) => void;
   isWalletConnected?: boolean;
   isAdmin?: boolean;
-}}
+}
+
+export default function StoryCommentsDialog({
+  isOpen,
+  onClose,
+  storyTitle,
+  comments,
+  onAddComment,
+  onLikeComment,
+  isWalletConnected = false,
+  isAdmin = false,
+}: StoryCommentsDialogProps) {
         <div className="flex-1 overflow-y-auto py-4">
           {comments.length === 0 ? (
             <div className="text-center text-muted-foreground py-8">

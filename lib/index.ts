@@ -13,7 +13,7 @@ export type {
   TransactionStatusActionProps,
   TransactionStatusLabelProps,
   TransactionError,
-  TransactionResponse
+  TransactionResponse,
 } from './transaction-components';
 
 // Export components from the implementation file
@@ -27,7 +27,7 @@ export {
   TransactionToastLabel,
   TransactionStatus,
   TransactionStatusAction,
-  TransactionStatusLabel
+  TransactionStatusLabel,
 } from './transaction-components';
 
 // Export other utilities as needed

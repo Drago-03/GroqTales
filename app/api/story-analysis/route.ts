@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { generateStoryContent, GROQ_MODELS } from '@/lib/groq-service';
+import { analyzeStoryContentCustom, GROQ_MODELS } from '@/lib/groq-service';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
       title,
       genre,
       analysisType = 'standard',
-      model = GROQ_MODELS.LLAMA_3_70B,
+      model = GROQ_MODELS.STORY_ANALYSIS,
       apiKey,
     } = body;
     if (!content) {
@@ -94,10 +94,13 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         );
     }
-    const analysisResult = await generateStoryContent(prompt, model, {
+    const analysisResult = await analyzeStoryContentCustom(content, {
+      analysisType,
+      model,
+      systemPrompt,
+      customPrompt: prompt,
       temperature: 0.2,
-      max_tokens: 2000,
-      system_prompt: systemPrompt,
+      maxTokens: 2000,
       apiKey,
     });
     // Parse the JSON response

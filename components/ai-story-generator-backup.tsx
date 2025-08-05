@@ -1,107 +1,148 @@
-"use client"
+'use client';
 
-import React, { useState, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
-import { toast } from '@/hooks/use-toast'
-import { Loader2, Sparkles, BookOpen, Wand2, RefreshCw } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion';
+import { Loader2, Sparkles, BookOpen, Wand2, RefreshCw } from 'lucide-react';
+import React, { useState, useCallback } from 'react';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from '@/hooks/use-toast';
 
 interface StoryGeneratorProps {
-  onStoryGenerated?: (story: string) => void
-  className?: string
+  onStoryGenerated?: (story: string) => void;
+  className?: string;
 }
 
 interface StoryParams {
-  genre: string
-  theme: string
-  length: 'short' | 'medium' | 'long'
-  tone: string
-  characters: string
-  setting: string
+  genre: string;
+  theme: string;
+  length: 'short' | 'medium' | 'long';
+  tone: string;
+  characters: string;
+  setting: string;
 }
 
 const GENRES = [
-  'Fantasy', 'Science Fiction', 'Mystery', 'Romance', 'Horror', 
-  'Adventure', 'Drama', 'Comedy', 'Thriller', 'Historical'
-]
+  'Fantasy',
+  'Science Fiction',
+  'Mystery',
+  'Romance',
+  'Horror',
+  'Adventure',
+  'Drama',
+  'Comedy',
+  'Thriller',
+  'Historical',
+];
 
 const TONES = [
-  'Adventurous', 'Dark', 'Humorous', 'Romantic', 'Mysterious', 
-  'Inspirational', 'Dramatic', 'Whimsical', 'Suspenseful', 'Heartwarming'
-]
+  'Adventurous',
+  'Dark',
+  'Humorous',
+  'Romantic',
+  'Mysterious',
+  'Inspirational',
+  'Dramatic',
+  'Whimsical',
+  'Suspenseful',
+  'Heartwarming',
+];
 
 const LENGTH_OPTIONS = [
-  { value: 'short', label: 'Short (500-1000 words)', description: 'Quick read, focused narrative' },
-  { value: 'medium', label: 'Medium (1000-2500 words)', description: 'Balanced story with development' },
-  { value: 'long', label: 'Long (2500+ words)', description: 'Detailed, immersive experience' }
-]
+  {
+    value: 'short',
+    label: 'Short (500-1000 words)',
+    description: 'Quick read, focused narrative',
+  },
+  {
+    value: 'medium',
+    label: 'Medium (1000-2500 words)',
+    description: 'Balanced story with development',
+  },
+  {
+    value: 'long',
+    label: 'Long (2500+ words)',
+    description: 'Detailed, immersive experience',
+  },
+];
 
 /**
  * AI Story Generator Backup Component
  * Provides a clean interface for generating AI-powered stories with customizable parameters
  */
-export default function AIStoryGeneratorBackup({ onStoryGenerated, className = '' }: StoryGeneratorProps) {
-  const [isGenerating, setIsGenerating] = useState(false)
-  const [generatedStory, setGeneratedStory] = useState<string>('')
+export default function AIStoryGeneratorBackup({
+  onStoryGenerated,
+  className = '',
+}: StoryGeneratorProps) {
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedStory, setGeneratedStory] = useState<string>('');
   const [storyParams, setStoryParams] = useState<StoryParams>({
     genre: '',
     theme: '',
     length: 'medium',
     tone: '',
     characters: '',
-    setting: ''
-  })
+    setting: '',
+  });
 
-  const handleInputChange = useCallback((field: keyof StoryParams, value: string) => {
-    setStoryParams(prev => ({
-      ...prev,
-      [field]: value
-    }))
-  }, [])
+  const handleInputChange = useCallback(
+    (field: keyof StoryParams, value: string) => {
+      setStoryParams((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+    },
+    []
+  );
 
   const validateParams = (): boolean => {
     if (!storyParams.genre) {
       toast({
-        title: "Missing Genre",
-        description: "Please select a genre for your story.",
-        variant: "destructive"
-      })
-      return false
+        title: 'Missing Genre',
+        description: 'Please select a genre for your story.',
+        variant: 'destructive',
+      });
+      return false;
     }
 
     if (!storyParams.theme.trim()) {
       toast({
-        title: "Missing Theme",
-        description: "Please provide a theme or main idea for your story.",
-        variant: "destructive"
-      })
-      return false
+        title: 'Missing Theme',
+        description: 'Please provide a theme or main idea for your story.',
+        variant: 'destructive',
+      });
+      return false;
     }
 
-    return true
-  }
+    return true;
+  };
 
   const generateStory = async () => {
-    if (!validateParams()) return
+    if (!validateParams()) return;
 
-    setIsGenerating(true)
-    
+    setIsGenerating(true);
+
     try {
       // Simulate API call for story generation
       toast({
-        title: "Generating Story",
-        description: "Creating your personalized story with AI...",
-      })
+        title: 'Generating Story',
+        description: 'Creating your personalized story with AI...',
+      });
 
       // Mock story generation - replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 3000))
+      await new Promise((resolve) => setTimeout(resolve, 3000));
 
       const mockStory = `# ${storyParams.theme}
 
@@ -113,27 +154,26 @@ As the narrative progresses, readers will find themselves immersed in a richly d
 
 The conclusion brings together all the story threads in a satisfying resolution that speaks to the universal human experience while staying true to the ${storyParams.genre.toLowerCase()} genre conventions.
 
-*This is a sample story generated based on your parameters. In a full implementation, this would be replaced with actual AI-generated content.*`
+*This is a sample story generated based on your parameters. In a full implementation, this would be replaced with actual AI-generated content.*`;
 
-      setGeneratedStory(mockStory)
-      onStoryGenerated?.(mockStory)
+      setGeneratedStory(mockStory);
+      onStoryGenerated?.(mockStory);
 
       toast({
-        title: "Story Generated!",
-        description: "Your personalized story is ready to read.",
-      })
-
+        title: 'Story Generated!',
+        description: 'Your personalized story is ready to read.',
+      });
     } catch (error) {
-      console.error('Story generation error:', error)
+      console.error('Story generation error:', error);
       toast({
-        title: "Generation Failed",
-        description: "Unable to generate story. Please try again.",
-        variant: "destructive"
-      })
+        title: 'Generation Failed',
+        description: 'Unable to generate story. Please try again.',
+        variant: 'destructive',
+      });
     } finally {
-      setIsGenerating(false)
+      setIsGenerating(false);
     }
-  }
+  };
 
   const resetForm = () => {
     setStoryParams({
@@ -142,10 +182,10 @@ The conclusion brings together all the story threads in a satisfying resolution 
       length: 'medium',
       tone: '',
       characters: '',
-      setting: ''
-    })
-    setGeneratedStory('')
-  }
+      setting: '',
+    });
+    setGeneratedStory('');
+  };
 
   return (
     <div className={`space-y-6 ${className}`}>
@@ -157,7 +197,8 @@ The conclusion brings together all the story threads in a satisfying resolution 
             <Wand2 className="h-6 w-6 text-primary" />
           </CardTitle>
           <p className="text-muted-foreground">
-            Create personalized stories with the power of artificial intelligence
+            Create personalized stories with the power of artificial
+            intelligence
           </p>
         </CardHeader>
 
@@ -165,7 +206,10 @@ The conclusion brings together all the story threads in a satisfying resolution 
           {/* Genre Selection */}
           <div className="space-y-2">
             <Label htmlFor="genre">Genre *</Label>
-            <Select value={storyParams.genre} onValueChange={(value) => handleInputChange('genre', value)}>
+            <Select
+              value={storyParams.genre}
+              onValueChange={(value) => handleInputChange('genre', value)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Choose a genre..." />
               </SelectTrigger>
@@ -196,10 +240,12 @@ The conclusion brings together all the story threads in a satisfying resolution 
             <Label>Story Length</Label>
             <div className="grid gap-2">
               {LENGTH_OPTIONS.map((option) => (
-                <Card 
+                <Card
                   key={option.value}
                   className={`cursor-pointer transition-all hover:border-primary/50 ${
-                    storyParams.length === option.value ? 'border-primary bg-primary/5' : ''
+                    storyParams.length === option.value
+                      ? 'border-primary bg-primary/5'
+                      : ''
                   }`}
                   onClick={() => handleInputChange('length', option.value)}
                 >
@@ -207,7 +253,9 @@ The conclusion brings together all the story threads in a satisfying resolution 
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="font-medium">{option.label}</p>
-                        <p className="text-sm text-muted-foreground">{option.description}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {option.description}
+                        </p>
                       </div>
                       {storyParams.length === option.value && (
                         <Badge variant="default">Selected</Badge>
@@ -222,7 +270,10 @@ The conclusion brings together all the story threads in a satisfying resolution 
           {/* Tone Selection */}
           <div className="space-y-2">
             <Label htmlFor="tone">Tone</Label>
-            <Select value={storyParams.tone} onValueChange={(value) => handleInputChange('tone', value)}>
+            <Select
+              value={storyParams.tone}
+              onValueChange={(value) => handleInputChange('tone', value)}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select story tone..." />
               </SelectTrigger>
@@ -323,5 +374,5 @@ The conclusion brings together all the story threads in a satisfying resolution 
         )}
       </AnimatePresence>
     </div>
-  )
+  );
 }

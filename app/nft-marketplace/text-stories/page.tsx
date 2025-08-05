@@ -1,11 +1,6 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-
-import { Textarea } from '@/components/ui/textarea';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useToast } from '@/components/ui/use-toast';
-import { useWeb3 } from '@/components/providers/web3-provider';
 import {
   Search,
   Book,
@@ -19,6 +14,9 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
+
+import { useWeb3 } from '@/components/providers/web3-provider';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -37,6 +35,8 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast';
 
 import { PageHeader } from '../../components/page-header';
 

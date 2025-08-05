@@ -22,7 +22,16 @@ interface StoryDetailsDialogProps {
   onPurchase?: () => void;
   onComment?: () => void;
   onLike?: () => void;
-}}
+}
+
+export default function StoryDetailsDialog({
+  isOpen,
+  onClose,
+  story,
+  onPurchase,
+  onComment,
+  onLike,
+}: StoryDetailsDialogProps) {
             {story.price && (
               <div className="absolute top-4 right-4 bg-black/80 text-white px-3 py-1.5 rounded-full text-sm font-medium flex items-center">
                 <ShoppingCart className="h-3.5 w-3.5 mr-1.5 text-amber-400" />

@@ -27,7 +27,8 @@ export const uploadToIPFS = async (
   file: File | string | object,
   metadata?: Record<string, any>
 ): Promise<string> => {
-  if (process.env.NODE_ENV === "development") console.log('Uploading to IPFS:', typeof file, metadata);
+  if (process.env.NODE_ENV === 'development')
+    console.log('Uploading to IPFS:', typeof file, metadata);
 
   // If we don't have API keys, use mock implementation for development
   if (!PINATA_API_KEY || !PINATA_API_SECRET) {
@@ -81,7 +82,8 @@ export const uploadToIPFS = async (
       })
     );
 
-    if (process.env.NODE_ENV === "development") console.log('Sending request to Pinata...');
+    if (process.env.NODE_ENV === 'development')
+      console.log('Sending request to Pinata...');
     const response = await axios.post(PINATA_PIN_FILE_ENDPOINT, formData, {
       headers: {
         pinata_api_key: PINATA_API_KEY,
@@ -92,18 +94,22 @@ export const uploadToIPFS = async (
     });
 
     if (response.data && response.data.IpfsHash) {
-      if (process.env.NODE_ENV === "development") console.log('Successfully uploaded to IPFS:', response.data.IpfsHash);
+      if (process.env.NODE_ENV === 'development')
+        console.log('Successfully uploaded to IPFS:', response.data.IpfsHash);
       return response.data.IpfsHash;
     } else {
-      if (process.env.NODE_ENV === "development") console.error('Invalid Pinata response:', response.data);
+      if (process.env.NODE_ENV === 'development')
+        console.error('Invalid Pinata response:', response.data);
       throw new Error('Failed to get IPFS hash from Pinata response');
     }
   } catch (error: any) {
-    if (process.env.NODE_ENV === "development") console.error('Error uploading to IPFS via Pinata:', error);
+    if (process.env.NODE_ENV === 'development')
+      console.error('Error uploading to IPFS via Pinata:', error);
 
     // If axios error, provide more details
     if (error.response) {
-      if (process.env.NODE_ENV === "development") console.error('Pinata error response:', error.response.data);
+      if (process.env.NODE_ENV === 'development')
+        console.error('Pinata error response:', error.response.data);
       throw new Error(
         `Pinata API error: ${error.response.status} - ${JSON.stringify(error.response.data)}`
       );
@@ -143,17 +149,20 @@ const uploadJSONToIPFS = async (
     });
 
     if (response.data && response.data.IpfsHash) {
-      if (process.env.NODE_ENV === "development") console.log(
-        'Successfully uploaded JSON to IPFS:',
-        response.data.IpfsHash
-      );
+      if (process.env.NODE_ENV === 'development')
+        console.log(
+          'Successfully uploaded JSON to IPFS:',
+          response.data.IpfsHash
+        );
       return response.data.IpfsHash;
     } else {
-      if (process.env.NODE_ENV === "development") console.error('Invalid Pinata JSON response:', response.data);
+      if (process.env.NODE_ENV === 'development')
+        console.error('Invalid Pinata JSON response:', response.data);
       throw new Error('Failed to get IPFS hash from Pinata JSON response');
     }
   } catch (error: any) {
-    if (process.env.NODE_ENV === "development") console.error('Error uploading JSON to IPFS:', error);
+    if (process.env.NODE_ENV === 'development')
+      console.error('Error uploading JSON to IPFS:', error);
     throw error;
   }
 };
@@ -165,7 +174,8 @@ const mockUploadToIPFS = async (
   file: File | string | object,
   metadata?: Record<string, any>
 ): Promise<string> => {
-  if (process.env.NODE_ENV === "development") console.log('Using mock IPFS upload');
+  if (process.env.NODE_ENV === 'development')
+    console.log('Using mock IPFS upload');
 
   // Create a deterministic but random-looking hash based on content
   let content = '';
@@ -189,7 +199,8 @@ const mockUploadToIPFS = async (
   // Simulate network delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  if (process.env.NODE_ENV === "development") console.log('Mock IPFS upload successful:', mockCid);
+  if (process.env.NODE_ENV === 'development')
+    console.log('Mock IPFS upload successful:', mockCid);
   return mockCid;
 };
 
