@@ -3,9 +3,9 @@
  * 
  * This service provides functions to interact with the Monad blockchain
  * for NFT minting, transfer, and management.
+ */
 
 import { ethers } from 'ethers';
-import { GROQ_MODELS } from './groq-service';
 
 // Story metadata interface for NFT minting
 export interface StoryMetadata {
@@ -16,43 +16,72 @@ export interface StoryMetadata {
   timestamp: number;
   aiModel?: string;
   tags?: string[];
+  description?: string;
+  excerpt?: string;
+  authorAddress?: string;
+  coverImage?: string;
+  createdAt?: string;
+  aiPrompt?: string;
 }
 
 // Minted NFT result interface
 export interface MintedNFT {
   tokenId: string;
-  contractAddress: string;
+  contractAddress?: string;
   transactionHash: string;
   metadata: StoryMetadata;
+  owner?: string;
+  tokenURI?: string;
 }
 
-// NFT Contract ABI - simplified for this example
-const NFT_CONTRACT_ABI = [
-  " mint(address to, string memory tokenURI) external returns (uint256)",
-  " ownerOf(uint256 tokenId) external view returns (address)",
-  " tokenURI(uint256 tokenId) external view returns (string memory)",
-  " transferFrom(address from, address to, uint256 tokenId) external",
-  " totalSupply() external view returns (uint256)",
-  "event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)"
-];
+// Mock IPFS pinning function
+async function pinToIPFS(metadata: StoryMetadata): Promise<string> {
+  // Mock implementation - in real app this would upload to IPFS
+  const jsonData = JSON.stringify(metadata);
+  const hexData = Buffer.from(jsonData, 'utf8').toString('hex');
+  return `ipfs://Qm${hexData}`;
+}
 
-// Contract addresses - would be environment variables in production
-const MONAD_TESTNET_RPC = "https://rpc.testnet.monad.xyz/json-rpc";
-const NFT_CONTRACT_ADDRESS = "0x1234567890123456789012345678901234567890"; // Placeholder
+// Mock contract getter
+function getNftContract(signerOrProvider: any) {
+  // Mock implementation - in real app this would return actual contract
+  return {
+    mint: async (to: string, tokenURI: string) => ({
+      wait: async () => ({
+        hash: '0x' + Math.random().toString(16).slice(2),
+        logs: [{
+          fragment: { name: 'Transfer' },
+          args: [ethers.ZeroAddress, to, '1']
+        }]
+      })
+    }),
+    ownerOf: async (tokenId: string) => '0x' + Math.random().toString(16).slice(2, 42),
+    tokenURI: async (tokenId: string) => `ipfs://mock-${tokenId}`
+  };
+}
 
+// Mock provider getter
+function getMonadProvider() {
+  // Mock implementation - in real app this would return actual provider
+  return new ethers.JsonRpcProvider('https://rpc.testnet.monad.xyz/json-rpc');
+}
+
+/**
+ * Mint a story NFT on the Monad blockchain
+ */
 export async function mintStoryNFT(
   metadata: StoryMetadata, 
   ownerAddress: string,
-  signer: ethers.Signer
+  signer?: ethers.Signer
 ): Promise<MintedNFT> {
   try {
-    // 1. Pin metadata to IPFS
+    // 1. Pin metadata to IPFS (mock)
     const tokenURI = await pinToIPFS(metadata);
 
-    // 2. Get contract with signer
+    // 2. Get contract with signer (mock)
     const nftContract = getNftContract(signer);
 
-    // 3. Mint the NFT
+    // 3. Mint the NFT (mock)
     const mintTx = await nftContract.mint(ownerAddress, tokenURI);
     const receipt = await mintTx.wait();
 
@@ -63,8 +92,8 @@ export async function mintStoryNFT(
 
     if (!transferEvent) {
       throw new Error("Transfer event not found in transaction receipt");
-}
-    const tokenId = transferEvent.args[2].toString();
+    }
+    const tokenId = transferEvent.args?.[2]?.toString() || '1';
 
     // 5. Return minted NFT data
     return {
@@ -77,11 +106,12 @@ export async function mintStoryNFT(
   } catch (error) {
     console.error("Error minting NFT:", error);
     throw error;
+  }
 }
-}
+
 /**
  * Get a story NFT by its token ID
-
+ */
 export async function getStoryNFT(tokenId: string): Promise<MintedNFT | null> {
   try {
     const provider = getMonadProvider();
@@ -93,8 +123,7 @@ export async function getStoryNFT(tokenId: string): Promise<MintedNFT | null> {
     // Get the token URI
     const tokenURI = await nftContract.tokenURI(tokenId);
 
-    // Fetch metadata (in a real app, this would fetch from IPFS)
-    // Here we simulate by extracting from the fake IPFS hash
+    // Fetch metadata (mock - in real app, this would fetch from IPFS)
     const hash = tokenURI.replace('ipfs://', '');
     const hexData = hash.substring(2);
     const jsonData = Buffer.from(hexData, 'hex').toString('utf8');
@@ -110,15 +139,16 @@ export async function getStoryNFT(tokenId: string): Promise<MintedNFT | null> {
   } catch (error) {
     console.error("Error getting NFT:", error);
     return null;
+  }
 }
-}
+
 /**
  * Generates an AI story with Groq and mints it as an NFT
  */
 export async function generateAndMintAIStory(
   prompt: string,
   authorAddress: string,
-  signer: ethers.Signer,
+  signer?: ethers.Signer,
   title?: string,
   genre?: string,
   apiKey?: string
@@ -133,18 +163,14 @@ export async function generateAndMintAIStory(
     if (genre) {
       systemPrompt += ` The story should be in the ${genre.replace('-', ' ')} genre.`;
     }
+    
     // Generate the story content using Groq
     console.log('Generating story with Groq...');
-    const storyContent = await generateStoryContent(
-      prompt,
-      undefined, // Use default model
-      {
-        temperature: 0.7,
-        max_tokens: 3000,
-        system_prompt: systemPrompt,
-        apiKey, // Pass the custom API key if provided
-      }
-    );
+    const storyContent = await generateStoryContent({
+      theme: prompt,
+      genre: genre || 'fiction',
+      length: 'medium'
+    });
 
     // Extract a title from the first line if not provided
     let storyTitle = title;
@@ -163,6 +189,7 @@ export async function generateAndMintAIStory(
         storyTitle = storyTitle.replace(/["']/g, '').trim();
       }
     }
+    
     // Generate a short excerpt
     const excerpt =
       storyContent.length > 150
@@ -183,11 +210,8 @@ export async function generateAndMintAIStory(
       aiModel: 'Groq AI',
       aiPrompt: prompt,
       tags: genre ? [genre] : ['fiction'],
+      timestamp: Date.now(),
     };
-
-    // Pin metadata to IPFS
-    console.log('Uploading to IPFS...');
-    const ipfsHash = await pinToIPFS(metadata);
 
     // Mint the NFT
     console.log('Minting NFT...');
@@ -195,55 +219,5 @@ export async function generateAndMintAIStory(
   } catch (error) {
     console.error('Error in generateAndMintAIStory:', error);
     throw error;
-  }
-}
-
-/**
- * Mint a story NFT on the Monad blockchain
- */
-export async function mintStoryNFT(
-  metadata: any,
-  authorAddress: string,
-  signer?: any
-) {
-  try {
-    return {
-      success: true,
-      message: 'NFT minting placeholder - implementation needed',
-      tokenId: '1',
-      transactionHash: '0x123...',
-    };
-  } catch (error) {
-    console.error('Error minting story NFT:', error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    };
-  }
-}
-
-/**
- * Get story NFT details from the blockchain
- */
-export async function getStoryNFT(tokenId: string) {
-  try {
-    return {
-      success: true,
-      message: 'NFT retrieval placeholder - implementation needed',
-      nft: {
-        tokenId,
-        owner: '0x123...',
-        metadata: {
-          title: 'Placeholder Story',
-          description: 'Placeholder description',
-        },
-      },
-    };
-  } catch (error) {
-    console.error('Error getting story NFT:', error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    };
   }
 }

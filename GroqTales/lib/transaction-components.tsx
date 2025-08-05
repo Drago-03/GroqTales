@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode, useState } from 'react';
 
 // Mock TransactionResponse and TransactionError types
 export type TransactionResponse = {
@@ -35,8 +35,8 @@ const TransactionContext = createContext<TransactionContextType>({
 type TransactionProps = {
   children: ReactNode;
   calls: { to: string; data: `0x${string}`; value: bigint }[];
-  onSuccess?: (response: TransactionResponse) => void;
-  onError?: (error: TransactionError) => void;
+  onSuccessAction?: (response: TransactionResponse) => void;
+  onErrorAction?: (error: TransactionError) => void;
 };
 
 // Main Transaction component
@@ -44,11 +44,24 @@ type TransactionProps = {
 export function Transaction({
   children,
   calls,
-  onSuccess,
-  onError,
+  onSuccessAction,
+  onErrorAction,
 }: TransactionProps) {
-  // Mock implementation
+  // Add React state for dynamic transaction status
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [error, setError] = useState<TransactionError | null>(null);
+  const [response, setResponse] = useState<TransactionResponse | null>(null);
+
   const execute = async () => {
+    // Reset state before starting
+    setIsLoading(true);
+    setIsSuccess(false);
+    setIsError(false);
+    setError(null);
+    setResponse(null);
+
     // Simulate transaction
     console.log('Executing transaction with calls:', calls);
 
@@ -56,27 +69,39 @@ export function Transaction({
       // Mock successful transaction after 2 seconds
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      const response = {
+      const txResponse = {
         transactionReceipts: [
           { transactionHash: `0x${Math.random().toString(16).slice(2)}` },
         ],
       };
 
-      if (onSuccess) onSuccess(response);
-      return response;
-    } catch (error) {
+      // Update success state
+      setIsLoading(false);
+      setIsSuccess(true);
+      setResponse(txResponse);
+
+      if (onSuccessAction) onSuccessAction(txResponse);
+      return txResponse;
+    } catch (err) {
       const txError = { message: 'Transaction failed', code: 4001 };
-      if (onError) onError(txError);
+      
+      // Update error state
+      setIsLoading(false);
+      setIsError(true);
+      setError(txError);
+
+      if (onErrorAction) onErrorAction(txError);
       throw txError;
     }
   };
 
+  // Pass dynamic state variables in context value
   const value = {
-    isLoading: false,
-    isSuccess: false,
-    isError: false,
-    error: null,
-    response: null,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    response,
     execute,
   };
 
