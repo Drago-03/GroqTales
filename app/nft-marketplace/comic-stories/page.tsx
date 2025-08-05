@@ -200,8 +200,8 @@ function generateMoreComicNFTs(count: number): ComicNFT[] {
 
   return Array.from({ length: count }, (_, index) => {
     const id = index + mockComicNFTs.length + 1;
-    const genre = genres[Math.floor(Math.random() * genres.length)] ?? 'Action';
-    const rarity = rarities[Math.floor(Math.random() * rarities.length)] ?? 'common';
+    const genre = genres[Math.floor(Math.random() * genres.length)] || 'Action';
+    const rarity = rarities[Math.floor(Math.random() * rarities.length)] || 'common';
     const pages = Math.floor(Math.random() * 20) + 10;
     const isAnimated = Math.random() > 0.7;
 
