@@ -32,9 +32,11 @@ const TransactionContext = createContext<TransactionContextType>({
 });
 
 // Transaction component props
-type TransactionProps = {
+export type TransactionProps = {
   children: ReactNode;
   calls: { to: string; data: `0x${string}`; value: bigint }[];
+  onSuccess?: (response: TransactionResponse) => Promise<void> | void;
+  onError?: (error: TransactionError) => void;
   onSuccessAction?: (response: TransactionResponse) => void;
   onErrorAction?: (error: TransactionError) => void;
 };
@@ -44,12 +46,14 @@ type TransactionProps = {
 export function Transaction({
   children,
   calls,
+  onSuccess,
+  onError,
   onSuccessAction,
   onErrorAction,
 }: TransactionProps) {
   // Add React state for dynamic transaction status
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isSuccess, setIsSuccessState] = useState(false);
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState<TransactionError | null>(null);
   const [response, setResponse] = useState<TransactionResponse | null>(null);
@@ -57,7 +61,7 @@ export function Transaction({
   const execute = async () => {
     // Reset state before starting
     setIsLoading(true);
-    setIsSuccess(false);
+    setIsSuccessState(false);
     setIsError(false);
     setError(null);
     setResponse(null);
@@ -77,21 +81,37 @@ export function Transaction({
 
       // Update success state
       setIsLoading(false);
-      setIsSuccess(true);
+      setIsSuccessState(true);
       setResponse(txResponse);
 
+      // Call both success handlers if provided
+      if (onSuccess) await onSuccess(txResponse);
       if (onSuccessAction) onSuccessAction(txResponse);
       return txResponse;
-    } catch (err) {
-      const txError = { message: 'Transaction failed', code: 4001 };
+    } catch (originalError) {
+      // Capture original error details and create wrapped error
+      const errorMessage = originalError instanceof Error 
+        ? originalError.message 
+        : 'Transaction failed';
       
-      // Update error state
+      const txError: TransactionError = { 
+        message: errorMessage, 
+        code: originalError instanceof Error && 'code' in originalError 
+          ? (originalError as any).code 
+          : 4001 
+      };
+      
+      // Update error state first to ensure cleanup happens before throwing
       setIsLoading(false);
       setIsError(true);
       setError(txError);
 
+      // Call both error handlers if provided
+      if (onError) onError(txError);
       if (onErrorAction) onErrorAction(txError);
-      throw txError;
+      
+      // Rethrow the original error to preserve stack trace and details
+      throw originalError;
     }
   };
 
@@ -138,13 +158,36 @@ export function TransactionButton({ className, children }: TransactionButtonProp
   const { execute, isLoading } = useTransaction();
   
   return (
-    <button 
-      className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 ${className || ''}`}
-      onClick={execute}
-      disabled={isLoading}
-    >
-      {isLoading ? 'Processing...' : children}
-    </button>
+    <>
+      <button 
+        className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 ${className || ''}`}
+        onClick={execute}
+        disabled={isLoading}
+        aria-busy={isLoading}
+        aria-disabled={isLoading}
+        type="button"
+      >
+        {isLoading ? 'Processing...' : children}
+      </button>
+      {/* Visually hidden aria-live region for screen readers */}
+      <div 
+        aria-live="polite" 
+        aria-atomic="true"
+        style={{
+          position: 'absolute',
+          width: '1px',
+          height: '1px',
+          padding: '0',
+          margin: '-1px',
+          overflow: 'hidden',
+          clip: 'rect(0, 0, 0, 0)',
+          whiteSpace: 'nowrap',
+          border: '0'
+        }}
+      >
+        {isLoading && 'Transaction is processing, please wait.'}
+      </div>
+    </>
   );
 }
 
