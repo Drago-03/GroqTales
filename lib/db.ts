@@ -6,6 +6,22 @@ import clientPromise from './mongodb';
  * Retrieves db data
  */
 export async function getDb() {
+  // In build mode, return mock database
+  if (process.env.NEXT_PUBLIC_BUILD_MODE === 'true' || process.env.CI === 'true') {
+    return {
+      collection: () => ({
+        findOne: () => Promise.resolve(null),
+        find: () => ({ toArray: () => Promise.resolve([]) }),
+        insertOne: () => Promise.resolve({ insertedId: 'mock-id' }),
+        updateOne: () => Promise.resolve({ modifiedCount: 1 }),
+        deleteOne: () => Promise.resolve({ deletedCount: 1 }),
+        createIndex: () => Promise.resolve(),
+        drop: () => Promise.resolve(),
+      }),
+      createCollection: () => Promise.resolve(),
+    } as any;
+  }
+  
   const client = await clientPromise;
   const db = client.db(process.env.MONGODB_DB_NAME);
   return db;

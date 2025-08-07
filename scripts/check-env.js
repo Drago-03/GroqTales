@@ -23,6 +23,10 @@ if (fs.existsSync(envLocalPath)) {
 // Required environment variables
 const requiredVars = [
   'NEXT_PUBLIC_GROQ_API_KEY',
+];
+
+// Optional environment variables (only checked in development)
+const developmentVars = [
   'MONGODB_URI',
   'MONGODB_DB_NAME',
 ];
@@ -49,11 +53,30 @@ if (isProduction && !fs.existsSync(envLocalPath)) {
     }
   }
 
+  // Check development vars but don't fail build for them
+  const missingDevVars = [];
+  for (const varName of developmentVars) {
+    if (!process.env[varName]) {
+      missingDevVars.push(varName);
+    }
+  }
+
   if (missingVars.length === 0) {
     console.log(
       '\x1b[32m%s\x1b[0m',
       '✅ All required environment variables are set!\n'
     );
+    
+    if (missingDevVars.length > 0) {
+      console.log(
+        '\x1b[33m%s\x1b[0m',
+        'ℹ️ Missing development environment variables (using defaults):'
+      );
+      missingDevVars.forEach((varName) => {
+        console.log(`   - ${varName}`);
+      });
+      console.log();
+    }
   } else {
     console.error(
       '\x1b[31m%s\x1b[0m',
@@ -91,6 +114,14 @@ for (const varName of requiredVars) {
   }
 }
 
+// Check development variables
+const missingDevVars = [];
+for (const varName of developmentVars) {
+  if (!process.env[varName]) {
+    missingDevVars.push(varName);
+  }
+}
+
 // Output results
 console.log('\n🔍 Environment Variables Check\n');
 
@@ -99,6 +130,17 @@ if (missingVars.length === 0) {
     '\x1b[32m%s\x1b[0m',
     '✅ All required environment variables are set!\n'
   );
+  
+  if (missingDevVars.length > 0) {
+    console.log(
+      '\x1b[33m%s\x1b[0m',
+      'ℹ️ Missing development environment variables (using defaults):'
+    );
+    missingDevVars.forEach((varName) => {
+      console.log(`   - ${varName}`);
+    });
+    console.log();
+  }
 } else {
   console.error(
     '\x1b[31m%s\x1b[0m',
