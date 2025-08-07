@@ -27,7 +27,8 @@ try {
 // Fix tooltip component if needed
 try {
   console.log('\nChecking tooltip component...');
-  require('./fix-tooltip');
+  // require('./fix-tooltip'); // Commented out as fix-tooltip module doesn't exist
+  console.log('Tooltip component check skipped - module not found');
 } catch (error) {
   console.error('Error checking tooltip component:', error);
 }
