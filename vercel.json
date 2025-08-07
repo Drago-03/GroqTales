@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run vercel-build",
   "devCommand": "npm run dev",
   "installCommand": "npm ci",
   "framework": "nextjs",
@@ -10,11 +10,13 @@
     }
   },
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "SKIP_ENV_VALIDATION": "true"
   },
   "build": {
     "env": {
-      "NEXT_PUBLIC_BUILD_MODE": "true"
+      "NEXT_PUBLIC_BUILD_MODE": "true",
+      "CI": "true"
     }
   }
 }

@@ -52,14 +52,17 @@ export function StoryRecommendations({
 
   const loadRecommendations = async () => {
     try {
-      await getRecommendations({
+      // Ensure all values are properly typed and not undefined
+      const options = {
         storyId,
-        content,
-        keywords,
-        genre,
         limit,
-        apiKey,
-      });
+        ...(content && { content }),
+        ...(keywords && keywords.length > 0 && { keywords }),
+        ...(genre && { genre }),
+        ...(apiKey && { apiKey })
+      };
+
+      await getRecommendations(options);
     } catch (err: any) {
       toast({
         title: 'Error',

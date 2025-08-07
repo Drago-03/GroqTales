@@ -4,12 +4,12 @@ import { useState } from 'react';
 
 interface RecommendationOptions {
   storyId: string;
-  content?: string;
-  keywords?: string[];
-  genre?: string;
+  content?: string | undefined;
+  keywords?: string[] | undefined;
+  genre?: string | undefined;
   limit?: number;
-  model?: string;
-  apiKey?: string;
+  model?: string | undefined;
+  apiKey?: string | undefined;
 }
 interface UseStoryRecommendationsResult {
   getRecommendations: (options: RecommendationOptions) => Promise<any[]>;

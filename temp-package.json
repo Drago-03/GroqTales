@@ -1,7 +1,0 @@
-{
-  "name": "temp-dependencies",
-  "version": "1.0.0",
-  "dependencies": {
-    "@radix-ui/react-tooltip": "^1.0.7"
-  }
-}
