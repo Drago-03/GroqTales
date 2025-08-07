@@ -56,7 +56,11 @@ interface Comment {
   likes: number;
 }
 
-const mockUsers = [
+const mockUsers: Array<{
+  id: number;
+  name: string;
+  avatar: string;
+}> = [
   {
     id: 1,
     name: 'Alex Chen',

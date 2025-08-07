@@ -143,7 +143,6 @@ jobs:
 
       - name: Analyze bundle size
         run: |
-          npm run build
           npx next-bundle-analyzer || echo "Bundle analysis completed"
           echo "Bundle size analysis completed - check build output for details"
 

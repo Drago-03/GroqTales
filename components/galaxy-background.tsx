@@ -10,15 +10,17 @@ export const GalaxyBackground = () => {
 
   useEffect(() => {
     // Generate way more random stars with different colors
-    const newStars = Array.from({ length: 200 }, () => ({
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 4 + 1,
-      delay: Math.random() * 8,
-      color: ['#ffffff', '#ffd700', '#ff8f00', '#ff69b4', '#4169e1'][
-        Math.floor(Math.random() * 5)
-      ],
-    }));
+    const colors = ['#ffffff', '#ffd700', '#ff8f00', '#ff69b4', '#4169e1'] as const;
+    const newStars = Array.from({ length: 200 }, () => {
+      const colorIndex = Math.floor(Math.random() * colors.length);
+      return {
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: Math.random() * 4 + 1,
+        delay: Math.random() * 8,
+        color: colors[colorIndex] ?? '#ffffff',
+      };
+    });
     setStars(newStars);
   }, []);
 
