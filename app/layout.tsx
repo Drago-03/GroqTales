@@ -81,16 +81,18 @@ export const metadata: Metadata = {
   title: 'GroqTales - AI-Generated Story NFTs',
   description:
     'Create, mint, and share AI-generated stories as NFTs on the Monad blockchain.',
-  // Performance-focused metadata
+  // Removed themeColor & viewport (moved to dedicated exports)
+  metadataBase: new URL(process.env.NEXT_PUBLIC_URL || 'https://groqtales.com'),
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
     { media: '(prefers-color-scheme: dark)', color: '#111111' },
   ],
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-  },
 };
 
 export default function RootLayout({

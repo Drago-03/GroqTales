@@ -24,4 +24,5 @@ export const metadata: Metadata = {
     description:
       'Create AI-powered stories and turn them into blockchain NFTs on GroqTales',
   },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_URL || 'https://groqtales.com'),
 };

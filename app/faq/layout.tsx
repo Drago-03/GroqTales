@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     description:
       'Find answers to common questions about GroqTales, from getting started to advanced features',
   },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_URL || 'https://groqtales.com'),
 };
 
 export default function FaqLayout({ children }: { children: React.ReactNode }) {

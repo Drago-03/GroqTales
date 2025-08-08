@@ -24,4 +24,5 @@ export const metadata: Metadata = {
     description:
       'Discover trending stories, featured creators, and top-selling digital collectibles on GroqTales NFT Gallery',
   },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_URL || 'https://groqtales.com'),
 };

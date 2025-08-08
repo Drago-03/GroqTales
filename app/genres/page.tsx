@@ -28,6 +28,7 @@ export const metadata = {
   title: 'Story Genres | GroqTales',
   description:
     'Explore different story genres on GroqTales - from Science Fiction to Fantasy, Romance to Mystery, and everything in between',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_URL || 'https://groqtales.com'),
 };
 
 // Genre data

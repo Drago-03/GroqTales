@@ -4,6 +4,11 @@
 
 [build.environment]
   NODE_VERSION = "20.18.0"
+  NEXT_PUBLIC_BUILD_MODE = "true" # enable build-safe mocks
+  MONGO_MOCK = "true"            # force mock DB client during SSG
+  NEXT_PUBLIC_URL = "https://groqtales.xyz"
+  MONGODB_URI = "mongodb://mock:mock@mock:27017/mock" # prevent SRV lookup
+  MONGODB_DB_NAME = "mock-db"
 
 [[redirects]]
   from = "/*"
@@ -15,6 +20,10 @@
 
 [context.deploy-preview.environment]
   NODE_ENV = "development"
+  NEXT_PUBLIC_BUILD_MODE = "true"
+  MONGO_MOCK = "true"
 
 [context.branch-deploy.environment]
   NODE_ENV = "development"
+  NEXT_PUBLIC_BUILD_MODE = "true"
+  MONGO_MOCK = "true"
