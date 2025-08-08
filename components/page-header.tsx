@@ -1,33 +1,55 @@
-import { BookOpen, ShoppingCart, Users, Bookmark, Library, Settings, HelpCircle, Newspaper, BarChart3, Heart } from "lucide-react";
+import {
+  BookOpen,
+  ShoppingCart,
+  Users,
+  Bookmark,
+  Library,
+  Settings,
+  HelpCircle,
+  Newspaper,
+  BarChart3,
+  Heart,
+} from 'lucide-react';
+import React from 'react';
 
 interface PageHeaderProps {
   title: string;
   description?: string;
-  icon?: "book" | "shopping-cart" | "users" | "bookmark" | "library" | "settings" | "help" | "newspaper" | "chart" | "heart" | null;
+  icon?:
+    | 'book'
+    | 'shopping-cart'
+    | 'users'
+    | 'bookmark'
+    | 'library'
+    | 'settings'
+    | 'help'
+    | 'newspaper'
+    | 'chart'
+    | 'heart'
+    | null;
 }
-
 export function PageHeader({ title, description, icon }: PageHeaderProps) {
   const getIcon = () => {
     switch (icon) {
-      case "book":
+      case 'book':
         return <BookOpen className="h-8 w-8 mr-4 text-primary/80" />;
-      case "shopping-cart":
+      case 'shopping-cart':
         return <ShoppingCart className="h-8 w-8 mr-4 text-primary/80" />;
-      case "users":
+      case 'users':
         return <Users className="h-8 w-8 mr-4 text-primary/80" />;
-      case "bookmark":
+      case 'bookmark':
         return <Bookmark className="h-8 w-8 mr-4 text-primary/80" />;
-      case "library":
+      case 'library':
         return <Library className="h-8 w-8 mr-4 text-primary/80" />;
-      case "settings":
+      case 'settings':
         return <Settings className="h-8 w-8 mr-4 text-primary/80" />;
-      case "help":
+      case 'help':
         return <HelpCircle className="h-8 w-8 mr-4 text-primary/80" />;
-      case "newspaper":
+      case 'newspaper':
         return <Newspaper className="h-8 w-8 mr-4 text-primary/80" />;
-      case "chart":
+      case 'chart':
         return <BarChart3 className="h-8 w-8 mr-4 text-primary/80" />;
-      case "heart":
+      case 'heart':
         return <Heart className="h-8 w-8 mr-4 text-primary/80" />;
       default:
         return null;
@@ -41,10 +63,8 @@ export function PageHeader({ title, description, icon }: PageHeaderProps) {
         <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
       </div>
       {description && (
-        <p className="mt-2 text-muted-foreground max-w-3xl">
-          {description}
-        </p>
+        <p className="mt-2 text-muted-foreground max-w-3xl">{description}</p>
       )}
     </div>
   );
-} 
+}

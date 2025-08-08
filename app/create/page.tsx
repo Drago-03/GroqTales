@@ -1,73 +1,100 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useWeb3 } from "@/components/providers/web3-provider";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { LoadingAnimation } from "@/components/loading-animation";
-import { useToast } from "@/components/ui/use-toast";
-import { PenSquare, Image as ImageIcon, Sparkles, AlertCircle, ArrowLeft } from "lucide-react";
-import { genres } from "@/components/genre-selector";
+import {
+  PenSquare,
+  Image as ImageIcon,
+  Sparkles,
+  AlertCircle,
+  ArrowLeft,
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+
+import { genres } from '@/components/genre-selector';
+import { LoadingAnimation } from '@/components/loading-animation';
+import { useWeb3 } from '@/components/providers/web3-provider';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast';
 // We'll import ipfs conditionally to avoid errors
 // import { create } from 'ipfs-http-client';
 
-// Move IPFS client creation to a function to avoid initialization at module scope
+// Move IPFS client creation to a to avoid initialization at module scope
 const getIpfsClient = async () => {
   try {
     // Dynamically import ipfs-http-client only when needed
     const { create } = await import('ipfs-http-client');
-    
+
     const projectId = process.env.NEXT_PUBLIC_INFURA_IPFS_PROJECT_ID;
     const projectSecret = process.env.NEXT_PUBLIC_INFURA_IPFS_PROJECT_SECRET;
-    
+
     if (!projectId || !projectSecret) {
-      console.warn('IPFS Project ID or Secret not defined in environment variables');
-      
+      console.warn(
+        'IPFS Project ID or Secret not defined in environment variables'
+      );
+
       // Show a more friendly message to the user through toast notification
       // We'll return a special error that the caller can check for
       const error = new Error('IPFS credentials missing');
       error.name = 'IpfsConfigError';
       throw error;
     }
-    
     // Create auth header
-    const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
-    
+    const auth =
+      'Basic ' +
+      Buffer.from(projectId + ':' + projectSecret).toString('base64');
+
     // Use a more compatible configuration that avoids readonly property issues
     return create({
       url: 'https://ipfs.infura.io:5001/api/v0',
       headers: {
         authorization: auth,
       },
-      timeout: 30000 // 30 second timeout
+      timeout: 30000, // 30 second timeout
     });
   } catch (error: any) {
     console.error('Error creating IPFS client:', error);
-    
+
     // Add better error handling based on error type
     if (error.name === 'IpfsConfigError') {
       throw error; // Rethrow config errors
     }
-    
     // Add fallback behavior for deployments without IPFS
     if (process.env.NODE_ENV === 'production') {
-      console.warn('IPFS client creation failed in production, using mock IPFS client');
+      console.warn(
+        'IPFS client creation failed in production, using mock IPFS client'
+      );
       // Return a mock IPFS client that can be used in production without failing
       return {
         add: async (content: Uint8Array | Buffer | string) => {
-          console.warn('Using mock IPFS client, content will not be stored on IPFS');
+          console.warn(
+            'Using mock IPFS client, content will not be stored on IPFS'
+          );
           return { path: `mock-ipfs-hash-${Date.now()}` };
-        }
+        },
       };
     }
-    
     // For other errors, provide a more specific error message
-    const errorMessage = error.message || 'Unknown error initializing IPFS client';
-    const newError = new Error(`Failed to initialize IPFS client: ${errorMessage}`);
+    const errorMessage =
+      error.message || 'Unknown error initializing IPFS client';
+    const newError = new Error(
+      `Failed to initialize IPFS client: ${errorMessage}`
+    );
     newError.name = 'IpfsInitError';
     throw newError;
   }
@@ -83,7 +110,6 @@ interface StoryMetadata {
   createdAt: string;
   ipfsHash: string;
 }
-
 export default function CreateStoryPage() {
   const router = useRouter();
   const { account } = useWeb3();
@@ -92,92 +118,90 @@ export default function CreateStoryPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isValidEntry, setIsValidEntry] = useState(true);
   const [storyData, setStoryData] = useState({
-    title: "",
-    description: "",
-    genre: "",
-    content: "",
-    coverImage: null as File | null
+    title: '',
+    description: '',
+    genre: '',
+    content: '',
+    coverImage: null as File | null,
   });
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [storyType, setStoryType] = useState<string | null>(null);
-  const [storyFormat, setStoryFormat] = useState<string | null>("free");
+  const [storyFormat, setStoryFormat] = useState<string | null>('free');
 
   // Check authentication on mount and load story creation data
   useEffect(() => {
     const checkAuth = () => {
-      console.log("Checking authentication and story data");
+      console.log('Checking authentication and story data');
       const isAdmin = localStorage.getItem('adminSession');
-      
+
       // Check authentication first
       if (!account && !isAdmin) {
-        console.warn("User not authenticated");
+        console.warn('User not authenticated');
         toast({
-          title: "Access Denied",
-          description: "Please connect your wallet or login as admin to create stories",
-          variant: "destructive",
+          title: 'Access Denied',
+          description:
+            'Please connect your wallet or login as admin to create stories',
+          variant: 'destructive',
         });
         router.push('/');
         return;
       }
-      
       // Try to load story creation data from localStorage
       try {
-        console.log("Checking for storyCreationData in localStorage");
+        console.log('Checking for storyCreationData in localStorage');
         const savedData = localStorage.getItem('storyCreationData');
-        
+
         if (!savedData) {
-          console.warn("No storyCreationData found in localStorage");
+          console.warn('No storyCreationData found in localStorage');
           setIsValidEntry(false);
           toast({
-            title: "Invalid Navigation",
-            description: "Please start from the create button to set up your story properly",
-            variant: "destructive",
+            title: 'Invalid Navigation',
+            description:
+              'Please start from the create button to set up your story properly',
+            variant: 'destructive',
           });
           setIsLoading(false);
           return;
         }
-        
         // Parse and validate data
         const parsedData = JSON.parse(savedData);
-        console.log("Found storyCreationData:", parsedData);
-        
+        console.log('Found storyCreationData:', parsedData);
+
         // Check timestamp validity
         const now = new Date().getTime();
         const createdAt = parsedData.timestamp || 0;
-        const isValid = (now - createdAt) < 30 * 60 * 1000; // 30 minutes
-        
+        const isValid = now - createdAt < 30 * 60 * 1000; // 30 minutes
+
         if (!isValid) {
-          console.warn("storyCreationData timestamp is expired");
+          console.warn('storyCreationData timestamp is expired');
           localStorage.removeItem('storyCreationData');
           setIsValidEntry(false);
           toast({
-            title: "Session Expired",
-            description: "Your story creation session has expired. Please start again",
-            variant: "destructive",
+            title: 'Session Expired',
+            description:
+              'Your story creation session has expired. Please start again',
+            variant: 'destructive',
           });
           setIsLoading(false);
           return;
         }
-        
         // Check for correct story type
         if (parsedData.type === 'ai') {
           console.warn("Wrong story type: 'ai', redirecting to ai-story page");
           router.push('/create/ai-story');
           return;
         }
-        
         // Valid entry, set up the form
         setStoryType(parsedData.type || 'text');
-        setStoryFormat(parsedData.format || "free");
-        
+        setStoryFormat(parsedData.format || 'free');
+
         // Initialize the genre from saved data
         if (parsedData.genre) {
-          setStoryData(prev => ({
+          setStoryData((prev) => ({
             ...prev,
-            genre: parsedData.genre
+            genre: parsedData.genre,
           }));
         }
-        
         console.log('Successfully loaded story creation data:', parsedData);
         setIsValidEntry(true);
         setIsLoading(false);
@@ -185,9 +209,10 @@ export default function CreateStoryPage() {
         console.error('Error loading story creation data:', error);
         setIsValidEntry(false);
         toast({
-          title: "Error",
-          description: "An error occurred loading your data. Please start again",
-          variant: "destructive",
+          title: 'Error',
+          description:
+            'An error occurred loading your data. Please start again',
+          variant: 'destructive',
         });
         setIsLoading(false);
       }
@@ -204,16 +229,16 @@ export default function CreateStoryPage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setStoryData(prev => ({
+    setStoryData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleGenreChange = (value: string) => {
-    setStoryData(prev => ({
+    setStoryData((prev) => ({
       ...prev,
-      genre: value
+      genre: value,
     }));
   };
 
@@ -223,10 +248,10 @@ export default function CreateStoryPage() {
       // Create preview URL
       const url = URL.createObjectURL(file);
       setPreviewUrl(url);
-      
-      setStoryData(prev => ({
+
+      setStoryData((prev) => ({
         ...prev,
-        coverImage: file
+        coverImage: file,
       }));
     }
   };
@@ -235,43 +260,48 @@ export default function CreateStoryPage() {
     try {
       // Get IPFS client when needed
       const ipfsClient = await getIpfsClient();
-      
+
       // Create a buffer from the file
       const buffer = await file.arrayBuffer();
       const added = await ipfsClient.add(new Uint8Array(buffer));
       return added.path;
     } catch (error: any) {
       console.error('Error uploading to IPFS:', error);
-      
+
       // Handle specific error types
       if (error.name === 'IpfsConfigError') {
         toast({
-          title: "IPFS Configuration Error",
-          description: "Missing IPFS credentials. Please check environment variables.",
-          variant: "destructive",
+          title: 'IPFS Configuration Error',
+          description:
+            'Missing IPFS credentials. Please check environment variables.',
+          variant: 'destructive',
         });
-        throw new Error('Missing IPFS credentials. Please check environment variables.');
+        throw new Error(
+          'Missing IPFS credentials. Please check environment variables.'
+        );
       } else if (error.name === 'IpfsInitError') {
         toast({
-          title: "IPFS Connection Error",
-          description: "Failed to connect to IPFS. Please try again later.",
-          variant: "destructive",
+          title: 'IPFS Connection Error',
+          description: 'Failed to connect to IPFS. Please try again later.',
+          variant: 'destructive',
         });
         throw new Error('Failed to connect to IPFS. Please try again later.');
       } else if (error.message.includes('timeout')) {
         toast({
-          title: "IPFS Timeout",
-          description: "Upload to IPFS timed out. Please try again with a smaller file.",
-          variant: "destructive",
+          title: 'IPFS Timeout',
+          description:
+            'Upload to IPFS timed out. Please try again with a smaller file.',
+          variant: 'destructive',
         });
-        throw new Error('Upload to IPFS timed out. Please try again with a smaller file.');
+        throw new Error(
+          'Upload to IPFS timed out. Please try again with a smaller file.'
+        );
       }
-      
       // Generic error
       toast({
-        title: "Upload Failed",
-        description: "Failed to upload to IPFS. Please try again later.",
-        variant: "destructive",
+        title: 'Upload Failed',
+        description: 'Failed to upload to IPFS. Please try again later.',
+        variant: 'destructive',
       });
       throw new Error('Failed to upload to IPFS. Please try again later.');
     }
@@ -283,12 +313,12 @@ export default function CreateStoryPage() {
       // 1. Deploy NFT contract if not already deployed
       // 2. Mint NFT with metadata
       // 3. Return NFT contract address and token ID
-      
+
       // For now, we'll simulate the NFT creation
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       return {
-        contractAddress: "0x...",
-        tokenId: "1"
+        contractAddress: '0x...',
+        tokenId: '1',
       };
     } catch (error) {
       console.error('Error creating NFT:', error);
@@ -300,8 +330,8 @@ export default function CreateStoryPage() {
     try {
       // Here you would save the story data to your backend
       // For now, we'll simulate the database save
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // In production, you would make an API call:
       // await fetch('/api/stories', {
       //   method: 'POST',
@@ -322,11 +352,11 @@ export default function CreateStoryPage() {
       if (!storyData.title || !storyData.content || !storyData.genre) {
         throw new Error('Please fill in all required fields');
       }
-
       // Show progress toast
       toast({
-        title: storyFormat === 'nft' ? "Creating NFT Story" : "Publishing Story",
-        description: "Preparing your content...",
+        title:
+          storyFormat === 'nft' ? 'Creating NFT Story' : 'Publishing Story',
+        description: 'Preparing your content...',
       });
 
       // Create story metadata
@@ -345,10 +375,10 @@ export default function CreateStoryPage() {
       let coverImageHash = '';
       if (storyData.coverImage) {
         toast({
-          title: "Processing",
-          description: "Uploading cover image to IPFS...",
+          title: 'Processing',
+          description: 'Uploading cover image to IPFS...',
         });
-        
+
         try {
           coverImageHash = await uploadToIPFS(storyData.coverImage);
           metadata.coverImage = coverImageHash;
@@ -356,97 +386,101 @@ export default function CreateStoryPage() {
           console.error('Cover image upload failed:', error);
           // Continue without cover image if upload fails
           toast({
-            title: "Warning",
-            description: "Failed to upload cover image. Continuing without it.",
-            variant: "destructive",
+            title: 'Warning',
+            description: 'Failed to upload cover image. Continuing without it.',
+            variant: 'destructive',
           });
         }
       }
-
       // Upload story content to IPFS
       toast({
-        title: "Processing",
-        description: "Uploading story content to IPFS...",
+        title: 'Processing',
+        description: 'Uploading story content to IPFS...',
       });
-      
-      const contentBlob = new Blob([JSON.stringify(metadata)], { type: 'application/json' });
+
+      const contentBlob = new Blob([JSON.stringify(metadata)], {
+        type: 'application/json',
+      });
       const contentFile = new File([contentBlob], 'story.json');
       const contentHash = await uploadToIPFS(contentFile);
       metadata.ipfsHash = contentHash;
 
       // Final destination paths
-      let redirectPath = storyFormat === 'nft' 
-        ? `/nft-gallery/${contentHash}` 
-        : `/stories/${contentHash}`;
+      const redirectPath =
+        storyFormat === 'nft'
+          ? `/nft-gallery/${contentHash}`
+          : `/stories/${contentHash}`;
 
       // Handle based on story format
       if (storyFormat === 'nft') {
         // Create NFT for NFT stories
         toast({
-          title: "Processing",
-          description: "Creating NFT on blockchain...",
+          title: 'Processing',
+          description: 'Creating NFT on blockchain...',
         });
-        
+
         const nftData = await createStoryNFT(metadata);
-        
+
         // Save to database
         await saveToDatabase(metadata, nftData);
-        
+
         toast({
-          title: "NFT Created!",
-          description: "Your story has been successfully published and minted as an NFT.",
+          title: 'NFT Created!',
+          description:
+            'Your story has been successfully published and minted as an NFT.',
         });
       } else {
         // For free stories, just save to database
         toast({
-          title: "Processing",
-          description: "Saving your story...",
+          title: 'Processing',
+          description: 'Saving your story...',
         });
-        
+
         await saveToDatabase(metadata, null);
-        
+
         toast({
-          title: "Story Published!",
-          description: "Your story has been successfully published.",
+          title: 'Story Published!',
+          description: 'Your story has been successfully published.',
         });
       }
-      
       // Clear story creation data from localStorage after successful submission
       localStorage.removeItem('storyCreationData');
-      
+
       // Finally, perform the redirect with a slight delay to allow toasts to be seen
       setTimeout(() => {
-        console.log("Redirecting to:", redirectPath);
-        
+        console.log('Redirecting to:', redirectPath);
+
         try {
           // Try Next.js router first (CSR)
           router.push(redirectPath);
         } catch (navError) {
-          console.error("Navigation error:", navError);
+          console.error('Navigation error:', navError);
           // Fallback to direct location change
           window.location.href = redirectPath;
         }
       }, 300);
-      
     } catch (error: any) {
       console.error('Error creating story:', error);
-      
-      let errorMessage = error.message || "Failed to create story. Please try again.";
-      let errorTitle = "Error";
-      
+
+      const errorMessage =
+        error.message || 'Failed to create story. Please try again.';
+      let errorTitle = 'Error';
+
       // Provide more specific error messages based on the error type
       if (errorMessage.includes('IPFS')) {
-        errorTitle = "Storage Error";
-      } else if (errorMessage.includes('NFT') || errorMessage.includes('blockchain')) {
-        errorTitle = "NFT Creation Error";
+        errorTitle = 'Storage Error';
+      } else if (
+        errorMessage.includes('NFT') ||
+        errorMessage.includes('blockchain')
+      ) {
+        errorTitle = 'NFT Creation Error';
       } else if (errorMessage.includes('database')) {
-        errorTitle = "Database Error";
+        errorTitle = 'Database Error';
       }
-      
       toast({
         title: errorTitle,
         description: errorMessage,
-        variant: "destructive",
+        variant: 'destructive',
       });
     } finally {
       setIsSubmitting(false);
@@ -459,10 +493,11 @@ export default function CreateStoryPage() {
         <div className="max-w-md mx-auto p-8 border rounded-lg bg-muted/20">
           <h1 className="text-2xl font-bold mb-4">Invalid Navigation</h1>
           <p className="mb-6 text-muted-foreground">
-            Please start from the home page and use the Create Story button to properly set up your story.
+            Please start from the home page and use the Create Story button to
+            properly set up your story.
           </p>
-          <Button 
-            onClick={handleGoBack} 
+          <Button
+            onClick={handleGoBack}
             className="theme-gradient-bg"
             type="button"
           >
@@ -473,7 +508,6 @@ export default function CreateStoryPage() {
       </div>
     );
   }
-
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -481,7 +515,6 @@ export default function CreateStoryPage() {
       </div>
     );
   }
-
   return (
     <div className="min-h-screen py-12">
       <div className="container mx-auto px-4 max-w-4xl">
@@ -493,12 +526,16 @@ export default function CreateStoryPage() {
               </div>
               <div>
                 <CardTitle>
-                  Create Your {storyType ? `${storyType.charAt(0).toUpperCase() + storyType.slice(1)} ` : ''}Story
+                  Create Your{' '}
+                  {storyType
+                    ? `${storyType.charAt(0).toUpperCase() + storyType.slice(1)} `
+                    : ''}
+                  Story
                   {storyFormat === 'nft' && ' NFT'}
                 </CardTitle>
                 <CardDescription>
-                  {storyFormat === 'nft' 
-                    ? 'Create a digital collectible story NFT on the blockchain' 
+                  {storyFormat === 'nft'
+                    ? 'Create a digital collectible story NFT on the blockchain'
                     : 'Share your creativity with the world'}
                 </CardDescription>
               </div>
@@ -524,7 +561,11 @@ export default function CreateStoryPage() {
                 <label htmlFor="genre" className="text-sm font-medium">
                   Genre
                 </label>
-                <Select onValueChange={handleGenreChange} value={storyData.genre} defaultValue={storyData.genre}>
+                <Select
+                  onValueChange={handleGenreChange}
+                  value={storyData.genre}
+                  defaultValue={storyData.genre}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select a genre" />
                   </SelectTrigger>
@@ -578,7 +619,9 @@ export default function CreateStoryPage() {
                   <Button
                     type="button"
                     variant="outline"
-                    onClick={() => document.getElementById('coverImage')?.click()}
+                    onClick={() =>
+                      document.getElementById('coverImage')?.click()
+                    }
                   >
                     <ImageIcon className="h-4 w-4 mr-2" />
                     Choose Image
@@ -614,16 +657,27 @@ export default function CreateStoryPage() {
                   Story Creation Process
                 </h3>
                 <ol className="space-y-2 text-sm text-muted-foreground">
-                  <li>1. Your story content will be uploaded to IPFS for permanent storage</li>
+                  <li>
+                    1. Your story content will be uploaded to IPFS for permanent
+                    storage
+                  </li>
                   {storyFormat === 'nft' ? (
                     <>
-                      <li>2. A unique NFT will be created with your story metadata</li>
-                      <li>3. You'll be able to manage and sell your story NFT from your profile</li>
+                      <li>
+                        2. A unique NFT will be created with your story metadata
+                      </li>
+                      <li>
+                        3. You'll be able to manage and sell your story NFT from
+                        your profile
+                      </li>
                     </>
                   ) : (
                     <>
                       <li>2. Your story will be stored in our database</li>
-                      <li>3. Readers can view and interact with your story for free</li>
+                      <li>
+                        3. Readers can view and interact with your story for
+                        free
+                      </li>
                     </>
                   )}
                 </ol>
@@ -648,7 +702,9 @@ export default function CreateStoryPage() {
                   ) : (
                     <>
                       <Sparkles className="h-4 w-4 mr-2" />
-                      {storyFormat === 'nft' ? 'Create & Mint NFT' : 'Publish Story'}
+                      {storyFormat === 'nft'
+                        ? 'Create & Mint NFT'
+                        : 'Publish Story'}
                     </>
                   )}
                 </Button>

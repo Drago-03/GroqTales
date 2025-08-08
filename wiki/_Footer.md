@@ -16,4 +16,5 @@ GroqTales is an AI-powered Web3 storytelling platform that enables users to crea
 - [Terms of Service](../TERMS_OF_SERVICE.md) | [Privacy Policy](../PRIVACY.md) | [Cookie Policy](../COOKIE_POLICY.md)
 
 ---
-*© 2025 GroqTales. @Indie Hub - All rights reserved. Built with ❤️ for storytellers and creators.* 
+
+_© 2025 GroqTales. @Indie Hub - All rights reserved. Built with ❤️ for storytellers and creators._

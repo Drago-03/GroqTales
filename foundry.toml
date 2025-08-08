@@ -17,4 +17,4 @@
 
 [etherscan]
   # Placeholder for Monad block explorer API key - to be updated when available
-  monad_testnet = { key = '${MONAD_API_KEY}' } 
+  monad_testnet = { key = '${MONAD_API_KEY}' }

@@ -10,16 +10,19 @@ config({ path: resolve(process.cwd(), '.env.local') });
 async function setupDatabase() {
   try {
     console.log('Starting database setup...');
-    console.log('Using MongoDB URI:', process.env.MONGODB_URI?.replace(/:[^:@]*@/, ':****@'));
-    
+    console.log(
+      'Using MongoDB URI:',
+      process.env.MONGODB_URI?.replace(/:[^:@]*@/, ':****@')
+    );
+
     // Test connection first
     console.log('\n1. Testing database connection...');
     await testConnection();
-    
+
     // Initialize database
     console.log('\n2. Initializing database...');
     await initializeDatabase();
-    
+
     console.log('\nDatabase setup completed successfully!');
     process.exit(0);
   } catch (error) {
@@ -28,4 +31,4 @@ async function setupDatabase() {
   }
 }
 
-setupDatabase(); 
+setupDatabase();

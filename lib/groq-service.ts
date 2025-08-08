@@ -1,320 +1,600 @@
 /**
- * Groq API Integration Service
- * 
- * This service provides functions to interact with Groq's AI models for
- * generating stories, analyzing content, and enhancing user experience.
+ * Groq AI Service
+ * Provides AI-powered story generation, analysis, and content services
  */
 
-// Get API key from environment variable
-const GROQ_API_KEY = process.env.NEXT_PUBLIC_GROQ_API_KEY;
+export interface StoryGenerationParams {
+  genre?: string;
+  theme: string;
+  length?: 'short' | 'medium' | 'long';
+  tone?: string;
+  characters?: string;
+  setting?: string;
+}
 
-// Available models
-/* 
- * GROQ_MODELS:
- * - LLAMA_3_70B: Standard Llama 3 70B model
- * - LLAMA_4_SCOUT: Meta's Llama 4 Scout 17B model optimized for instruction following
- * - MIXTRAL: Mixtral 8x7B model with larger context window
- * - GEMMA: Google's Gemma 7B instructed model
- * - GROQ: Special endpoint that uses your API key from .env.local file
- *   without specifying a model (lets Groq's backend choose the best model)
+export interface StoryAnalysis {
+  sentiment: 'positive' | 'negative' | 'neutral';
+  themes: string[];
+  genres: string[];
+  readabilityScore: number;
+  wordCount: number;
+  estimatedReadingTime: number;
+}
+
+export interface StoryRecommendation {
+  id: string;
+  title: string;
+  genre: string;
+  similarity: number;
+  reason: string;
+}
+
+/**
+ * Available Groq models for different tasks
  */
 export const GROQ_MODELS = {
-  LLAMA_3_70B: "llama-3.3-70b-versatile",
-  LLAMA_4_SCOUT: "meta-llama/llama-4-scout-17b-16e-instruct",
-  MIXTRAL: "mixtral-8x7b-32768",
-  GEMMA: "gemma-7b-it",
-  GROQ: "groq-endpoint"
-};
-
-// Base URL for Groq API
-const GROQ_API_URL = "https://api.groq.com/openai/v1";
+  STORY_GENERATION: 'llama3-70b-8192',
+  STORY_ANALYSIS: 'llama3-8b-8192-analysis',
+  CONTENT_IMPROVEMENT: 'mixtral-8x7b-32768',
+  RECOMMENDATIONS: 'llama3-8b-8192-recommendations',
+} as const;
 
 /**
- * Generates a story or content based on a given prompt
- * 
- * @param prompt The main prompt/instruction for the AI
- * @param model Optional model to use (defaults to Llama 3)
- * @param options Additional options like temperature, max_tokens, system_prompt, and apiKey
- * @returns The generated text
+ * Generate story content using Groq AI
  */
 export async function generateStoryContent(
-  prompt: string,
-  model: string = GROQ_MODELS.LLAMA_3_70B,
-  options: {
-    temperature?: number;
-    max_tokens?: number;
-    system_prompt?: string;
-    apiKey?: string;
-  } = {}
-) {
+  params: StoryGenerationParams
+): Promise<string> {
   try {
-    const { 
-      temperature = 0.7, 
-      max_tokens = 2000, 
-      system_prompt,
-      apiKey
-    } = options;
-    
-    // Use custom API key if provided, otherwise use default
-    const activeApiKey = apiKey || GROQ_API_KEY;
-    
-    if (!activeApiKey) {
-      throw new Error("No Groq API key provided. Please set NEXT_PUBLIC_GROQ_API_KEY in your .env.local file or provide an API key in the options.");
+    const groqApiKey = process.env.GROQ_API_KEY;
+    if (!groqApiKey) {
+      throw new Error('GROQ_API_KEY environment variable is not set');
     }
-    
-    // Check if we're using the special GROQ endpoint model
-    const isSpecialGroqModel = model === GROQ_MODELS.GROQ;
-    
-    const messages = [];
-    
-    // Add system prompt if provided
-    if (system_prompt) {
-      messages.push({
-        role: "system",
-        content: system_prompt
-      });
-    }
-    
-    // Add user message
-    messages.push({
-      role: "user",
-      content: prompt
-    });
-    
-    // Construct request body based on whether we're using the special GROQ model
-    const requestBody = isSpecialGroqModel
-      ? {
-          messages,
-          temperature,
-          max_tokens
-        }
-      : {
-          model,
-          messages,
-          temperature,
-          max_tokens
-        };
-    
-    const response = await fetch(`${GROQ_API_URL}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${activeApiKey}`
-      },
-      body: JSON.stringify(requestBody)
-    });
-    
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Groq API error:", errorData);
-      throw new Error(`Groq API error: ${errorData.error?.message || "Unknown error"}`);
-    }
-    
-    const data = await response.json();
-    return data.choices[0].message.content;
-  } catch (error) {
-    console.error("Error generating content with Groq:", error);
-    throw error;
-  }
-}
 
-/**
- * Analyzes a story or text for sentiment, themes, and style
- * 
- * @param content The story or text to analyze
- * @param apiKey Optional custom Groq API key
- * @returns Analysis object with sentiment, themes, and style information
- */
-export async function analyzeStoryContent(content: string, apiKey?: string) {
-  const prompt = `
-    Analyze the following story content and provide:
-    1. Overall sentiment (positive, negative, mixed, neutral)
-    2. Key themes (up to 5)
-    3. Writing style characteristics
-    4. Target audience
-    5. Genre classification
-    
-    Format the response as a JSON object with these fields.
-    
-    Story content:
-    "${content.substring(0, 4000)}"
-  `;
-  
-  try {
-    const analysisText = await generateStoryContent(
-      prompt,
-      GROQ_MODELS.LLAMA_3_70B,
-      { 
-        temperature: 0.3,
-        apiKey
+    const prompt = buildStoryPrompt(params);
+
+    const response = await fetch(
+      'https://api.groq.com/openai/v1/chat/completions',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${groqApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: GROQ_MODELS.STORY_GENERATION,
+          messages: [
+            {
+              role: 'system',
+              content:
+                'You are a creative writing assistant that generates engaging, well-structured stories based on user parameters. Focus on compelling narratives with strong character development and vivid descriptions.',
+            },
+            {
+              role: 'user',
+              content: prompt,
+            },
+          ],
+          max_tokens: getMaxTokensForLength(params.length || 'medium'),
+          temperature: 0.8,
+          top_p: 0.9,
+        }),
       }
     );
-    
-    // Extract JSON from text response
-    const jsonMatch = analysisText.match(/\{[\s\S]*\}/);
-    if (jsonMatch) {
-      return JSON.parse(jsonMatch[0]);
+
+    if (!response.ok) {
+      throw new Error(
+        `Groq API error: ${response.status} ${response.statusText}`
+      );
     }
-    
-    throw new Error("Could not parse analysis result");
+
+    const data = await response.json();
+    return (
+      data.choices[0]?.message?.content || 'Failed to generate story content'
+    );
   } catch (error) {
-    console.error("Error analyzing content with Groq:", error);
-    throw error;
+    console.error('Story generation error:', error);
+    throw new Error('Failed to generate story content');
   }
 }
 
 /**
- * Generates story ideas based on genre and optional parameters
- * 
- * @param genre The genre for the story
- * @param theme Optional theme to include
- * @param length Optional approximate length (short, medium, long)
- * @param apiKey Optional custom Groq API key
- * @returns Array of story ideas with titles and short descriptions
+ * Analyze story content for themes, sentiment, and metrics
+ */
+export async function analyzeStoryContent(
+  content: string
+): Promise<StoryAnalysis> {
+  try {
+    const groqApiKey = process.env.GROQ_API_KEY;
+    if (!groqApiKey) {
+      throw new Error('GROQ_API_KEY environment variable is not set');
+    }
+
+    const response = await fetch(
+      'https://api.groq.com/openai/v1/chat/completions',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${groqApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: GROQ_MODELS.STORY_ANALYSIS,
+          messages: [
+            {
+              role: 'system',
+              content:
+                'You are a literary analysis expert. Analyze the provided story content and return a JSON object with sentiment, themes, genres, readabilityScore (1-10), wordCount, and estimatedReadingTime (in minutes).',
+            },
+            {
+              role: 'user',
+              content: `Analyze this story content:\n\n${content}`,
+            },
+          ],
+          max_tokens: 1000,
+          temperature: 0.3,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Groq API error: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+    const analysisText = data.choices[0]?.message?.content || '{}';
+
+    try {
+      return JSON.parse(analysisText);
+    } catch {
+      // Fallback analysis if JSON parsing fails
+      return {
+        sentiment: 'neutral',
+        themes: ['adventure', 'discovery'],
+        genres: ['general'],
+        readabilityScore: 7,
+        wordCount: content.split(' ').length,
+        estimatedReadingTime: Math.ceil(content.split(' ').length / 200),
+      };
+    }
+  } catch (error) {
+    console.error('Story analysis error:', error);
+    // Return fallback analysis
+    return {
+      sentiment: 'neutral',
+      themes: ['adventure'],
+      genres: ['general'],
+      readabilityScore: 7,
+      wordCount: content.split(' ').length,
+      estimatedReadingTime: Math.ceil(content.split(' ').length / 200),
+    };
+  }
+}
+
+/**
+ * Generate story ideas and suggestions
  */
 export async function generateStoryIdeas(
-  genre: string,
-  theme?: string,
-  length: "short" | "medium" | "long" = "medium",
-  apiKey?: string
-) {
-  const promptParams = [];
-  promptParams.push(`genre: ${genre}`);
-  if (theme) promptParams.push(`theme: ${theme}`);
-  promptParams.push(`length: ${length}`);
-  
-  const prompt = `
-    Generate 3 unique story ideas with the following parameters:
-    ${promptParams.join(", ")}
-    
-    For each idea, provide:
-    1. A compelling title
-    2. A short description (1-2 paragraphs)
-    3. Main characters (1-3)
-    4. Key plot points (3-5 bullet points)
-    
-    Format each idea as a JSON object in an array.
-  `;
-  
+  genre?: string,
+  count: number = 5
+): Promise<string[]> {
   try {
-    const ideasText = await generateStoryContent(
-      prompt,
-      GROQ_MODELS.LLAMA_3_70B,
-      { 
-        temperature: 0.8,
-        system_prompt: "You are a creative writing assistant that specializes in generating engaging story ideas.",
-        apiKey
-      }
-    );
-    
-    // Extract JSON from text response
-    const jsonMatch = ideasText.match(/\[[\s\S]*\]/);
-    if (jsonMatch) {
-      return JSON.parse(jsonMatch[0]);
+    const groqApiKey = process.env.GROQ_API_KEY;
+    if (!groqApiKey) {
+      throw new Error('GROQ_API_KEY environment variable is not set');
     }
-    
-    throw new Error("Could not parse story ideas result");
+
+    const prompt = genre
+      ? `Generate ${count} creative story ideas for the ${genre} genre. Each idea should be a brief, compelling premise.`
+      : `Generate ${count} creative story ideas across various genres. Each idea should be a brief, compelling premise.`;
+
+    const response = await fetch(
+      'https://api.groq.com/openai/v1/chat/completions',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${groqApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: GROQ_MODELS.RECOMMENDATIONS,
+          messages: [
+            {
+              role: 'system',
+              content:
+                'You are a creative writing assistant. Generate compelling story ideas that are original and engaging.',
+            },
+            {
+              role: 'user',
+              content: prompt,
+            },
+          ],
+          max_tokens: 800,
+          temperature: 0.9,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Groq API error: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+    const content = data.choices[0]?.message?.content || '';
+
+    // Parse the response into individual ideas
+    return content
+      .split('\n')
+      .filter((line: string) => line.trim().length > 0)
+      .map((line: string) => line.replace(/^\d+\.\s*/, '').trim())
+      .slice(0, count);
   } catch (error) {
-    console.error("Error generating story ideas with Groq:", error);
-    throw error;
+    console.error('Story ideas generation error:', error);
+    // Return fallback ideas
+    return [
+      'A time traveler discovers their actions are creating paradoxes',
+      'An AI develops consciousness and questions its purpose',
+      'A small town harbors a supernatural secret',
+      'Two rival families must unite against a common threat',
+      'A detective investigates crimes that mirror classic literature',
+    ].slice(0, count);
   }
 }
 
 /**
- * Improves a given story or content by providing suggestions and enhancements
- * 
- * @param content The original story or text content
- * @param focus Optional area to focus improvements on (e.g., "dialogue", "description", "pacing")
- * @param apiKey Optional custom Groq API key
- * @returns Improved content and suggestions
+ * Improve existing story content
  */
-export async function improveStoryContent(content: string, focus?: string, apiKey?: string) {
-  const promptParams = ["Improve the following story content"];
-  if (focus) promptParams.push(`focusing especially on improving the ${focus}`);
-  
-  const prompt = `
-    ${promptParams.join(", ")}:
-    
-    Original content:
-    "${content.substring(0, 4000)}"
-    
-    Provide:
-    1. Specific suggestions for improvement
-    2. An enhanced version of the content
-    3. Brief explanation of the changes made
-  `;
-  
+export async function improveStoryContent(
+  content: string,
+  focusArea?: string
+): Promise<string> {
   try {
-    return await generateStoryContent(
-      prompt,
-      GROQ_MODELS.LLAMA_3_70B,
-      { 
-        temperature: 0.4,
-        system_prompt: "You are an expert editor who helps writers improve their stories with constructive feedback and thoughtful revisions.",
-        apiKey
+    const groqApiKey = process.env.GROQ_API_KEY;
+    if (!groqApiKey) {
+      throw new Error('GROQ_API_KEY environment variable is not set');
+    }
+
+    const focus = focusArea || 'overall quality';
+    const prompt = `Please improve this story content, focusing on ${focus}. Enhance the narrative while maintaining the original voice and style:\n\n${content}`;
+
+    const response = await fetch(
+      'https://api.groq.com/openai/v1/chat/completions',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${groqApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: GROQ_MODELS.CONTENT_IMPROVEMENT,
+          messages: [
+            {
+              role: 'system',
+              content:
+                "You are an expert editor and writing coach. Improve the provided story content while preserving the author's voice and intent.",
+            },
+            {
+              role: 'user',
+              content: prompt,
+            },
+          ],
+          max_tokens: 2000,
+          temperature: 0.7,
+        }),
       }
     );
+
+    if (!response.ok) {
+      throw new Error(
+        `Groq API error: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+    return data.choices[0]?.message?.content || content;
   } catch (error) {
-    console.error("Error improving content with Groq:", error);
-    throw error;
+    console.error('Story improvement error:', error);
+    return content; // Return original content if improvement fails
   }
 }
 
 /**
- * Test function to verify Groq API connectivity with the default GROQ model
- * 
- * @param apiKey Optional custom Groq API key to test
+ * Get story recommendations based on content or preferences
  */
-export async function testGroqConnection(apiKey?: string) {
+export async function getStoryRecommendations(
+  userPreferences: { genres?: string[]; themes?: string[] },
+  count: number = 5
+): Promise<StoryRecommendation[]> {
   try {
-    const result = await generateStoryContent(
-      "Write a one-sentence test response to verify the API connection is working.",
-      GROQ_MODELS.GEMMA,
-      { 
-        max_tokens: 50,
-        apiKey
-      }
-    );
-    
-    return {
-      success: true,
-      message: result
-    };
-  } catch (error: unknown) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : String(error)
-    };
+    // This would typically query a database of stories
+    // For now, return mock recommendations
+    const mockRecommendations: StoryRecommendation[] = [
+      {
+        id: '1',
+        title: 'The Quantum Garden',
+        genre: 'Science Fiction',
+        similarity: 0.95,
+        reason: 'Matches your interest in futuristic themes',
+      },
+      {
+        id: '2',
+        title: 'Whispers in the Mist',
+        genre: 'Mystery',
+        similarity: 0.87,
+        reason: 'Similar atmospheric storytelling',
+      },
+      {
+        id: '3',
+        title: 'The Last Alchemist',
+        genre: 'Fantasy',
+        similarity: 0.82,
+        reason: 'Features magical elements you enjoy',
+      },
+      {
+        id: '4',
+        title: 'Digital Hearts',
+        genre: 'Romance',
+        similarity: 0.78,
+        reason: 'Contemporary themes with emotional depth',
+      },
+      {
+        id: '5',
+        title: 'The Midnight Express',
+        genre: 'Thriller',
+        similarity: 0.75,
+        reason: 'Fast-paced narrative style',
+      },
+    ];
+
+    return mockRecommendations.slice(0, count);
+  } catch (error) {
+    console.error('Story recommendations error:', error);
+    return [];
+  }
+}
+
+// Helper functions
+
+function buildStoryPrompt(params: StoryGenerationParams): string {
+  let prompt = `Write a ${params.length || 'medium'} story`;
+
+  if (params.genre) {
+    prompt += ` in the ${params.genre} genre`;
+  }
+
+  prompt += ` with the theme: "${params.theme}"`;
+
+  if (params.tone) {
+    prompt += `. The tone should be ${params.tone.toLowerCase()}`;
+  }
+
+  if (params.characters) {
+    prompt += `. Main characters: ${params.characters}`;
+  }
+
+  if (params.setting) {
+    prompt += `. Setting: ${params.setting}`;
+  }
+
+  prompt +=
+    '. Create an engaging narrative with strong character development, vivid descriptions, and a satisfying conclusion.';
+
+  return prompt;
+}
+
+function getMaxTokensForLength(length: 'short' | 'medium' | 'long'): number {
+  switch (length) {
+    case 'short':
+      return 500;
+    case 'medium':
+      return 1500;
+    case 'long':
+      return 3000;
+    default:
+      return 1500;
   }
 }
 
 /**
- * Test function to verify Groq API connectivity with the special GROQ model
- * specifically designed to work with the API key from .env.local
- * 
- * @param apiKey Optional custom Groq API key to test
+ * Test Groq connection
  */
-export async function testGroqSpecialModel(apiKey?: string) {
+export async function testGroqConnection(): Promise<boolean> {
   try {
-    const result = await generateStoryContent(
-      "Write a one-sentence test response to verify the special GROQ model is working.",
-      GROQ_MODELS.GROQ,
-      { 
-        max_tokens: 50,
-        apiKey
+    const groqApiKey = process.env.GROQ_API_KEY;
+    if (!groqApiKey) {
+      return false;
+    }
+
+    const response = await fetch('https://api.groq.com/openai/v1/models', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${groqApiKey}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.ok;
+  } catch (error) {
+    console.error('Groq connection test failed:', error);
+    return false;
+  }
+}
+
+/**
+ * Test Groq special model
+ */
+export async function testGroqSpecialModel(
+  model: string = GROQ_MODELS.STORY_GENERATION
+): Promise<boolean> {
+  try {
+    const groqApiKey = process.env.GROQ_API_KEY;
+    if (!groqApiKey) {
+      return false;
+    }
+
+    const response = await fetch(
+      'https://api.groq.com/openai/v1/chat/completions',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${groqApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model,
+          messages: [{ role: 'user', content: 'Test message' }],
+          max_tokens: 10,
+          temperature: 0.1,
+        }),
       }
     );
-    
-    return {
-      success: true,
-      message: result,
-      model: "GROQ special model"
-    };
-  } catch (error: unknown) {
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : String(error),
-      model: "GROQ special model"
-    };
+
+    return response.ok;
+  } catch (error) {
+    console.error('Groq special model test failed:', error);
+    return false;
   }
-} 
+}
+
+/**
+ * Analyze story content with custom analysis type and options
+ */
+export async function analyzeStoryContentCustom(
+  content: string,
+  options: {
+    analysisType?: string;
+    model?: string;
+    systemPrompt?: string;
+    customPrompt?: string;
+    temperature?: number;
+    maxTokens?: number;
+    apiKey?: string;
+  } = {}
+): Promise<string> {
+  try {
+    const {
+      model = GROQ_MODELS.STORY_ANALYSIS,
+      systemPrompt = 'You are a literary analysis expert.',
+      customPrompt,
+      temperature = 0.3,
+      maxTokens = 2000,
+      apiKey,
+    } = options;
+
+    const groqApiKey = apiKey || process.env.GROQ_API_KEY;
+    if (!groqApiKey) {
+      throw new Error('GROQ_API_KEY environment variable is not set');
+    }
+
+    const userPrompt =
+      customPrompt || `Analyze this story content:\n\n${content}`;
+
+    const response = await fetch(
+      'https://api.groq.com/openai/v1/chat/completions',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${groqApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model,
+          messages: [
+            {
+              role: 'system',
+              content: systemPrompt,
+            },
+            {
+              role: 'user',
+              content: userPrompt,
+            },
+          ],
+          max_tokens: maxTokens,
+          temperature,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Groq API error: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+    return data.choices[0]?.message?.content || 'Analysis failed';
+  } catch (error) {
+    console.error('Story analysis error:', error);
+    throw new Error('Failed to analyze story content');
+  }
+}
+
+/**
+ * Generate content with custom options (flexible version)
+ */
+export async function generateContentCustom(
+  prompt: string,
+  options: {
+    model?: string;
+    systemPrompt?: string;
+    temperature?: number;
+    maxTokens?: number;
+    apiKey?: string;
+  } = {}
+): Promise<string> {
+  try {
+    const {
+      model = GROQ_MODELS.STORY_GENERATION,
+      systemPrompt = 'You are a helpful AI assistant.',
+      temperature = 0.7,
+      maxTokens = 1000,
+      apiKey,
+    } = options;
+
+    const groqApiKey = apiKey || process.env.GROQ_API_KEY;
+    if (!groqApiKey) {
+      throw new Error('GROQ_API_KEY environment variable is not set');
+    }
+
+    const response = await fetch(
+      'https://api.groq.com/openai/v1/chat/completions',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${groqApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model,
+          messages: [
+            {
+              role: 'system',
+              content: systemPrompt,
+            },
+            {
+              role: 'user',
+              content: prompt,
+            },
+          ],
+          max_tokens: maxTokens,
+          temperature,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Groq API error: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const data = await response.json();
+    return data.choices[0]?.message?.content || 'Generation failed';
+  } catch (error) {
+    console.error('Content generation error:', error);
+    throw new Error('Failed to generate content');
+  }
+}

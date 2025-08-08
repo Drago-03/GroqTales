@@ -1,7 +1,15 @@
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React from 'react';
+
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 interface CreatorCardProps {
   creator: {
@@ -12,7 +20,6 @@ interface CreatorCardProps {
     profileUrl: string;
   };
 }
-
 export function CreatorCard({ creator }: CreatorCardProps) {
   const router = useRouter();
 
@@ -21,12 +28,19 @@ export function CreatorCard({ creator }: CreatorCardProps) {
   };
 
   return (
-    <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={handleClick}>
+    <Card
+      className="cursor-pointer hover:shadow-lg transition-shadow"
+      onClick={handleClick}
+    >
       <CardHeader>
         <CardTitle>{creator.name}</CardTitle>
       </CardHeader>
       <CardContent>
-        <img src={creator.avatarUrl} alt={creator.name} className="w-24 h-24 rounded-full mb-2" />
+        <img
+          src={creator.avatarUrl}
+          alt={creator.name}
+          className="w-24 h-24 rounded-full mb-2"
+        />
         <p className="text-sm text-muted-foreground">{creator.bio}</p>
       </CardContent>
       <CardFooter>
@@ -36,4 +50,4 @@ export function CreatorCard({ creator }: CreatorCardProps) {
       </CardFooter>
     </Card>
   );
-} 
+}

@@ -1,29 +1,29 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Heart, Eye, ArrowUpRight, Star, BarChart3, ShoppingCart } from "lucide-react";
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { StoryCard } from "@/components/story-card";
-import { StoryDetailsDialog } from "@/components/story-details-dialog";
-import { useToast } from "@/components/ui/use-toast";
-import { useWeb3 } from "@/components/providers/web3-provider";
-import { StoryCommentsDialog } from "@/components/story-comments-dialog";
+  Heart,
+  Eye,
+  ShoppingCart,
+  Search,
+  Filter,
+  TrendingUp,
+  Star,
+  Palette,
+  BookOpen,
+  Users,
+} from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+import { useWeb3 } from '@/components/providers/web3-provider';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
 
 interface NFTStory {
-  id: number;
+  id: string;
   title: string;
   author: string;
   authorAvatar: string;
@@ -32,526 +32,611 @@ interface NFTStory {
   likes: number;
   views: number;
   genre: string;
-  description: string;
-  sales?: number;
   isTop10?: boolean;
+  sales?: number;
+  description: string;
+  rarity?: 'Common' | 'Rare' | 'Epic' | 'Legendary';
 }
 
-// Mock data for top NFT stories
-const topNftData: NFTStory[] = [
+const featuredNFTs: NFTStory[] = [
   {
-    id: 1,
-    title: "The Quantum Nexus",
-    author: "NeuralScribe",
-    authorAvatar: "https://api.dicebear.com/7.x/bottts/svg?seed=NeuralScribe&backgroundColor=b6e3f4",
-    coverImage: "https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?w=800&h=1200&fit=crop&q=80",
-    price: "2.5 ETH",
-    likes: 1250,
-    views: 4800,
-    genre: "sci-fi",
-    description: "A mind-bending journey through quantum realms and parallel universes.",
+    id: '1',
+    title: "The Last Dragon's Tale",
+    author: 'Elena Stormweaver',
+    authorAvatar:
+      'https://api.dicebear.com/7.x/bottts/svg?seed=Elena&backgroundColor=f3e8ff',
+    coverImage:
+      'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=1200&fit=crop&q=80',
+    price: '2.5 ETH',
+    likes: 1247,
+    views: 15420,
+    genre: 'Epic Fantasy',
+    isTop10: true,
     sales: 156,
-    isTop10: true
+    description:
+      'An epic tale of the last dragon and the young mage destined to either save or destroy the realm.',
+    rarity: 'Legendary',
   },
   {
-    id: 2,
-    title: "Ethereal Dreams",
-    author: "DigitalMuse",
-    authorAvatar: "https://api.dicebear.com/7.x/bottts/svg?seed=DigitalMuse&backgroundColor=ffd6e0",
-    coverImage: "https://images.unsplash.com/photo-1518709766631-a6a7f45921c3?w=800&h=1200&fit=crop&q=80",
-    price: "1.8 ETH",
-    likes: 980,
-    views: 3600,
-    genre: "fantasy",
-    description: "Where dreams and reality intertwine in a magical realm.",
-    sales: 134,
-    isTop10: true
-  },
-  {
-    id: 3,
-    title: "Neural Dreams",
-    author: "CyberInk",
-    authorAvatar: "https://api.dicebear.com/7.x/bottts/svg?seed=CyberInk&backgroundColor=f4b6e3",
-    coverImage: "https://images.unsplash.com/photo-1614728263952-84ea256f9679?w=800&h=1200&fit=crop&q=80",
-    price: "0.72 ETH",
-    likes: 1080,
-    views: 13500,
-    genre: "Cyberpunk",
+    id: '2',
+    title: 'Neon Shadows',
+    author: 'Marcus Cyberpunk',
+    authorAvatar:
+      'https://api.dicebear.com/7.x/bottts/svg?seed=Marcus&backgroundColor=e0f2fe',
+    coverImage:
+      'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=1200&fit=crop&q=80',
+    price: '1.8 ETH',
+    likes: 892,
+    views: 12300,
+    genre: 'Cyberpunk',
     isTop10: true,
-    sales: 109,
-    description: "In a world where dreams can be digitized, a neural architect discovers a disturbing pattern in the collective unconscious."
+    sales: 89,
+    description:
+      'A gritty cyberpunk noir set in Neo-Tokyo where memories are currency and identity is fluid.',
+    rarity: 'Epic',
   },
   {
-    id: 4,
-    title: "Echoes of Eternity",
-    author: "TimelessScribe",
-    authorAvatar: "https://api.dicebear.com/7.x/bottts/svg?seed=TimelessScribe&backgroundColor=e3f4b6",
-    coverImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&h=1200&fit=crop&q=80",
-    price: "0.65 ETH",
-    likes: 950,
-    views: 12100,
-    genre: "Historical Fantasy",
+    id: '3',
+    title: 'The Quantum Paradox',
+    author: 'Dr. Sarah Chen',
+    authorAvatar:
+      'https://api.dicebear.com/7.x/bottts/svg?seed=Sarah&backgroundColor=fef3c7',
+    coverImage:
+      'https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=800&h=1200&fit=crop&q=80',
+    price: '3.2 ETH',
+    likes: 1456,
+    views: 18750,
+    genre: 'Hard Sci-Fi',
     isTop10: true,
-    sales: 98,
-    description: "A historian discovers an ancient artifact that allows her to witness pivotal moments throughout human history."
-  },
-  {
-    id: 5,
-    title: "Synthetic Hearts",
-    author: "AIStoryweaver",
-    authorAvatar: "https://api.dicebear.com/7.x/bottts/svg?seed=AIStoryweaver&backgroundColor=b6f4c1",
-    coverImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=1200&fit=crop&q=80",
-    price: "0.62 ETH",
-    likes: 920,
-    views: 11800,
-    genre: "Sci-Fi Romance",
-    isTop10: true,
-    sales: 95,
-    description: "A love story between a human and an advanced AI that challenges the very definition of consciousness and emotion."
-  },
-  {
-    id: 6,
-    title: "Fractal Memories",
-    author: "QuantumPoet",
-    authorAvatar: "https://api.dicebear.com/7.x/bottts/svg?seed=QuantumPoet&backgroundColor=f4e3b6",
-    coverImage: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=800&h=1200&fit=crop&q=80",
-    price: "0.58 ETH",
-    likes: 880,
-    views: 10900,
-    genre: "Psychological Sci-Fi",
-    isTop10: true,
-    sales: 91,
-    description: "A scientist develops technology to explore the fractalized structure of human memory, only to become lost in his own past."
-  },
-  {
-    id: 7,
-    title: "Celestial Shadows",
-    author: "CosmicWordsmith",
-    authorAvatar: "https://api.dicebear.com/7.x/bottts/svg?seed=CosmicWordsmith&backgroundColor=c1b6f4",
-    coverImage: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=800&h=1200&fit=crop&q=80",
-    price: "0.55 ETH",
-    likes: 840,
-    views: 10200,
-    genre: "Space Opera",
-    isTop10: true,
-    sales: 87,
-    description: "An interstellar conflict between ancient civilizations with a lone diplomat trying to prevent galactic war."
-  },
-  {
-    id: 8,
-    title: "Molecular Whispers",
-    author: "BioNarrator",
-    authorAvatar: "https://api.dicebear.com/7.x/bottts/svg?seed=BioNarrator&backgroundColor=f4c1b6",
-    coverImage: "https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800&h=1200&fit=crop&q=80",
-    price: "0.51 ETH",
-    likes: 790,
-    views: 9800,
-    genre: "Biopunk",
-    isTop10: true,
-    sales: 83,
-    description: "In a world where genetic modification is commonplace, a scientist discovers that modified DNA is developing consciousness."
-  },
-  {
-    id: 9,
-    title: "Ethereal Frequencies",
-    author: "DigitalBard",
-    authorAvatar: "https://api.dicebear.com/7.x/bottts/svg?seed=DigitalBard&backgroundColor=b6f4e3",
-    coverImage: "https://images.unsplash.com/photo-1635776062127-d379bfcba9f8?w=800&h=1200&fit=crop&q=80",
-    price: "0.48 ETH",
-    likes: 760,
-    views: 9500,
-    genre: "Techno-Fantasy",
-    isTop10: true,
-    sales: 79,
-    description: "A radio operator picks up signals from a dimension where magic and technology have merged into a single force."
-  },
-  {
-    id: 10,
-    title: "Chronos Fragments",
-    author: "TemporalTales",
-    authorAvatar: "https://api.dicebear.com/7.x/bottts/svg?seed=TemporalTales&backgroundColor=e3b6f4",
-    coverImage: "https://images.unsplash.com/photo-1501139083538-0139583c060f?w=800&h=1200&fit=crop&q=80",
-    price: "0.45 ETH",
-    likes: 720,
-    views: 9200,
-    genre: "Time Fantasy",
-    isTop10: true,
-    sales: 76,
-    description: "A story told through fragmented time periods, where the protagonist must piece together reality from disjointed moments."
+    sales: 203,
+    description:
+      'A mind-bending exploration of quantum mechanics and parallel universes through the eyes of a brilliant physicist.',
+    rarity: 'Legendary',
   },
 ];
 
-function generateRemainingNfts(): NFTStory[] {
-  const backgroundImages = [
-    "photo-1635776062127-d379bfcba9f8",
-    "photo-1518709766631-a6a7f45921c3",
-    "photo-1614728263952-84ea256f9679",
-    "photo-1579547621869-0d0b7f76b3d3",
-    "photo-1639762681485-074b7f938ba0",
-    "photo-1632292220916-e9c34dd75db2",
-    "photo-1635322966219-b75ed372eb01",
-    "photo-1636819488524-a34010abe571"
+function generateAdditionalNFTs(): NFTStory[] {
+  const stableNFTs: NFTStory[] = [
+    {
+      id: 'nft-4',
+      title: 'The Crystal Prophecy',
+      author: 'Marcus Brightwater',
+      authorAvatar:
+        'https://api.dicebear.com/7.x/bottts/svg?seed=Marcus&backgroundColor=e0f2fe',
+      coverImage:
+        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=1200&fit=crop&q=80',
+      price: '1.8 ETH',
+      likes: 456,
+      views: 2340,
+      genre: 'Fantasy',
+      sales: 23,
+      description:
+        'A mystical tale of ancient prophecies and crystal magic that spans across realms.',
+      rarity: 'Epic',
+    },
+    {
+      id: 'nft-5',
+      title: 'Neon Shadows',
+      author: 'Zara Cyberpunk',
+      authorAvatar:
+        'https://api.dicebear.com/7.x/bottts/svg?seed=Zara&backgroundColor=fef3c7',
+      coverImage:
+        'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=1200&fit=crop&q=80',
+      price: '2.3 ETH',
+      likes: 789,
+      views: 4567,
+      genre: 'Sci-Fi',
+      sales: 34,
+      description:
+        'A cyberpunk thriller set in the neon-lit streets of Neo Tokyo.',
+      rarity: 'Legendary',
+    },
+    {
+      id: 'nft-6',
+      title: 'The Vanishing Act',
+      author: 'Detective Holmes',
+      authorAvatar:
+        'https://api.dicebear.com/7.x/bottts/svg?seed=Holmes&backgroundColor=f3e8ff',
+      coverImage:
+        'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&h=1200&fit=crop&q=80',
+      price: '1.5 ETH',
+      likes: 234,
+      views: 1890,
+      genre: 'Mystery',
+      sales: 12,
+      description:
+        'A gripping mystery about a magician who disappears during his greatest trick.',
+      rarity: 'Rare',
+    },
+    {
+      id: 'nft-7',
+      title: 'Hearts in Harmony',
+      author: 'Isabella Rose',
+      authorAvatar:
+        'https://api.dicebear.com/7.x/bottts/svg?seed=Isabella&backgroundColor=fce7f3',
+      coverImage:
+        'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&h=1200&fit=crop&q=80',
+      price: '1.2 ETH',
+      likes: 567,
+      views: 3210,
+      genre: 'Romance',
+      sales: 45,
+      description:
+        'A heartwarming romance between two musicians from different worlds.',
+      rarity: 'Common',
+    },
+    {
+      id: 'nft-8',
+      title: 'The Silent Stalker',
+      author: 'Victor Darkwood',
+      authorAvatar:
+        'https://api.dicebear.com/7.x/bottts/svg?seed=Victor&backgroundColor=f1f5f9',
+      coverImage:
+        'https://images.unsplash.com/photo-1520637836862-4d197d17c90a?w=800&h=1200&fit=crop&q=80',
+      price: '2.7 ETH',
+      likes: 345,
+      views: 2876,
+      genre: 'Thriller',
+      sales: 18,
+      description:
+        'A psychological thriller about a predator who hunts in complete silence.',
+      rarity: 'Epic',
+    },
+    {
+      id: 'nft-9',
+      title: 'Midnight Terrors',
+      author: 'Raven Blackthorne',
+      authorAvatar:
+        'https://api.dicebear.com/7.x/bottts/svg?seed=Raven&backgroundColor=fef2f2',
+      coverImage:
+        'https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=800&h=1200&fit=crop&q=80',
+      price: '1.9 ETH',
+      likes: 432,
+      views: 3456,
+      genre: 'Horror',
+      sales: 27,
+      description: 'A spine-chilling horror story that will haunt your dreams.',
+      rarity: 'Rare',
+    },
+    {
+      id: 'nft-10',
+      title: 'Quest for the Golden Compass',
+      author: 'Captain Adventure',
+      authorAvatar:
+        'https://api.dicebear.com/7.x/bottts/svg?seed=Captain&backgroundColor=ecfdf5',
+      coverImage:
+        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=1200&fit=crop&q=80',
+      price: '2.1 ETH',
+      likes: 678,
+      views: 4321,
+      genre: 'Adventure',
+      sales: 31,
+      description:
+        'An epic adventure across uncharted seas in search of legendary treasure.',
+      rarity: 'Legendary',
+    },
+    {
+      id: 'nft-11',
+      title: 'The Enchanted Forest',
+      author: 'Luna Moonwhisper',
+      authorAvatar:
+        'https://api.dicebear.com/7.x/bottts/svg?seed=Luna&backgroundColor=f0fdf4',
+      coverImage:
+        'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=1200&fit=crop&q=80',
+      price: '1.6 ETH',
+      likes: 523,
+      views: 2987,
+      genre: 'Fantasy',
+      sales: 19,
+      description:
+        'A magical journey through an enchanted forest filled with mystical creatures.',
+      rarity: 'Epic',
+    },
+    {
+      id: 'nft-12',
+      title: 'Digital Dreams',
+      author: 'Neo Matrix',
+      authorAvatar:
+        'https://api.dicebear.com/7.x/bottts/svg?seed=Neo&backgroundColor=eff6ff',
+      coverImage:
+        'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=1200&fit=crop&q=80',
+      price: '2.4 ETH',
+      likes: 712,
+      views: 5432,
+      genre: 'Sci-Fi',
+      sales: 42,
+      description:
+        'A futuristic tale of consciousness uploaded to the digital realm.',
+      rarity: 'Legendary',
+    },
+    {
+      id: 'nft-13',
+      title: 'The Missing Heiress',
+      author: 'Sherlock Modern',
+      authorAvatar:
+        'https://api.dicebear.com/7.x/bottts/svg?seed=Sherlock&backgroundColor=fefce8',
+      coverImage:
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=1200&fit=crop&q=80',
+      price: '1.7 ETH',
+      likes: 389,
+      views: 2654,
+      genre: 'Mystery',
+      sales: 25,
+      description:
+        'A modern mystery about a wealthy heiress who vanishes without a trace.',
+      rarity: 'Rare',
+    },
   ];
 
-  return Array.from({ length: 90 }, (_, index) => {
-    const nftIndex = index + 11;
-    const hue = (nftIndex * 137.5) % 360;
-    const seed = `NFT${nftIndex}`;
-    const sales = Math.floor(Math.random() * 100); // Random sales between 0-99
-    
-    return {
-      id: nftIndex,
-      title: `NFT Story #${nftIndex}`,
-      author: `Creator${nftIndex}`,
-      authorAvatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${seed}&backgroundColor=hsl(${hue},70%,85%)`,
-      coverImage: `https://images.unsplash.com/${backgroundImages[index % backgroundImages.length]}?w=800&h=1200&fit=crop&q=80`,
-      price: `${((Math.random() * 2) + 0.1).toFixed(2)} ETH`,
-      likes: Math.floor(Math.random() * 1000),
-      views: Math.floor(Math.random() * 5000),
-      genre: ["sci-fi", "fantasy", "cyberpunk", "mystery"][Math.floor(Math.random() * 4)],
-      description: `An engaging story #${nftIndex} in the digital realm.`,
-      sales: sales,
-      isTop10: false
-    };
-  });
+  return stableNFTs;
 }
 
-const nftData: NFTStory[] = [...topNftData, ...generateRemainingNfts()];
-
-export default function NftGalleryPage() {
-  const [imageError, setImageError] = useState<{[key: string]: boolean}>({});
-  const [activeTab, setActiveTab] = useState("trending");
-  const [selectedGenre, setSelectedGenre] = useState("all");
-  const [selectedStory, setSelectedStory] = useState<NFTStory | null>(null);
-  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
-  const [showCommentsDialog, setShowCommentsDialog] = useState(false);
-  const { account } = useWeb3();
-  const { toast } = useToast();
-
-  const handleImageError = (id: number) => {
-    setImageError(prev => ({...prev, [id]: true}));
-  };
-
-  // Filter NFTs by genre
-  const filterByGenre = (nfts: NFTStory[]) => {
-    if (selectedGenre === "all") return nfts;
-    return nfts.filter(nft => nft.genre.toLowerCase() === selectedGenre.toLowerCase());
-  };
-
-  // Sort NFTs based on active tab
-  const getSortedNFTs = () => {
-    let sortedNFTs = [...nftData];
-    
-    // First sort based on tab
-    switch (activeTab) {
-      case "bestsellers":
-        sortedNFTs.sort((a, b) => (b.sales || 0) - (a.sales || 0));
-        break;
-      case "newest":
-        sortedNFTs.sort((a, b) => b.id - a.id);
-        break;
-      case "trending":
+function NFTCard({
+  nft,
+  onLike,
+  onPurchase,
+}: {
+  nft: NFTStory;
+  onLike: (id: string) => void;
+  onPurchase: (id: string) => void;
+}) {
+  const getRarityColor = (rarity?: string) => {
+    switch (rarity) {
+      case 'Legendary':
+        return 'text-yellow-500 border-yellow-500';
+      case 'Epic':
+        return 'text-purple-500 border-purple-500';
+      case 'Rare':
+        return 'text-blue-500 border-blue-500';
       default:
-        sortedNFTs.sort((a, b) => {
-          const scoreA = a.likes + (a.views / 100);
-          const scoreB = b.likes + (b.views / 100);
-          return scoreB - scoreA;
-        });
-        break;
+        return 'text-gray-500 border-gray-500';
     }
-
-    // Then filter by genre
-    sortedNFTs = filterByGenre(sortedNFTs);
-    
-    return sortedNFTs.slice(0, 10);
-  };
-
-  const featuredNFTs = getSortedNFTs();
-
-  // Get unique genres from NFT data
-  const uniqueGenres = Array.from(new Set(nftData.map(nft => nft.genre.toLowerCase())));
-
-  const handleStoryClick = (story: NFTStory) => {
-    setSelectedStory(story);
-    setShowDetailsDialog(true);
-  };
-
-  const handlePurchase = () => {
-    if (!account) {
-      toast({
-        title: "Connect Wallet",
-        description: "Please connect your wallet to purchase this NFT",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    toast({
-      title: "Purchase Initiated",
-      description: "Starting the NFT purchase process...",
-    });
-    // Add purchase logic here
-  };
-
-  const handleComment = () => {
-    if (!selectedStory) return;
-    setShowDetailsDialog(false);
-    setShowCommentsDialog(true);
-  };
-
-  const handleLike = () => {
-    if (!account) {
-      toast({
-        title: "Connect Wallet",
-        description: "Please connect your wallet to like this story",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    toast({
-      title: "Liked!",
-      description: "You liked this story",
-    });
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">NFT Gallery</h1>
-          <p className="text-muted-foreground">Explore unique AI-generated story NFTs from our community</p>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="group"
+    >
+      <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group-hover:scale-[1.02]">
+        <div className="relative">
+          <img
+            src={nft.coverImage}
+            alt={nft.title}
+            className="w-full h-64 object-cover"
+          />
+          {nft.isTop10 && (
+            <Badge className="absolute top-2 left-2 bg-gradient-to-r from-yellow-400 to-orange-500">
+              <Star className="w-3 h-3 mr-1" />
+              Top 10
+            </Badge>
+          )}
+          {nft.rarity && (
+            <Badge
+              variant="outline"
+              className={`absolute top-2 right-2 ${getRarityColor(nft.rarity)}`}
+            >
+              {nft.rarity}
+            </Badge>
+          )}
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
         </div>
-        
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Link href="/nft-marketplace" passHref>
-            <Button className="bg-amber-600 hover:bg-amber-700 text-white flex items-center gap-2">
-              <ShoppingCart className="h-4 w-4" />
-              Go to Marketplace
+
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg line-clamp-1">{nft.title}</CardTitle>
+          <div className="flex items-center space-x-2">
+            <img
+              src={nft.authorAvatar}
+              alt={nft.author}
+              className="w-6 h-6 rounded-full"
+            />
+            <span className="text-sm text-muted-foreground">{nft.author}</span>
+          </div>
+        </CardHeader>
+
+        <CardContent className="pt-0">
+          <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+            {nft.description}
+          </p>
+
+          <div className="flex items-center justify-between mb-3">
+            <Badge variant="secondary">{nft.genre}</Badge>
+            <div className="text-lg font-bold text-primary">{nft.price}</div>
+          </div>
+
+          <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
+            <div className="flex items-center space-x-4">
+              <span className="flex items-center space-x-1">
+                <Heart className="w-4 h-4" />
+                <span>{nft.likes}</span>
+              </span>
+              <span className="flex items-center space-x-1">
+                <Eye className="w-4 h-4" />
+                <span>{nft.views}</span>
+              </span>
+              {nft.sales && (
+                <span className="flex items-center space-x-1">
+                  <ShoppingCart className="w-4 h-4" />
+                  <span>{nft.sales}</span>
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="flex space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onLike(nft.id)}
+              className="flex-1"
+            >
+              <Heart className="w-4 h-4 mr-1" />
+              Like
             </Button>
-          </Link>
+            <Button onClick={() => onPurchase(nft.id)} className="flex-1">
+              <ShoppingCart className="w-4 h-4 mr-1" />
+              Buy Now
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
+
+export default function NFTGalleryPage() {
+  const [nfts, setNfts] = useState<NFTStory[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedGenre, setSelectedGenre] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<'price' | 'likes' | 'recent'>('likes');
+  const [loading, setLoading] = useState(true);
+
+  const { toast } = useToast();
+  const { account, connected, connectWallet } = useWeb3();
+
+  useEffect(() => {
+    // Simulate loading NFTs
+    const timer = setTimeout(() => {
+      setNfts([...featuredNFTs, ...generateAdditionalNFTs()]);
+      setLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleLike = async (id: string) => {
+    if (!connected) {
+      toast({
+        title: 'Connect Wallet',
+        description: 'Please connect your wallet to like this story',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    try {
+      // Check if wallet is still connected
+      if (!account) {
+        throw new Error('Wallet disconnected');
+      }
+
+      // Simulate blockchain interaction
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      setNfts((prev) =>
+        prev.map((nft) =>
+          nft.id === id ? { ...nft, likes: nft.likes + 1 } : nft
+        )
+      );
+
+      toast({
+        title: 'Liked!',
+        description: 'You successfully liked this story',
+      });
+    } catch (error) {
+      console.error('Like error:', error);
+      toast({
+        title: 'Like Failed',
+        description:
+          error instanceof Error
+            ? error.message
+            : 'Failed to like story. Please try again.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handlePurchase = async (id: string) => {
+    if (!connected) {
+      toast({
+        title: 'Connect Wallet',
+        description: 'Please connect your wallet to purchase this NFT',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    try {
+      // Check if wallet is still connected
+      if (!account) {
+        throw new Error('Wallet disconnected');
+      }
+
+      // Find the NFT to get price info
+      const nft = nfts.find((n) => n.id === id);
+      if (!nft) {
+        throw new Error('NFT not found');
+      }
+
+      toast({
+        title: 'Purchase Initiated',
+        description: `Starting purchase of "${nft.title}" for ${nft.price}...`,
+      });
+
+      // Simulate blockchain transaction
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      // Simulate transaction success
+      toast({
+        title: 'Purchase Successful!',
+        description: `You successfully purchased "${nft.title}" for ${nft.price}`,
+      });
+
+      // Update sales count
+      setNfts((prev) =>
+        prev.map((nft) =>
+          nft.id === id ? { ...nft, sales: (nft.sales || 0) + 1 } : nft
+        )
+      );
+    } catch (error) {
+      console.error('Purchase error:', error);
+      toast({
+        title: 'Purchase Failed',
+        description:
+          error instanceof Error
+            ? error.message
+            : 'Failed to complete purchase. Please try again.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const filteredNFTs = nfts.filter((nft) => {
+    const matchesSearch =
+      nft.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      nft.author.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesGenre = selectedGenre === 'all' || nft.genre === selectedGenre;
+    return matchesSearch && matchesGenre;
+  });
+
+  const sortedNFTs = [...filteredNFTs].sort((a, b) => {
+    switch (sortBy) {
+      case 'price': {
+        // Extract numeric value from price strings (remove "ETH" and other non-numeric characters)
+        const priceA = parseFloat(a.price.replace(/[^\d.]/g, '')) || 0;
+        const priceB = parseFloat(b.price.replace(/[^\d.]/g, '')) || 0;
+        return priceB - priceA;
+      }
+      case 'likes':
+        return b.likes - a.likes;
+      case 'recent':
+        return (
+          parseInt(b.id.split('-')[1] || '0') -
+          parseInt(a.id.split('-')[1] || '0')
+        );
+      default:
+        return 0;
+    }
+  });
+
+  const genres = ['all', ...Array.from(new Set(nfts.map((nft) => nft.genre)))];
+
+  if (loading) {
+    return (
+      <div className="container mx-auto py-16">
+        <div className="flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p>Loading NFT Gallery...</p>
+          </div>
         </div>
       </div>
-      
-      <Tabs defaultValue="top10" className="w-full mb-8">
-        <TabsList>
-          <TabsTrigger value="trending">Trending</TabsTrigger>
-          <TabsTrigger value="bestsellers">Best Sellers</TabsTrigger>
-          <TabsTrigger value="newest">Newest</TabsTrigger>
-        </TabsList>
-      </Tabs>
+    );
+  }
 
-      {/* Featured Section */}
-      <div className="mb-16">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold">
-            <span className="gradient-heading">
-              {activeTab === "trending" && "Top 10 Trending"}
-              {activeTab === "bestsellers" && "Top 10 Best Sellers"}
-              {activeTab === "newest" && "10 Newest"}
-            </span>
-            {selectedGenre !== "all" && (
-              <span className="gradient-heading"> in {selectedGenre.charAt(0).toUpperCase() + selectedGenre.slice(1)}</span>
-            )}
-            {" Stories"}
-          </h2>
-          <Button variant="outline" size="sm" className="gap-1">
-            View All <ArrowUpRight className="h-4 w-4" />
-          </Button>
-        </div>
-
-        {featuredNFTs.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-            {featuredNFTs.map((nft) => (
-              <Card key={nft.id} className="bg-card border-border hover:shadow-md transition-shadow overflow-hidden">
-                <div className="relative">
-                  <div className="aspect-[3/4] bg-muted relative overflow-hidden">
-                    {imageError[nft.id] ? (
-                      <div className="absolute inset-0 flex items-center justify-center bg-muted">
-                        <span className="text-muted-foreground text-sm">{nft.title}</span>
-                      </div>
-                    ) : (
-                      <Image
-                        src={nft.coverImage}
-                        alt={nft.title}
-                        fill
-                        className="object-cover"
-                        onError={() => handleImageError(nft.id)}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60" />
-                  </div>
-                  <Badge className="absolute top-2 right-2 bg-primary text-white">
-                    #{nft.id}
-                  </Badge>
-                </div>
-                <CardHeader className="p-4 pb-0">
-                  <div className="flex items-center gap-2 mb-2">
-                    {imageError[`avatar-${nft.id}`] ? (
-                      <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center">
-                        <span className="text-xs">{nft.author[0]}</span>
-                      </div>
-                    ) : (
-                      <Image
-                        src={nft.authorAvatar}
-                        alt={nft.author}
-                        width={24}
-                        height={24}
-                        className="rounded-full bg-muted"
-                        onError={() => handleImageError(Number(`avatar-${nft.id}`))}
-                      />
-                    )}
-                    <CardTitle className="text-base truncate">{nft.title}</CardTitle>
-                  </div>
-                  <CardDescription className="truncate">by {nft.author}</CardDescription>
-                </CardHeader>
-                <CardContent className="p-4 pt-2">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                      <Star className="h-4 w-4 text-yellow-500" />
-                      <span className="text-sm">{nft.genre}</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                      <Heart className="h-3 w-3" />
-                      <span>{nft.likes}</span>
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter className="p-4 pt-0 border-t border-border flex justify-between items-center">
-                  <div className="flex items-center">
-                    <BarChart3 className="h-4 w-4 mr-1 text-primary" />
-                    <span className="text-sm font-medium">{nft.sales || 0} sales</span>
-                  </div>
-                  <Badge variant="outline" className="bg-primary/10 hover:bg-primary/20 text-primary">
-                    {nft.price}
-                  </Badge>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12 text-muted-foreground">
-            No stories found for the selected genre.
-          </div>
-        )}
+  return (
+    <div className="container mx-auto py-8 px-4">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold mb-2 flex items-center space-x-2">
+          <Palette className="h-8 w-8 text-primary" />
+          <span>NFT Story Gallery</span>
+        </h1>
+        <p className="text-muted-foreground">
+          Discover, collect, and trade unique story NFTs from talented creators
+          worldwide
+        </p>
       </div>
 
-      {/* Top 100 Ranking */}
-      <div>
-        <h2 className="text-2xl font-bold mb-6">
-          {selectedGenre === "all" ? "Top 100 NFT Stories" : `Top 100 ${selectedGenre.charAt(0).toUpperCase() + selectedGenre.slice(1)} Stories`}
-        </h2>
-        
-        <div className="overflow-auto">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-muted/50">
-                <th className="p-3 text-left font-medium">Rank</th>
-                <th className="p-3 text-left font-medium">Story</th>
-                <th className="p-3 text-left font-medium">Creator</th>
-                <th className="p-3 text-left font-medium">Genre</th>
-                <th className="p-3 text-left font-medium">Price</th>
-                <th className="p-3 text-left font-medium">Sales</th>
-                <th className="p-3 text-left font-medium">Engagement</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filterByGenre(nftData).slice(0, 100).map((nft) => (
-                <tr key={nft.id} className={`border-b border-border hover:bg-muted/30 
-                  ${nft.isTop10 ? 'bg-gradient-to-r from-primary/5 to-transparent' : ''}`}>
-                  <td className="p-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center
-                      ${nft.isTop10 ? 'theme-gradient-bg text-white' : 'bg-muted/50'}`}>
-                      {nft.id}
-                    </div>
-                  </td>
-                  <td className="p-3">
-                    <div className="flex items-center gap-3">
-                      {imageError[`table-${nft.id}`] ? (
-                        <div className="w-10 h-10 rounded bg-muted flex items-center justify-center">
-                          <span className="text-xs text-muted-foreground">{nft.title[0]}</span>
-                        </div>
-                      ) : (
-                        <Image
-                          src={nft.coverImage}
-                          alt={nft.title}
-                          width={40}
-                          height={40}
-                          className="rounded bg-muted object-cover"
-                          onError={() => handleImageError(Number(`table-${nft.id}`))}
-                        />
-                      )}
-                      <div>
-                        <div className="font-medium">{nft.title}</div>
-                        <div className="text-xs text-muted-foreground truncate max-w-[200px]">
-                          {nft.description}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="p-3">{nft.author}</td>
-                  <td className="p-3">
-                    <Badge variant="outline">{nft.genre}</Badge>
-                  </td>
-                  <td className="p-3 font-medium">{nft.price}</td>
-                  <td className="p-3">{nft.sales || 0}</td>
-                  <td className="p-3">
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-1">
-                        <Heart className="h-3 w-3" />
-                        <span className="text-sm">{nft.likes}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Eye className="h-3 w-3" />
-                        <span className="text-sm">{nft.views}</span>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
+      <div className="mb-8 space-y-4">
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex-1">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                placeholder="Search stories or authors..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-2">
+            <select
+              value={selectedGenre}
+              onChange={(e) => setSelectedGenre(e.target.value)}
+              className="px-3 py-2 border border-input bg-background rounded-md text-sm"
+              aria-label="Filter by genre"
+            >
+              {genres.map((genre) => (
+                <option key={genre} value={genre}>
+                  {genre === 'all' ? 'All Genres' : genre}
+                </option>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+            </select>
 
-      {selectedStory && (
-        <>
-          <StoryDetailsDialog
-            isOpen={showDetailsDialog}
-            onClose={() => setShowDetailsDialog(false)}
-            story={selectedStory}
-            onPurchase={handlePurchase}
-            onComment={handleComment}
-            onLike={handleLike}
-          />
-
-          <StoryCommentsDialog
-            isOpen={showCommentsDialog}
-            onClose={() => setShowCommentsDialog(false)}
-            storyTitle={selectedStory.title}
-            comments={[]}
-            onAddComment={() => {}}
-            isWalletConnected={!!account}
-          />
-        </>
-      )}
-
-      {/* Marketplace CTA Section */}
-      <div className="mt-16 p-8 bg-gradient-to-r from-amber-100/30 to-amber-50/30 dark:from-amber-900/20 dark:to-amber-950/20 rounded-xl border border-amber-200/30 dark:border-amber-800/30">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="text-center md:text-left">
-            <h2 className="text-2xl font-bold mb-3">Ready to Buy or Sell NFTs?</h2>
-            <p className="text-muted-foreground max-w-2xl">Visit our NFT marketplace to buy unique story NFTs directly from creators or list your own stories as NFTs for sale.</p>
+            <select
+              value={sortBy}
+              onChange={(e) =>
+                setSortBy(e.target.value as 'price' | 'likes' | 'recent')
+              }
+              className="px-3 py-2 border border-input bg-background rounded-md text-sm"
+              aria-label="Sort NFTs by"
+            >
+              <option value="likes">Most Liked</option>
+              <option value="price">Highest Price</option>
+              <option value="recent">Most Recent</option>
+            </select>
           </div>
-          <Link href="/nft-marketplace" passHref>
-            <Button size="lg" className="bg-amber-600 hover:bg-amber-700 text-white flex items-center gap-2">
-              <ShoppingCart className="h-5 w-5" />
-              Go to NFT Marketplace
+        </div>
+
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">
+            Showing {sortedNFTs.length} of {nfts.length} stories
+          </p>
+          {!connected && (
+            <Button onClick={connectWallet} variant="outline">
+              <Users className="w-4 h-4 mr-2" />
+              Connect Wallet
             </Button>
-          </Link>
+          )}
         </div>
       </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <AnimatePresence>
+          {sortedNFTs.map((nft) => (
+            <NFTCard
+              key={nft.id}
+              nft={nft}
+              onLike={handleLike}
+              onPurchase={handlePurchase}
+            />
+          ))}
+        </AnimatePresence>
+      </div>
+
+      {sortedNFTs.length === 0 && (
+        <div className="text-center py-16">
+          <BookOpen className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+          <h3 className="text-xl font-medium mb-2">No stories found</h3>
+          <p className="text-muted-foreground">
+            Try adjusting your search terms or filters to find more stories.
+          </p>
+        </div>
+      )}
     </div>
   );
-} 
+}

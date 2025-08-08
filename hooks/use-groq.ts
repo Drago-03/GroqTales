@@ -53,22 +53,21 @@ export function useGroq(): UseGroqResult {
       const response = await fetch('/api/groq/models');
       if (!response.ok) {
         throw new Error(`Failed to fetch models: ${response.statusText}`);
-      }
-
+}
       const data = await response.json();
       setAvailableModels(data.models);
       setDefaultModel(data.default);
-      
+
       // Set model names if provided
       if (data.modelNames) {
         setModelNames(data.modelNames);
-      }
+}
     } catch (err: any) {
       setError(err.message || 'Failed to fetch models');
       console.error('Error fetching Groq models:', err);
     } finally {
       setIsLoading(false);
-    }
+}
   }, []);
 
   /**
@@ -81,12 +80,11 @@ export function useGroq(): UseGroqResult {
 
       const url = `/api/groq/models?action=test&special=${useSpecialModel}&apiKey=${apiKey || ''}`;
       const response = await fetch(url);
-      
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Connection test failed');
-      }
-
+}
       const data = await response.json();
       return {
         success: data.success,
@@ -102,7 +100,7 @@ export function useGroq(): UseGroqResult {
       };
     } finally {
       setIsLoading(false);
-    }
+}
   }, []);
 
   /**
@@ -134,8 +132,7 @@ export function useGroq(): UseGroqResult {
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.error || 'Failed to generate content');
-        }
-
+}
         const data = await response.json();
         return data.result;
       } catch (err: any) {
@@ -144,7 +141,7 @@ export function useGroq(): UseGroqResult {
         throw err;
       } finally {
         setIsLoading(false);
-      }
+}
     },
     [defaultModel]
   );
@@ -172,8 +169,7 @@ export function useGroq(): UseGroqResult {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to analyze content');
-      }
-
+}
       const data = await response.json();
       return data.result;
     } catch (err: any) {
@@ -182,7 +178,7 @@ export function useGroq(): UseGroqResult {
       throw err;
     } finally {
       setIsLoading(false);
-    }
+}
   }, []);
 
   /**
@@ -211,8 +207,7 @@ export function useGroq(): UseGroqResult {
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.error || 'Failed to generate story ideas');
-        }
-
+}
         const data = await response.json();
         return data.result;
       } catch (err: any) {
@@ -221,7 +216,7 @@ export function useGroq(): UseGroqResult {
         throw err;
       } finally {
         setIsLoading(false);
-      }
+}
     },
     []
   );
@@ -250,8 +245,7 @@ export function useGroq(): UseGroqResult {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to improve content');
-      }
-
+}
       const data = await response.json();
       return data.result;
     } catch (err: any) {
@@ -260,7 +254,7 @@ export function useGroq(): UseGroqResult {
       throw err;
     } finally {
       setIsLoading(false);
-    }
+}
   }, []);
 
   return {
@@ -276,4 +270,4 @@ export function useGroq(): UseGroqResult {
     error,
     fetchModels,
   };
-} 
+}

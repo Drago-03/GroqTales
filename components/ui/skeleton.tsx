@@ -1,6 +1,8 @@
+import React from 'react';
 import { cn } from '@/lib/utils';
 
-function Skeleton({
+// Simple animated skeleton placeholder
+export function Skeleton({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {

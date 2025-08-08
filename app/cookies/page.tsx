@@ -1,13 +1,14 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Github, Cookie, Shield, Settings, Info } from "lucide-react";
+import { Github, Cookie, Shield, Settings, Info } from 'lucide-react';
+import Link from 'next/link';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 // Floating GitHub button component
 const FloatingGithub = () => (
-  <Link 
+  <Link
     href="https://github.com/Drago-03/GroqTales.git"
     target="_blank"
     className="fixed bottom-24 right-6 p-3 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-50"
@@ -15,8 +16,6 @@ const FloatingGithub = () => (
     <Github className="w-6 h-6 text-white" />
   </Link>
 );
-
-
 
 // Floating doodle elements
 const FloatingDoodles = () => (
@@ -35,9 +34,7 @@ const CookieSection = ({ icon: Icon, title, children }: any) => (
       </div>
       <CardTitle>{title}</CardTitle>
     </CardHeader>
-    <CardContent className="space-y-4">
-      {children}
-    </CardContent>
+    <CardContent className="space-y-4">{children}</CardContent>
   </Card>
 );
 
@@ -46,7 +43,7 @@ export default function CookiePolicyPage() {
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
       <FloatingDoodles />
       <FloatingGithub />
-      
+
       <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent mb-4 text-center">
@@ -58,8 +55,9 @@ export default function CookiePolicyPage() {
 
           <CookieSection icon={Info} title="What Are Cookies?">
             <p>
-              Cookies are small text files that are placed on your device when you visit
-              our website. They help us provide you with a better experience by:
+              Cookies are small text files that are placed on your device when
+              you visit our website. They help us provide you with a better
+              experience by:
             </p>
             <ul className="list-disc pl-6 space-y-2">
               <li>Remembering your preferences and settings</li>
@@ -72,41 +70,45 @@ export default function CookiePolicyPage() {
           <CookieSection icon={Cookie} title="Types of Cookies We Use">
             <h3 className="text-lg font-semibold">Essential Cookies</h3>
             <p>
-              These cookies are necessary for the website to function properly. They enable
-              core functionality such as security, network management, and accessibility.
-              You cannot opt out of these cookies.
+              These cookies are necessary for the website to properly. They
+              enable core functionality such as security, network management,
+              and accessibility. You cannot opt out of these cookies.
             </p>
 
             <h3 className="text-lg font-semibold mt-4">Performance Cookies</h3>
             <p>
-              These cookies help us understand how visitors interact with our website by
-              collecting and reporting information anonymously. They help us improve our
-              platform.
+              These cookies help us understand how visitors interact with our
+              website by collecting and reporting information anonymously. They
+              help us improve our platform.
             </p>
 
-            <h3 className="text-lg font-semibold mt-4">Functionality Cookies</h3>
+            <h3 className="text-lg font-semibold mt-4">
+              Functionality Cookies
+            </h3>
             <p>
-              These cookies enable enhanced functionality and personalization. They may be
-              set by us or by third-party providers whose services we have added to our
-              pages.
+              These cookies enable enhanced functionality and personalization.
+              They may be set by us or by third-party providers whose services
+              we have added to our pages.
             </p>
 
             <h3 className="text-lg font-semibold mt-4">Targeting Cookies</h3>
             <p>
-              These cookies may be set through our site by our advertising partners. They
-              may be used by those companies to build a profile of your interests and show
-              you relevant advertisements on other sites.
+              These cookies may be set through our site by our advertising
+              partners. They may be used by those companies to build a profile
+              of your interests and show you relevant advertisements on other
+              sites.
             </p>
           </CookieSection>
 
           <CookieSection icon={Shield} title="How We Protect Your Data">
             <p>
-              We take the protection of your data seriously. Our cookies are encrypted and
-              we follow industry best practices for data security. We never sell your
-              personal information collected through cookies.
+              We take the protection of your data seriously. Our cookies are
+              encrypted and we follow industry best practices for data security.
+              We never sell your personal information collected through cookies.
             </p>
             <p className="mt-2">
-              For more information about how we protect your data, please read our{" "}
+              For more information about how we protect your data, please read
+              our{' '}
               <Link href="/privacy" className="text-primary hover:underline">
                 Privacy Policy
               </Link>
@@ -114,29 +116,38 @@ export default function CookiePolicyPage() {
             </p>
           </CookieSection>
 
-          <CookieSection icon={Settings} title="Managing Your Cookie Preferences">
+          <CookieSection
+            icon={Settings}
+            title="Managing Your Cookie Preferences"
+          >
             <h3 className="text-lg font-semibold">Browser Settings</h3>
             <p>
-              You can control and/or delete cookies as you wish. You can delete all cookies
-              that are already on your computer and you can set most browsers to prevent
-              them from being placed.
+              You can control and/or delete cookies as you wish. You can delete
+              all cookies that are already on your computer and you can set most
+              browsers to prevent them from being placed.
             </p>
 
             <div className="mt-4 space-y-4">
-              <p className="font-medium">How to manage cookies in your browser:</p>
-              
+              <p className="font-medium">
+                How to manage cookies in your browser:
+              </p>
+
               <div className="space-y-2">
                 <p>
-                  <span className="font-medium">Chrome:</span> Settings {'->'} Privacy and security {'->'} Cookies and other site data
+                  <span className="font-medium">Chrome:</span> Settings {'->'}{' '}
+                  Privacy and security {'->'} Cookies and other site data
                 </p>
                 <p>
-                  <span className="font-medium">Firefox:</span> Options {'->'} Privacy & Security {'->'} Cookies and Site Data
+                  <span className="font-medium">Firefox:</span> Options {'->'}{' '}
+                  Privacy & Security {'->'} Cookies and Site Data
                 </p>
                 <p>
-                  <span className="font-medium">Safari:</span> Preferences {'->'} Privacy {'->'} Cookies and website data
+                  <span className="font-medium">Safari:</span> Preferences{' '}
+                  {'->'} Privacy {'->'} Cookies and website data
                 </p>
                 <p>
-                  <span className="font-medium">Edge:</span> Settings {'->'} Cookies and site permissions {'->'} Cookies and site data
+                  <span className="font-medium">Edge:</span> Settings {'->'}{' '}
+                  Cookies and site permissions {'->'} Cookies and site data
                 </p>
               </div>
             </div>
@@ -150,7 +161,7 @@ export default function CookiePolicyPage() {
 
           <div className="text-center text-sm text-muted-foreground">
             <p>
-              For questions about our Cookie Policy, please{" "}
+              For questions about our Cookie Policy, please{' '}
               <Link href="/contact" className="text-primary hover:underline">
                 contact us
               </Link>
@@ -161,4 +172,4 @@ export default function CookiePolicyPage() {
       </div>
     </div>
   );
-} 
+}

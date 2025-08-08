@@ -1,20 +1,26 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
 
 export const GalaxyBackground = () => {
-  const [stars, setStars] = useState<Array<{ x: number; y: number; size: number; delay: number; color: string }>>([]);
-  
+  const [stars, setStars] = useState<
+    Array<{ x: number; y: number; size: number; delay: number; color: string }>
+  >([]);
+
   useEffect(() => {
     // Generate way more random stars with different colors
-    const newStars = Array.from({ length: 200 }, () => ({
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 4 + 1,
-      delay: Math.random() * 8,
-      color: ['#ffffff', '#ffd700', '#ff8f00', '#ff69b4', '#4169e1'][Math.floor(Math.random() * 5)],
-    }));
+    const colors = ['#ffffff', '#ffd700', '#ff8f00', '#ff69b4', '#4169e1'] as const;
+    const newStars = Array.from({ length: 200 }, () => {
+      const colorIndex = Math.floor(Math.random() * colors.length);
+      return {
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: Math.random() * 4 + 1,
+        delay: Math.random() * 8,
+        color: colors[colorIndex] ?? '#ffffff',
+      };
+    });
     setStars(newStars);
   }, []);
 
@@ -37,7 +43,7 @@ export const GalaxyBackground = () => {
         transition={{
           duration: 15,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: 'easeInOut',
         }}
       >
         {/* Solar flares */}
@@ -50,7 +56,7 @@ export const GalaxyBackground = () => {
           transition={{
             duration: 10,
             repeat: Infinity,
-            ease: "linear",
+            ease: 'linear',
           }}
         />
       </motion.div>
@@ -66,7 +72,7 @@ export const GalaxyBackground = () => {
         transition={{
           duration: 12,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: 'easeInOut',
         }}
       />
 
@@ -82,7 +88,7 @@ export const GalaxyBackground = () => {
         transition={{
           duration: 20,
           repeat: Infinity,
-          ease: "linear",
+          ease: 'linear',
         }}
       />
 
@@ -97,7 +103,7 @@ export const GalaxyBackground = () => {
           transition={{
             duration: 18,
             repeat: Infinity,
-            ease: "easeInOut",
+            ease: 'easeInOut',
           }}
         />
         <motion.div
@@ -109,7 +115,7 @@ export const GalaxyBackground = () => {
           transition={{
             duration: 25,
             repeat: Infinity,
-            ease: "linear",
+            ease: 'linear',
           }}
         />
       </div>
@@ -125,7 +131,7 @@ export const GalaxyBackground = () => {
         transition={{
           duration: 15,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: 'easeInOut',
         }}
       />
 
@@ -150,7 +156,7 @@ export const GalaxyBackground = () => {
             duration: 3 + Math.random() * 3,
             delay: star.delay,
             repeat: Infinity,
-            ease: "easeInOut",
+            ease: 'easeInOut',
           }}
         />
       ))}
@@ -161,7 +167,7 @@ export const GalaxyBackground = () => {
         const isFromCorner = Math.random() > 0.5;
         const startX = -50; // Start outside viewport
         const startY = isFromCorner ? -50 : Math.random() * 70; // Either corner or along left edge
-        
+
         return (
           <motion.div
             key={`meteor-${i}`}
@@ -188,8 +194,20 @@ export const GalaxyBackground = () => {
                 zIndex: 3,
               }}
               animate={{
-                x: [0, window.innerWidth * 1.2],
-                y: [0, isFromCorner ? window.innerHeight * 0.8 : window.innerHeight * 0.5],
+                x: [
+                  0,
+                  typeof window !== 'undefined'
+                    ? window.innerWidth * 1.2
+                    : 1200,
+                ],
+                y: [
+                  0,
+                  typeof window !== 'undefined'
+                    ? isFromCorner
+                      ? window.innerHeight * 0.8
+                      : window.innerHeight * 0.5
+                    : 600,
+                ],
                 opacity: [0, 1, 1, 0],
                 scale: [0.8, 1.1, 0.9], // Slight scale change for depth perception
               }}
@@ -214,8 +232,20 @@ export const GalaxyBackground = () => {
                 zIndex: 2,
               }}
               animate={{
-                x: [0, window.innerWidth * 1.2],
-                y: [0, isFromCorner ? window.innerHeight * 0.8 : window.innerHeight * 0.5],
+                x: [
+                  0,
+                  typeof window !== 'undefined'
+                    ? window.innerWidth * 1.2
+                    : 1200,
+                ],
+                y: [
+                  0,
+                  typeof window !== 'undefined'
+                    ? isFromCorner
+                      ? window.innerHeight * 0.8
+                      : window.innerHeight * 0.5
+                    : 600,
+                ],
                 opacity: [0, 0.9, 0.9, 0],
                 scaleX: [0.3, 1.3, 0.6], // More dynamic trail length based on velocity
               }}
@@ -239,8 +269,12 @@ export const GalaxyBackground = () => {
                 }}
                 animate={{
                   x: [-particleIndex * 20, window.innerWidth * 1.2],
-                  y: [-particleIndex * (isFromCorner ? 20 : 10), 
-                     isFromCorner ? window.innerHeight * 0.8 : window.innerHeight * 0.5],
+                  y: [
+                    -particleIndex * (isFromCorner ? 20 : 10),
+                    isFromCorner
+                      ? window.innerHeight * 0.8
+                      : window.innerHeight * 0.5,
+                  ],
                   opacity: [0, 0.7, 0.7, 0],
                   scale: [1, 0.5, 0],
                 }}
@@ -261,7 +295,7 @@ export const GalaxyBackground = () => {
         const isFromCorner = i === 0; // First meteor always from corner for consistency
         const startX = -100; // Start further outside viewport
         const startY = isFromCorner ? -100 : Math.random() * 50;
-        
+
         return (
           <motion.div
             key={`large-meteor-${i}`}
@@ -287,7 +321,10 @@ export const GalaxyBackground = () => {
               }}
               animate={{
                 x: [0, window.innerWidth * 1.5],
-                y: [0, isFromCorner ? window.innerHeight : window.innerHeight * 0.6],
+                y: [
+                  0,
+                  isFromCorner ? window.innerHeight : window.innerHeight * 0.6,
+                ],
                 opacity: [0, 1, 1, 0],
                 rotate: [0, 360],
                 scale: [1, 1.3, 0.8, 1], // Enhanced pulsing for depth
@@ -306,14 +343,18 @@ export const GalaxyBackground = () => {
               style={{
                 width: '350px',
                 height: '12px',
-                background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent)',
+                background:
+                  'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent)',
                 boxShadow: '0 0 60px rgba(255, 255, 255, 0.5)',
                 borderRadius: '6px',
                 filter: 'blur(3px)',
               }}
               animate={{
                 x: [0, window.innerWidth * 1.5],
-                y: [0, isFromCorner ? window.innerHeight : window.innerHeight * 0.6],
+                y: [
+                  0,
+                  isFromCorner ? window.innerHeight : window.innerHeight * 0.6,
+                ],
                 opacity: [0, 0.95, 0.95, 0],
                 scaleX: [0.3, 1.6, 0.7], // More dynamic trail length
               }}
@@ -329,4 +370,4 @@ export const GalaxyBackground = () => {
       })}
     </div>
   );
-}; 
+};

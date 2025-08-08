@@ -2,21 +2,19 @@
 
 import { type ReactNode, useCallback, useMemo, useState } from "react";
 // yo fam, we need this for checking if the wallet is connected n stuff
-import { useAccount } from "@/lib/wagmi-mock";
+import { useAccount } from "../../lib/wagmi-mock";
 import {
   Transaction, // fr fr this handles all our transaction logic
   TransactionButton, // no cap, this button be handling our tx submissions
-  TransactionToast, // lowkey shows those sweet transaction notifications
+  TransactionStatus, // lowkey shows those sweet transaction notifications
+  TransactionStatusAction,
+  TransactionStatusLabel,
+  TransactionToast,
   TransactionToastAction,
   TransactionToastIcon,
   TransactionToastLabel,
-  TransactionError,
-  TransactionResponse,
-  TransactionStatusAction,
-  TransactionStatusLabel,
-  TransactionStatus,
-} from "@/lib/transaction-components";
-import { useNotification } from "@/lib/mini-kit-mock";
+} from "../../lib/transaction-components";
+import { useNotification } from "../../lib/mini-kit-mock";
 
 type ButtonProps = {
   children: ReactNode;
@@ -27,7 +25,7 @@ type ButtonProps = {
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
   icon?: ReactNode;
-}
+};
 
 export function Button({
   children,
@@ -77,14 +75,9 @@ type CardProps = {
   children: ReactNode;
   className?: string;
   onClick?: () => void;
-}
+};
 
-function Card({
-  title,
-  children,
-  className = "",
-  onClick,
-}: CardProps) {
+function Card({ title, children, className = "", onClick }: CardProps) {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (onClick && (e.key === "Enter" || e.key === " ")) {
       e.preventDefault();
@@ -93,7 +86,7 @@ function Card({
   };
   return (
     <div
-      role={onClick ? "button" : undefined}
+      {...(onClick ? { role: "button" } : {})}
       className={`bg-[var(--app-card-bg)] backdrop-blur-md rounded-xl shadow-lg border border-[var(--app-card-border)] overflow-hidden transition-all hover:shadow-xl ${className} ${onClick ? "cursor-pointer" : ""}`}
       onClick={onClick}
       onKeyDown={onClick ? handleKeyDown : undefined}
@@ -174,7 +167,7 @@ export function Home({ setActiveTab }: HomeProps) {
 
       <TodoList />
 
-      <TransactionCard />
+      <TransactionDemo />
     </div>
   );
 }
@@ -183,7 +176,7 @@ type IconProps = {
   name: "heart" | "star" | "check" | "plus" | "arrow-right";
   size?: "sm" | "md" | "lg";
   className?: string;
-}
+};
 
 export function Icon({ name, size = "md", className = "" }: IconProps) {
   const sizeClasses = {
@@ -283,7 +276,7 @@ type Todo = {
   id: number;
   text: string;
   completed: boolean;
-}
+};
 
 function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([
@@ -386,33 +379,37 @@ function TodoList() {
   );
 }
 
-
-function TransactionCard() {
+function TransactionDemo() {
   const { address } = useAccount();
-
   // Example transaction call - sending 0 ETH to self
-  const calls = useMemo(() => address
-    ? [
-        {
-          to: address,
-          data: "0x" as `0x${string}`,
-          value: BigInt(0),
-        },
-      ]
-    : [], [address]);
+  const calls = useMemo(
+    () =>
+      address
+        ? [
+            {
+              to: address,
+              data: "0x" as `0x${string}`,
+              value: BigInt(0),
+            },
+          ]
+        : [],
+    [address],
+  );
 
   const sendNotification = useNotification();
 
-  const handleSuccess = useCallback(async (response: { transactionReceipts: { transactionHash: string }[] }) => {
-    const transactionHash = response.transactionReceipts[0].transactionHash;
+  const handleSuccess = useCallback(
+    async (response: { transactionReceipts: { transactionHash: string }[] }) => {
+      const txHash = response.transactionReceipts[0]?.transactionHash;
+      console.log(`Transaction successful: ${txHash}`);
 
-    console.log(`Transaction successful: ${transactionHash}`);
-
-    await sendNotification({
-      title: "Congratulations!",
-      body: `You sent your a transaction, ${transactionHash}!`,
-    });
-  }, [sendNotification]);
+      await sendNotification({
+        title: "Congratulations!",
+        body: `You sent a transaction, ${txHash}!`,
+      });
+    },
+    [sendNotification],
+  );
 
   return (
     <Card title="Make Your First Transaction">
@@ -458,5 +455,14 @@ function TransactionCard() {
         </div>
       </div>
     </Card>
+  );
+}
+
+export default function DemoComponents() {
+  return (
+    <div className="space-y-6">
+      <TodoList />
+      <TransactionDemo />
+    </div>
   );
 }

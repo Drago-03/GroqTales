@@ -1,8 +1,9 @@
-"use client";
+'use client';
 
-import { ReactNode } from "react";
-import { GalaxyBackground } from "@/components/galaxy-background";
-import { cn } from "@/lib/utils";
+import React, { ReactNode } from 'react';
+
+import { GalaxyBackground } from '@/components/galaxy-background';
+import { cn } from '@/lib/utils';
 
 interface AnimatedLayoutProps {
   children: ReactNode;
@@ -10,26 +11,23 @@ interface AnimatedLayoutProps {
   className?: string;
 }
 
-export function AnimatedLayout({ 
-  children, 
+export function AnimatedLayout({
+  children,
   disableAnimation = false,
-  className 
+  className,
 }: AnimatedLayoutProps) {
   return (
-    <div className="relative min-h-screen w-full">
-      {/* fr fr this galaxy background be bussin no cap */}
+    <div className={cn('relative min-h-screen overflow-hidden', className)}>
+      {/* Galaxy background */}
       {!disableAnimation && <GalaxyBackground />}
-      
-      {/* lowkey making sure the text stays readable n stuff */}
+
+      {/* Overlay to ensure content readability */}
       <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px] pointer-events-none" />
-      
-      {/* no cap this where the content goes */}
-      <div className={cn(
-        "relative z-10 min-h-screen w-full",
-        className
-      )}>
+
+      {/* Main content container */}
+      <div className={cn('relative z-10 min-h-screen w-full', className)}>
         {children}
       </div>
     </div>
   );
-} 
+}

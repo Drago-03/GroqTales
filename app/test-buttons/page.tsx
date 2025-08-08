@@ -1,6 +1,8 @@
-"use client";
+'use client';
 
-import { AIStoryGenerator } from "@/components/ai-story-generator";
+import React from 'react';
+
+import AIStoryGenerator from '@/components/ai-story-generator';
 
 export default function TestButtonsPage() {
   return (
@@ -11,4 +13,4 @@ export default function TestButtonsPage() {
       <AIStoryGenerator />
     </div>
   );
-} 
+}

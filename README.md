@@ -1,17 +1,24 @@
+<!-- markdownlint-disable MD033 -->
 <h1 align="center">GroqTales</h1>
 <p align="center"><b>AI-Powered Web3 Storytelling Platform</b></p>
 <p align="center">Create, share, and own AI-generated stories and comics as NFTs on the Monad blockchain.</p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/deployment-production-green?style=flat-square" alt="Deployment Status"/>
-  <img src="https://img.shields.io/badge/deployment-preview-yellow?style=flat-square" alt="Deployment Preview"/>
-  <img src="https://img.shields.io/github/workflow/status/Drago-03/GroqTales/CI?label=CI&style=flat-square" alt="CI Status"/>
+  <img src="https://img.shields.io/badge/version-1.1.2-blue?style=flat-square" alt="Version"/>
+  <img src="https://img.shields.io/github/deployments/Drago-03/GroqTales/Production?label=deploy%20(prod)&logo=vercel&style=flat-square" alt="Production Deployment"/>
+  <img src="https://img.shields.io/github/deployments/Drago-03/GroqTales/Preview?label=deploy%20(preview)&logo=vercel&style=flat-square" alt="Preview Deployments"/>
+  <img src="https://img.shields.io/github/actions/workflow/status/Drago-03/GroqTales/ci.yml?branch=main&label=CI&style=flat-square" alt="CI Status"/>
+  <img src="https://img.shields.io/github/last-commit/Drago-03/GroqTales?style=flat-square" alt="Last Commit"/>
+  <img src="https://img.shields.io/github/commit-activity/m/Drago-03/GroqTales?style=flat-square" alt="Commit Activity"/>
+  <img src="https://img.shields.io/github/issues/Drago-03/GroqTales?style=flat-square" alt="Open Issues"/>
+  <img src="https://img.shields.io/github/issues-pr/Drago-03/GroqTales?style=flat-square" alt="Open PRs"/>
   <img src="https://img.shields.io/github/license/Drago-03/GroqTales?style=flat-square" alt="License"/>
   <img src="https://img.shields.io/badge/status-active-brightgreen?style=flat-square" alt="Active"/>
   <img src="https://img.shields.io/badge/contributions-welcome-blueviolet?style=flat-square" alt="Contributions Welcome"/>
   <img src="https://img.shields.io/badge/website-groqtales.xyz-0052cc?style=flat-square" alt="Website"/>
   <a href="mailto:support@groqtales.xyz"><img src="https://img.shields.io/badge/contact-support%40groqtales.xyz-orange?style=flat-square" alt="Contact Us"/></a>
   <a href="https://discord.gg/JK29FZRm"><img src="https://img.shields.io/discord/1245696768829601812?label=Discord&logo=discord&style=flat-square" alt="Discord"/></a>
+  
 </p>
 
 <p align="center">
@@ -28,35 +35,45 @@
 <p align="center">
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&duration=4000&pause=600&color=F97316&center=true&vCenter=true&width=800&lines=---+AI-powered+Web3+Storytelling+on+the+Monad+Blockchain+---" alt="Animated Divider" />
 </p>
+<!-- markdownlint-enable MD033 -->
 
-## 🚀 What is GroqTales?
+## What is GroqTales?
 
-GroqTales is an open-source, AI-powered Web3 storytelling platform. Writers and artists can generate immersive narratives or comic-style stories using Groq AI, then mint and trade them as NFTs on the Monad blockchain. With a focus on ownership, authenticity, and community, GroqTales bridges the world of creative writing, generative AI, and decentralized technology.
+GroqTales is an open-source, AI-powered Web3 storytelling platform. Writers and artists can generate
+immersive narratives or comic-style stories using Groq AI, then mint and trade them as NFTs on the
+Monad blockchain. With a focus on ownership, authenticity, and community, GroqTales bridges the
+world of creative writing, generative AI, and decentralized technology.
 
 ---
 
-## 🌟 Features
+## Features
 
 - **AI-Driven Story & Comic Generation**  
-  Use Groq AI to generate stories or comic panel outlines by specifying title, genre, setting, characters, and themes. Both text and comic formats are supported.
+  Use Groq AI to generate stories or comic panel outlines by specifying title, genre, setting,
+  characters, and themes. Both text and comic formats are supported.
 - **NFT Minting on Monad Blockchain**  
-  Seamlessly mint your stories as NFTs on Monad (Testnet live, Mainnet coming soon). Each NFT proves authenticity, ownership, and collectibility.
+  Seamlessly mint your stories as NFTs on Monad (Testnet live, Mainnet coming soon). Each NFT proves
+  authenticity, ownership, and collectibility.
 - **Community Gallery**  
-  Publish your stories publicly, browse the gallery, and interact with other creators. Stories can be shared freely or as NFTs.
+  Publish your stories publicly, browse the gallery, and interact with other creators. Stories can
+  be shared freely or as NFTs.
 - **Customizable Prompts & Creativity Levels**  
-  Fine-tune AI output by adjusting prompts, genres, outlines, and creativity settings to match your vision.
+  Fine-tune AI output by adjusting prompts, genres, outlines, and creativity settings to match your
+  vision.
 - **Wallet Integration**  
-  Connect with MetaMask, WalletConnect, or Ledger for secure publishing and minting. Wallet is required for NFT actions.
+  Connect with MetaMask, WalletConnect, or Ledger for secure publishing and minting. Wallet is
+  required for NFT actions.
 - **Real-Time Story Streaming**  
   Watch your story unfold in real-time as Groq AI generates each segment.
 - **Mobile-Friendly & Responsive UI**  
   Built with modern web technologies for a seamless experience on any device.
 - **Extensible & Open Source**  
-  Modular codebase with clear separation of frontend, backend, and smart contract logic. Contributions are welcome!
+  Modular codebase with clear separation of frontend, backend, and smart contract logic.
+  Contributions are welcome!
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Frontend:** Next.js, React, TailwindCSS, shadcn/ui
 - **Backend:** Node.js, API Routes
@@ -67,7 +84,7 @@ GroqTales is an open-source, AI-powered Web3 storytelling platform. Writers and 
 
 ---
 
-## 🏁 Quick Start
+## Quick Start
 
 ```bash
 git clone https://github.com/Drago-03/GroqTales
@@ -82,13 +99,14 @@ npm run dev
 2. Connect your wallet (optional; required for minting/publishing)
 3. Generate your story → Publish or Mint as NFT
 
-See the [Wiki](https://github.com/Drago-03/GroqTales/wiki) for configuration, environment variables, and deployment details.
+See the [Wiki](https://github.com/Drago-03/GroqTales/wiki) for configuration, environment variables,
+and deployment details.
 
 ---
 
-## 🧑‍💻 For Developers
+## For Developers
 
-- **Folder Structure:**  
+- **Folder Structure:**
   - `/app` – Next.js application (pages, UI, routes)
   - `/components` – Reusable React components
   - `/contracts` – Solidity smart contracts for NFT minting
@@ -97,25 +115,26 @@ See the [Wiki](https://github.com/Drago-03/GroqTales/wiki) for configuration, en
   - `/test` and `/tests` – Test scripts and sample data
   - `/scripts` – Automation and deployment scripts
 
-- **Environment Variables:**  
+- **Environment Variables:**
   - `GROQ_API_KEY` – Your Groq AI API key
   - `UNSPLASH_API_KEY` – (Optional) for placeholder visuals
   - `MONAD_RPC_URL` – Monad blockchain RPC endpoint
 
-- **Smart Contract Deployment:**  
+- **Smart Contract Deployment:**
   - Contracts are written in Solidity and can be deployed to Monad Testnet/Mainnet.
   - See `/contracts` and `/scripts` for deployment instructions.
 
-- **Extending AI Models:**  
+- **Extending AI Models:**
   - AI logic is modular—add support for new models or prompt types in `/lib` and `/components`.
 
-- **Testing:**  
+- **Testing:**
   - Frontend: Use Jest/React Testing Library.
   - Smart Contracts: Use Hardhat/Foundry for Solidity tests.
 
-- **Contributions:**  
+- **Contributions:**
   - Issues are tagged by difficulty, area, and technology for easy onboarding.
-  - Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [CONTRIBUTORS.md](CONTRIBUTORS.md) before submitting PRs.
+  - Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [CONTRIBUTORS.md](CONTRIBUTORS.md) before
+    submitting PRs.
 
 ---
 
@@ -125,6 +144,7 @@ GroqTales is community-powered!
 We welcome all contributions—whether you're a developer, designer, writer, or blockchain enthusiast.
 
 **How You Can Help:**
+
 - Tackle issues labeled `good first issue` (great for newcomers)
 - Enhance story-generation logic, outlines, or UI design
 - Add support for new AI models or blockchains
@@ -133,6 +153,7 @@ We welcome all contributions—whether you're a developer, designer, writer, or 
 - Write or improve documentation and tests
 
 **What’s in It for You:**
+
 - Build your open-source portfolio
 - Feature your work in the contributors section
 - Community recognition and GitHub Sponsors eligibility
@@ -141,7 +162,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ---
 
-## 🛣️ Roadmap
+## Roadmap
 
 - AI visuals: Integrate Stable Diffusion/DALL·E for comic panels
 - Multilingual story generation
@@ -152,12 +173,14 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ---
 
-## 👥 Contributors
+## Contributors
 
-We value every contribution! Please read our [CONTRIBUTORS.md](CONTRIBUTORS.md) file before making your first contribution to understand our guidelines and recognition process.
+We value every contribution! Please read our [CONTRIBUTORS.md](CONTRIBUTORS.md) file before making
+your first contribution to understand our guidelines and recognition process.
 
 ### Project Contributors
 
+<!-- markdownlint-disable MD033 -->
 <p align="center">
   <a href="https://github.com/Drago-03/GroqTales/graphs/contributors">
     <img src="https://contrib.rocks/image?repo=Drago-03/GroqTales" alt="Contributors" />
@@ -168,7 +191,43 @@ Thanks to these amazing people for making GroqTales better!
 
 ---
 
-## 📚 Resources
+## Documentation & Architecture
+
+### Core Documentation
+
+- **Architecture Overview:** [ARCHITECTURE.md](docs/ARCHITECTURE.md) - Comprehensive system design and
+  technical architecture
+- **Project Wiki:** [GitHub Wiki](https://github.com/Drago-03/GroqTales/wiki) - Detailed guides and
+  documentation
+- **API Documentation:** [Wiki/API](https://github.com/Drago-03/GroqTales/wiki/API) - Backend API
+  reference
+- **Smart Contracts:** [Wiki/Blockchain](https://github.com/Drago-03/GroqTales/wiki/Blockchain) -
+  Contract documentation
+
+### System Architecture
+
+- **Frontend Architecture:** [ARCHITECTURE.md#frontend](docs/ARCHITECTURE.md#frontend-architecture) -
+  Next.js application structure
+- **Backend Architecture:** [ARCHITECTURE.md#backend](docs/ARCHITECTURE.md#backend-architecture) - API
+  and service design
+- **Blockchain Integration:**
+  [ARCHITECTURE.md#blockchain](docs/ARCHITECTURE.md#blockchain-architecture) - Web3 and smart contract
+  integration
+- **AI Integration:** [ARCHITECTURE.md#ai](docs/ARCHITECTURE.md#ai-architecture) - Groq AI implementation
+- **System Diagrams:** [ARCHITECTURE.md#diagrams](docs/ARCHITECTURE.md#system-diagrams) - Mermaid
+  flowcharts and architecture diagrams
+
+### Development Resources
+
+- **Setup Guide:**
+  [Wiki/Development-Setup](https://github.com/Drago-03/GroqTales/wiki/Development-Setup)
+- **Contributing:** [CONTRIBUTING.md](CONTRIBUTING.md) - How to contribute to the project
+- **Code of Conduct:** [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) - Community guidelines
+- **Security Policy:** [SECURITY.md](SECURITY.md) - Security practices and vulnerability reporting
+
+---
+
+## Resources
 
 - **Website:** [groqtales.xyz](https://www.groqtales.xyz)
 - **Docs:** [Wiki](https://github.com/Drago-03/GroqTales/wiki)
@@ -177,22 +236,24 @@ Thanks to these amazing people for making GroqTales better!
 
 ---
 
-## 🛡️ License
+## License
 
 Released under the [MIT License](LICENSE).
 
 ---
 
-## 🔒 Security
+## Security
 
 For vulnerabilities or security-related issues, please refer to [SECURITY.md](SECURITY.md).
 
 ---
 
-## 📢 Note
+## Note
 
-_GroqTales currently operates on Monad Testnet for NFT minting. Mainnet support coming soon—stay tuned!_
+_GroqTales currently operates on Monad Testnet for NFT minting. Mainnet support coming soon—stay
+tuned!_
 
 ---
 
-<p align="center"><i>Support us with a ⭐ and invite your friends to join the storytelling revolution!</i></p>
+<p align="center"><i>Support the project and share it with others.</i></p>
+<!-- markdownlint-enable MD033 -->

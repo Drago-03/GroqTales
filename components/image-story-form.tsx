@@ -1,33 +1,39 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { ImagePlus, Loader2 } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ImagePlus, Loader2 } from 'lucide-react';
+import React, { useState } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 
 interface ImageStoryFormProps {
   onSuccess: () => void;
 }
-
 export function ImageStoryForm({ onSuccess }: ImageStoryFormProps) {
-  const [title, setTitle] = useState("");
-  const [caption, setCaption] = useState("");
-  const [genre, setGenre] = useState("");
+  const [title, setTitle] = useState('');
+  const [caption, setCaption] = useState('');
+  const [genre, setGenre] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
       // TODO: Implement image story submission
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated API call
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulated API call
       onSuccess();
     } catch (error) {
-      console.error("Failed to submit story:", error);
+      console.error('Failed to submit story:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -93,15 +99,19 @@ export function ImageStoryForm({ onSuccess }: ImageStoryFormProps) {
           onChange={(e) => setCaption(e.target.value)}
         />
       </div>
-      
-      <Button type="submit" disabled={!title || !genre || isSubmitting} className="w-full">
+
+      <Button
+        type="submit"
+        disabled={!title || !genre || isSubmitting}
+        className="w-full"
+      >
         {isSubmitting ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             Submitting...
           </>
         ) : (
-          "Submit Story"
+          'Submit Story'
         )}
       </Button>
     </form>

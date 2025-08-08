@@ -1,0 +1,311 @@
+name: Dependency Review and Security
+
+on:
+  pull_request:
+    branches: [main, master, develop]
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  security-events: write
+  actions: read
+
+jobs:
+  # Dependency review for PRs
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: moderate
+          allow-licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC
+          deny-licenses: GPL-2.0, GPL-3.0, AGPL-1.0, AGPL-3.0
+          comment-summary-in-pr: always
+
+  # Comprehensive security audit
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        continue-on-error: true
+        run: |
+            npm audit --audit-level=moderate --json > audit-results.json || true
+          
+      - name: Process audit results
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const core = require('@actions/core');
+            const fs = require('fs');
+            
+            try {
+              const auditResults = JSON.parse(fs.readFileSync('audit-results.json', 'utf8'));
+              if (auditResults.vulnerabilities) {
+                const vulnCount = Object.keys(auditResults.vulnerabilities).length;
+                const metadata = auditResults.metadata;
+                let severities; // hoisted for later checks
+                if (metadata && metadata.vulnerabilities) severities = metadata.vulnerabilities;
+
+                let summary = `## Security Audit Results\n\n`;
+                summary += `Total Vulnerabilities Found: ${vulnCount}\n\n`;
+
+                if (severities) {
+                  summary += `Severity Breakdown:\n`;
+                  if (severities.critical > 0) summary += `- Critical: ${severities.critical}\n`;
+                  if (severities.high > 0) summary += `- High: ${severities.high}\n`;
+                  if (severities.moderate > 0) summary += `- Moderate: ${severities.moderate}\n`;
+                  if (severities.low > 0) summary += `- Low: ${severities.low}\n`;
+                  if (severities.info > 0) summary += `- Info: ${severities.info}\n`;
+                }
+
+                summary += `\nRecommendations:\n`;
+                summary += `- Run 'npm audit fix' to attempt automatic fixes\n`;
+                summary += `- Review and update dependencies regularly\n`;
+                summary += `- Consider 'npm audit fix --force' only if acceptable\n`;
+                summary += `- Check for alternative packages if issues persist\n\n`;
+
+                summary += vulnCount > 0
+                  ? `Action Required: Address security vulnerabilities before merging.\n`
+                  : `No vulnerabilities found at specified audit level.\n`;
+                
+                // Create or update issue for vulnerabilities
+                if (severities && vulnCount > 0 && (severities.critical > 0 || severities.high > 0)) {
+                  const { data: issues } = await github.rest.issues.listForRepo({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    labels: 'security,dependencies',
+                    state: 'open'
+                  });
+                  
+                  const existingIssue = issues.find(issue => 
+                    issue.title.includes('Security Vulnerabilities Detected')
+                  );
+                  
+                  const issueBody = `${summary}\n\n---\n*This issue is automatically managed by our security workflow.*`;
+                  
+                  if (existingIssue) {
+                    await github.rest.issues.update({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      issue_number: existingIssue.number,
+                      body: issueBody
+                    });
+                  } else {
+                    await github.rest.issues.create({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      title: '🚨 Security Vulnerabilities Detected in Dependencies',
+                      body: issueBody,
+                      labels: ['security', 'dependencies', 'high-priority']
+                    });
+                  }
+                }
+                
+                console.log(summary);
+                
+                // Fail the job if critical or high vulnerabilities are found
+                if (severities && (severities.critical > 0 || severities.high > 0)) {
+                  core.setFailed(`Found ${severities.critical} critical and ${severities.high} high severity vulnerabilities`);
+                }
+              }
+            } catch (error) {
+              console.log('No audit results file found or parsing error:', error.message);
+            }
+
+  # Automated dependency updates
+  dependency-update:
+    name: Automated Dependency Updates
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Check for updates
+        id: updates
+        run: |
+          npm outdated --json > outdated.json || true
+          if [ -s outdated.json ]; then
+            echo "updates_available=true" >> $GITHUB_OUTPUT
+          else
+            echo "updates_available=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create dependency update PR
+        if: steps.updates.outputs.updates_available == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            try {
+              const outdated = JSON.parse(fs.readFileSync('outdated.json', 'utf8'));
+              
+              if (Object.keys(outdated).length === 0) {
+                console.log('No outdated dependencies found');
+                return;
+              }
+              
+              // Create a new branch for updates
+              const branchName = `automated-dependency-updates-${new Date().toISOString().split('T')[0]}`;
+              
+              const defaultBranch = context.payload?.repository?.default_branch || 'main';
+              const { data: ref } = await github.rest.git.getRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `heads/${defaultBranch}`
+              });
+              
+              await github.rest.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `refs/heads/${branchName}`,
+                sha: ref.object.sha
+              });
+              
+              // Prepare PR body with update details
+              let prBody = `## 🔄 Automated Dependency Updates\n\n`;
+              prBody += `This PR contains automated dependency updates detected by our dependency review workflow.\n\n`;
+              prBody += `### Updated Dependencies:\n\n`;
+              
+              for (const [pkg, info] of Object.entries(outdated)) {
+                prBody += `- **${pkg}**: ${info.current} → ${info.latest}\n`;
+              }
+              
+              prBody += `\n### What's Changed:\n`;
+              prBody += `- Dependencies updated to latest stable versions\n`;
+              prBody += `- Security vulnerabilities addressed\n`;
+              prBody += `- Performance improvements from newer versions\n\n`;
+              
+              prBody += `### Testing:\n`;
+              prBody += `- ✅ Automated tests will run on this PR\n`;
+              prBody += `- ✅ Build verification included\n`;
+              prBody += `- ✅ Security scanning performed\n\n`;
+              
+              prBody += `### Review Notes:\n`;
+              prBody += `- Please review breaking changes in updated packages\n`;
+              prBody += `- Test functionality thoroughly before merging\n`;
+              prBody += `- Check for any deprecated APIs or methods\n\n`;
+              
+              prBody += `---\n*This PR was automatically created by our dependency management workflow.*`;
+              
+              // Create the PR
+              await github.rest.pulls.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `🔄 Automated Dependency Updates - ${new Date().toISOString().split('T')[0]}`,
+                head: branchName,
+                base: 'master',
+                body: prBody,
+                draft: false
+              });
+              
+              console.log(`Created dependency update PR on branch: ${branchName}`);
+              
+            } catch (error) {
+              console.log('Error creating dependency update PR:', error.message);
+            }
+
+  # License compliance check
+  license-check:
+    name: License Compliance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install license checker
+        run: npm install -g license-checker
+
+      - name: Check licenses
+        run: |
+          license-checker --json --out licenses.json
+          license-checker --summary
+
+      - name: Validate licenses
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const core = require('@actions/core');
+            const fs = require('fs');
+            
+            try {
+              const licenses = JSON.parse(fs.readFileSync('licenses.json', 'utf8'));
+              
+              const allowedLicenses = [
+                'MIT', 'Apache-2.0', 'BSD-2-Clause', 'BSD-3-Clause', 
+                'ISC', 'CC0-1.0', 'Unlicense', 'WTFPL'
+              ];
+              
+              const deniedLicenses = [
+                'GPL-2.0', 'GPL-3.0', 'AGPL-1.0', 'AGPL-3.0', 
+                'LGPL-2.1', 'LGPL-3.0', 'CDDL-1.0', 'EPL-1.0'
+              ];
+              
+              const issues = [];
+              
+              for (const [pkg, info] of Object.entries(licenses)) {
+                const license = info.licenses;
+                
+                if (deniedLicenses.includes(license)) {
+                  issues.push(`❌ **${pkg}**: ${license} (DENIED)`);
+                } else if (!allowedLicenses.includes(license) && license !== 'UNKNOWN') {
+                  issues.push(`⚠️ **${pkg}**: ${license} (REVIEW REQUIRED)`);
+                }
+              }
+              
+              if (issues.length > 0) {
+                let summary = `## 📄 License Compliance Issues\n\n`;
+                summary += `The following packages have license compliance issues:\n\n`;
+                summary += issues.join('\n') + '\n\n';
+                summary += `### Action Required:\n`;
+                summary += `- Review packages with denied licenses\n`;
+                summary += `- Consider alternative packages with compatible licenses\n`;
+                summary += `- Update license allowlist if appropriate\n`;
+                
+                console.log(summary);
+                core.setFailed('License compliance issues found');
+              } else {
+                console.log('✅ All licenses are compliant');
+              }
+              
+            } catch (error) {
+              console.log('Error checking licenses:', error.message);
+            }

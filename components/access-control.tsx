@@ -1,14 +1,21 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useWeb3 } from "@/components/providers/web3-provider";
-import { useToast } from "@/components/ui/use-toast";
+import { useEffect, useState } from 'react';
+
+import { useWeb3 } from '@/components/providers/web3-provider';
+import { useToast } from '@/components/ui/use-toast';
 
 // Define allowed wallet IDs for specific features
 const ALLOWED_WALLETS = {
-  history: ["0x1234567890abcdef1234567890abcdef12345678", "0xabcdef1234567890abcdef1234567890abcdef12"],
-  generation: ["0x1234567890abcdef1234567890abcdef12345678", "0xabcdef1234567890abcdef1234567890abcdef12"],
-  minting: ["0x1234567890abcdef1234567890abcdef12345678"]
+  history: [
+    '0x1234567890abcdef1234567890abcdef12345678',
+    '0xabcdef1234567890abcdef1234567890abcdef12',
+  ],
+  generation: [
+    '0x1234567890abcdef1234567890abcdef12345678',
+    '0xabcdef1234567890abcdef1234567890abcdef12',
+  ],
+  minting: ['0x1234567890abcdef1234567890abcdef12345678'],
 };
 
 export function AccessControl() {
@@ -17,7 +24,7 @@ export function AccessControl() {
   const [access, setAccess] = useState({
     history: false,
     generation: false,
-    minting: false
+    minting: false,
   });
 
   useEffect(() => {
@@ -26,29 +33,33 @@ export function AccessControl() {
       setAccess({
         history: ALLOWED_WALLETS.history.includes(lowerCaseAccount),
         generation: ALLOWED_WALLETS.generation.includes(lowerCaseAccount),
-        minting: ALLOWED_WALLETS.minting.includes(lowerCaseAccount)
+        minting: ALLOWED_WALLETS.minting.includes(lowerCaseAccount),
       });
 
-      if (ALLOWED_WALLETS.history.includes(lowerCaseAccount) || 
-          ALLOWED_WALLETS.generation.includes(lowerCaseAccount) || 
-          ALLOWED_WALLETS.minting.includes(lowerCaseAccount)) {
+      if (
+        ALLOWED_WALLETS.history.includes(lowerCaseAccount) ||
+        ALLOWED_WALLETS.generation.includes(lowerCaseAccount) ||
+        ALLOWED_WALLETS.minting.includes(lowerCaseAccount)
+      ) {
         toast({
-          title: "Access Granted",
-          description: "You have access to special features based on your wallet ID.",
-          variant: "default",
+          title: 'Access Granted',
+          description:
+            'You have access to special features based on your wallet ID.',
+          variant: 'default',
         });
       } else {
         toast({
-          title: "Limited Access",
-          description: "Your wallet does not have access to special features. Contact support for more information.",
-          variant: "destructive",
+          title: 'Limited Access',
+          description:
+            'Your wallet does not have access to special features. Contact support for more information.',
+          variant: 'destructive',
         });
       }
     } else {
       setAccess({
         history: false,
         generation: false,
-        minting: false
+        minting: false,
       });
     }
   }, [account, toast]);
@@ -56,6 +67,6 @@ export function AccessControl() {
   return {
     hasHistoryAccess: access.history,
     hasGenerationAccess: access.generation,
-    hasMintingAccess: access.minting
+    hasMintingAccess: access.minting,
   };
-} 
+}
