@@ -2,13 +2,16 @@
 
 ## Supported Versions
 
-GroqTales is committed to maintaining the security of our platform. We currently support and provide security updates for the following versions:
+GroqTales follows a rolling support window for the latest minor line plus the two previous patch releases. Older minors are considered End of Security Support (EoSS) once two newer minor versions ship or critical architectural changes occur.
 
-| Version | Supported          |
-|---------|--------------------|
-| Latest  | :white_check_mark: |
-| Previous| :white_check_mark: |
-| Older   | :x:                |
+| Version  | Status                 | Support Level                  | Notes |
+|----------|------------------------|--------------------------------|-------|
+| 1.1.2    | ✅ Active (Latest)     | Full (features + security)     | Current production release |
+| 1.1.1    | ✅ Active (Previous)   | Security & critical bug fixes  | Upgrade recommended |
+| 1.1.0    | ✅ Maintained          | Security (critical only)       | Will sunset with 1.2.0 |
+| < 1.1.0  | ❌ EoSS                | No updates                     | Please upgrade |
+
+Planned: When 1.2.0 is released, 1.1.0 will move to EoSS and only 1.1.2/1.1.x newest patches and 1.2.x will be fully supported.
 
 ## Reporting a Vulnerability
 
@@ -23,6 +26,30 @@ If you discover a security vulnerability in GroqTales, we appreciate your help i
 3. **Response Time**: We will acknowledge your report within 48 hours and strive to provide a detailed response within 7 days, including our assessment and planned next steps.
 4. **Disclosure Policy**: After the vulnerability is addressed, we will coordinate with you to publicly disclose the issue if necessary, giving credit for the discovery unless you prefer to remain anonymous.
 
+## Scope
+
+Security reporting covers: backend API routes, smart contracts in `contracts/`, build & deployment scripts, server-side rendering logic, authentication/session handling, NFT minting flows, and storage of user-generated content. Frontend cosmetic issues, denial of service via intentionally excessive legitimate usage, or vulnerabilities in experimental / clearly marked “disabled” Web3 code paths are out of scope unless they lead to data exposure or privilege escalation.
+
+## Vulnerability Handling Process
+
+1. Report received (private email)
+2. Triage & severity classification (see table below) – target within 48h
+3. Reproduction + impact assessment
+4. Patch development on private branch
+5. Optional coordinated disclosure window (up to 30 days for High/Critical if complex)
+6. Release new patched version & update CHANGELOG (Security section)
+7. Public disclosure (if warranted) and reporter credit
+
+### Severity Classification (OWASP Inspired)
+
+| Severity      | Example Impact                                       | Target Fix Window |
+|---------------|------------------------------------------------------|-------------------|
+| Critical      | Remote code execution, private key compromise        | 24–72h            |
+| High          | Auth bypass, privilege escalation, data exfiltration | 3–5 days          |
+| Medium        | Stored XSS, SSRF with limited scope                  | < 14 days         |
+| Low           | Reflected XSS, minor info disclosure                 | < 30 days         |
+| Informational | Best practice deviation                              | As capacity       |
+
 ## Security Practices
 
 - We regularly update dependencies to address known vulnerabilities.
@@ -32,6 +59,24 @@ If you discover a security vulnerability in GroqTales, we appreciate your help i
 
 ## Protecting Your Data
 
-GroqTales takes the security of user data seriously. We implement industry-standard measures to protect data both in transit and at rest. If you have concerns about data privacy or security, please refer to our [Privacy Policy](PRIVACY.md) or contact us directly.
+GroqTales takes the security of user data seriously. We implement industry-standard measures to protect data both in transit and at rest. If you have concerns about data privacy or security, please refer to our Privacy & Data Handling documentation (coming soon) or contact us directly.
+
+## Third-Party & Dependency Security
+
+- Dependencies are monitored during routine dependency update cycles.
+- High/Critical advisories trigger an expedited patch release.
+- Smart contract dependencies and compiler versions are pinned in `foundry.toml` / related config.
+
+If you find a vulnerability in a third-party package we use that directly affects GroqTales, you may still report it—include the upstream advisory if available.
+
+## Secure Development Guidelines (Abbreviated)
+
+- Principle of Least Privilege in service/API keys
+- Input validation & output encoding for user content rendering
+- Separation of client/server only data (no secrets in client bundles)
+- Avoid dynamic `eval` / code generation in runtime paths
+- Rate limiting and basic abuse detection for public endpoints
+
+Full secure coding checklist will be published in future documentation.
 
 Thank you for helping keep GroqTales and our community safe! 

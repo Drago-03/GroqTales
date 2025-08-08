@@ -1,17 +1,24 @@
+<!-- markdownlint-disable MD033 -->
 <h1 align="center">GroqTales</h1>
 <p align="center"><b>AI-Powered Web3 Storytelling Platform</b></p>
 <p align="center">Create, share, and own AI-generated stories and comics as NFTs on the Monad blockchain.</p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/deployment-production-green?style=flat-square" alt="Deployment Status"/>
-  <img src="https://img.shields.io/badge/deployment-preview-yellow?style=flat-square" alt="Deployment Preview"/>
-  <img src="https://img.shields.io/github/workflow/status/Drago-03/GroqTales/CI?label=CI&style=flat-square" alt="CI Status"/>
+  <img src="https://img.shields.io/badge/version-1.1.2-blue?style=flat-square" alt="Version"/>
+  <img src="https://img.shields.io/github/deployments/Drago-03/GroqTales/Production?label=deploy%20(prod)&logo=vercel&style=flat-square" alt="Production Deployment"/>
+  <img src="https://img.shields.io/github/deployments/Drago-03/GroqTales/Preview?label=deploy%20(preview)&logo=vercel&style=flat-square" alt="Preview Deployments"/>
+  <img src="https://img.shields.io/github/actions/workflow/status/Drago-03/GroqTales/ci.yml?branch=main&label=CI&style=flat-square" alt="CI Status"/>
+  <img src="https://img.shields.io/github/last-commit/Drago-03/GroqTales?style=flat-square" alt="Last Commit"/>
+  <img src="https://img.shields.io/github/commit-activity/m/Drago-03/GroqTales?style=flat-square" alt="Commit Activity"/>
+  <img src="https://img.shields.io/github/issues/Drago-03/GroqTales?style=flat-square" alt="Open Issues"/>
+  <img src="https://img.shields.io/github/issues-pr/Drago-03/GroqTales?style=flat-square" alt="Open PRs"/>
   <img src="https://img.shields.io/github/license/Drago-03/GroqTales?style=flat-square" alt="License"/>
   <img src="https://img.shields.io/badge/status-active-brightgreen?style=flat-square" alt="Active"/>
   <img src="https://img.shields.io/badge/contributions-welcome-blueviolet?style=flat-square" alt="Contributions Welcome"/>
   <img src="https://img.shields.io/badge/website-groqtales.xyz-0052cc?style=flat-square" alt="Website"/>
   <a href="mailto:support@groqtales.xyz"><img src="https://img.shields.io/badge/contact-support%40groqtales.xyz-orange?style=flat-square" alt="Contact Us"/></a>
   <a href="https://discord.gg/JK29FZRm"><img src="https://img.shields.io/discord/1245696768829601812?label=Discord&logo=discord&style=flat-square" alt="Discord"/></a>
+  
 </p>
 
 <p align="center">
@@ -28,6 +35,7 @@
 <p align="center">
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&duration=4000&pause=600&color=F97316&center=true&vCenter=true&width=800&lines=---+AI-powered+Web3+Storytelling+on+the+Monad+Blockchain+---" alt="Animated Divider" />
 </p>
+<!-- markdownlint-enable MD033 -->
 
 ## 🚀 What is GroqTales?
 
@@ -172,6 +180,7 @@ your first contribution to understand our guidelines and recognition process.
 
 ### Project Contributors
 
+<!-- markdownlint-disable MD033 -->
 <p align="center">
   <a href="https://github.com/Drago-03/GroqTales/graphs/contributors">
     <img src="https://contrib.rocks/image?repo=Drago-03/GroqTales" alt="Contributors" />
@@ -186,7 +195,7 @@ Thanks to these amazing people for making GroqTales better!
 
 ### Core Documentation
 
-- **Architecture Overview:** [ARCHITECTURE.md](ARCHITECTURE.md) - Comprehensive system design and
+- **Architecture Overview:** [ARCHITECTURE.md](docs/ARCHITECTURE.md) - Comprehensive system design and
   technical architecture
 - **Project Wiki:** [GitHub Wiki](https://github.com/Drago-03/GroqTales/wiki) - Detailed guides and
   documentation
@@ -197,15 +206,15 @@ Thanks to these amazing people for making GroqTales better!
 
 ### System Architecture
 
-- **Frontend Architecture:** [ARCHITECTURE.md#frontend](ARCHITECTURE.md#frontend-architecture) -
+- **Frontend Architecture:** [ARCHITECTURE.md#frontend](docs/ARCHITECTURE.md#frontend-architecture) -
   Next.js application structure
-- **Backend Architecture:** [ARCHITECTURE.md#backend](ARCHITECTURE.md#backend-architecture) - API
+- **Backend Architecture:** [ARCHITECTURE.md#backend](docs/ARCHITECTURE.md#backend-architecture) - API
   and service design
 - **Blockchain Integration:**
-  [ARCHITECTURE.md#blockchain](ARCHITECTURE.md#blockchain-architecture) - Web3 and smart contract
+  [ARCHITECTURE.md#blockchain](docs/ARCHITECTURE.md#blockchain-architecture) - Web3 and smart contract
   integration
-- **AI Integration:** [ARCHITECTURE.md#ai](ARCHITECTURE.md#ai-architecture) - Groq AI implementation
-- **System Diagrams:** [ARCHITECTURE.md#diagrams](ARCHITECTURE.md#system-diagrams) - Mermaid
+- **AI Integration:** [ARCHITECTURE.md#ai](docs/ARCHITECTURE.md#ai-architecture) - Groq AI implementation
+- **System Diagrams:** [ARCHITECTURE.md#diagrams](docs/ARCHITECTURE.md#system-diagrams) - Mermaid
   flowcharts and architecture diagrams
 
 ### Development Resources
@@ -247,3 +256,4 @@ tuned!_
 ---
 
 <p align="center"><i>Support us with a ⭐ and invite your friends to join the storytelling revolution!</i></p>
+<!-- markdownlint-enable MD033 -->
