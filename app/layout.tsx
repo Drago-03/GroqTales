@@ -95,11 +95,23 @@ export const viewport = {
   ],
 };
 
+// Disable static optimization for the entire app layout to prevent build-time
+// evaluation of client components that access browser-only globals.
+export const dynamic = 'force-dynamic';
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Force dynamic rendering to avoid static export attempting to execute
+  // client-only logic (e.g., window / localStorage usage) during build.
+  // This mitigates build errors like "window is not defined" across pages
+  // that are intentionally client components.
+  // (Next.js will ignore static optimization for this layout subtree.)
+  // Ref: https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#dynamic
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _forceDynamic: 'force-dynamic' = 'force-dynamic';
   return (
     <html lang="en" suppressHydrationWarning>
       <head>

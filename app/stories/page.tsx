@@ -1,3 +1,5 @@
+'use client';
+
 import {
   PenSquare,
   BookOpen,
@@ -55,8 +57,9 @@ export default function StoriesPage() {
               size="lg"
               className="theme-gradient-bg text-white border-0 hover:opacity-90"
               onClick={() => {
-                // Direct navigation with URL parameters
-                window.location.href = `/create/ai-story?source=stories_page&format=free`;
+                if (typeof window !== 'undefined') {
+                  window.location.href = `/create/ai-story?source=stories_page&format=free`;
+                }
               }}
             >
               <PenSquare className="mr-2 h-5 w-5" />

@@ -32,6 +32,50 @@ interface Web3ContextType {
 
 const Web3Context = createContext<Web3ContextType | undefined>(undefined);
 
+// Fallback (no-op) implementation used during static generation / SSR when the
+// provider tree isn't mounted (e.g. export builds on platforms that prerender
+// pages without executing RootLayout providers). This prevents build-time
+// crashes like: "TypeError: Cannot read properties of null (reading 'useContext')".
+// All methods either resolve immediately or throw a clear disabled message.
+const fallbackWeb3Context: Web3ContextType = {
+  account: null,
+  chainId: null,
+  balance: null,
+  connected: false,
+  connecting: false,
+  networkName: 'Unknown',
+  ensName: null,
+  connectWallet: async () => {
+    /* no-op during SSR */
+  },
+  disconnectWallet: () => {
+    /* no-op */
+  },
+  switchNetwork: async () => {
+    /* no-op */
+  },
+  mintNFTOnBase: async () => {
+    throw new Error('Web3 functionality unavailable during prerender');
+  },
+  mintNFTOnMonad: async () => {
+    throw new Error('Web3 functionality unavailable during prerender');
+  },
+  transferNFT: async () => {
+    throw new Error('Web3 functionality unavailable during prerender');
+  },
+  getUserNFTs: async () => [],
+  getMarketplaceNFTs: async () => [],
+  sellNFT: async () => {
+    throw new Error('Web3 functionality unavailable during prerender');
+  },
+  buyNFT: async () => {
+    throw new Error('Web3 functionality unavailable during prerender');
+  },
+  cancelListing: async () => {
+    throw new Error('Web3 functionality unavailable during prerender');
+  },
+};
+
 export function Web3Provider({ children }: { children: React.ReactNode }) {
   const [account, setAccount] = useState<string | null>(null);
   const [chainId, setChainId] = useState<number | null>(null);
@@ -145,8 +189,6 @@ export function Web3Provider({ children }: { children: React.ReactNode }) {
 
 export function useWeb3() {
   const context = useContext(Web3Context);
-  if (context === undefined) {
-    throw new Error('useWeb3 must be used within a Web3Provider');
-  }
-  return context;
+  // Return a safe fallback instead of throwing to keep build / prerender alive.
+  return context ?? fallbackWeb3Context;
 }
