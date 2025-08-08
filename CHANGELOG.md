@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Active full support: 1.1.2 (latest), 1.1.1 (previous). Security maintenance (critical fixes only): 1.1.0. All versions < 1.1.0 are End of Security Support (EoSS). See `SECURITY.md` for the evolving support policy.
 
+## [Unreleased]
+
+_Planned changes will appear here before the next tagged release._
+## [1.2.0] - 2025-09-05
+
 ## [1.1.2] - 2025-08-08
 
 ### Patch Summary
@@ -40,16 +45,16 @@ Codebase integrity restoration and build stabilization after widespread comment 
 
 ### Files Affected (Representative)
 
-`components/ui/{chart,pagination,skeleton,calendar,carousel}`  
+`components/ui/{chart.tsx,pagination.tsx,skeleton.tsx,calendar.tsx,carousel.tsx}`  
 `components/story-summary-backup.tsx`  
-`hooks/{use-groq,use-monad,use-story-analysis,use-story-summary,useAgent}`  
-`lib/{api-utils,constants,logger-broken,mock-data-backup,transaction-components}`  
+`hooks/{use-groq.ts,use-monad.ts,use-story-analysis.ts,use-story-summary.ts}`  
+`src/blockchain/onchain-agent/app/hooks/useAgent.ts`  
+`lib/{api-utils.ts,constants.ts,logger-broken.ts,mock-data-backup.ts,transaction-components.ts}`  
 `app/stories/page.tsx`  
-`src/blockchain/onchain-agent/app/api/agent/{route,create-agent,prepare-agentkit}.ts`
+`src/blockchain/onchain-agent/app/api/agent/{route.new.ts,create-agent.ts,prepare-agentkit.ts}`
 
 ### Notes
 
-- A clean `route.new.ts` was added earlier during repair; original `route.ts` still contained corruption and should be fully replaced (tracked in PR cleanup step if not yet removed).
 - No public API surface changes intended; all changes are internal quality / build health.
 
 ---
@@ -57,8 +62,6 @@ Codebase integrity restoration and build stabilization after widespread comment 
 ## [1.1.1] - 2025-08-05
 
 ### Major Changes (1.1.1)
-
--
 - **Production Deployment Focus**: Removed all blockchain/Web3 functionality to focus on core AI storytelling features
 - **GROQ-Only Integration**: Eliminated LLAMA support, maintaining only GROQ API for story generation
 - **Clean Architecture**: Commented out all onchain scripts and wallet mockups for streamlined deployment

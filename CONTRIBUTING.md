@@ -1,6 +1,7 @@
+<!-- markdownlint-enable MD033 -->
 # Contributing to GroqTales
 
-[![GSSOC'25](https://img.shields.io/badge/GSSOC'25-Read%20More-orange?style=flat-square)](./GSSOC'25.md)
+[![GSSOC'25](https://img.shields.io/badge/GSSOC'25-Read%20More-orange?style=flat-square)](docs/GSSOC'25.md)
 
 Thank you for your interest in contributing to **GroqTales**, an AI-powered Web3 storytelling platform! We welcome developers, writers, designers, and blockchain enthusiasts to help us build a creative, open, and secure platform. Please read this guide before getting started.
 
@@ -8,7 +9,7 @@ Thank you for your interest in contributing to **GroqTales**, an AI-powered Web3
 
 ## Table of Contents
 
-- [GSSOC'25](#gssoc25)
+- [GSSOC'25](docs/GSSOC'25.md)
 - [Code of Conduct](#code-of-conduct)
 - [How Can I Contribute?](#how-can-i-contribute)
 - [Using Issue Templates](#using-issue-templates)
@@ -25,7 +26,7 @@ Thank you for your interest in contributing to **GroqTales**, an AI-powered Web3
 
 ## GSSOC'25
 
-Are you contributing as part of **GirlScript Summer of Code 2025**? Please see our [GSSOC'25.md](./GSSOC'25.md) for program-specific guidelines, communication channels, and task lists.
+Are you contributing as part of **GirlScript Summer of Code 2025**? Please see our [GSSOC'25.md](.docs/GSSOC'25.md) for program-specific guidelines, communication channels, and task lists.
 
 ---
 
@@ -160,27 +161,60 @@ GroqTales/
 
 ## Pull Request Process
 
-1. **Fork the Repo & Create a Branch:**
-    ```bash
-    git checkout -b feature/your-feature
-    ```
-2. **Make Your Changes:**  
-   Test locally and ensure all new code is covered by tests.
-3. **Update Documentation:**  
-   Update relevant docs and comments.
-4. **Run Tests & Linting:**
-    ```bash
-    npm run test
-    npm run lint
-    ```
-5. **Push & Open a PR:**  
-   Push your branch and open a Pull Request using the template. Reference related issues.
-6. **Label Your PR:**  
-   Tag your PR with relevant labels (see [Labeling & Tagging](#labeling--tagging)).
-7. **Code Review:**  
-   Address feedback from maintainers.
-8. **Merge:**  
-   Once approved, your PR will be merged.
+1. **Fork the repository (do not branch from upstream directly).**
+2. **Clone your fork locally:**
+
+   ```bash
+   git clone https://github.com/<your-username>/GroqTales.git
+   cd GroqTales
+   git remote add upstream https://github.com/Drago-03/GroqTales.git
+   ```
+3. **Synchronize before starting work:**
+
+   ```bash
+   git fetch upstream
+   git checkout main
+   git merge upstream/main
+   ```
+4. **Create a feature branch (use descriptive, kebab or slash style):**
+
+   ```bash
+   git checkout -b feature/improve-story-generator
+   ```
+5. **Implement changes (small, atomic commits – use Conventional Commit style if possible).**
+6. **Run quality gates locally:**
+
+   ```bash
+   npm run lint
+   npm run type-check
+   npm test
+   ```
+7. **Rebase onto upstream/main before opening PR:**
+
+   ```bash
+   git fetch upstream
+   git rebase upstream/main
+   ```
+8. **Push to your fork:**
+
+   ```bash
+   git push -u origin feature/improve-story-generator
+   ```
+9. **Open a Pull Request:**
+   - Base: `Drago-03/GroqTales` `main`
+   - Head: `your-username:feature/improve-story-generator`
+   - Fill out PR template completely
+   - Link issue with `Fixes #<number>` where applicable
+10. **Address review feedback and keep branch rebased (avoid merge commits).**
+11. **PR Merge Policy:** squash or rebase merges preferred; maintainers handle final merge.
+12. **After merge:** sync your fork:
+
+   ```bash
+   git checkout main
+   git fetch upstream
+   git merge upstream/main
+   git push origin main
+   ```
 
 ---
 
@@ -226,3 +260,5 @@ To help maintainers and the community, **always tag your issues and PRs** with r
 
 Thank you for contributing to GroqTales!  
 If you have any questions, open an issue, ask in Discord, or contact the maintainers directly.
+
+<!-- markdownlint-enable MD033 -->

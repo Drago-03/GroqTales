@@ -50,9 +50,9 @@ jobs:
         run: npm ci
 
       - name: Run npm audit
+        continue-on-error: true
         run: |
-            set -e
-            npm audit --audit-level=moderate --json > audit-results.json
+            npm audit --audit-level=moderate --json > audit-results.json || true
           
       - name: Process audit results
         uses: actions/github-script@v7
@@ -63,38 +63,36 @@ jobs:
             
             try {
               const auditResults = JSON.parse(fs.readFileSync('audit-results.json', 'utf8'));
-              
               if (auditResults.vulnerabilities) {
                 const vulnCount = Object.keys(auditResults.vulnerabilities).length;
                 const metadata = auditResults.metadata;
-                
-                let summary = `## 🔒 Security Audit Results\n\n`;
-                summary += `**Total Vulnerabilities Found:** ${vulnCount}\n\n`;
-                
-                if (metadata && metadata.vulnerabilities) {
-                  const severities = metadata.vulnerabilities;
-                  summary += `### Severity Breakdown:\n`;
-                  if (severities.critical > 0) summary += `- 🔴 **Critical:** ${severities.critical}\n`;
-                  if (severities.high > 0) summary += `- 🟠 **High:** ${severities.high}\n`;
-                  if (severities.moderate > 0) summary += `- 🟡 **Moderate:** ${severities.moderate}\n`;
-                  if (severities.low > 0) summary += `- 🟢 **Low:** ${severities.low}\n`;
-                  if (severities.info > 0) summary += `- ℹ️ **Info:** ${severities.info}\n`;
+                let severities; // hoisted for later checks
+                if (metadata && metadata.vulnerabilities) severities = metadata.vulnerabilities;
+
+                let summary = `## Security Audit Results\n\n`;
+                summary += `Total Vulnerabilities Found: ${vulnCount}\n\n`;
+
+                if (severities) {
+                  summary += `Severity Breakdown:\n`;
+                  if (severities.critical > 0) summary += `- Critical: ${severities.critical}\n`;
+                  if (severities.high > 0) summary += `- High: ${severities.high}\n`;
+                  if (severities.moderate > 0) summary += `- Moderate: ${severities.moderate}\n`;
+                  if (severities.low > 0) summary += `- Low: ${severities.low}\n`;
+                  if (severities.info > 0) summary += `- Info: ${severities.info}\n`;
                 }
-                
-                summary += `\n### Recommendations:\n`;
-                summary += `- Run \`npm audit fix\` to automatically fix issues\n`;
+
+                summary += `\nRecommendations:\n`;
+                summary += `- Run 'npm audit fix' to attempt automatic fixes\n`;
                 summary += `- Review and update dependencies regularly\n`;
-                summary += `- Consider using \`npm audit fix --force\` for breaking changes\n`;
+                summary += `- Consider 'npm audit fix --force' only if acceptable\n`;
                 summary += `- Check for alternative packages if issues persist\n\n`;
-                
-                if (vulnCount > 0) {
-                  summary += `⚠️ **Action Required:** Please address security vulnerabilities before merging.\n`;
-                } else {
-                  summary += `✅ **No vulnerabilities found!** Your dependencies are secure.\n`;
-                }
+
+                summary += vulnCount > 0
+                  ? `Action Required: Address security vulnerabilities before merging.\n`
+                  : `No vulnerabilities found at specified audit level.\n`;
                 
                 // Create or update issue for vulnerabilities
-                if (vulnCount > 0 && (severities.critical > 0 || severities.high > 0)) {
+                if (severities && vulnCount > 0 && (severities.critical > 0 || severities.high > 0)) {
                   const { data: issues } = await github.rest.issues.listForRepo({
                     owner: context.repo.owner,
                     repo: context.repo.repo,

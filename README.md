@@ -37,7 +37,7 @@
 </p>
 <!-- markdownlint-enable MD033 -->
 
-## 🚀 What is GroqTales?
+## What is GroqTales?
 
 GroqTales is an open-source, AI-powered Web3 storytelling platform. Writers and artists can generate
 immersive narratives or comic-style stories using Groq AI, then mint and trade them as NFTs on the
@@ -46,7 +46,7 @@ world of creative writing, generative AI, and decentralized technology.
 
 ---
 
-## 🌟 Features
+## Features
 
 - **AI-Driven Story & Comic Generation**  
   Use Groq AI to generate stories or comic panel outlines by specifying title, genre, setting,
@@ -73,7 +73,7 @@ world of creative writing, generative AI, and decentralized technology.
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Frontend:** Next.js, React, TailwindCSS, shadcn/ui
 - **Backend:** Node.js, API Routes
@@ -84,7 +84,7 @@ world of creative writing, generative AI, and decentralized technology.
 
 ---
 
-## 🏁 Quick Start
+## Quick Start
 
 ```bash
 git clone https://github.com/Drago-03/GroqTales
@@ -104,7 +104,7 @@ and deployment details.
 
 ---
 
-## 🧑‍💻 For Developers
+## For Developers
 
 - **Folder Structure:**
   - `/app` – Next.js application (pages, UI, routes)
@@ -162,7 +162,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ---
 
-## 🛣️ Roadmap
+## Roadmap
 
 - AI visuals: Integrate Stable Diffusion/DALL·E for comic panels
 - Multilingual story generation
@@ -173,7 +173,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ---
 
-## 👥 Contributors
+## Contributors
 
 We value every contribution! Please read our [CONTRIBUTORS.md](CONTRIBUTORS.md) file before making
 your first contribution to understand our guidelines and recognition process.
@@ -191,7 +191,7 @@ Thanks to these amazing people for making GroqTales better!
 
 ---
 
-## 📚 Documentation & Architecture
+## Documentation & Architecture
 
 ### Core Documentation
 
@@ -227,7 +227,7 @@ Thanks to these amazing people for making GroqTales better!
 
 ---
 
-## 📚 Resources
+## Resources
 
 - **Website:** [groqtales.xyz](https://www.groqtales.xyz)
 - **Docs:** [Wiki](https://github.com/Drago-03/GroqTales/wiki)
@@ -236,24 +236,24 @@ Thanks to these amazing people for making GroqTales better!
 
 ---
 
-## 🛡️ License
+## License
 
 Released under the [MIT License](LICENSE).
 
 ---
 
-## 🔒 Security
+## Security
 
 For vulnerabilities or security-related issues, please refer to [SECURITY.md](SECURITY.md).
 
 ---
 
-## 📢 Note
+## Note
 
 _GroqTales currently operates on Monad Testnet for NFT minting. Mainnet support coming soon—stay
 tuned!_
 
 ---
 
-<p align="center"><i>Support us with a ⭐ and invite your friends to join the storytelling revolution!</i></p>
+<p align="center"><i>Support the project and share it with others.</i></p>
 <!-- markdownlint-enable MD033 -->
