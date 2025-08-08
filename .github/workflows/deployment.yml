@@ -110,14 +110,34 @@ jobs:
           echo "preview_url=$url" >> $GITHUB_OUTPUT
           echo "Deployed to: $url"
 
+      - name: Create GitHub Deployment
+        id: gh_deploy
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const envName = 'production';
+            const ref = context.ref.replace('refs/heads/','');
+            const res = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref,
+              environment: envName,
+              required_contexts: [],
+              auto_merge: false,
+              transient_environment: false,
+              production_environment: envName === 'production'
+            });
+            core.setOutput('deployment_id', res.data.id);
+
       - name: Update deployment status
         uses: actions/github-script@v7
         with:
           script: |
+            const deploymentId = '${{ steps.gh_deploy.outputs.deployment_id }}';
             await github.rest.repos.createDeploymentStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              deployment_id: context.payload.deployment?.id || 0,
+              deployment_id: Number(deploymentId),
               state: 'success',
               environment_url: '${{ steps.deploy.outputs.preview_url }}',
               description: 'Deployment successful'
