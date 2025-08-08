@@ -64,7 +64,7 @@ export class Logger {
 }
   /**
    * Log a warning message
-
+   */
   warn(message: string, metadata?: Record<string, unknown> | undefined): void {
     const options: any = {};
     if (metadata !== undefined) options.metadata = metadata;
@@ -72,7 +72,7 @@ export class Logger {
 }
   /**
    * Log an info message
-
+   */
   info(message: string, metadata?: Record<string, unknown> | undefined): void {
     const options: any = {};
     if (metadata !== undefined) options.metadata = metadata;
@@ -80,7 +80,7 @@ export class Logger {
 }
   /**
    * Log an HTTP request/response
-
+   */
   http(message: string, metadata?: Record<string, unknown> | undefined): void {
     const options: any = {};
     if (metadata !== undefined) options.metadata = metadata;
@@ -88,7 +88,7 @@ export class Logger {
 }
   /**
    * Log a debug message
-
+   */
   debug(message: string, metadata?: Record<string, unknown> | undefined): void {
     const options: any = {};
     if (metadata !== undefined) options.metadata = metadata;
@@ -96,7 +96,7 @@ export class Logger {
 }
   /**
    * Log performance metrics
-
+   */
   performance(operation: string, duration: number, metadata?: Record<string, unknown>): void {
     if (this.config.enablePerformanceLogging) {
       this.info(`Performance: ${operation}`, {
@@ -108,7 +108,7 @@ export class Logger {
 }
   /**
    * Time an operation
-
+   */
   time<T>(operation: string, fn: () => T | Promise<T>): T | Promise<T> {
     const start = Date.now();
 
@@ -134,7 +134,7 @@ export class Logger {
 }
   /**
    * Core logging method
-
+   */
   private log(
     level: LogLevel,
     message: string,
@@ -168,7 +168,7 @@ export class Logger {
 }
   /**
    * Log to console with proper formatting
-
+   */
   private logToConsole(entry: LogEntry): void {
     const levelName = LogLevel[entry.level];
     const timestamp = entry.timestamp.toISOString();
@@ -220,7 +220,7 @@ export class Logger {
 }
   /**
    * Log to file (in Node.js environment)
-
+   */
   private logToFile(entry: LogEntry): void {
     if (typeof window !== 'undefined') {
       return; // Skip file logging in browser
@@ -258,7 +258,7 @@ export class Logger {
 }
   /**
    * Log to remote endpoint
-
+   */
   private logToRemote(entry: LogEntry): void {
     if (!this.config.remoteEndpoint) {
       return;
@@ -294,17 +294,18 @@ export class Logger {
 }
 /**
  * Request logging middleware
-
+ */
 export class RequestLogger {
   private logger: Logger;
 
-  function constructor(logger: Logger) {
+  constructor(logger: Logger) {
     this.logger = logger;
-}
+  }
+
   /**
    * Express.js middleware for request logging
-
-  function middleware() {
+   */
+  middleware() {
     return (req: any, res: any, next: any) => {
       const start = Date.now();
       const requestId = req.headers['x-request-id'] || Math.random().toString(36).substr(2, 9);
@@ -335,9 +336,8 @@ export class RequestLogger {
 
       next();
     };
+  }
 }
-}
-/**
  * Create application loggers
 
 export const createLogger = (context?: string, config?: Partial<LoggerConfig>): Logger => {

@@ -7,38 +7,14 @@ import {
   walletActionProvider,
   WalletProvider,
   wethActionProvider,
-} from "@coinbase/agentkit";
-import * as fs from "fs";
-import { Address, Hex } from "viem";
-import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
+} from '@coinbase/agentkit';
+import * as fs from 'fs';
+import { Address, Hex } from 'viem';
+import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts';
 
 /**
- * AgentKit Integration Route
- *
- * This file is your gateway to integrating AgentKit with your product.
- * It defines the core capabilities of your agent through WalletProvider
- * and ActionProvider configuration.
- *
- * Key Components:
- * 1. WalletProvider Setup:
- *    - Configures the blockchain wallet integration
- *    - Learn more: https://github.com/coinbase/agentkit/tree/main/typescript/agentkit#evm-wallet-providers
- *
- * 2. ActionProviders Setup:
- *    - Defines the specific actions your agent can perform
- *    - Choose from built-in providers or create custom ones:
- *      - Built-in: https://github.com/coinbase/agentkit/tree/main/typescript/agentkit#action-providers
- *      - Custom: https://github.com/coinbase/agentkit/tree/main/typescript/agentkit#creating-an-action-provider
- *
- * # Next Steps:
- * - Explore the AgentKit README: https://github.com/coinbase/agentkit
- * - Experiment with different LLM configurations
- * - Fine-tune agent parameters for your use case
- *
- * ## Want to contribute?
- * Join us in shaping AgentKit! Check out the contribution guide:
- * - https://github.com/coinbase/agentkit/blob/main/CONTRIBUTING.md
- * - https://discord.gg/CDP
+ * AgentKit integration: prepares WalletProvider and action providers.
+ */
 
 // Configure a file to persist the agent's Smart Wallet + Private Key data
 const WALLET_DATA_FILE = "wallet_data.txt";
@@ -59,16 +35,8 @@ type WalletData = {
 
  *
 
- */ prepareAgentkitAndWalletProvider
-
-export async function prepareAgentkitAndWalletProvider(): Promise<{
-  agentkit: AgentKit;
-  walletProvider: WalletProvider;
-}> {
-  try {
-    let walletData: WalletData | null = null;
-    let privateKey: Hex | null = null;
-
+ * Prepares the AgentKit and WalletProvider.
+ */
     // Read existing wallet data if available
     if (fs.existsSync(WALLET_DATA_FILE)) {
       try {

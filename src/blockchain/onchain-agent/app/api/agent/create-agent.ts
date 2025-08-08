@@ -19,12 +19,8 @@ import { prepareAgentkitAndWalletProvider } from './prepare-agentkit';
  *    - Pass the LLM, tools, and memory into `createReactAgent()`
  *    - Configure agent-specific parameters
 
-// The agent
-let agent: any = null; // Temporary placeholder to bypass build error getOrInitializeAgent
-
- *
-
- *
+// The agent instance (placeholder)
+let agent: any = null;
 
 export async function createAgent(): Promise<any> {
   // If agent has already been initialized, return it
@@ -32,7 +28,7 @@ export async function createAgent(): Promise<any> {
     return agent;
 }
   try {
-    const { agentkit, walletProvider } = await prepareAgentkitAndWalletProvider();
+  const { agentkit, walletProvider } = await prepareAgentkitAndWalletProvider();
 
     // Temporary workaround: Commenting out all langchain related code due to module not found errors
     // const tools = getLangChainTools();

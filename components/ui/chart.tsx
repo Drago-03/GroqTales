@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import * as React from 'react';
 import * as RechartsPrimitive from 'recharts';
 
@@ -23,12 +22,13 @@ type ChartContextProps = {
   config: ChartConfig;
 };
 
-const ChartContext = React.createContext<ChartContextProps | null>(null); useChart() {
-  const context = React.useContext(ChartContext);
+const ChartContext = React.createContext<ChartContextProps | null>(null);
 
+export function useChart() {
+  const context = React.useContext(ChartContext);
   if (!context) {
     throw new Error('useChart must be used within a <ChartContainer />');
-}
+  }
   return context;
 }
 const ChartContainer = React.forwardRef<
@@ -244,8 +244,9 @@ const ChartTooltipContent = React.forwardRef<
         </div>
       </div>
     );
-}
-);
+    }
+  );
+});
 ChartTooltipContent.displayName = 'ChartTooltip';
 
 const ChartLegend = RechartsPrimitive.Legend;
@@ -303,13 +304,15 @@ const ChartLegendContent = React.forwardRef<
         })}
       </div>
     );
-}
-);
+    }
+  );
+});
 ChartLegendContent.displayName = 'ChartLegend';
 
-// Helper to extract item config from a payload. getPayloadConfigFromPayload(
+// Helper to extract item config from a payload.
+function getPayloadConfigFromPayload(
   config: ChartConfig,
-  payload: unknown,
+  payload: any,
   key: string
 ) {
   if (typeof payload !== 'object' || payload === null) {
@@ -337,11 +340,12 @@ ChartLegendContent.displayName = 'ChartLegend';
     configLabelKey = payloadPayload[
       key as keyof typeof payloadPayload
     ] as string;
-}
+  }
   return configLabelKey in config
     ? config[configLabelKey]
     : config[key as keyof typeof config];
 }
+
 export {
   ChartContainer,
   ChartTooltip,
@@ -350,5 +354,3 @@ export {
   ChartLegendContent,
   ChartStyle,
 };
-
-export { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent };

@@ -149,15 +149,15 @@ interface UseStorySummaryResult {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to delete summary");
-}
+        throw new Error(data.error || 'Failed to delete summary');
+      }
       return true;
     } catch (err: any) {
-      setError(err.message || "An error occurred");
+      setError(err.message || 'An error occurred');
       return false;
     } finally {
       setIsLoading(false);
-}
+    }
   };
 
   return {

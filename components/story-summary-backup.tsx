@@ -21,7 +21,7 @@ interface StorySummaryProps {
   apiKey?: string;
   className?: string;
 }
-  export function StorySummary({ 
+export function StorySummary({ 
   storyId,
   content,
   title = "Story Summary",
@@ -127,11 +127,7 @@ interface StorySummaryProps {
 
   // Render sentiment badge with appropriate color
   const renderSentimentBadge = (sentiment: string) => {
-      /**
-   * sentimentMap React component
-   * 
-
-    const sentimentMap: Record<string, { color: string, icon: JSX.Element }> = {
+    const sentimentMap: Record<string, { color: string; icon: JSX.Element }> = {
       "positive": { 
         color: "bg-green-500/10 text-green-500 hover:bg-green-500/20", 
         icon: <CheckCircle className="h-3 w-3 mr-1" /> 
@@ -147,11 +143,13 @@ interface StorySummaryProps {
       "neutral": { 
         color: "bg-blue-500/10 text-blue-500 hover:bg-blue-500/20", 
         icon: <></>
-}
+      }
     };
 
-    const { color, icon } = sentimentMap[sentiment.toLowerCase()] || 
-                            { color: "bg-gray-500/10 text-gray-500 hover:bg-gray-500/20", icon: null };
+    const { color, icon } = sentimentMap[sentiment.toLowerCase()] || {
+      color: 'bg-gray-500/10 text-gray-500 hover:bg-gray-500/20',
+      icon: <></>,
+    };
 
     return (
       <Badge 

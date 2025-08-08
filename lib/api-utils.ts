@@ -377,7 +377,7 @@ export class RateLimiter {
         remaining: 0,
         resetTime: userLimit.resetTime,
       };
-}
+    }
     // Increment count
     userLimit.count++;
 
@@ -386,19 +386,19 @@ export class RateLimiter {
       remaining: maxRequests - userLimit.count,
       resetTime: userLimit.resetTime,
     };
-}
+  }
+
   /**
    * Clean up expired rate limit entries
-
+   */
   private static cleanup(): void {
     const now = Date.now();
-
     for (const [key, value] of this.requests.entries()) {
       if (now > value.resetTime) {
         this.requests.delete(key);
-}
-}
-}
+      }
+    }
+  }
 }
 export default {
   ResponseBuilder,

@@ -60,21 +60,21 @@ interface UseStoryAnalysisResult {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to analyze story");
-}
+        throw new Error(data.error || 'Failed to analyze story');
+      }
       setResult(data);
       return data;
     } catch (err: any) {
-      setError(err.message || "An error occurred");
+      setError(err.message || 'An error occurred');
       return null;
     } finally {
       setIsLoading(false);
-}
+    }
   };
 
   /**
    * Clear the analysis result
-
+   */
   const clearResult = () => {
     setResult(null);
     setError(null);

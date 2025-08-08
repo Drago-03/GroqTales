@@ -4,10 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { useAgent } from "./hooks/useAgent";
 // import ReactMarkdown from "react-markdown";
 
-/**
- * Home page for the AgentKit Quickstart
- *
-
 export default function Home() {
   const [input, setInput] = useState("");
   const { messages, sendMessage, isThinking } = useAgent();
@@ -49,7 +45,7 @@ export default function Home() {
                     : "bg-gray-100 dark:bg-gray-700 self-start"
                 }`}
               >
-                {/* Temporary workaround: Replacing ReactMarkdown with plain text due to module not found error */}
+                {/* Markdown rendering temporarily disabled */}
                 {/* <ReactMarkdown
                   components={{
                     a: props => (

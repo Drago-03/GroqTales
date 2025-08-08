@@ -1,6 +1,6 @@
 /**
  * Mock data generation for stories and NFTs
-
+ */
 // Generate mock NFT stories data
 export const generateNftEntries = (count: number) => {
   const genres = [
@@ -79,7 +79,7 @@ export const topNftStories = [
 
 /**
  * Fetches a story by its ID
-
+ */
 export function fetchStoryById(id: string, limit?: number, relatedStories?: boolean): any {
   // Combine top stories with generated stories
   const allStories = [...topNftStories, ...generateNftEntries(90)];
@@ -99,7 +99,7 @@ export function fetchStoryById(id: string, limit?: number, relatedStories?: bool
 }
 /**
  * Fetches popular stories by genre
-
+ */
 export function fetchPopularStoriesByGenre(genre: string, limit: number = 8): any[] {
   // Combine top stories with generated stories
   const allStories = [...topNftStories, ...generateNftEntries(90)];

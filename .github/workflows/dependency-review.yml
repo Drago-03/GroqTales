@@ -43,7 +43,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version-file: '.nvmrc'
           cache: 'npm'
 
       - name: Install dependencies
@@ -51,7 +51,8 @@ jobs:
 
       - name: Run npm audit
         run: |
-          npm audit --audit-level moderate --json > audit-results.json || true
+            set -e
+            npm audit --audit-level=moderate --json > audit-results.json
           
       - name: Process audit results
         uses: actions/github-script@v7
@@ -149,7 +150,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version-file: '.nvmrc'
           cache: 'npm'
 
       - name: Check for updates
@@ -247,7 +248,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version-file: '.nvmrc'
           cache: 'npm'
 
       - name: Install license checker

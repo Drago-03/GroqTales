@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 
 /**
  * Types for the Groq API responses
-
+ */
 type GroqModels = {
   [key: string]: string;
 };
@@ -34,7 +34,7 @@ type UseGroqResult = {
 
 /**
  * Hook for interacting with the Groq AI service
-
+ */
 export function useGroq(): UseGroqResult {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,7 +44,7 @@ export function useGroq(): UseGroqResult {
 
   /**
    * Fetch available Groq models
-
+   */
   const fetchModels = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -72,7 +72,7 @@ export function useGroq(): UseGroqResult {
 
   /**
    * Test connection to Groq API
-
+   */
   const testConnection = useCallback(async (apiKey?: string, useSpecialModel = true): Promise<{success: boolean, message: string, model?: string}> => {
     try {
       setIsLoading(true);
@@ -105,7 +105,7 @@ export function useGroq(): UseGroqResult {
 
   /**
    * Generate content with Groq
-
+   */
   const generate = useCallback(
     async (prompt: string, model?: string, options?: GenerateOptions): Promise<string> => {
       try {
@@ -148,7 +148,7 @@ export function useGroq(): UseGroqResult {
 
   /**
    * Analyze content with Groq
-
+   */
   const analyze = useCallback(async (content: string, apiKey?: string): Promise<any> => {
     try {
       setIsLoading(true);
@@ -183,7 +183,7 @@ export function useGroq(): UseGroqResult {
 
   /**
    * Generate story ideas with Groq
-
+   */
   const generateIdeas = useCallback(
     async (genre: string, theme?: string, length: 'short' | 'medium' | 'long' = 'medium', apiKey?: string): Promise<any[]> => {
       try {
@@ -223,7 +223,7 @@ export function useGroq(): UseGroqResult {
 
   /**
    * Improve content with Groq
-
+   */
   const improve = useCallback(async (content: string, focus?: string, apiKey?: string): Promise<string> => {
     try {
       setIsLoading(true);

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { useWeb3 } from '@/components/providers/web3-provider';
 import type { StoryMetadata, MintedNFT } from '@/lib/monad-service';
 
@@ -19,7 +19,10 @@ type UseMonadResult = {
   error: string | null;
   //switchToMonadNetwork: () => Promise<boolean>;
   //isOnMonadNetwork: boolean;
-}; } = useWeb3();
+};
+
+export function useMonad() {
+  const { account } = useWeb3();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   //const [networkInfo, setNetworkInfo] = useState<MonadNetworkInfo | null>(null);
@@ -148,7 +151,7 @@ type UseMonadResult = {
     } finally {
       setIsLoading(false);
 }
-  }, [account/*, isOnMonadNetwork, switchToMonadNetwork*/]);
+  }, [account]);
 
   /**
    * Fetch an NFT by token ID
@@ -281,5 +284,5 @@ type UseMonadResult = {
     error,
     //switchToMonadNetwork,
     //isOnMonadNetwork,
-  } as UseMonadResult;
+  } as any;
 }

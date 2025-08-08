@@ -1,6 +1,6 @@
 /**
  * Application metadata
-
+ */
 export const APP_CONFIG = {
   name: 'GroqTales',
   description: 'AI-Powered Web3 Storytelling Platform',
@@ -11,7 +11,7 @@ export const APP_CONFIG = {
 
 /**
  * API configuration
-
+ */
 export const API_CONFIG = {
   baseUrl: process.env.NEXT_PUBLIC_API_URL || '/api',
   timeout: 30000,
@@ -27,7 +27,7 @@ export const API_CONFIG = {
 
 /**
  * Blockchain configuration
-
+ */
 export const BLOCKCHAIN_CONFIG = {
   networks: {
     mainnet: {
@@ -54,7 +54,7 @@ export const BLOCKCHAIN_CONFIG = {
 
 /**
  * Story configuration
-
+ */
 export const STORY_CONFIG = {
   maxLength: {
     title: 100,
@@ -93,7 +93,7 @@ export const STORY_CONFIG = {
 
 /**
  * NFT configuration
-
+ */
 export const NFT_CONFIG = {
   maxFileSize: 50 * 1024 * 1024, // 50MB
   supportedImageTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
@@ -111,7 +111,7 @@ export const NFT_CONFIG = {
 
 /**
  * UI configuration
-
+ */
 export const UI_CONFIG = {
   pagination: {
     defaultPageSize: 20,
@@ -142,7 +142,7 @@ export const UI_CONFIG = {
 
 /**
  * Feature flags
-
+ */
 export const FEATURE_FLAGS = {
   enableComments: true,
   enableRatings: true,
@@ -156,7 +156,7 @@ export const FEATURE_FLAGS = {
 
 /**
  * External service URLs
-
+ */
 export const EXTERNAL_URLS = {
   documentation: 'https://docs.groqtales.com',
   github: 'https://github.com/groqtales/groqtales',
@@ -167,7 +167,7 @@ export const EXTERNAL_URLS = {
 
 /**
  * File upload configuration
-
+ */
 export const UPLOAD_CONFIG = {
   maxFileSize: 10 * 1024 * 1024, // 10MB
   allowedTypes: {
@@ -182,7 +182,7 @@ export const UPLOAD_CONFIG = {
 
 /**
  * Cache configuration
-
+ */
 export const CACHE_CONFIG = {
   ttl: {
     short: 5 * 60, // 5 minutes
@@ -199,7 +199,7 @@ export const CACHE_CONFIG = {
 
 /**
  * Analytics configuration
-
+ */
 export const ANALYTICS_CONFIG = {
   googleAnalytics: process.env.NEXT_PUBLIC_GA_ID || '',
   mixpanel: process.env.NEXT_PUBLIC_MIXPANEL_ID || '',
@@ -216,7 +216,7 @@ export const ANALYTICS_CONFIG = {
 
 /**
  * Validation patterns
-
+ */
 export const VALIDATION_PATTERNS = {
   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   username: /^[a-zA-Z0-9_-]{3,20}$/,
@@ -227,7 +227,7 @@ export const VALIDATION_PATTERNS = {
 
 /**
  * Error messages
-
+ */
 export const ERROR_MESSAGES = {
   general: {
     networkError: 'Network error. Please check your connection and try again.',
@@ -256,7 +256,7 @@ export const ERROR_MESSAGES = {
 
 /**
  * Success messages
-
+ */
 export const SUCCESS_MESSAGES = {
   story: {
     created: 'Story created successfully!',
