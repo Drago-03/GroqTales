@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback } from "react";
 
 // Mock context type
 interface MiniKitContext {
@@ -30,7 +30,7 @@ export function useMiniKit() {
 
 export function useAddFrame() {
   return () => {
-    console.log('Mock: Frame added');
+    console.log("Mock: Frame added");
     return true;
   };
 }
@@ -38,8 +38,8 @@ export function useAddFrame() {
 
 export function useOpenUrl() {
   return (url: string) => {
-    console.log('Mock URL opened:', url);
-    window.open(url, '_blank');
+    console.log("Mock URL opened:", url);
+    window.open(url, "_blank");
     return true;
   };
 }
@@ -47,7 +47,7 @@ export function useOpenUrl() {
 
 export function useNotification() {
   return async ({ title, body }: { title: string; body: string }) => {
-    console.log('Mock notification sent:', { title, body });
+    console.log("Mock notification sent:", { title, body });
     return true;
   };
 }

@@ -1,10 +1,9 @@
 ---
-name: "Big Proposal"
-about: "For large, complex changes or major new features"
-title: "[BIG] <title>"
+name: 'Big Proposal'
+about: 'For large, complex changes or major new features'
+title: '[BIG] <title>'
 labels: enhancement, big
 assignees: ''
-
 ---
 
 ## Summary
@@ -13,7 +12,8 @@ Describe the big idea or major change you are proposing.
 
 ## Motivation
 
-Why is this important for GroqTales? (e.g., impact on AI storytelling, Web3 integration, NFT features, community, etc.)
+Why is this important for GroqTales? (e.g., impact on AI storytelling, Web3 integration, NFT
+features, community, etc.)
 
 ## Detailed Description
 
@@ -37,5 +37,6 @@ Add any screenshots, diagrams, or references to documentation.
 
 ---
 
-**Related Links:**  
+**Related Links:**
+
 - [GroqTales Website](https://www.groqtales.xyz/)
