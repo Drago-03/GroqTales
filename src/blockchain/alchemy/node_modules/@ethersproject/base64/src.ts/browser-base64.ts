@@ -19,5 +19,3 @@ export function encode(data: BytesLike): string {
     }
     return btoa(textData);
 }
-
-

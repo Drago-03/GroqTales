@@ -15,7 +15,9 @@ export async function sendFrameNotification(params: {
   // Implementation for sending notification to a specific FID
   // This is a placeholder for actual notification logic
   console.log(
-    `Sending notification to FID: ${fid}, Title: ${title}, Body: ${body}, Details: ${notificationDetails ? JSON.stringify(notificationDetails) : 'none'}`
+    `Sending notification to FID: ${fid}, Title: ${title}, Body: ${body}, Details: ${
+      notificationDetails ? JSON.stringify(notificationDetails) : 'none'
+    }`
   );
 
   // Return a mock response for now
