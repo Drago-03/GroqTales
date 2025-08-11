@@ -1,10 +1,9 @@
 ---
-name: "Other"
-about: "For anything not covered by other templates"
-title: "[Other] <title>"
+name: 'Other'
+about: 'For anything not covered by other templates'
+title: '[Other] <title>'
 labels: ''
 assignees: ''
-
 ---
 
 ## Describe your issue or request
@@ -17,5 +16,6 @@ Add any other context, links, or screenshots.
 
 ---
 
-**Related Links:**  
+**Related Links:**
+
 - [GroqTales Website](https://www.groqtales.xyz/)
