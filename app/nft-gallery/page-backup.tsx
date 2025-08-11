@@ -446,7 +446,9 @@ export default function NFTGalleryBackup() {
                             />
                           </div>
                           <div
-                            className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-semibold text-white ${getRarityColor(story.rarity)}`}
+                            className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-semibold text-white ${getRarityColor(
+                              story.rarity
+                            )}`}
                           >
                             {story.rarity.charAt(0).toUpperCase() +
                               story.rarity.slice(1)}
