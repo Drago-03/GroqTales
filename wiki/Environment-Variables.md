@@ -47,9 +47,11 @@ To configure environment variables for GroqTales:
 
 1. **Copy the Example File**: After cloning the repository, duplicate the `.env.example` file to
    create your local configuration:
+
    ```bash
    cp .env.example .env.local
    ```
+
 2. **Edit the File**: Open `.env.local` in a text editor and replace placeholder values with your
    actual credentials or mock values for development. The `.env.example` file lists all variables
    used by GroqTales with placeholder values.
