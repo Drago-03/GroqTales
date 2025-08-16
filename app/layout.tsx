@@ -18,6 +18,8 @@ import { Web3Provider } from '@/components/providers/web3-provider'; // DISABLED
 import { QueryProvider } from '@/components/query-provider';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
+import BackToTop from '@/components/back-to-top';
+
 
 // Optimize font loading
 const inter = Inter({
@@ -81,9 +83,19 @@ export const metadata: Metadata = {
   title: 'GroqTales - AI-Generated Story NFTs',
   description:
     'Create, mint, and share AI-generated stories as NFTs on the Monad blockchain.',
-  // Removed themeColor & viewport (moved to dedicated exports)
   metadataBase: new URL(process.env.NEXT_PUBLIC_URL || 'https://groqtales.com'),
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' }, 
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png', 
+  },
 };
+
 
 export const viewport = {
   width: 'device-width',
@@ -169,6 +181,7 @@ export default function RootLayout({
           </QueryProvider>
         </Web3Provider>
       </body>
+                  <BackToTop /> 
     </html>
   );
 }
