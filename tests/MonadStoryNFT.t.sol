@@ -29,7 +29,7 @@ contract MonadStoryNFTTest is Test {
     function testMintStory() public {
         vm.prank(user1);
         uint256 tokenId = storyNFT.mintStory{value: 0.001 ether}(STORY_HASH, METADATA_URI);
-        
+
         assertEq(tokenId, 0);
         assertEq(storyNFT.ownerOf(tokenId), user1);
         assertEq(storyNFT.getStoryContent(tokenId), STORY_HASH);
@@ -64,4 +64,4 @@ contract MonadStoryNFTTest is Test {
         uint256 finalBalance = owner.balance;
         assertEq(finalBalance - initialBalance, 0.001 ether);
     }
-} 
+}
