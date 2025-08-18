@@ -40,7 +40,7 @@
     --radius: 0.5rem;
     --theme-gradient: var(--light-gradient);
   }
-  
+
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -68,11 +68,11 @@
     --chart-5: 199 89% 48%;
     --theme-gradient: var(--dark-gradient);
   }
-  
+
   html {
     font-family: var(--font-comic);
   }
-  
+
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-comic);
@@ -90,13 +90,13 @@
   button, input, select, textarea {
     font-family: var(--font-comic);
   }
-  
+
   .dark body {
     background-image: radial-gradient(circle, rgba(255, 105, 180, 0.1) 2px, transparent 2px), radial-gradient(circle, rgba(0, 255, 136, 0.1) 2px, transparent 2px), linear-gradient(45deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
     background-size: 15px 15px, 15px 15px, 100% 100%;
     background-position: 0 0, 7.5px 7.5px, 0 0;
   }
-  
+
   /* Prevent flicker on theme change */
   html.no-transitions * {
     transition: none !important;
@@ -117,16 +117,16 @@
   }
 
   /* Layer promotion for fixed elements to improve scrolling */
-  .fixed, 
+  .fixed,
   .sticky {
     will-change: transform;
   }
 
   /* Improve paint performance for common UI elements */
-  button, 
-  a, 
-  input, 
-  select, 
+  button,
+  a,
+  input,
+  select,
   textarea {
     transform: translateZ(0);
   }
@@ -134,7 +134,7 @@
   * {
     @apply border-border;
   }
-  
+
   /* Style all textareas and inputs with dark navy blue background */
   textarea, input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="search"] {
     background-color: rgb(15, 23, 42) !important; /* Dark navy blue */
@@ -156,7 +156,7 @@
   .text-balance {
     text-wrap: balance;
   }
-  
+
   .gradient-heading {
     @apply bg-clip-text text-transparent;
     background-image: var(--theme-gradient);
@@ -169,13 +169,13 @@
   .card-glow {
     @apply relative;
   }
-  
+
   .card-glow::before {
     content: "";
     @apply absolute -inset-0.5 rounded-lg opacity-0 transition duration-300 blur-xl;
     background-image: var(--theme-gradient);
   }
-  
+
   .card-glow:hover::before {
     @apply opacity-75;
   }
