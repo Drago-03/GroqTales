@@ -40,9 +40,9 @@ contract MonadStoryNFT is ERC721, ERC721URIStorage, Ownable {
         mintPrice = newPrice;
     }
 
-    function mintStory(string memory storyHash, string memory metadataURI) 
-        public 
-        payable 
+    function mintStory(string memory storyHash, string memory metadataURI)
+        public
+        payable
         returns (uint256)
     {
         require(msg.value >= mintPrice, "Insufficient payment for minting");
@@ -85,4 +85,4 @@ contract MonadStoryNFT is ERC721, ERC721URIStorage, Ownable {
     }
 
     receive() external payable {}
-} 
+}
