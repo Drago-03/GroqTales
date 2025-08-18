@@ -139,10 +139,10 @@ jobs:
         id: status-check
         continue-on-error: true
         run: |
-          if [[ "${{ needs.security-scan.result }}" == "success" && 
-                "${{ needs.code-quality.result }}" == "success" && 
-                "${{ needs.build-verification.result }}" == "success" && 
-                "${{ needs.ai-code-review.result }}" == "success" && 
+          if [[ "${{ needs.security-scan.result }}" == "success" &&
+                "${{ needs.code-quality.result }}" == "success" &&
+                "${{ needs.build-verification.result }}" == "success" &&
+                "${{ needs.ai-code-review.result }}" == "success" &&
                 "${{ needs.performance-analysis.result }}" == "success" ]]; then
             echo "✅ All checks passed! PR is ready for review."
             echo "status=success" >> $GITHUB_OUTPUT
@@ -162,36 +162,36 @@ jobs:
               repo: context.repo.repo,
               issue_number: context.issue.number,
             });
-            
-            const botComment = comments.find(comment => 
+
+            const botComment = comments.find(comment =>
               comment.user.type === 'Bot' && comment.body.includes('🤖 Automated PR Review Summary')
             );
-            
+
             const status = '${{ needs.security-scan.result }}' === 'success' &&
                           '${{ needs.code-quality.result }}' === 'success' &&
                           '${{ needs.build-verification.result }}' === 'success' &&
                           '${{ needs.ai-code-review.result }}' === 'success' &&
                           '${{ needs.performance-analysis.result }}' === 'success';
-            
+
             const body = `## 🤖 Automated PR Review Summary
-            
+
             **Status:** ${status ? '✅ All checks passed' : '❌ Some checks failed'}
-            
+
             ### Check Results:
             - **Security Scan:** ${{ needs.security-scan.result == 'success' && '✅' || '❌' }} ${{ needs.security-scan.result }}
             - **Code Quality:** ${{ needs.code-quality.result == 'success' && '✅' || '❌' }} ${{ needs.code-quality.result }}
             - **Build Verification:** ${{ needs.build-verification.result == 'success' && '✅' || '❌' }} ${{ needs.build-verification.result }}
             - **AI Code Review:** ${{ needs.ai-code-review.result == 'success' && '✅' || '❌' }} ${{ needs.ai-code-review.result }}
             - **Performance Analysis:** ${{ needs.performance-analysis.result == 'success' && '✅' || '❌' }} ${{ needs.performance-analysis.result }}
-            
-            ${status ? 
-              '🎉 **This PR is ready for human review!**' : 
+
+            ${status ?
+              '🎉 **This PR is ready for human review!**' :
               '⚠️ **Please address the failing checks before requesting review.**'
             }
-            
+
             ---
             *This comment is automatically updated on each push.*`;
-            
+
             if (botComment) {
               await github.rest.issues.updateComment({
                 owner: context.repo.owner,
