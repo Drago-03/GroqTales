@@ -59,7 +59,7 @@ export function StoryRecommendations({
         ...(content && { content }),
         ...(keywords && keywords.length > 0 && { keywords }),
         ...(genre && { genre }),
-        ...(apiKey && { apiKey })
+        ...(apiKey && { apiKey }),
       };
 
       await getRecommendations(options);
