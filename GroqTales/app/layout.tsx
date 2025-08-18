@@ -17,8 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const projectName = "GroqTales";
   return {
     title: projectName,
-    description:
-      "GroqTales - AI-powered storytelling platform",
+    description: "GroqTales - AI-powered storytelling platform",
     other: {
       "fc:frame": JSON.stringify({
         version: process.env.NEXT_PUBLIC_VERSION,
