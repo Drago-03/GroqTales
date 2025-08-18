@@ -49,7 +49,9 @@ export const generateNftEntries = (count: number) => {
     likes: Math.floor(Math.random() * 500),
     views: Math.floor(Math.random() * 2000) + 100,
     genre: genres[i % genres.length],
-    description: `This is a sample description for story #${i + 1}. It showcases the plot and themes of this interesting story.`,
+    description: `This is a sample description for story #${
+      i + 1
+    }. It showcases the plot and themes of this interesting story.`,
     createdAt: new Date(
       Date.now() - Math.floor(Math.random() * 60 * 24 * 60 * 60 * 1000)
     ),
