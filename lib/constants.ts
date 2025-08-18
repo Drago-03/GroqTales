@@ -239,7 +239,8 @@ export const ERROR_MESSAGES = {
   validation: {
     required: 'This field is required.',
     invalidEmail: 'Please enter a valid email address.',
-    invalidUsername: 'Username must be 3-20 characters and contain only letters, numbers, underscores, and hyphens.',
+    invalidUsername:
+      'Username must be 3-20 characters and contain only letters, numbers, underscores, and hyphens.',
     invalidWalletAddress: 'Please enter a valid wallet address.',
     invalidUrl: 'Please enter a valid URL.',
     fileTooLarge: 'File size exceeds the maximum limit.',
