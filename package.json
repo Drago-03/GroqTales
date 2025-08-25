@@ -114,7 +114,7 @@
     "react-hook-form": "^7.50.1",
     "react-resizable-panels": "^2.1.8",
     "recharts": "^2.15.3",
-    "siwe": "^2.1.4",
+    "siwe": "^3.0.0",
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
