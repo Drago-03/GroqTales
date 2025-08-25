@@ -29,4 +29,4 @@ async function main() {
   await sentTransactions;
   await getSpecificBlock();
 }
-main().catch(console.error); 
+main().catch(console.error);
