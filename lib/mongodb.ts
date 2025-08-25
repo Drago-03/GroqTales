@@ -6,13 +6,12 @@ if (!process.env.VERCEL && process.env.NODE_ENV !== 'production') {
   dotenv.config({ path: '.env.local' });
 }
 
-const shouldMockDb = (
+const shouldMockDb =
   process.env.MONGO_MOCK === 'true' ||
   process.env.NEXT_PUBLIC_BUILD_MODE === 'true' ||
   process.env.CI === 'true' ||
   process.env.VERCEL === '1' ||
-  (process.env.NODE_ENV === 'production' && !process.env.MONGODB_URI)
-);
+  (process.env.NODE_ENV === 'production' && !process.env.MONGODB_URI);
 
 const forceMock = process.env.MONGO_MOCK === 'true';
 
@@ -66,7 +65,8 @@ if (shouldMockDb || forceMock) {
 
   // If SRV lookup has historically failed and a fallback non-SRV URI is provided, prefer it.
   const fallbackUri = process.env.MONGODB_FALLBACK_URI; // e.g., mongodb://username:password@host:27017/dbname?replicaSet=...
-  const finalUri = uri.startsWith('mongodb+srv://') && fallbackUri ? fallbackUri : uri;
+  const finalUri =
+    uri.startsWith('mongodb+srv://') && fallbackUri ? fallbackUri : uri;
 
   const options = {
     maxPoolSize: 10,
