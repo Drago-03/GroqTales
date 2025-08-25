@@ -67,7 +67,7 @@ print_status "Starting the backend server..."
 if [ -f "main.py" ]; then
     python3 main.py > server.log 2>&1 &
     SERVER_PID=$!
-    
+
     # Wait for server to start (max 30 seconds)
     COUNTER=0
     while ! curl -s http://localhost:8000/api/v1/health &> /dev/null && [ $COUNTER -lt 30 ]; do
