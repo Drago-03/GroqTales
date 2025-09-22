@@ -128,7 +128,7 @@ export default function AIStoryGenerator({
 
 ## Chapter 1: The Beginning
 
-${prompt} 
+${prompt}
 
 In the ${setting || 'mysterious realm'}, our protagonist ${mainCharacters || 'a brave hero'} embarked on an extraordinary journey. The themes of ${themes || 'courage and discovery'} wove through every aspect of this ${selectedGenres.join(', ') || 'adventure'} tale.
 

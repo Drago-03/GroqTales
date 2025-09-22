@@ -22,15 +22,18 @@ X-API-Key: your-api-key-here
 ### Stories API (`/api/v1/stories`)
 
 #### GET `/api/v1/stories`
+
 Get paginated list of stories.
 
 **Query Parameters:**
+
 - `page` (number): Page number (default: 1)
 - `limit` (number): Items per page (default: 10)
 - `genre` (string): Filter by genre
 - `author` (string): Filter by author
 
 **Response:**
+
 ```json
 {
   "data": [
@@ -53,9 +56,11 @@ Get paginated list of stories.
 ```
 
 #### POST `/api/v1/stories`
+
 Create a new story.
 
 **Request Body:**
+
 ```json
 {
   "title": "Story Title",
@@ -66,9 +71,11 @@ Create a new story.
 ```
 
 #### POST `/api/v1/stories/generate`
+
 Generate a story using AI.
 
 **Request Body:**
+
 ```json
 {
   "prompt": "Write a story about...",
@@ -79,9 +86,11 @@ Generate a story using AI.
 ```
 
 #### POST `/api/v1/stories/:id/analyze`
+
 Analyze story content for themes, sentiment, etc.
 
 **Response:**
+
 ```json
 {
   "storyId": "story123",
@@ -96,12 +105,15 @@ Analyze story content for themes, sentiment, etc.
 ### NFT API (`/api/v1/nft`)
 
 #### GET `/api/v1/nft`
+
 Get NFT marketplace listings.
 
 #### POST `/api/v1/nft/mint`
+
 Mint a new NFT from story content.
 
 **Request Body:**
+
 ```json
 {
   "storyId": "story123",
@@ -117,9 +129,11 @@ Mint a new NFT from story content.
 ### AI API (`/api/v1/ai`)
 
 #### POST `/api/v1/ai/generate`
+
 Generate content using AI models.
 
 **Request Body:**
+
 ```json
 {
   "prompt": "Generate a story about...",
@@ -132,9 +146,11 @@ Generate content using AI models.
 ```
 
 #### POST `/api/v1/ai/analyze`
+
 Analyze content with AI.
 
 **Request Body:**
+
 ```json
 {
   "content": "Content to analyze...",
@@ -145,9 +161,11 @@ Analyze content with AI.
 ### Users API (`/api/v1/users`)
 
 #### GET `/api/v1/users/profile`
+
 Get user profile information.
 
 #### PUT `/api/v1/users/profile`
+
 Update user profile.
 
 ## SDK Endpoints (`/sdk/v1`)
@@ -178,6 +196,7 @@ All endpoints return consistent error responses:
 ## CORS
 
 CORS is configured to allow requests from:
+
 - `https://groqtales.vercel.app` (production)
 - `http://localhost:3000` (development)
 
@@ -208,5 +227,6 @@ CORS_ORIGIN=https://groqtales.vercel.app
 ## Support
 
 For API support and questions:
+
 - GitHub Issues: [GroqTales Repository](https://github.com/Drago-03/GroqTales)
 - Documentation: [docs.groqtales.com](https://docs.groqtales.com)
