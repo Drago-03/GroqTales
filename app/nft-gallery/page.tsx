@@ -104,7 +104,7 @@ function generateAdditionalNFTs(): NFTStory[] {
       authorAvatar:
         'https://api.dicebear.com/7.x/bottts/svg?seed=Marcus&backgroundColor=e0f2fe',
       coverImage:
-        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=1200&fit=crop&q=80',
+        'https://plus.unsplash.com/premium_photo-1692029229621-48f5f10a874e?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y3J5c3RhbHxlbnwwfDB8MHx8fDA%3D',
       price: '1.8 ETH',
       likes: 456,
       views: 2340,
@@ -121,7 +121,7 @@ function generateAdditionalNFTs(): NFTStory[] {
       authorAvatar:
         'https://api.dicebear.com/7.x/bottts/svg?seed=Zara&backgroundColor=fef3c7',
       coverImage:
-        'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=1200&fit=crop&q=80',
+        'https://images.unsplash.com/photo-1632761008044-41d375b89392?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fG5lb24lMjBzaGFkb3dzfGVufDB8MHwwfHx8MA%3D%3D',
       price: '2.3 ETH',
       likes: 789,
       views: 4567,
