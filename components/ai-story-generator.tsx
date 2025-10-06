@@ -20,6 +20,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
+import CopyButton from "@/components/ui/copyButton";
 
 interface AIStoryGeneratorProps {
   className?: string;
@@ -347,7 +348,7 @@ This generated story demonstrates the power of AI-assisted creative writing, com
                   ) : (
                     <>
                       <Sparkles className="mr-2 h-5 w-5" />
-                      Generate Story
+                      Generate Story normal
                     </>
                   )}
                 </Button>
@@ -363,6 +364,10 @@ This generated story demonstrates the power of AI-assisted creative writing, com
                     </pre>
                   </div>
                   <div className="flex space-x-2">
+                    <CopyButton
+          textToCopy={generatedContent}
+          className="hover:bg-gray-200 border-gray-300"
+        />
                     <Button
                       onClick={() => setActiveTab('mint')}
                       className="flex-1"
@@ -381,6 +386,7 @@ This generated story demonstrates the power of AI-assisted creative writing, com
                   <p className="text-muted-foreground">
                     No story generated yet. Go to Story Input to create one.
                   </p>
+                  {/* <CopyButton text={generatedContent} className="bg-gray-100 hover:bg-gray-200 text-gray-800" /> */}
                 </div>
               )}
             </TabsContent>
