@@ -51,8 +51,8 @@ export class ResponseBuilder {
     } else if (error instanceof Error) {
       apiError = {
         code: 'INTERNAL_ERROR',
-        message: process.env.NODE_ENV === 'production' 
-          ? 'An internal error occurred' 
+        message: process.env.NODE_ENV === 'production'
+          ? 'An internal error occurred'
           : error.message,
         timestamp: new Date().toISOString(),
         ...(details && { details }),
@@ -241,9 +241,9 @@ export class RequestValidator {
     body: Record<string, unknown>,
     requiredFields: string[]
   ): void {
-    const missing = requiredFields.filter(field => 
-      body[field] === undefined || 
-      body[field] === null || 
+    const missing = requiredFields.filter(field =>
+      body[field] === undefined ||
+      body[field] === null ||
       body[field] === ''
     );
 

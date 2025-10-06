@@ -134,7 +134,7 @@ NFT on the Monad blockchain, establishing it as a unique digital asset:
    10143). If on a different network (e.g., Ethereum Mainnet), GroqTales will prompt you to switch.
    Approve the network switch in your wallet, or manually configure it with:
    - **Chain ID**: 10143
-   - **RPC URL**: https://testnet-rpc.monad.xyz
+   - **RPC URL**: <https://testnet-rpc.monad.xyz>
    - **Currency Symbol**: MONAD
 3. **Access Minting Interface**: In the AI Story Generator, after generating your story, switch to
    the "Mint as NFT" tab or click a "Mint as NFT" button if available. You'll see a preview of your
@@ -243,7 +243,7 @@ help you complete the process successfully:
   instead of Monad Testnet), GroqTales will prompt you to switch. Approve the switch in your wallet.
   If it fails, manually add the Monad Testnet in your wallet settings:
   - **Chain ID**: 10143
-  - **RPC URL**: https://testnet-rpc.monad.xyz
+  - **RPC URL**: <https://testnet-rpc.monad.xyz>
   - **Currency Symbol**: MONAD Refer to
     [Managing Your Account](../Managing-Your-Account.md#switching-networks) for detailed steps.
 - **Insufficient Funds for Fees**: Minting requires a small gas fee. On Testnet, ensure your wallet

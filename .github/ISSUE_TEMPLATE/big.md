@@ -1,10 +1,9 @@
 ---
-name: "Big Proposal"
-about: "For large, complex changes or major new features"
-title: "[BIG] <title>"
+name: 'Big Proposal'
+about: 'For large, complex changes or major new features'
+title: '[BIG] <title>'
 labels: enhancement, big
 assignees: ''
-
 ---
 
 ## Summary
@@ -37,5 +36,6 @@ Add any screenshots, diagrams, or references to documentation.
 
 ---
 
-**Related Links:**  
+**Related Links:**
+
 - [GroqTales Website](https://www.groqtales.xyz/)

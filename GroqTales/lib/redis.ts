@@ -10,10 +10,10 @@ class MockRedis {
     return this.cache.get(key) || null;
   }
 
-  async set(key: string, value: any): Promise<"OK"> {
+  async set(key: string, value: any): Promise<'OK'> {
     console.log(`[MockRedis] Setting key: ${key}`);
     this.cache.set(key, value);
-    return "OK";
+    return 'OK';
   }
 
   async del(key: string): Promise<number> {
@@ -30,4 +30,4 @@ class MockRedis {
 export const redis = new MockRedis();
 
 // Log a message to indicate we're using the mock
-console.log("Using mock Redis implementation");
+console.log('Using mock Redis implementation');
