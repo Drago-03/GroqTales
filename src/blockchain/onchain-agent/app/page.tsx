@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useRef } from "react";
-import { useAgent } from "./hooks/useAgent";
+import { useState, useEffect, useRef } from 'react';
+import { useAgent } from './hooks/useAgent';
 // import ReactMarkdown from "react-markdown";
 
 export default function Home() {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const { messages, sendMessage, isThinking } = useAgent();
 
   // Ref for the messages container
@@ -13,7 +13,7 @@ export default function Home() {
 
   // Function to scroll to the bottom
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   // Auto-scroll whenever messages change
@@ -24,7 +24,7 @@ export default function Home() {
   const onSendMessage = async () => {
     if (!input.trim() || isThinking) return;
     const message = input;
-    setInput("");
+    setInput('');
     await sendMessage(message);
   };
 
@@ -34,15 +34,17 @@ export default function Home() {
         {/* Chat Messages */}
         <div className="flex-grow overflow-y-auto space-y-3 p-2">
           {messages.length === 0 ? (
-            <p className="text-center text-gray-500">Start chatting with AgentKit...</p>
+            <p className="text-center text-gray-500">
+              Start chatting with AgentKit...
+            </p>
           ) : (
             messages.map((msg, index) => (
               <div
                 key={index}
                 className={`p-3 rounded-2xl shadow ${
-                  msg.sender === "user"
-                    ? "bg-[#0052FF] text-white self-end"
-                    : "bg-gray-100 dark:bg-gray-700 self-start"
+                  msg.sender === 'user'
+                    ? 'bg-[#0052FF] text-white self-end'
+                    : 'bg-gray-100 dark:bg-gray-700 self-start'
                 }`}
               >
                 {/* Markdown rendering temporarily disabled */}
@@ -66,7 +68,11 @@ export default function Home() {
           )}
 
           {/* Thinking Indicator */}
-          {isThinking && <div className="text-right mr-2 text-gray-500 italic">🤖 Thinking...</div>}
+          {isThinking && (
+            <div className="text-right mr-2 text-gray-500 italic">
+              🤖 Thinking...
+            </div>
+          )}
 
           {/* Invisible div to track the bottom */}
           <div ref={messagesEndRef} />
@@ -77,18 +83,18 @@ export default function Home() {
           <input
             type="text"
             className="flex-grow p-2 rounded border dark:bg-gray-700 dark:border-gray-600"
-            placeholder={"Type a message..."}
+            placeholder={'Type a message...'}
             value={input}
-            onChange={e => setInput(e.target.value)}
-            onKeyDown={e => e.key === "Enter" && onSendMessage()}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && onSendMessage()}
             disabled={isThinking}
           />
           <button
             onClick={onSendMessage}
             className={`px-6 py-2 rounded-full font-semibold transition-all ${
               isThinking
-                ? "bg-gray-300 cursor-not-allowed text-gray-500"
-                : "bg-[#0052FF] hover:bg-[#003ECF] text-white shadow-md"
+                ? 'bg-gray-300 cursor-not-allowed text-gray-500'
+                : 'bg-[#0052FF] hover:bg-[#003ECF] text-white shadow-md'
             }`}
             disabled={isThinking}
           >

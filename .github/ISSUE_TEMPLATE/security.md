@@ -1,10 +1,9 @@
 ---
-name: "Security Vulnerability"
-about: "Report a security issue, especially related to blockchain, NFTs, or user data"
-title: "[Security] <title>"
+name: 'Security Vulnerability'
+about: 'Report a security issue, especially related to blockchain, NFTs, or user data'
+title: '[Security] <title>'
 labels: security
 assignees: ''
-
 ---
 
 ## Security Issue Summary
@@ -29,4 +28,5 @@ Add any other context, logs, or screenshots.
 
 ---
 
-**Please do not disclose sensitive details publicly. If this is a critical issue, contact the maintainers directly.**
+**Please do not disclose sensitive details publicly. If this is a critical issue, contact the
+maintainers directly.**
