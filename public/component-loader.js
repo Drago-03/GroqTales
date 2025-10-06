@@ -21,7 +21,7 @@
   // Register component for lazy loading
   window.registerLazyComponent = function(id, loadFn) {
     window.__COMPONENT_LOAD_STATE.pending[id] = loadFn;
-    
+
     // Setup observer for element
     const element = document.getElementById(id);
     if (element) {
@@ -32,7 +32,7 @@
       }
     }
   };
-  
+
   // Setup intersection observer for lazy loading
   function setupObserver(id, element) {
     if ('IntersectionObserver' in window) {
@@ -47,7 +47,7 @@
         rootMargin: '200px',
         threshold: 0.01
       });
-      
+
       observer.observe(element);
     } else {
       // Fallback for browsers without IntersectionObserver
@@ -58,7 +58,7 @@
       }, 200), { passive: true });
     }
   }
-  
+
   // Load component when needed
   function loadComponent(id) {
     if (window.__COMPONENT_LOAD_STATE.pending[id] && !window.__COMPONENT_LOAD_STATE.loaded[id]) {
@@ -67,7 +67,7 @@
       delete window.__COMPONENT_LOAD_STATE.pending[id];
     }
   }
-  
+
   // Utility function to throttle scroll events
   function throttle(fn, delay) {
     let lastCall = 0;
@@ -80,7 +80,7 @@
       return fn(...args);
     };
   }
-  
+
   // Setup global preloading for critical components
   window.preloadCriticalComponents = function() {
     for (const id in window.__COMPONENT_LOAD_STATE.pending) {
@@ -89,7 +89,7 @@
       }
     }
   };
-  
+
   // Run preload on load
   if (document.readyState !== 'loading') {
     setTimeout(window.preloadCriticalComponents, 300);
@@ -98,4 +98,4 @@
       setTimeout(window.preloadCriticalComponents, 300);
     }, { once: true });
   }
-})(); 
+})();
