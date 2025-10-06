@@ -204,7 +204,8 @@ function generateMoreTextNFTs(count: number): TextNFT[] {
 
   return Array.from({ length: count }, (_, index) => {
     const id = index + textNFTs.length + 1;
-    const genre = genres[Math.floor(Math.random() * genres.length)] || 'Fantasy';
+    const genre =
+      genres[Math.floor(Math.random() * genres.length)] || 'Fantasy';
     const wordCount = Math.floor(Math.random() * 15000) + 5000;
     const readTime = `${Math.ceil(wordCount / 300)} min`;
 

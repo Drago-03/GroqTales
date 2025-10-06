@@ -10,7 +10,13 @@ export const GalaxyBackground = () => {
 
   useEffect(() => {
     // Generate way more random stars with different colors
-    const colors = ['#ffffff', '#ffd700', '#ff8f00', '#ff69b4', '#4169e1'] as const;
+    const colors = [
+      '#ffffff',
+      '#ffd700',
+      '#ff8f00',
+      '#ff69b4',
+      '#4169e1',
+    ] as const;
     const newStars = Array.from({ length: 200 }, () => {
       const colorIndex = Math.floor(Math.random() * colors.length);
       return {

@@ -1,4 +1,5 @@
 <!-- markdownlint-enable MD033 -->
+
 ## GSSOC'25 @ GroqTales
 
 Welcome to GroqTales for GirlScript Summer of Code 2025 contributors.
@@ -23,8 +24,9 @@ GirlScript Summer of Code (GSSOC) is a three-month-long open-source program by [
    - [GitHub Discussions](https://github.com/Drago-03/GroqTales/discussions) – For questions, ideas, and collaboration.
 
 3. **Find Issues:**
-  - Filter by labels: `GSSOC'25`, `good first issue`, `easy`, `medium`, `hard`, `frontend`, `backend`, `blockchain`, `web3`, `NFT`.
-  - New ideas and feature requests will be posted throughout the program.
+
+- Filter by labels: `GSSOC'25`, `good first issue`, `easy`, `medium`, `hard`, `frontend`, `backend`, `blockchain`, `web3`, `NFT`.
+- New ideas and feature requests will be posted throughout the program.
 
 4. **Use Issue & PR Templates:**
    - Always use the required templates when opening an issue or pull request.
