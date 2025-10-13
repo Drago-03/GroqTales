@@ -43,4 +43,4 @@ console.log("token type: ", response.tokenType || 'Not available');
 console.log("tokenUri: ", response.tokenUri ? response.tokenUri.gateway : 'Not available');
 console.log("image url: ", response.rawMetadata && response.rawMetadata.image ? response.rawMetadata.image : 'Not available');
 console.log("time last updated: ", response.timeLastUpdated || 'Not available');
-console.log("==="); 
+console.log("===");

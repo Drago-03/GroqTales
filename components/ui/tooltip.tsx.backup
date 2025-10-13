@@ -28,9 +28,9 @@ interface TooltipTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
 const TooltipTrigger = React.forwardRef<HTMLButtonElement, TooltipTriggerProps>(
   ({ className, asChild = false, ...props }, ref) => {
     return (
-      <button 
-        ref={ref} 
-        className={cn("inline-flex items-center justify-center", className)} 
+      <button
+        ref={ref}
+        className={cn("inline-flex items-center justify-center", className)}
         {...props}
       />
     );
@@ -58,4 +58,4 @@ const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
 );
 TooltipContent.displayName = 'TooltipContent';
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }; 
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
