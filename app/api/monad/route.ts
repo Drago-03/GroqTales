@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { action, metadata, ownerAddress, tokenId } = body;
-    
+
     switch (action) {
       case 'mint': {
         if (!metadata || !ownerAddress) {
@@ -15,19 +15,19 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           );
         }
-        
+
         // Mint the NFT with correct parameters
         const result = await mintStoryNFT(
           metadata as StoryMetadata,
           ownerAddress
         );
-        
+
         return NextResponse.json({
           success: true,
           nft: result,
         });
       }
-      
+
       case 'fetch': {
         if (!tokenId) {
           return NextResponse.json(
@@ -35,18 +35,18 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           );
         }
-        
+
         const nft = await getStoryNFT(tokenId);
         if (!nft) {
           return NextResponse.json({ error: 'NFT not found' }, { status: 404 });
         }
-        
+
         return NextResponse.json({
           success: true,
           nft,
         });
       }
-      
+
       default:
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
     }

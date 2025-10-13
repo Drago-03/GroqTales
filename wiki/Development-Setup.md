@@ -59,12 +59,15 @@ To start, clone the GroqTales repository to your local machine:
    project.
 2. **Clone the Repository**: Use the following command to clone the GroqTales repository. Replace
    `yourusername` with the actual repository owner's username if different.
+
    ```bash
    git clone https://github.com/Drago-03/GroqTales.git
    cd GroqTales
    ```
+
 3. **Switch to Development Branch (Optional)**: If there's a specific development branch, switch to
    it after cloning:
+
    ```bash
    git checkout dev  # or the relevant branch name
    ```
@@ -75,11 +78,13 @@ After cloning, install the required dependencies for the GroqTales project:
 
 1. **Navigate to Project Directory**: If not already in the `GroqTales` folder, `cd` into it.
 2. **Install Dependencies**: Run one of the following commands based on your package manager:
+
    ```bash
    npm install
    # or
    yarn install
    ```
+
    This will download and install all necessary packages defined in `package.json`, including
    Next.js, React, and Web3 libraries.
 
@@ -92,12 +97,15 @@ GroqTales uses environment variables to manage sensitive information and configu
 need to set these up before running the application:
 
 1. **Copy Example File**: Duplicate the `.env.example` file to create your local configuration:
+
    ```bash
    cp .env.example .env.local
    ```
+
 2. **Edit Environment Variables**: Open `.env.local` in a text editor and replace placeholder values
    with your actual credentials or mock values for development. **Do not commit `.env.local` to
    version control.** Key variables include:
+
    - **WalletConnect Project ID**: For wallet integrations (`NEXT_PUBLIC_WALLET_CONECT_PROJECT_ID`).
    - **API Keys**: For AI services like Groq (`NEXT_PUBLIC_GROQ_API_KEY`), Stability AI
      (`NEXT_PUBLIC_STABILITY_AI_API_KEY`), and others.
@@ -131,16 +139,20 @@ With dependencies installed and environment variables configured, you can start 
 development server:
 
 1. **Start the Server**: Run the following command to launch the Next.js development environment:
+
    ```bash
    npm run dev
    # or
    yarn dev
    ```
+
 2. **Access the Application**: Once the server starts (you'll see output like
    `ready - started server on 0.0.0.0:3000`), open your browser and navigate to:
+
    ```
    http://localhost:3000
    ```
+
    You should see the GroqTales application running locally.
 3. **Test Wallet Connection (Optional)**: For NFT minting features, ensure your browser wallet
    (e.g., MetaMask) is installed and set to the Monad Testnet (Chain ID: 10143). Click "Connect
@@ -157,19 +169,23 @@ and interact with smart contracts locally:
 1. **Install Blockchain Tools**: Ensure Truffle or Hardhat is installed (see
    [Prerequisites](#prerequisites)).
 2. **Local Blockchain (Optional)**: Set up a local blockchain environment like Ganache for testing:
+
    ```bash
    npm install -g ganache-cli
    ganache-cli --chainId 10143 --networkId 10143
    ```
+
    This simulates the Monad Testnet locally with Chain ID 10143.
 3. **Deploy Contracts**: If smart contract code is available in the repository (e.g., in a
    `contracts` folder), deploy them using Truffle or Hardhat scripts. Check for a `deploy.js` or
    similar script:
+
    ```bash
    truffle migrate --network development
    # or
    npx hardhat run scripts/deploy.js --network localhost
    ```
+
 4. **Update Configuration**: Update `.env.local` with local contract addresses outputted after
    deployment for the frontend to interact with them.
 5. **Test Interactions**: Use the GroqTales frontend or scripts to test minting NFTs or other
@@ -183,18 +199,22 @@ For Monad Testnet interactions, ensure your wallet is connected to the testnet R
 If you want to test a production build locally or prepare for deployment:
 
 1. **Build the Application**: Run the build command to create an optimized production version:
+
    ```bash
    npm run build
    # or
    yarn build
    ```
+
    This generates a `.next` folder with compiled assets.
 2. **Start Production Server**: Run the production server to test the build:
+
    ```bash
    npm start
    # or
    yarn start
    ```
+
    Access it at `http://localhost:3000`.
 3. **Environment for Production**: Ensure `NEXT_PUBLIC_BUILD_MODE=false` in `.env.local` for full
    functionality, or set to `true` to mock database connections if testing without real data.
@@ -205,18 +225,24 @@ After making changes or fixes in your local environment, contribute back to the 
 
 1. **Commit Changes**: Stage and commit your changes with meaningful messages following the
    [Conventional Commits](https://www.conventionalcommits.org/) format if possible:
+
    ```bash
    git add .
    git commit -m "feat: add new story generation endpoint"
    ```
+
 2. **Create a Branch**: If not already on a feature branch, create one:
+
    ```bash
    git checkout -b feature/add-new-feature
    ```
+
 3. **Push Changes**: Push your branch to the repository:
+
    ```bash
    git push origin feature/add-new-feature
    ```
+
 4. **Open a Pull Request**: Go to the GroqTales repository on GitHub, switch to your branch, and
    click "New Pull Request." Fill out the PR template with details of your changes. Follow the
    [Contributing Guide](../CONTRIBUTING.md) for full guidelines.
@@ -235,15 +261,19 @@ yarn test
 
 - **Node.js Version Issues**: If you encounter errors like "unsupported engine," ensure you're using
   Node.js 16.x or higher. Use `nvm` to switch versions:
+
   ```bash
   nvm use 16
   ```
+
 - **Dependency Installation Fails**: Clear the `node_modules` directory and `package-lock.json` (or
   `yarn.lock`), then reinstall:
+
   ```bash
   rm -rf node_modules package-lock.json
   npm install
   ```
+
 - **Environment Variables Missing**: If the app fails to start with errors about missing variables,
   ensure `.env.local` is correctly set up. Check logs for specific missing keys and add them with
   mock or real values.
