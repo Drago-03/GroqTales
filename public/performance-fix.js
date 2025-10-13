@@ -20,7 +20,7 @@
     if (!document.body.classList.contains('is-scrolling')) {
       document.body.classList.add('is-scrolling');
     }
-    
+
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(function() {
       document.body.classList.remove('is-scrolling');
@@ -31,7 +31,7 @@
   let resizeTimeout;
   window.addEventListener('resize', function() {
     document.body.classList.add('is-resizing');
-    
+
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(function() {
       document.body.classList.remove('is-resizing');
@@ -54,4 +54,4 @@
   } else {
     document.addEventListener('DOMContentLoaded', optimizeResourceLoading, { once: true });
   }
-})(); 
+})();

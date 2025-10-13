@@ -43,17 +43,17 @@ class RateLimiter:
     def __init__(self, requests_per_minute: int = 60):
         self.requests_per_minute = requests_per_minute
         self.requests = []
-    
+
     def is_allowed(self) -> bool:
         now = time.time()
         minute_ago = now - 60
-        
+
         # Remove requests older than 1 minute
         self.requests = [req for req in self.requests if req > minute_ago]
-        
+
         if len(self.requests) >= self.requests_per_minute:
             return False
-        
+
         self.requests.append(now)
         return True
 
@@ -133,14 +133,14 @@ async def rate_limit_middleware(request: Request, call_next):
 async def predict(request: PredictionRequest):
     try:
         logger.info(f"Received prediction request with {len(request.features)} features")
-        
+
         # Input validation
         if not request.features:
             raise HTTPException(status_code=400, detail="No features provided")
-        
+
         # Make prediction
         prediction, confidence = model.predict(request.features)
-        
+
         # Generate response
         response = PredictionResponse(
             prediction=prediction,
@@ -148,10 +148,10 @@ async def predict(request: PredictionRequest):
             model_version="1.0.0",
             prediction_id=f"pred_{int(time.time())}"
         )
-        
+
         logger.info(f"Prediction completed: {response.prediction_id}")
         return response
-        
+
     except Exception as e:
         logger.error(f"Prediction error: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -185,14 +185,14 @@ async def get_metadata():
 def custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema
-    
+
     openapi_schema = get_openapi(
         title=app.title,
         version=app.version,
         description=app.description,
         routes=app.routes,
     )
-    
+
     # Add security schemes
     openapi_schema["components"]["securitySchemes"] = {
         "ApiKeyHeader": {
@@ -201,7 +201,7 @@ def custom_openapi():
             "name": "api_key"
         }
     }
-    
+
     app.openapi_schema = openapi_schema
     return app.openapi_schema
 

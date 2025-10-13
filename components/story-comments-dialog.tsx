@@ -1,9 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
+import React from 'react';
 
-
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -11,13 +10,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ThumbsUp, Send, Wallet } from "lucide-react";
-import { useWeb3 } from "@/components/providers/web3-provider";
-import { VerifiedBadge } from "@/components/verified-badge";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ThumbsUp, Send, Wallet } from 'lucide-react';
+import { useWeb3 } from '@/components/providers/web3-provider';
+import { VerifiedBadge } from '@/components/verified-badge';
 
 interface Comment {
   id: string;
@@ -56,7 +55,11 @@ export default function StoryCommentsDialog({
 
   const formatTimestamp = (timestamp: Date | string) => {
     const date = new Date(timestamp);
-    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return (
+      date.toLocaleDateString() +
+      ' ' +
+      date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    );
   };
 
   const handleConnectWallet = () => {
@@ -91,7 +94,10 @@ export default function StoryCommentsDialog({
           ) : (
             <div className="space-y-4">
               {comments.map((comment) => (
-                <div key={comment.id} className="flex gap-4 p-4 rounded-lg bg-muted/30">
+                <div
+                  key={comment.id}
+                  className="flex gap-4 p-4 rounded-lg bg-muted/30"
+                >
                   <Avatar>
                     <AvatarImage src={comment.author.avatar} />
                     <AvatarFallback>{comment.author.name[0]}</AvatarFallback>
@@ -101,19 +107,24 @@ export default function StoryCommentsDialog({
                       <div>
                         <div className="flex items-center">
                           <p className="font-medium">{comment.author.name}</p>
-                          {comment.author.name === "GroqTales" && (
+                          {comment.author.name === 'GroqTales' && (
                             <VerifiedBadge className="ml-1" size="sm" />
                           )}
                         </div>
                         <p className="text-xs text-muted-foreground">
-                          @{comment.author.username} • {formatTimestamp(comment.timestamp)}
+                          @{comment.author.username} •{' '}
+                          {formatTimestamp(comment.timestamp)}
                         </p>
                       </div>
                       {onLikeComment && (
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => isWalletConnected ? onLikeComment(comment.id) : handleConnectWallet()}
+                          onClick={() =>
+                            isWalletConnected
+                              ? onLikeComment(comment.id)
+                              : handleConnectWallet()
+                          }
                           className="text-muted-foreground hover:text-primary"
                           disabled={!isWalletConnected}
                         >
@@ -132,17 +143,24 @@ export default function StoryCommentsDialog({
 
         {/* Comment Input */}
         {isWalletConnected ? (
-          <form onSubmit={handleSubmit} className="flex gap-2 pt-4 border-t flex-shrink-0">
+          <form
+            onSubmit={handleSubmit}
+            className="flex gap-2 pt-4 border-t flex-shrink-0"
+          >
             <Textarea
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
-              placeholder={isAdmin ? "Write a comment as GroqTales admin..." : "Write a comment..."}
-              className={`flex-1 ${isAdmin ? "border-purple-200" : ""}`}
+              placeholder={
+                isAdmin
+                  ? 'Write a comment as GroqTales admin...'
+                  : 'Write a comment...'
+              }
+              className={`flex-1 ${isAdmin ? 'border-purple-200' : ''}`}
             />
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={!newComment.trim()}
-              className={isAdmin ? "theme-gradient-bg" : ""}
+              className={isAdmin ? 'theme-gradient-bg' : ''}
             >
               <Send className="w-4 h-4" />
             </Button>
@@ -152,8 +170,8 @@ export default function StoryCommentsDialog({
             <p className="text-muted-foreground mb-4">
               Connect your wallet to join the conversation
             </p>
-            <Button 
-              onClick={handleConnectWallet} 
+            <Button
+              onClick={handleConnectWallet}
               className="theme-gradient-bg text-white"
             >
               <Wallet className="w-4 h-4 mr-2" />

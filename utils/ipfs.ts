@@ -111,7 +111,9 @@ export const uploadToIPFS = async (
       if (process.env.NODE_ENV === 'development')
         console.error('Pinata error response:', error.response.data);
       throw new Error(
-        `Pinata API error: ${error.response.status} - ${JSON.stringify(error.response.data)}`
+        `Pinata API error: ${error.response.status} - ${JSON.stringify(
+          error.response.data
+        )}`
       );
     }
 

@@ -26,7 +26,9 @@ function Card({ title, children, className = '', onClick }: CardProps) {
 
   return (
     <Element
-      className={`bg-[var(--app-card-bg)] backdrop-blur-md rounded-xl shadow-lg border border-[var(--app-card-border)] overflow-hidden transition-all hover:shadow-xl ${className} ${onClick ? 'cursor-pointer' : ''}`}
+      className={`bg-[var(--app-card-bg)] backdrop-blur-md rounded-xl shadow-lg border border-[var(--app-card-border)] overflow-hidden transition-all hover:shadow-xl ${className} ${
+        onClick ? 'cursor-pointer' : ''
+      }`}
       onClick={onClick}
       onKeyDown={onClick ? handleKeyDown : undefined}
       tabIndex={onClick ? 0 : undefined}
