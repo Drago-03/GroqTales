@@ -357,4 +357,4 @@ def main():
             print(f"Error during inference: {e}")
 
 if __name__ == "__main__":
-    main() 
+    main()

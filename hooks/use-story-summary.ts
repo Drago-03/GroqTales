@@ -31,8 +31,8 @@ interface UseStorySummaryResult {
    * Generate and store a summary for a story
 
   const generateSummary = async (
-    storyId: string, 
-    content: string, 
+    storyId: string,
+    content: string,
     model?: string,
     apiKey?: string
   ): Promise<StorySummary | null> => {
@@ -98,7 +98,7 @@ interface UseStorySummaryResult {
    * Update a story summary
 
   const updateSummary = async (
-    id: string, 
+    id: string,
     updates: Partial<StorySummary>,
     regenerate: boolean = false,
     content?: string

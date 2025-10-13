@@ -52,7 +52,7 @@ export class Logger {
   child(context: string): Logger {
     return new Logger(this.config, `${this.context ? `${this.context}:` : ''}${context}`);
   }
-  
+
   /**
    * Log an error message
    */

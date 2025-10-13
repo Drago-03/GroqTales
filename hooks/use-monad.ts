@@ -137,12 +137,12 @@ export function useMonad() {
       return data.nft;
 
       // Placeholder return for now since Monad is commented out
-      return { 
-        tokenId: `placeholder-${Math.random().toString(36).substring(2, 7)}`, 
-        metadata: metadataWithAddress, 
-        transactionHash: '0x...', 
-        owner: account || '0x...', 
-        tokenURI: 'ipfs://placeholder-uri' 
+      return {
+        tokenId: `placeholder-${Math.random().toString(36).substring(2, 7)}`,
+        metadata: metadataWithAddress,
+        transactionHash: '0x...',
+        owner: account || '0x...',
+        tokenURI: 'ipfs://placeholder-uri'
       };
     } catch (err: any) {
       setError(err.message || 'Failed to mint NFT');
@@ -181,23 +181,23 @@ export function useMonad() {
       return data.nft;
 
       // Placeholder return for now since Monad is commented out
-      return { 
-        tokenId, 
-        metadata: { 
-          title: 'Placeholder NFT', 
-          content: 'Content placeholder', 
-          authorAddress: '0x...', 
-          description: 'Placeholder description', 
-          excerpt: 'Placeholder excerpt', 
-          author: 'Placeholder Author', 
-          coverImage: '/covers/default.jpg', 
-          genre: 'Unknown', 
-          createdAt: new Date().toISOString(), 
-          tags: [] 
-        }, 
-        transactionHash: '0x...', 
-        owner: '0x...', 
-        tokenURI: 'ipfs://placeholder-uri' 
+      return {
+        tokenId,
+        metadata: {
+          title: 'Placeholder NFT',
+          content: 'Content placeholder',
+          authorAddress: '0x...',
+          description: 'Placeholder description',
+          excerpt: 'Placeholder excerpt',
+          author: 'Placeholder Author',
+          coverImage: '/covers/default.jpg',
+          genre: 'Unknown',
+          createdAt: new Date().toISOString(),
+          tags: []
+        },
+        transactionHash: '0x...',
+        owner: '0x...',
+        tokenURI: 'ipfs://placeholder-uri'
       };
     } catch (err: any) {
       setError(err.message || 'Failed to fetch NFT');
@@ -246,23 +246,23 @@ export function useMonad() {
         return data.nft;
 
         // Placeholder return for now since Monad is commented out
-        return { 
-          tokenId: `generated-${Math.random().toString(36).substring(2, 7)}`, 
-          metadata: { 
-            title: title || 'Generated Story', 
-            content: prompt, 
-            authorAddress: account, 
-            description: 'Generated story description', 
-            excerpt: 'Generated story excerpt', 
-            author: 'AI Generated', 
-            coverImage: '/covers/default.jpg', 
-            genre: genre || 'Fantasy', 
-            createdAt: new Date().toISOString(), 
-            tags: [] 
-          }, 
-          transactionHash: '0x...', 
-          owner: account, 
-          tokenURI: 'ipfs://generated-uri' 
+        return {
+          tokenId: `generated-${Math.random().toString(36).substring(2, 7)}`,
+          metadata: {
+            title: title || 'Generated Story',
+            content: prompt,
+            authorAddress: account,
+            description: 'Generated story description',
+            excerpt: 'Generated story excerpt',
+            author: 'AI Generated',
+            coverImage: '/covers/default.jpg',
+            genre: genre || 'Fantasy',
+            createdAt: new Date().toISOString(),
+            tags: []
+          },
+          transactionHash: '0x...',
+          owner: account,
+          tokenURI: 'ipfs://generated-uri'
         };
       } catch (err: any) {
         setError(err.message || 'Failed to generate and mint story');
