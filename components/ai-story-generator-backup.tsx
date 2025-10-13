@@ -146,7 +146,11 @@ export default function AIStoryGeneratorBackup({
 
       const mockStory = `# ${storyParams.theme}
 
-In the ${storyParams.tone.toLowerCase()} world of ${storyParams.setting || 'a distant realm'}, ${storyParams.characters || 'our protagonist'} embarked on an extraordinary journey.
+In the ${storyParams.tone.toLowerCase()} world of ${
+        storyParams.setting || 'a distant realm'
+      }, ${
+        storyParams.characters || 'our protagonist'
+      } embarked on an extraordinary journey.
 
 This ${storyParams.genre.toLowerCase()} tale unfolds with unexpected twists and turns, weaving together elements of adventure, emotion, and discovery. The story explores themes of courage, friendship, and the power of determination in the face of adversity.
 

@@ -12,6 +12,7 @@ Active full support: 1.1.2 (latest), 1.1.1 (previous). Security maintenance (cri
 ## [Unreleased]
 
 _Planned changes will appear here before the next tagged release._
+
 ## [1.2.0] - 2025-09-05
 
 ## [1.1.2] - 2025-08-08
@@ -45,12 +46,12 @@ Codebase integrity restoration and build stabilization after widespread comment 
 
 ### Files Affected (Representative)
 
-`components/ui/{chart.tsx,pagination.tsx,skeleton.tsx,calendar.tsx,carousel.tsx}`  
-`components/story-summary-backup.tsx`  
-`hooks/{use-groq.ts,use-monad.ts,use-story-analysis.ts,use-story-summary.ts}`  
-`src/blockchain/onchain-agent/app/hooks/useAgent.ts`  
-`lib/{api-utils.ts,constants.ts,logger-broken.ts,mock-data-backup.ts,transaction-components.ts}`  
-`app/stories/page.tsx`  
+`components/ui/{chart.tsx,pagination.tsx,skeleton.tsx,calendar.tsx,carousel.tsx}`
+`components/story-summary-backup.tsx`
+`hooks/{use-groq.ts,use-monad.ts,use-story-analysis.ts,use-story-summary.ts}`
+`src/blockchain/onchain-agent/app/hooks/useAgent.ts`
+`lib/{api-utils.ts,constants.ts,logger-broken.ts,mock-data-backup.ts,transaction-components.ts}`
+`app/stories/page.tsx`
 `src/blockchain/onchain-agent/app/api/agent/{route.new.ts,create-agent.ts,prepare-agentkit.ts}`
 
 ### Notes
@@ -62,6 +63,7 @@ Codebase integrity restoration and build stabilization after widespread comment 
 ## [1.1.1] - 2025-08-05
 
 ### Major Changes (1.1.1)
+
 - **Production Deployment Focus**: Removed all blockchain/Web3 functionality to focus on core AI storytelling features
 - **GROQ-Only Integration**: Eliminated LLAMA support, maintaining only GROQ API for story generation
 - **Clean Architecture**: Commented out all onchain scripts and wallet mockups for streamlined deployment
@@ -135,7 +137,7 @@ Codebase integrity restoration and build stabilization after widespread comment 
 
 ### New Features (1.1.0)
 
-- **Organized Directory Structure**: 
+- **Organized Directory Structure**:
   - Created `src/blockchain/` for Web3 and blockchain-related files
   - Created `src/ai/` for AI model training and processing scripts
   - Created `src/data/` for datasets and training configurations
@@ -217,6 +219,7 @@ Codebase integrity restoration and build stabilization after widespread comment 
 ## [1.0.0] - 2025-02-04
 
 ### Initial Release
+
 - Core GroqTales platform functionality
 - AI-powered story generation
 - NFT marketplace integration
@@ -227,15 +230,17 @@ Codebase integrity restoration and build stabilization after widespread comment 
 ---
 
 ### Version Format
+
 - **Major.Minor.Patch** (e.g., 1.1.0)
 - **Major**: Breaking changes or significant new features
 - **Minor**: New features, backwards compatible
 - **Patch**: Bug fixes and small improvements
 
 ### Categories
+
 - **Major Changes**: Significant new features or breaking changes
 - **New Features**: New functionality added
-- **Technical Improvements**: Code quality and architecture improvements  
+- **Technical Improvements**: Code quality and architecture improvements
 - **Bug Fixes**: Issues resolved
 - **File Organization**: Structure and organization changes
 - **Security Updates**: Security-related improvements

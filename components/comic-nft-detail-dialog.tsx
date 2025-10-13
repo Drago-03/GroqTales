@@ -62,24 +62,29 @@ export function ComicNFTDetailDialog({
   const { account } = useWeb3();
   const { toast } = useToast();
 
-  const handlePreviewButtonClick = (e: React.MouseEvent, action: () => void) => {
+  const handlePreviewButtonClick = (
+    e: React.MouseEvent,
+    action: () => void
+  ) => {
     e.stopPropagation();
     action();
   };
 
   const prevPreviewImage = () => {
-    setCurrentPreviewImage((prev) => 
+    setCurrentPreviewImage((prev) =>
       prev === 0 ? comic.previewImages.length - 1 : prev - 1
     );
   };
 
   const nextPreviewImage = () => {
-    setCurrentPreviewImage((prev) => 
+    setCurrentPreviewImage((prev) =>
       prev === comic.previewImages.length - 1 ? 0 : prev + 1
     );
   };
 
-  const getRarityColor = (rarity: 'common' | 'uncommon' | 'rare' | 'legendary') => {
+  const getRarityColor = (
+    rarity: 'common' | 'uncommon' | 'rare' | 'legendary'
+  ) => {
     switch (rarity) {
       case 'common':
         return 'bg-gray-500 text-white';
@@ -97,16 +102,16 @@ export function ComicNFTDetailDialog({
   const handlePurchase = () => {
     if (!account) {
       toast({
-        title: "Wallet not connected",
-        description: "Please connect your wallet to make a purchase.",
-        variant: "destructive",
+        title: 'Wallet not connected',
+        description: 'Please connect your wallet to make a purchase.',
+        variant: 'destructive',
       });
       return;
     }
-    
+
     onPurchase();
     toast({
-      title: "Purchase initiated",
+      title: 'Purchase initiated',
       description: `Processing purchase of ${comic.title} for ${comic.price}`,
     });
   };
@@ -166,7 +171,11 @@ export function ComicNFTDetailDialog({
                               setCurrentPreviewImage(idx)
                             )
                           }
-                          className={`w-2 h-2 rounded-full ${currentPreviewImage === idx ? 'bg-white' : 'bg-white/50'}`}
+                          className={`w-2 h-2 rounded-full ${
+                            currentPreviewImage === idx
+                              ? 'bg-white'
+                              : 'bg-white/50'
+                          }`}
                           aria-label={`Go to preview image ${idx + 1}`}
                         />
                       ))}
