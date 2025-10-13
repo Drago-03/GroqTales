@@ -67,7 +67,9 @@ export function TrendingStories() {
   const handleCreateSimilar = (genre: string) => {
     // Direct navigation with URL parameters
     if (typeof window !== 'undefined') {
-      window.location.href = `/create/ai-story?source=trending&genre=${encodeURIComponent(genre)}&format=nft`;
+      window.location.href = `/create/ai-story?source=trending&genre=${encodeURIComponent(
+        genre
+      )}&format=nft`;
     }
   };
 

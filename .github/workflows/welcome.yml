@@ -29,7 +29,7 @@ jobs:
               creator: context.payload.issue.user.login,
               state: 'all'
             });
-            
+
             if (issues.length === 1) {
               const welcomeMessage = [
                 '## Welcome to GroqTales',
@@ -56,7 +56,7 @@ jobs:
                 '',
                 '*This is an automated message. A maintainer will respond soon.*'
               ].join('\n');
-              
+
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -76,7 +76,7 @@ jobs:
               creator: context.payload.pull_request.user.login,
               state: 'all'
             });
-            
+
             if (prs.length === 1) {
               const welcomeMessage = [
                 '## Welcome to GroqTales Development',
@@ -120,7 +120,7 @@ jobs:
                 '',
                 '*This is an automated message. Review process will begin shortly.*'
               ].join('\n');
-              
+
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -142,7 +142,7 @@ jobs:
             const reviewers = ['Drago-03'];
             const labels = [];
             const title = pr.title.toLowerCase();
-            
+
             if (title.includes('fix') || title.includes('bug')) {
               labels.push('bug', 'fix');
             }
@@ -164,7 +164,7 @@ jobs:
             if (title.includes('performance') || title.includes('perf')) {
               labels.push('performance');
             }
-            
+
             const totalChanges = (pr.additions || 0) + (pr.deletions || 0);
             if (totalChanges < 10) {
               labels.push('size/XS');
@@ -177,7 +177,7 @@ jobs:
             } else {
               labels.push('size/XL');
             }
-            
+
             if (labels.length > 0) {
               await github.rest.issues.addLabels({
                 owner: context.repo.owner,
@@ -186,7 +186,7 @@ jobs:
                 labels: labels
               });
             }
-            
+
             const filteredReviewers = reviewers.filter(reviewer => reviewer !== pr.user.login);
             if (filteredReviewers.length > 0) {
               await github.rest.pulls.requestReviewers({

@@ -7,7 +7,10 @@ import clientPromise from './mongodb';
  */
 export async function getDb() {
   // In build mode, return mock database
-  if (process.env.NEXT_PUBLIC_BUILD_MODE === 'true' || process.env.CI === 'true') {
+  if (
+    process.env.NEXT_PUBLIC_BUILD_MODE === 'true' ||
+    process.env.CI === 'true'
+  ) {
     return {
       collection: () => ({
         findOne: () => Promise.resolve(null),
@@ -21,14 +24,14 @@ export async function getDb() {
       createCollection: () => Promise.resolve(),
     } as any;
   }
-  
+
   const client = await clientPromise;
   const db = client.db(process.env.MONGODB_DB_NAME);
   return db;
 }
 /**
    * Retrieves collection data
-   * 
+   *
 
 export async function getCollection(collectionName: string) {
   const db = await getDb();
@@ -109,7 +112,7 @@ export async function deleteOne(collectionName: string, query: any) {
 }
 /**
    * Updates existing one
-   * 
+   *
 
 export async function updateOne(collectionName: string, query: any, update: any) {
   const collection = await getCollection(collectionName);
@@ -117,7 +120,7 @@ export async function updateOne(collectionName: string, query: any, update: any)
 }
   /**
    * Deletes one
-   * 
+   *
 
 export async function deleteOne(collectionName: string, query: any) {
   const collection = await getCollection(collectionName);

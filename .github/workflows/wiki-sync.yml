@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Sync Wiki
-        uses: newrelic/wiki-sync-action@v1.0.0
+        uses: newrelic/wiki-sync-action@v1.0.1
         with:
           source: wiki
           destination: wiki

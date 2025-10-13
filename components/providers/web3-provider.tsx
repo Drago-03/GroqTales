@@ -14,11 +14,17 @@ interface Web3ContextType {
   networkName: string;
   ensName: string | null;
   switchNetwork: (chainId: number) => Promise<void>;
-  mintNFTOnBase: (metadata: any, recipient?: string) => Promise<{
+  mintNFTOnBase: (
+    metadata: any,
+    recipient?: string
+  ) => Promise<{
     tokenId: string;
     transactionHash: string;
   }>;
-  mintNFTOnMonad: (metadata: any, recipient?: string) => Promise<{
+  mintNFTOnMonad: (
+    metadata: any,
+    recipient?: string
+  ) => Promise<{
     tokenId: string;
     transactionHash: string;
   }>;
@@ -91,7 +97,7 @@ export function Web3Provider({ children }: { children: React.ReactNode }) {
     setConnecting(true);
     try {
       // Simulate connection delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       setAccount('0x1234...5678');
       setChainId(1);
       setBalance('1.5');
@@ -181,9 +187,7 @@ export function Web3Provider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <Web3Context.Provider value={contextValue}>
-      {children}
-    </Web3Context.Provider>
+    <Web3Context.Provider value={contextValue}>{children}</Web3Context.Provider>
   );
 }
 
