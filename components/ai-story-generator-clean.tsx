@@ -128,17 +128,27 @@ export default function AIStoryGenerator({
 
 ## Chapter 1: The Beginning
 
-${prompt} 
+${prompt}
 
-In the ${setting || 'mysterious realm'}, our protagonist ${mainCharacters || 'a brave hero'} embarked on an extraordinary journey. The themes of ${themes || 'courage and discovery'} wove through every aspect of this ${selectedGenres.join(', ') || 'adventure'} tale.
+In the ${setting || 'mysterious realm'}, our protagonist ${
+        mainCharacters || 'a brave hero'
+      } embarked on an extraordinary journey. The themes of ${
+        themes || 'courage and discovery'
+      } wove through every aspect of this ${
+        selectedGenres.join(', ') || 'adventure'
+      } tale.
 
-The story unfolded with unexpected twists and turns, leading to a climactic confrontation that would change everything. Through trials and tribulations, our characters discovered the true meaning of ${themes || 'friendship and perseverance'}.
+The story unfolded with unexpected twists and turns, leading to a climactic confrontation that would change everything. Through trials and tribulations, our characters discovered the true meaning of ${
+        themes || 'friendship and perseverance'
+      }.
 
 ## Chapter 2: The Journey Continues
 
 As the adventure progressed, new challenges emerged. The ${storyFormat} format allowed for deep exploration of character development and plot complexity. Each scene built upon the last, creating a rich tapestry of narrative elements.
 
-The setting of ${setting || 'an enchanted world'} provided the perfect backdrop for the unfolding drama. Characters faced their deepest fears and highest aspirations, all while navigating the intricate plot outlined in the initial concept.
+The setting of ${
+        setting || 'an enchanted world'
+      } provided the perfect backdrop for the unfolding drama. Characters faced their deepest fears and highest aspirations, all while navigating the intricate plot outlined in the initial concept.
 
 ## Conclusion
 

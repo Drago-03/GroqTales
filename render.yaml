@@ -32,7 +32,7 @@ services:
         value: v1
     domains:
       - groqtales-api.onrender.com
-    
+
   # SDK Service (for future SDK implementations)
   - type: web
     name: groqtales-sdk-service
