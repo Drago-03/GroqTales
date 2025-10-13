@@ -140,14 +140,15 @@ export class ErrorHandler {
           timestamp: error.timestamp.toISOString(),
         },
       };
-}
+    }
     return {
       success: false,
       error: {
         code: 'INTERNAL_ERROR',
-        message: process.env.NODE_ENV === 'production'
-          ? 'An internal error occurred'
-          : error.message,
+        message:
+          process.env.NODE_ENV === 'production'
+            ? 'An internal error occurred'
+            : error.message,
         timestamp: new Date().toISOString(),
       },
     };
@@ -258,13 +259,13 @@ export class RetryHandler {
             'Retry failed',
             `Failed after ${maxRetries} attempts: ${lastError.message}`
           );
-}
+        }
         const delay = delayMs * Math.pow(backoffMultiplier, attempt - 1);
-        await new Promise(resolve => setTimeout(resolve, delay));
-}
-}
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    }
     throw lastError!;
-}
+  }
 }
 export default {
   AppError,

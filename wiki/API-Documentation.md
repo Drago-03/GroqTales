@@ -52,10 +52,13 @@ GroqTales API authentication is primarily handled through wallet-based signature
   connect via a Web3 provider.
 - **API Key**: For non-blockchain operations (like story generation), include your API key in the
   request header:
+
   ```bash
   Authorization: Bearer YOUR_API_KEY
   ```
+
   or as a query parameter if headers are not supported:
+
   ```bash
   ?api_key=YOUR_API_KEY
   ```
@@ -93,6 +96,7 @@ Endpoints for generating AI-powered stories. These interact with Groq AI or othe
 - **Generate Story** (POST `/stories/generate`)
   - **Description**: Generate a story based on provided parameters like genre, title, and prompt.
   - **Request Body** (example):
+
     ```json
     {
       "title": "The Lost Kingdom",
@@ -107,7 +111,9 @@ Endpoints for generating AI-powered stories. These interact with Groq AI or othe
       "temperature": 0.7
     }
     ```
+
   - **Response** (example):
+
     ```json
     {
       "id": "story-12345",
@@ -118,6 +124,7 @@ Endpoints for generating AI-powered stories. These interact with Groq AI or othe
       "status": "generated"
     }
     ```
+
   - **Headers**: `Authorization: Bearer YOUR_API_KEY`
   - **Status**: Planned/In Development
 
@@ -129,6 +136,7 @@ Endpoints for minting stories as NFTs on the Monad blockchain.
   - **Description**: Mint a generated story as an NFT. Requires a connected wallet and Monad
     network.
   - **Request Body** (example):
+
     ```json
     {
       "storyId": "story-12345",
@@ -142,7 +150,9 @@ Endpoints for minting stories as NFTs on the Monad blockchain.
       }
     }
     ```
+
   - **Response** (example):
+
     ```json
     {
       "tokenId": "nft-67890",
@@ -152,6 +162,7 @@ Endpoints for minting stories as NFTs on the Monad blockchain.
       "blockchain": "Monad Testnet"
     }
     ```
+
   - **Headers**: Requires wallet signature or Web3 authentication.
   - **Status**: Planned/In Development (see `/api/monad/mint` in current codebase for early
     implementation).
@@ -164,6 +175,7 @@ Endpoints for managing user accounts and profiles.
   - **Description**: Retrieve the profile information associated with the connected wallet or API
     key.
   - **Response** (example):
+
     ```json
     {
       "address": "0xYourWalletAddress",
@@ -173,6 +185,7 @@ Endpoints for managing user accounts and profiles.
       "createdAt": "2023-09-01T10:00:00Z"
     }
     ```
+
   - **Headers**: `Authorization: Bearer YOUR_API_KEY` or wallet signature.
   - **Status**: Planned
 
