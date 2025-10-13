@@ -25,7 +25,9 @@ export async function POST(request: NextRequest) {
         systemPrompt =
           'You are a literary analyst with expertise in story structure, character development, and thematic analysis.';
         prompt = `
-          Analyze the following ${genre || 'story'} titled "${title || 'Untitled Story'}" and provide a detailed analysis, including:
+          Analyze the following ${genre || 'story'} titled "${
+            title || 'Untitled Story'
+          }" and provide a detailed analysis, including:
           1. Plot Structure: Identify the introduction, rising action, climax, falling action, and resolution
           2. Character Analysis: Analyze the main characters, their motivations, and development
           3. Theme Analysis: Identify and explain major themes and motifs
@@ -41,7 +43,9 @@ export async function POST(request: NextRequest) {
         systemPrompt =
           'You are an experienced literary critic with a keen eye for both strengths and weaknesses in creative writing.';
         prompt = `
-          Provide a constructive critique of the following ${genre || 'story'} titled "${title || 'Untitled Story'}", covering:
+          Provide a constructive critique of the following ${
+            genre || 'story'
+          } titled "${title || 'Untitled Story'}", covering:
           1. Overall Impression: Your general assessment of the story's quality and impact
           2. Strongest Elements: What works well in this story (be specific)
           3. Areas for Improvement: Identify weaknesses or opportunities to strengthen the story
@@ -57,7 +61,9 @@ export async function POST(request: NextRequest) {
         systemPrompt =
           'You are a market research specialist in the publishing industry with expertise in audience demographics and reader preferences.';
         prompt = `
-          Analyze the following ${genre || 'story'} titled "${title || 'Untitled Story'}" and provide an audience analysis:
+          Analyze the following ${genre || 'story'} titled "${
+            title || 'Untitled Story'
+          }" and provide an audience analysis:
           1. Target Demographics: Age range, interests, and reading preferences of the likely target audience
           2. Market Positioning: How this story fits within current market trends
           3. Reader Appeal: Specific elements that would appeal to different reader groups
@@ -73,7 +79,9 @@ export async function POST(request: NextRequest) {
         systemPrompt =
           'You are a developmental editor who helps writers refine and improve their work.';
         prompt = `
-          Provide developmental editing feedback for the following ${genre || 'story'} titled "${title || 'Untitled Story'}":
+          Provide developmental editing feedback for the following ${
+            genre || 'story'
+          } titled "${title || 'Untitled Story'}":
           1. Story Structure: Assessment and recommendations for plot structure and pacing
           2. Character Development: Analysis of character arcs, consistency, and depth
           3. Setting & Worldbuilding: Evaluation of the story's setting and atmosphere
