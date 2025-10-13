@@ -118,7 +118,11 @@ const mockPosts: CommunityPost[] = [
   },
   {
     id: '2',
-    author: { id: '2', name: 'Sarah Johnson', avatar: mockUsers[1]?.avatar || '' },
+    author: {
+      id: '2',
+      name: 'Sarah Johnson',
+      avatar: mockUsers[1]?.avatar || '',
+    },
     content:
       "What are everyone's thoughts on AI-generated stories vs human-written ones? I've been experimenting with both and finding interesting parallels in creativity patterns.",
     timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000),
@@ -132,7 +136,11 @@ const mockPosts: CommunityPost[] = [
   },
   {
     id: '3',
-    author: { id: '3', name: 'Michael Brown', avatar: mockUsers[2]?.avatar || '' },
+    author: {
+      id: '3',
+      name: 'Michael Brown',
+      avatar: mockUsers[2]?.avatar || '',
+    },
     title: 'Neon Dreams: A Cyberpunk Tale',
     content:
       'Set in Neo-Tokyo 2087, this story explores the thin line between humanity and technology. When memories can be bought and sold, what defines who we really are?',
