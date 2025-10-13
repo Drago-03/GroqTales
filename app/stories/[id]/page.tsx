@@ -176,7 +176,9 @@ export default function StoryPage({ params }: { params: { id: string } }) {
     }
     toast({
       title: type === 'upvote' ? 'Upvoted!' : 'Downvoted',
-      description: `You have ${type === 'upvote' ? 'upvoted' : 'downvoted'} this story.`,
+      description: `You have ${
+        type === 'upvote' ? 'upvoted' : 'downvoted'
+      } this story.`,
     });
   };
 
@@ -683,7 +685,9 @@ export default function StoryPage({ params }: { params: { id: string } }) {
                       onClick={() => {
                         // Direct navigation with URL parameters
                         const genre = story.genre || 'fantasy';
-                        window.location.href = `/create/ai-story?source=story&genre=${encodeURIComponent(genre)}&format=nft`;
+                        window.location.href = `/create/ai-story?source=story&genre=${encodeURIComponent(
+                          genre
+                        )}&format=nft`;
                       }}
                     >
                       <PenSquare className="h-4 w-4 mr-2" />
@@ -728,7 +732,9 @@ export default function StoryPage({ params }: { params: { id: string } }) {
               onClick={() => {
                 // Direct navigation with URL parameters
                 const genreSlug = genre?.slug || 'fantasy';
-                window.location.href = `/create/ai-story?source=stories&genre=${encodeURIComponent(genreSlug)}&format=nft`;
+                window.location.href = `/create/ai-story?source=stories&genre=${encodeURIComponent(
+                  genreSlug
+                )}&format=nft`;
               }}
             >
               <PenSquare className="h-4 w-4 mr-2" />

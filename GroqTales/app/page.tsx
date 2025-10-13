@@ -74,9 +74,7 @@ export default function App() {
           <div>
             <div className="flex items-center space-x-2">
               {/* OnChain wallet components completely removed to prevent deployment errors */}
-              <div className="text-sm text-gray-600">
-                Welcome to GroqTales
-              </div>
+              <div className="text-sm text-gray-600">Welcome to GroqTales</div>
             </div>
           </div>
           <div>{saveFrameButton}</div>

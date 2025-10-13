@@ -1,10 +1,9 @@
 ---
-name: "Basic Issue"
-about: "Report a bug, typo, or small request"
-title: "[Basic] <title>"
+name: 'Basic Issue'
+about: 'Report a bug, typo, or small request'
+title: '[Basic] <title>'
 labels: bug, basic
 assignees: ''
-
 ---
 
 ## Describe the issue
@@ -37,5 +36,6 @@ Add any other context about the problem here.
 
 ---
 
-**Related Links:**  
+**Related Links:**
+
 - [GroqTales Website](https://www.groqtales.xyz/)

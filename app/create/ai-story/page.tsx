@@ -149,8 +149,8 @@ function AIStoryContent() {
             {navigatedFrom === 'story'
               ? 'Story'
               : navigatedFrom === 'stories' || source?.includes('stories')
-                ? 'Stories'
-                : 'Home'}
+              ? 'Stories'
+              : 'Home'}
           </Button>
         </div>
 

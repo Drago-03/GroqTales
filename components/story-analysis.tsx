@@ -190,8 +190,8 @@ export default function StoryAnalysis({ className = '' }: StoryAnalysisProps) {
                           value === 'Strong'
                             ? 'default'
                             : value === 'Good'
-                              ? 'secondary'
-                              : 'outline'
+                            ? 'secondary'
+                            : 'outline'
                         }
                       >
                         {value as string}

@@ -87,7 +87,9 @@ function Card({ title, children, className = "", onClick }: CardProps) {
   return (
     <div
       {...(onClick ? { role: "button" } : {})}
-      className={`bg-[var(--app-card-bg)] backdrop-blur-md rounded-xl shadow-lg border border-[var(--app-card-border)] overflow-hidden transition-all hover:shadow-xl ${className} ${onClick ? "cursor-pointer" : ""}`}
+      className={`bg-[var(--app-card-bg)] backdrop-blur-md rounded-xl shadow-lg border border-[var(--app-card-border)] overflow-hidden transition-all hover:shadow-xl ${className} ${
+        onClick ? "cursor-pointer" : ""
+      }`}
       onClick={onClick}
       onKeyDown={onClick ? handleKeyDown : undefined}
       tabIndex={onClick ? 0 : undefined}
@@ -359,7 +361,9 @@ function TodoList() {
                 </button>
                 <label
                   htmlFor={`todo-${todo.id}`}
-                  className={`text-[var(--app-foreground-muted)] cursor-pointer ${todo.completed ? "line-through opacity-70" : ""}`}
+                  className={`text-[var(--app-foreground-muted)] cursor-pointer ${
+                    todo.completed ? "line-through opacity-70" : ""
+                  }`}
                 >
                   {todo.text}
                 </label>
@@ -399,7 +403,9 @@ function TransactionDemo() {
   const sendNotification = useNotification();
 
   const handleSuccess = useCallback(
-    async (response: { transactionReceipts: { transactionHash: string }[] }) => {
+    async (response: {
+      transactionReceipts: { transactionHash: string }[];
+    }) => {
       const txHash = response.transactionReceipts[0]?.transactionHash;
       console.log(`Transaction successful: ${txHash}`);
 
