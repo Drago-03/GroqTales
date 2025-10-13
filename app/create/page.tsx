@@ -528,7 +528,9 @@ export default function CreateStoryPage() {
                 <CardTitle>
                   Create Your{' '}
                   {storyType
-                    ? `${storyType.charAt(0).toUpperCase() + storyType.slice(1)} `
+                    ? `${
+                        storyType.charAt(0).toUpperCase() + storyType.slice(1)
+                      } `
                     : ''}
                   Story
                   {storyFormat === 'nft' && ' NFT'}

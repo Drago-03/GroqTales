@@ -93,33 +93,43 @@ AI's output, resulting in a more personalized story. Here's how to use each cust
 
 - **Main Characters**: Describe the key characters who will drive your story. Include details like
   names, personalities, motivations, and relationships to add depth. For example:
+
   ```
   Sir Eldric, a brave knight seeking to reclaim his lost kingdom, haunted by past failures. Lila, a witty rogue and Eldric's unlikely companion, skilled in stealth but distrustful of authority.
   ```
+
   This helps the AI create consistent character arcs and interactions.
 - **World & Setting**: Detail the environment, time period, and locations where your story unfolds.
   A vivid setting anchors the narrative. For example:
+
   ```
   A medieval fantasy world with enchanted forests, ancient castles, and mystical creatures. The story begins in the shadowed village of Thornwick during a lunar eclipse.
   ```
+
   This guides the AI in crafting immersive descriptions and context.
 - **Plot Outline**: Outline the main events, conflicts, and resolution to structure the story's
   progression. This can be a high-level summary or specific beats. For example:
+
   ```
   The knight must overcome a dark sorcerer to reclaim his throne, facing betrayal from a trusted ally along the way. The story resolves with a climactic battle at the sorcerer's tower.
   ```
+
   This ensures the AI follows a coherent narrative arc.
 - **Themes & Motifs to Explore**: Specify underlying messages, recurring symbols, or emotional tones
   you want woven into the story. For example:
+
   ```
   Themes of courage and redemption, with motifs of light versus darkness symbolizing hope amidst despair.
   ```
+
   This adds layers of meaning to the narrative.
 - **Additional Details & Specific Instructions**: Add any extra requests or elements to further
   tailor the output. This is a catch-all for unique ideas or stylistic preferences. For example:
+
   ```
   Include a surprising plot twist in the third act. Use a whimsical, fairy-tale tone with vivid imagery for nature scenes.
   ```
+
   This field lets you fine-tune aspects not covered by other inputs.
 
 **Tip**: While customization is optional, providing detailed inputs significantly enhances the AI's
@@ -190,6 +200,7 @@ ownership via blockchain:
 
 - **Publish for Free**: Share your story with the GroqTales community without minting it as an NFT.
   This makes it accessible to all users for reading and feedback.
+
   1. Ensure you're logged in or have a connected wallet if required by the platform for
      authentication.
   2. In the story generator interface, click the "Publish Story" button or navigate to a "Publish"

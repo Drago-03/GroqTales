@@ -21,15 +21,10 @@ if (fs.existsSync(envLocalPath)) {
 }
 
 // Required environment variables
-const requiredVars = [
-  'NEXT_PUBLIC_GROQ_API_KEY',
-];
+const requiredVars = ['NEXT_PUBLIC_GROQ_API_KEY'];
 
 // Optional environment variables (only checked in development)
-const developmentVars = [
-  'MONGODB_URI',
-  'MONGODB_DB_NAME',
-];
+const developmentVars = ['MONGODB_URI', 'MONGODB_DB_NAME'];
 
 // Optional but recommended environment variables
 const recommendedVars = [
@@ -66,7 +61,7 @@ if (isProduction && !fs.existsSync(envLocalPath)) {
       '\x1b[32m%s\x1b[0m',
       '✅ All required environment variables are set!\n'
     );
-    
+
     if (missingDevVars.length > 0) {
       console.log(
         '\x1b[33m%s\x1b[0m',
@@ -130,7 +125,7 @@ if (missingVars.length === 0) {
     '\x1b[32m%s\x1b[0m',
     '✅ All required environment variables are set!\n'
   );
-  
+
   if (missingDevVars.length > 0) {
     console.log(
       '\x1b[33m%s\x1b[0m',

@@ -1,6 +1,6 @@
 /**
  * Mock Monad Blockchain Integration Service
- * 
+ *
  * This is a mock service to prevent deployment errors.
  * All blockchain functionality has been disabled for this build.
  */
@@ -34,28 +34,32 @@ export interface MintedNFT {
 
 // Mock functions to prevent import errors
 export async function getStoryNFT(tokenId: string): Promise<MintedNFT | null> {
-  console.log('Mock getStoryNFT called - blockchain functionality disabled');
+  console.log("Mock getStoryNFT called - blockchain functionality disabled");
   return null;
 }
 
 export async function mintStoryNFT(
   metadata: StoryMetadata,
-  walletAddress: string
+  walletAddress: string,
 ): Promise<MintedNFT> {
-  console.log('Mock mintStoryNFT called - blockchain functionality disabled');
-  throw new Error('Blockchain functionality is disabled in this build');
+  console.log("Mock mintStoryNFT called - blockchain functionality disabled");
+  throw new Error("Blockchain functionality is disabled in this build");
 }
 
 export async function transferStoryNFT(
   tokenId: string,
   fromAddress: string,
-  toAddress: string
+  toAddress: string,
 ): Promise<string> {
-  console.log('Mock transferStoryNFT called - blockchain functionality disabled');
-  throw new Error('Blockchain functionality is disabled in this build');
+  console.log(
+    "Mock transferStoryNFT called - blockchain functionality disabled",
+  );
+  throw new Error("Blockchain functionality is disabled in this build");
 }
 
-export async function getStoryNFTs(walletAddress: string): Promise<MintedNFT[]> {
-  console.log('Mock getStoryNFTs called - blockchain functionality disabled');
+export async function getStoryNFTs(
+  walletAddress: string,
+): Promise<MintedNFT[]> {
+  console.log("Mock getStoryNFTs called - blockchain functionality disabled");
   return [];
 }
