@@ -25,7 +25,9 @@ export default function LoadingScreenBackup({
 
   return (
     <div
-      className={`${fullScreen ? 'fixed inset-0 z-50' : 'relative'} bg-background/80 backdrop-blur-sm flex items-center justify-center`}
+      className={`${
+        fullScreen ? 'fixed inset-0 z-50' : 'relative'
+      } bg-background/80 backdrop-blur-sm flex items-center justify-center`}
     >
       <div className="relative">
         <div className="absolute inset-0 flex items-center justify-center">
