@@ -1,7 +1,7 @@
 repos:
   # Code formatting and linting
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -15,7 +15,7 @@ repos:
 
   # JavaScript/TypeScript linting
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v8.44.0
+    rev: v9.38.0
     hooks:
       - id: eslint
         files: \.(js|jsx|ts|tsx)$
@@ -27,14 +27,14 @@ repos:
 
   # Prettier formatting
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.0.0
+    rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
         files: \.(js|jsx|ts|tsx|json|md|yml|yaml)$
 
   # Security scanning
   - repo: https://github.com/Yelp/detect-secrets
-    rev: v1.4.0
+    rev: v1.5.0
     hooks:
       - id: detect-secrets
         args: ['--baseline', '.secrets.baseline']
@@ -42,7 +42,7 @@ repos:
 
   # Markdown linting
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.35.0
+    rev: v0.45.0
     hooks:
       - id: markdownlint
         args: ['--fix']
@@ -75,4 +75,4 @@ repos:
         entry: npm audit --audit-level moderate
         language: system
         pass_filenames: false
-        stages: [commit]
+        stages: [pre-commit]

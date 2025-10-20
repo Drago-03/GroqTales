@@ -9,7 +9,7 @@ export async function GET() {
     },
     frame: {
       version: process.env.NEXT_PUBLIC_VERSION,
-      name: "GroqTales", // Hardcoded instead of OnChain environment variable
+      name: 'GroqTales', // Hardcoded instead of OnChain environment variable
       homeUrl: URL,
       iconUrl: process.env.NEXT_PUBLIC_ICON_URL,
       imageUrl: process.env.NEXT_PUBLIC_IMAGE_URL,

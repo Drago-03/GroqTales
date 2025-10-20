@@ -46,12 +46,15 @@ the latest version of the project from GitHub.
 1. **Open Your Terminal or Command Prompt**: Navigate to the directory where you want to store the
    GroqTales project.
 2. **Clone the Repository**: Run the following command to clone the GroqTales repository:
+
    ```bash
    git clone https://github.com/Drago-03/GroqTales.git
    cd GroqTales
    ```
+
 3. **Optional - Switch to a Specific Branch**: If you're working on a specific feature or
    development branch, switch to it after cloning:
+
    ```bash
    git checkout dev  # Replace 'dev' with the relevant branch name if needed
    ```
@@ -65,16 +68,20 @@ crucial for running the application.
 
 1. **Ensure You're in the Project Directory**: If you haven't already navigated into the `GroqTales`
    folder after cloning, do so now:
+
    ```bash
    cd GroqTales
    ```
+
 2. **Install Dependencies**: Use npm or yarn to install the required packages defined in
    `package.json`:
+
    ```bash
    npm install
    # or
    yarn install
    ```
+
    This process may take a few minutes as it downloads and sets up libraries like Next.js, React,
    and Web3 tools.
 
@@ -98,9 +105,11 @@ function.
 
 1. **Copy the Example File**: Duplicate the provided `.env.example` file to create your local
    configuration file:
+
    ```bash
    cp .env.example .env.local
    ```
+
 2. **Edit the Configuration File**: Open `.env.local` in a text editor (e.g., VS Code, Notepad, or
    nano) and replace the placeholder values with your actual credentials or mock values for
    development purposes. **Never commit `.env.local` to version control** as it contains sensitive
@@ -143,17 +152,21 @@ application locally.
 
 1. **Start the Development Server**: Run the following command to start the Next.js development
    environment:
+
    ```bash
    npm run dev
    # or
    yarn dev
    ```
+
    You'll see output in your terminal indicating the server is running, typically on port 3000
    (e.g., `ready - started server on 0.0.0.0:3000`).
 2. **Access GroqTales in Your Browser**: Open your preferred web browser and navigate to:
+
    ```
    http://localhost:3000
    ```
+
    You should see the GroqTales application interface load, confirming a successful setup.
 3. **Hot Reloading**: The development server supports hot reloading, meaning any changes you make to
    the code will automatically refresh the application in your browser, speeding up development and
@@ -176,7 +189,7 @@ This step allows you to interact with the Monad blockchain for creating digital 
 2. **Configure Wallet for Monad Testnet**: Set your wallet to the Monad Testnet network for
    development purposes:
    - **Chain ID**: 10143
-   - **RPC URL**: https://testnet-rpc.monad.xyz
+   - **RPC URL**: <https://testnet-rpc.monad.xyz>
    - **Currency Symbol**: MONAD Add this network manually in your wallet settings if GroqTales
      doesn't prompt an automatic switch.
 3. **Connect Wallet in GroqTales**: In the GroqTales application (at `http://localhost:3000`), click
@@ -198,12 +211,15 @@ on track:
 
 - **Node.js Version Issues**: If you see errors like "unsupported engine" or compatibility issues,
   ensure you're using Node.js version 16.x or higher. Use `nvm` to switch versions if needed:
+
   ```bash
   nvm use 16
   ```
+
   Download the correct version from [nodejs.org](https://nodejs.org/) if necessary.
 - **Dependency Errors**: If `npm install` fails with errors, try clearing the `node_modules`
   directory and `package-lock.json` file, then reinstall:
+
   ```bash
   rm -rf node_modules package-lock.json
   npm install
@@ -211,6 +227,7 @@ on track:
   rm -rf node_modules yarn.lock
   yarn install
   ```
+
   Ensure your package manager (npm or yarn) is up to date.
 - **Environment Variables Missing**: If the application fails to start with errors about missing
   environment variables, verify that `.env.local` is in the project root and all required variables
@@ -218,10 +235,12 @@ on track:
   [Environment Variables](Environment-Variables.md) for guidance.
 - **Port Already in Use**: If the development server won't start due to port 3000 being occupied,
   identify and stop the conflicting process:
+
   ```bash
   lsof -i :3000  # On Unix systems to find the process ID (PID)
   kill -9 <PID>  # Replace <PID> with the process ID
   ```
+
   Alternatively, start the server on a different port by modifying `package.json` or using an
   environment variable (check Next.js documentation).
 - **Wallet Connection Issues**: If connecting a wallet fails, ensure the wallet extension (e.g.,

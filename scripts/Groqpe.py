@@ -38,7 +38,7 @@ def print_separator():
 def test_basic_completion():
     """Test a basic completion with the Groq API"""
     print("BASIC COMPLETION EXAMPLE")
-    
+
     start_time = time.time()
     completion = client.chat.completions.create(
         model=MODELS["llama4_scout"],
@@ -52,9 +52,9 @@ def test_basic_completion():
         max_tokens=200,
         stream=False
     )
-    
+
     end_time = time.time()
-    
+
     print(f"Response from {MODELS['llama4_scout']}:")
     print(completion.choices[0].message.content)
     print(f"\nTime taken: {(end_time - start_time):.2f} seconds")
@@ -63,7 +63,7 @@ def test_basic_completion():
 def test_story_generation():
     """Test story generation with the Groq API"""
     print("STORY GENERATION EXAMPLE")
-    
+
     start_time = time.time()
     completion = client.chat.completions.create(
         model=MODELS["llama3_70b"],
@@ -81,9 +81,9 @@ def test_story_generation():
         max_tokens=500,
         stream=False
     )
-    
+
     end_time = time.time()
-    
+
     print(f"Generated story (using {MODELS['llama3_70b']}):")
     print(completion.choices[0].message.content)
     print(f"\nTime taken: {(end_time - start_time):.2f} seconds")
@@ -92,7 +92,7 @@ def test_story_generation():
 def test_structured_output():
     """Test getting structured JSON output from the Groq API"""
     print("STRUCTURED JSON OUTPUT EXAMPLE")
-    
+
     completion = client.chat.completions.create(
         model=MODELS["llama4_scout"],
         messages=[
@@ -117,15 +117,15 @@ def test_structured_output():
         max_tokens=800,
         stream=False
     )
-    
+
     response_text = completion.choices[0].message.content
-    
+
     # Extract JSON from the response
     try:
         # Look for JSON array pattern
         import re
         json_match = re.search(r'\[\s*\{.*\}\s*\]', response_text, re.DOTALL)
-        
+
         if json_match:
             books = json.loads(json_match.group(0))
             print(f"Successfully parsed {len(books)} book recommendations:")
@@ -142,7 +142,7 @@ def test_streaming():
     """Test streaming response from the Groq API"""
     print("STREAMING EXAMPLE")
     print("Response will stream token by token:\n")
-    
+
     stream = client.chat.completions.create(
         model=MODELS["mixtral"],
         messages=[
@@ -155,7 +155,7 @@ def test_streaming():
         max_tokens=100,
         stream=True
     )
-    
+
     for chunk in stream:
         if chunk.choices[0].delta.content is not None:
             print(chunk.choices[0].delta.content, end="", flush=True)
@@ -165,25 +165,25 @@ def main():
     """Run all examples"""
     print("\nGROQ API PYTHON EXAMPLES\n")
     print(f"Using API key: {API_KEY[:5]}...{API_KEY[-4:]}")
-    
+
     try:
         # Run examples
         test_basic_completion()
         print_separator()
-        
+
         test_story_generation()
         print_separator()
-        
+
         test_structured_output()
         print_separator()
-        
+
         test_streaming()
         print_separator()
-        
+
         print("All examples completed successfully!")
-        
+
     except Exception as e:
         print(f"Error occurred: {e}")
 
 if __name__ == "__main__":
-    main() 
+    main()

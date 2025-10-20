@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { type ReactNode, useCallback, useMemo, useState } from "react";
+import { type ReactNode, useCallback, useMemo, useState } from 'react';
 // yo fam, we need this for checking if the wallet is connected n stuff
-import { useAccount } from "../../lib/wagmi-mock";
+import { useAccount } from '../../lib/wagmi-mock';
 import {
   Transaction, // fr fr this handles all our transaction logic
   TransactionButton, // no cap, this button be handling our tx submissions
@@ -13,48 +13,48 @@ import {
   TransactionToastAction,
   TransactionToastIcon,
   TransactionToastLabel,
-} from "../../lib/transaction-components";
-import { useNotification } from "../../lib/mini-kit-mock";
+} from '../../lib/transaction-components';
+import { useNotification } from '../../lib/mini-kit-mock';
 
 type ButtonProps = {
   children: ReactNode;
-  variant?: "primary" | "secondary" | "outline" | "ghost";
-  size?: "sm" | "md" | "lg";
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
-  type?: "button" | "submit" | "reset";
+  type?: 'button' | 'submit' | 'reset';
   icon?: ReactNode;
 };
 
 export function Button({
   children,
-  variant = "primary",
-  size = "md",
-  className = "",
+  variant = 'primary',
+  size = 'md',
+  className = '',
   onClick,
   disabled = false,
-  type = "button",
+  type = 'button',
   icon,
 }: ButtonProps) {
   const baseClasses =
-    "inline-flex items-center justify-center font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0052FF] disabled:opacity-50 disabled:pointer-events-none";
+    'inline-flex items-center justify-center font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0052FF] disabled:opacity-50 disabled:pointer-events-none';
 
   const variantClasses = {
     primary:
-      "bg-[var(--app-accent)] hover:bg-[var(--app-accent-hover)] text-[var(--app-background)]",
+      'bg-[var(--app-accent)] hover:bg-[var(--app-accent-hover)] text-[var(--app-background)]',
     secondary:
-      "bg-[var(--app-gray)] hover:bg-[var(--app-gray-dark)] text-[var(--app-foreground)]",
+      'bg-[var(--app-gray)] hover:bg-[var(--app-gray-dark)] text-[var(--app-foreground)]',
     outline:
-      "border border-[var(--app-accent)] hover:bg-[var(--app-accent-light)] text-[var(--app-accent)]",
+      'border border-[var(--app-accent)] hover:bg-[var(--app-accent-light)] text-[var(--app-accent)]',
     ghost:
-      "hover:bg-[var(--app-accent-light)] text-[var(--app-foreground-muted)]",
+      'hover:bg-[var(--app-accent-light)] text-[var(--app-foreground-muted)]',
   };
 
   const sizeClasses = {
-    sm: "text-xs px-2.5 py-1.5 rounded-md",
-    md: "text-sm px-4 py-2 rounded-lg",
-    lg: "text-base px-6 py-3 rounded-lg",
+    sm: 'text-xs px-2.5 py-1.5 rounded-md',
+    md: 'text-sm px-4 py-2 rounded-lg',
+    lg: 'text-base px-6 py-3 rounded-lg',
   };
 
   return (
@@ -77,17 +77,17 @@ type CardProps = {
   onClick?: () => void;
 };
 
-function Card({ title, children, className = "", onClick }: CardProps) {
+function Card({ title, children, className = '', onClick }: CardProps) {
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (onClick && (e.key === "Enter" || e.key === " ")) {
+    if (onClick && (e.key === 'Enter' || e.key === ' ')) {
       e.preventDefault();
       onClick();
     }
   };
   return (
     <div
-      {...(onClick ? { role: "button" } : {})}
-      className={`bg-[var(--app-card-bg)] backdrop-blur-md rounded-xl shadow-lg border border-[var(--app-card-border)] overflow-hidden transition-all hover:shadow-xl ${className} ${onClick ? "cursor-pointer" : ""}`}
+      {...(onClick ? { role: 'button' } : {})}
+      className={`bg-[var(--app-card-bg)] backdrop-blur-md rounded-xl shadow-lg border border-[var(--app-card-border)] overflow-hidden transition-all hover:shadow-xl ${className} ${onClick ? 'cursor-pointer' : ''}`}
       onClick={onClick}
       onKeyDown={onClick ? handleKeyDown : undefined}
       tabIndex={onClick ? 0 : undefined}
@@ -138,7 +138,7 @@ export function Features({ setActiveTab }: FeaturesProps) {
             </span>
           </li>
         </ul>
-        <Button variant="outline" onClick={() => setActiveTab("home")}>
+        <Button variant="outline" onClick={() => setActiveTab('home')}>
           Back to Home
         </Button>
       </Card>
@@ -158,7 +158,7 @@ export function Home({ setActiveTab }: HomeProps) {
           This is a minimalistic Mini App built with OnchainKit components.
         </p>
         <Button
-          onClick={() => setActiveTab("features")}
+          onClick={() => setActiveTab('features')}
           icon={<Icon name="arrow-right" size="sm" />}
         >
           Explore Features
@@ -173,16 +173,16 @@ export function Home({ setActiveTab }: HomeProps) {
 }
 
 type IconProps = {
-  name: "heart" | "star" | "check" | "plus" | "arrow-right";
-  size?: "sm" | "md" | "lg";
+  name: 'heart' | 'star' | 'check' | 'plus' | 'arrow-right';
+  size?: 'sm' | 'md' | 'lg';
   className?: string;
 };
 
-export function Icon({ name, size = "md", className = "" }: IconProps) {
+export function Icon({ name, size = 'md', className = '' }: IconProps) {
   const sizeClasses = {
-    sm: "w-4 h-4",
-    md: "w-5 h-5",
-    lg: "w-6 h-6",
+    sm: 'w-4 h-4',
+    md: 'w-5 h-5',
+    lg: 'w-6 h-6',
   };
 
   const icons = {
@@ -247,7 +247,7 @@ export function Icon({ name, size = "md", className = "" }: IconProps) {
         <line x1="5" y1="12" x2="19" y2="12" />
       </svg>
     ),
-    "arrow-right": (
+    'arrow-right': (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
@@ -280,26 +280,26 @@ type Todo = {
 
 function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([
-    { id: 1, text: "Learn about MiniKit", completed: false },
-    { id: 2, text: "Build a Mini App", completed: true },
-    { id: 3, text: "Deploy to Base and go viral", completed: false },
+    { id: 1, text: 'Learn about MiniKit', completed: false },
+    { id: 2, text: 'Build a Mini App', completed: true },
+    { id: 3, text: 'Deploy to Base and go viral', completed: false },
   ]);
-  const [newTodo, setNewTodo] = useState("");
+  const [newTodo, setNewTodo] = useState('');
 
   const addTodo = () => {
-    if (newTodo.trim() === "") return;
+    if (newTodo.trim() === '') return;
 
     const newId =
       todos.length > 0 ? Math.max(...todos.map((t) => t.id)) + 1 : 1;
     setTodos([...todos, { id: newId, text: newTodo, completed: false }]);
-    setNewTodo("");
+    setNewTodo('');
   };
 
   const toggleTodo = (id: number) => {
     setTodos(
       todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
-      ),
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
     );
   };
 
@@ -308,7 +308,7 @@ function TodoList() {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       addTodo();
     }
   };
@@ -345,8 +345,8 @@ function TodoList() {
                   onClick={() => toggleTodo(todo.id)}
                   className={`w-5 h-5 rounded-full border flex items-center justify-center ${
                     todo.completed
-                      ? "bg-[var(--app-accent)] border-[var(--app-accent)]"
-                      : "border-[var(--app-foreground-muted)] bg-transparent"
+                      ? 'bg-[var(--app-accent)] border-[var(--app-accent)]'
+                      : 'border-[var(--app-foreground-muted)] bg-transparent'
                   }`}
                 >
                   {todo.completed && (
@@ -359,7 +359,7 @@ function TodoList() {
                 </button>
                 <label
                   htmlFor={`todo-${todo.id}`}
-                  className={`text-[var(--app-foreground-muted)] cursor-pointer ${todo.completed ? "line-through opacity-70" : ""}`}
+                  className={`text-[var(--app-foreground-muted)] cursor-pointer ${todo.completed ? 'line-through opacity-70' : ''}`}
                 >
                   {todo.text}
                 </label>
@@ -388,34 +388,36 @@ function TransactionDemo() {
         ? [
             {
               to: address,
-              data: "0x" as `0x${string}`,
+              data: '0x' as `0x${string}`,
               value: BigInt(0),
             },
           ]
         : [],
-    [address],
+    [address]
   );
 
   const sendNotification = useNotification();
 
   const handleSuccess = useCallback(
-    async (response: { transactionReceipts: { transactionHash: string }[] }) => {
+    async (response: {
+      transactionReceipts: { transactionHash: string }[];
+    }) => {
       const txHash = response.transactionReceipts[0]?.transactionHash;
       console.log(`Transaction successful: ${txHash}`);
 
       await sendNotification({
-        title: "Congratulations!",
+        title: 'Congratulations!',
         body: `You sent a transaction, ${txHash}!`,
       });
     },
-    [sendNotification],
+    [sendNotification]
   );
 
   return (
     <Card title="Make Your First Transaction">
       <div className="space-y-4">
         <p className="text-[var(--app-foreground-muted)] mb-4">
-          Experience the power of seamless sponsored transactions with{" "}
+          Experience the power of seamless sponsored transactions with{' '}
           <a
             href="https://onchainkit.xyz"
             target="_blank"
@@ -433,7 +435,7 @@ function TransactionDemo() {
               calls={calls}
               onSuccess={handleSuccess}
               onError={(error: { message: string; code?: number }) =>
-                console.error("Transaction failed:", error)
+                console.error('Transaction failed:', error)
               }
             >
               <TransactionButton className="text-white text-md" />

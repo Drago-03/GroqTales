@@ -26,20 +26,26 @@ already started, follow these steps:
 
 1. **Navigate to the Project Directory**: Open your terminal or command prompt and move to the
    GroqTales folder if you're not already there:
+
    ```bash
    cd GroqTales
    ```
+
 2. **Start the Development Server**: Run the command to launch the Next.js server:
+
    ```bash
    npm run dev
    # or
    yarn dev
    ```
+
    Wait for the server to start (you'll see output like `ready - started server on 0.0.0.0:3000`).
 3. **Access GroqTales**: Open your web browser and go to:
+
    ```
    http://localhost:3000
    ```
+
    You should see the GroqTales homepage load, confirming the application is running.
 
 **Note**: If the server fails to start or you can't access the URL, check the

@@ -84,6 +84,7 @@ Developers and advanced users can interact with GroqTales smart contracts in sev
    - Use libraries like `ethers.js` or `web3.js` to call contract methods programmatically. You'll
      need the contract address and ABI (see below).
    - **Example with ethers.js**:
+
      ```javascript
      const { ethers } = require('ethers');
      // Connect to Monad Testnet via provider (e.g., MetaMask or custom RPC)
@@ -95,13 +96,21 @@ Developers and advanced users can interact with GroqTales smart contracts in sev
      const contractABI = [
        /* ABI JSON here */
      ];
-     const nftContract = new ethers.Contract(contractAddress, contractABI, signer);
+     const nftContract = new ethers.Contract(
+       contractAddress,
+       contractABI,
+       signer
+     );
      // Mint an NFT
      const tokenURI = 'ipfs://YourMetadataCID';
      const tx = await nftContract.mintNFT(await signer.getAddress(), tokenURI);
      const receipt = await tx.wait();
-     console.log('NFT Minted, Token ID:', receipt.events[0].args.tokenId.toString());
+     console.log(
+       'NFT Minted, Token ID:',
+       receipt.events[0].args.tokenId.toString()
+     );
      ```
+
 3. **Using Blockchain Explorers**:
    - Once available, use the Monad blockchain explorer to view contract details, transactions, and
      NFT ownership by entering the contract address or transaction hash.
@@ -110,7 +119,7 @@ Developers and advanced users can interact with GroqTales smart contracts in sev
      interact with GroqTales smart contracts on the Monad Testnet.
 
 Ensure your wallet is connected to the Monad Testnet (Chain ID: 10143, RPC URL:
-https://testnet-rpc.monad.xyz) when interacting with contracts.
+<https://testnet-rpc.monad.xyz>) when interacting with contracts.
 
 ## Contract Addresses
 
