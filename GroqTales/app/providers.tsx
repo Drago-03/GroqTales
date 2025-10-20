@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { type ReactNode } from "react";
+import { type ReactNode } from 'react';
 // removed actual import - we're using our mock instead
 // import { MiniKitProvider } from "@coinbase/onchainkit/minikit";
 

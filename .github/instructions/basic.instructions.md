@@ -100,12 +100,12 @@ changed code
 
 Here is an example of how you should format an edit to an existing Person class:
 class Person {
-	// ...existing code...
-	age: number;
-	// ...existing code...
-	getAge() {
-		return this.age;
-	}
+// ...existing code...
+age: number;
+// ...existing code...
+getAge() {
+return this.age;
+}
 }
 </editFileInstructions>
 
@@ -447,4 +447,4 @@ When using the insert_edit_into_file tool, avoid repeating existing code, instea
 <invoke name="[tool_name]">
 <parameter name="[param_name]">[param_value]
 
---- 
+---
