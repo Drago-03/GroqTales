@@ -52,32 +52,59 @@ export class Logger {
   }
 
   child(context: string): Logger {
-    return new Logger(this.config, `${this.context ? `${this.context}:` : ''}${context}`);
+    return new Logger(
+      this.config,
+      `${this.context ? `${this.context}:` : ''}${context}`
+    );
   }
 
-  error(message: string, error?: Error, metadata?: Record<string, unknown>): void {
-    console.error(`[ERROR] ${this.context ? `[${this.context}] ` : ''}${message}`, error, metadata);
+  error(
+    message: string,
+    error?: Error,
+    metadata?: Record<string, unknown>
+  ): void {
+    console.error(
+      `[ERROR] ${this.context ? `[${this.context}] ` : ''}${message}`,
+      error,
+      metadata
+    );
   }
 
   warn(message: string, metadata?: Record<string, unknown>): void {
-    console.warn(`[WARN] ${this.context ? `[${this.context}] ` : ''}${message}`, metadata);
+    console.warn(
+      `[WARN] ${this.context ? `[${this.context}] ` : ''}${message}`,
+      metadata
+    );
   }
 
   info(message: string, metadata?: Record<string, unknown>): void {
-    console.info(`[INFO] ${this.context ? `[${this.context}] ` : ''}${message}`, metadata);
+    console.info(
+      `[INFO] ${this.context ? `[${this.context}] ` : ''}${message}`,
+      metadata
+    );
   }
 
   http(message: string, metadata?: Record<string, unknown>): void {
-    console.log(`[HTTP] ${this.context ? `[${this.context}] ` : ''}${message}`, metadata);
+    console.log(
+      `[HTTP] ${this.context ? `[${this.context}] ` : ''}${message}`,
+      metadata
+    );
   }
 
   debug(message: string, metadata?: Record<string, unknown>): void {
     if (process.env.NODE_ENV === 'development') {
-      console.debug(`[DEBUG] ${this.context ? `[${this.context}] ` : ''}${message}`, metadata);
+      console.debug(
+        `[DEBUG] ${this.context ? `[${this.context}] ` : ''}${message}`,
+        metadata
+      );
     }
   }
 
-  performance(operation: string, duration: number, metadata?: Record<string, unknown>): void {
+  performance(
+    operation: string,
+    duration: number,
+    metadata?: Record<string, unknown>
+  ): void {
     console.log(`[PERF] ${operation}: ${duration}ms`, metadata);
   }
 
@@ -100,9 +127,14 @@ export class Logger {
 /**
  * Create a logger instance with optional configuration
  */
-export function createLogger(context?: string, config?: Partial<LoggerConfig>): Logger {
+export function createLogger(
+  context?: string,
+  config?: Partial<LoggerConfig>
+): Logger {
   const defaultConfig: LoggerConfig = {
-    level: process.env.LOG_LEVEL ? parseInt(process.env.LOG_LEVEL) : LogLevel.INFO,
+    level: process.env.LOG_LEVEL
+      ? parseInt(process.env.LOG_LEVEL)
+      : LogLevel.INFO,
     enableConsole: true,
     enableFile: false,
     enableRemote: false,
