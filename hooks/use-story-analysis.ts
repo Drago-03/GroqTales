@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
 interface AnalysisOptions {
   content: string;
@@ -23,7 +23,7 @@ interface UseStoryAnalysisResult {
   error: string | null;
   clearResult: () => void;
 }
-  export function useStoryAnalysis(): UseStoryAnalysisResult {
+export function useStoryAnalysis(): UseStoryAnalysisResult {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);

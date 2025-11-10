@@ -3,8 +3,9 @@
 All blockchain functionality has been temporarily disabled for production deployment.
 
 This includes:
+
 - Onchain agent functionality
-- Wallet providers  
+- Wallet providers
 - NFT minting
 - Web3 authentication
 - Smart contract interactions
