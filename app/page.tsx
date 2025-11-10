@@ -148,7 +148,9 @@ export default function Home() {
                   <div className="border rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 h-full">
                     <div className="aspect-video relative overflow-hidden">
                       <Image
-                        src={`https://via.placeholder.com/600x400?text=NFT+Story+${i + 1}`}
+                        src={`https://via.placeholder.com/600x400?text=NFT+Story+${
+                          i + 1
+                        }`}
                         alt={`Featured NFT ${i + 1}`}
                         fill
                         className="object-cover transition-transform duration-500 hover:scale-105"
