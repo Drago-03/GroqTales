@@ -91,10 +91,12 @@ The app is wrapped with `MiniKitProvider` in `providers.tsx`, configured with:
 To get started building your own frame, follow these steps:
 
 1. Remove the DemoComponents:
+
    - Delete `components/DemoComponents.tsx`
    - Remove demo-related imports from `page.tsx`
 
 2. Start building your Frame:
+
    - Modify `page.tsx` to create your Frame UI
    - Update theme variables in `theme.css`
    - Adjust MiniKit configuration in `providers.tsx`
