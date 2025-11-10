@@ -3,7 +3,7 @@
   // Simplified theme change handler - minimal operations
   function handleThemeChange() {
     document.documentElement.classList.add('no-transitions');
-    
+
     // Use requestAnimationFrame for better performance
     requestAnimationFrame(function() {
       requestAnimationFrame(function() {
@@ -16,7 +16,7 @@
   function setupThemeChangeObserver() {
     // Use a simple flag to prevent multiple rapid executions
     let isProcessingChange = false;
-    
+
     // More efficient mutation observer
     const observer = new MutationObserver(function() {
       if (!isProcessingChange) {
@@ -26,10 +26,10 @@
         setTimeout(function() { isProcessingChange = false; }, 20);
       }
     });
-    
+
     // Start observing with minimal configuration
-    observer.observe(document.documentElement, { 
-      attributes: true, 
+    observer.observe(document.documentElement, {
+      attributes: true,
       attributeFilter: ['class'],
       attributeOldValue: false,
       characterData: false,
@@ -44,10 +44,10 @@
   } else {
     document.addEventListener('DOMContentLoaded', setupThemeChangeObserver, { once: true });
   }
-  
+
   // Simplified system theme change handling
   if (window.matchMedia) {
     const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
     colorSchemeQuery.addEventListener('change', handleThemeChange, { passive: true });
   }
-})(); 
+})();
