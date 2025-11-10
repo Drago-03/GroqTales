@@ -1,10 +1,10 @@
 'use client';
 
-import React, { 
-  createContext, 
-  useContext, 
-  ReactNode, 
-  useState, 
+import React, {
+  createContext,
+  useContext,
+  ReactNode,
+  useState,
   useCallback,
   ButtonHTMLAttributes
 } from 'react';
@@ -13,7 +13,7 @@ import React, {
  * Mock transaction components for development
  * These components simulate blockchain transaction functionality
  * without requiring actual blockchain connections.
- * 
+ *
  * @fileoverview Transaction components and types
  * @version 1.0.0
  * @author GroqTales Development Team
@@ -28,7 +28,7 @@ export interface TransactionError {
 }
 
 export interface TransactionResponse {
-  transactionReceipts: { 
+  transactionReceipts: {
     transactionHash: string;
     status?: boolean;
     gasUsed?: string;
@@ -139,7 +139,7 @@ export function TransactionProvider({ children }: { children: ReactNode }) {
       setIsSuccess(true);
       return result;
     } catch (err) {
-      const error: TransactionError = err instanceof Error 
+      const error: TransactionError = err instanceof Error
         ? { message: err.message }
         : { message: 'Unknown error occurred' };
       setError(error);
@@ -239,9 +239,9 @@ export function useTransaction(): TransactionContextType {
  * Button component for transaction actions
  */
 export function TransactionButton({
-  onClick, 
-  disabled = false, 
-  children, 
+  onClick,
+  disabled = false,
+  children,
   className = '',
   type = 'button',
   ...rest
@@ -270,13 +270,13 @@ export function TransactionToast({ children, className = '' }: TransactionToastP
   );
 }
 
-export function TransactionToastAction({ 
-  onClick, 
-  children, 
-  className = '' 
+export function TransactionToastAction({
+  onClick,
+  children,
+  className = ''
 }: TransactionToastActionProps) {
   return (
-    <button 
+    <button
       type="button"
       onClick={onClick}
       className={`text-sm font-medium ${className}`}
@@ -312,13 +312,13 @@ export function TransactionStatus({ children, className = '' }: TransactionStatu
   );
 }
 
-export function TransactionStatusAction({ 
-  onClick, 
-  children, 
-  className = '' 
+export function TransactionStatusAction({
+  onClick,
+  children,
+  className = ''
 }: TransactionStatusActionProps) {
   return (
-    <button 
+    <button
       type="button"
       onClick={onClick}
       className={`text-sm font-medium ${className}`}
