@@ -188,7 +188,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -417,7 +419,9 @@
                   "example": {
                     "id": "2bca35116bc5431d6dc4b4ea2ef3da2f",
                     "name": "generation_not_found",
-                    "errors": ["id: the generation either does not exist or has expired."]
+                    "errors": [
+                      "id: the generation either does not exist or has expired."
+                    ]
                   }
                 }
               }
@@ -456,7 +460,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -676,7 +682,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -1001,7 +1009,9 @@
                   "example": {
                     "id": "2bca35116bc5431d6dc4b4ea2ef3da2f",
                     "name": "generation_not_found",
-                    "errors": ["id: the generation either does not exist or has expired."]
+                    "errors": [
+                      "id: the generation either does not exist or has expired."
+                    ]
                   }
                 }
               }
@@ -1040,7 +1050,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -1370,7 +1382,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -1551,7 +1565,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -1593,7 +1609,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Public Figure Detected": {
@@ -1683,7 +1701,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -1936,7 +1956,9 @@
                   "example": {
                     "id": "2bca35116bc5431d6dc4b4ea2ef3da2f",
                     "name": "generation_not_found",
-                    "errors": ["id: the generation either does not exist or has expired."]
+                    "errors": [
+                      "id: the generation either does not exist or has expired."
+                    ]
                   }
                 }
               }
@@ -1975,7 +1997,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -2196,7 +2220,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -2276,7 +2302,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -2517,7 +2545,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -2597,7 +2627,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -2936,7 +2968,9 @@
                   "example": {
                     "id": "2bca35116bc5431d6dc4b4ea2ef3da2f",
                     "name": "generation_not_found",
-                    "errors": ["id: the generation either does not exist or has expired."]
+                    "errors": [
+                      "id: the generation either does not exist or has expired."
+                    ]
                   }
                 }
               }
@@ -2975,7 +3009,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -3318,7 +3354,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Copyrighted Content Detected": {
@@ -3408,7 +3446,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -3764,7 +3804,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Copyrighted Content Detected": {
@@ -3854,7 +3896,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -4230,7 +4274,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -4272,7 +4318,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Public Figure Detected": {
@@ -4362,7 +4410,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -4606,7 +4656,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -4648,7 +4700,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Public Figure Detected": {
@@ -4738,7 +4792,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -5077,7 +5133,9 @@
                   "example": {
                     "id": "2bca35116bc5431d6dc4b4ea2ef3da2f",
                     "name": "generation_not_found",
-                    "errors": ["id: the generation either does not exist or has expired."]
+                    "errors": [
+                      "id: the generation either does not exist or has expired."
+                    ]
                   }
                 }
               }
@@ -5116,7 +5174,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -5471,7 +5531,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -5513,7 +5575,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Public Figure Detected": {
@@ -5603,7 +5667,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -5978,7 +6044,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -6058,7 +6126,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -6467,7 +6537,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -6509,7 +6581,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Public Figure Detected": {
@@ -6599,7 +6673,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -7030,7 +7106,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -7072,7 +7150,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Public Figure Detected": {
@@ -7162,7 +7242,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -7571,7 +7653,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -7613,7 +7697,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Public Figure Detected": {
@@ -7703,7 +7789,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -8112,7 +8200,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -8154,7 +8244,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Public Figure Detected": {
@@ -8244,7 +8336,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -8556,7 +8650,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -8636,7 +8732,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -8898,7 +8996,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -8940,7 +9040,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Public Figure Detected": {
@@ -9030,7 +9132,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -9138,7 +9242,17 @@
                   },
                   "aspect_ratio": {
                     "type": "string",
-                    "enum": ["21:9", "16:9", "3:2", "5:4", "1:1", "4:5", "2:3", "9:16", "9:21"],
+                    "enum": [
+                      "21:9",
+                      "16:9",
+                      "3:2",
+                      "5:4",
+                      "1:1",
+                      "4:5",
+                      "2:3",
+                      "9:16",
+                      "9:21"
+                    ],
                     "default": "1:1",
                     "description": "Controls the aspect ratio of the generated image."
                   },
@@ -9438,7 +9552,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -9480,7 +9596,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Public Figure Detected": {
@@ -9570,7 +9688,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -9673,7 +9793,17 @@
                   },
                   "aspect_ratio": {
                     "type": "string",
-                    "enum": ["21:9", "16:9", "3:2", "5:4", "1:1", "4:5", "2:3", "9:16", "9:21"],
+                    "enum": [
+                      "21:9",
+                      "16:9",
+                      "3:2",
+                      "5:4",
+                      "1:1",
+                      "4:5",
+                      "2:3",
+                      "9:16",
+                      "9:21"
+                    ],
                     "default": "1:1",
                     "description": "Controls the aspect ratio of the generated image."
                   },
@@ -9969,7 +10099,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Public Figure Detected": {
@@ -10059,7 +10191,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -10180,13 +10314,27 @@
                   },
                   "aspect_ratio": {
                     "type": "string",
-                    "enum": ["21:9", "16:9", "3:2", "5:4", "1:1", "4:5", "2:3", "9:16", "9:21"],
+                    "enum": [
+                      "21:9",
+                      "16:9",
+                      "3:2",
+                      "5:4",
+                      "1:1",
+                      "4:5",
+                      "2:3",
+                      "9:16",
+                      "9:21"
+                    ],
                     "default": "1:1",
                     "description": "Controls the aspect ratio of the generated image. Defaults to 1:1.\n\n> **Important:** This parameter is only valid for **text-to-image** requests."
                   },
                   "model": {
                     "type": "string",
-                    "enum": ["sd3.5-large", "sd3.5-large-turbo", "sd3.5-medium"],
+                    "enum": [
+                      "sd3.5-large",
+                      "sd3.5-large-turbo",
+                      "sd3.5-medium"
+                    ],
                     "default": "sd3.5-large",
                     "description": "The model to use for generation.\n\n- `sd3.5-large` requires 6.5 credits per generation\n- `sd3.5-large-turbo` requires 4 credits per generation\n- `sd3.5-medium` requires 3.5 credits per generation\n- As of the April 17, 2025, `sd3-large`, `sd3-large-turbo` and `sd3-medium`\n  are re-routed to their `sd3.5-[model version]` equivalent, at the same price."
                   },
@@ -10442,7 +10590,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -10484,7 +10634,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Public Figure Detected": {
@@ -10574,7 +10726,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -10977,7 +11131,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -11019,7 +11175,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Public Figure Detected": {
@@ -11109,7 +11267,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -11512,7 +11672,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -11554,7 +11716,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Public Figure Detected": {
@@ -11644,7 +11808,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -11758,7 +11924,17 @@
                   },
                   "aspect_ratio": {
                     "type": "string",
-                    "enum": ["21:9", "16:9", "3:2", "5:4", "1:1", "4:5", "2:3", "9:16", "9:21"],
+                    "enum": [
+                      "21:9",
+                      "16:9",
+                      "3:2",
+                      "5:4",
+                      "1:1",
+                      "4:5",
+                      "2:3",
+                      "9:16",
+                      "9:21"
+                    ],
                     "default": "1:1",
                     "description": "Controls the aspect ratio of the generated image."
                   },
@@ -12053,7 +12229,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -12095,7 +12273,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Public Figure Detected": {
@@ -12185,7 +12365,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -12585,7 +12767,9 @@
                   "example": {
                     "id": "4212a4b66fbe1cedca4bf2133d35dca5",
                     "name": "payload_too_large",
-                    "errors": ["body: payloads cannot be larger than 10MiB in size"]
+                    "errors": [
+                      "body: payloads cannot be larger than 10MiB in size"
+                    ]
                   }
                 }
               }
@@ -12627,7 +12811,9 @@
                     "value": {
                       "id": "ff54b236a3acdde1522cb1ba641c43ed",
                       "name": "invalid_language",
-                      "errors": ["English is the only supported language for this service."]
+                      "errors": [
+                        "English is the only supported language for this service."
+                      ]
                     }
                   },
                   "Public Figure Detected": {
@@ -12717,7 +12903,9 @@
                   "example": {
                     "id": "2a1b2d4eafe2bc6ab4cd4d5c6133f513",
                     "name": "internal_error",
-                    "errors": ["An unexpected server error has occurred, please try again later."]
+                    "errors": [
+                      "An unexpected server error has occurred, please try again later."
+                    ]
                   }
                 }
               }
@@ -13447,7 +13635,14 @@
             "type": "string",
             "description": "The type of content this engine produces",
             "example": "PICTURE",
-            "enum": ["AUDIO", "CLASSIFICATION", "PICTURE", "STORAGE", "TEXT", "VIDEO"]
+            "enum": [
+              "AUDIO",
+              "CLASSIFICATION",
+              "PICTURE",
+              "STORAGE",
+              "TEXT",
+              "VIDEO"
+            ]
           }
         },
         "required": ["id", "name", "description", "type"]
@@ -13487,7 +13682,15 @@
         "type": "string",
         "default": "NONE",
         "example": "FAST_BLUE",
-        "enum": ["FAST_BLUE", "FAST_GREEN", "NONE", "SIMPLE", "SLOW", "SLOWER", "SLOWEST"]
+        "enum": [
+          "FAST_BLUE",
+          "FAST_GREEN",
+          "NONE",
+          "SIMPLE",
+          "SLOW",
+          "SLOWER",
+          "SLOWEST"
+        ]
       },
       "UpscaleImageHeight": {
         "x-go-type": "uint64",
@@ -13902,7 +14105,12 @@
                 "$ref": "#/components/schemas/MaskImage"
               }
             },
-            "required": ["init_image", "mask_image", "text_prompts", "mask_source"]
+            "required": [
+              "init_image",
+              "mask_image",
+              "text_prompts",
+              "mask_source"
+            ]
           },
           {
             "$ref": "#/components/schemas/GenerationRequestOptionalParams"

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useMiniKit, useAddFrame, useOpenUrl } from "@/lib/mini-kit-mock";
+import { useMiniKit, useAddFrame, useOpenUrl } from '@/lib/mini-kit-mock';
 // OnChain imports commented out to prevent deployment errors
 // import {
 //   Name,
@@ -15,16 +15,16 @@ import { useMiniKit, useAddFrame, useOpenUrl } from "@/lib/mini-kit-mock";
 //   WalletDropdown,
 //   WalletDropdownDisconnect,
 // } from "@/lib/onchainkit-wallet-mock";
-import { useEffect, useMemo, useState, useCallback } from "react";
-import { Button } from "./components/DemoComponents";
-import { Icon } from "./components/DemoComponents";
-import { Home } from "./components/DemoComponents";
-import { Features } from "./components/DemoComponents";
+import { useEffect, useMemo, useState, useCallback } from 'react';
+import { Button } from './components/DemoComponents';
+import { Icon } from './components/DemoComponents';
+import { Home } from './components/DemoComponents';
+import { Features } from './components/DemoComponents';
 
 export default function App() {
   const { setFrameReady, isFrameReady, context } = useMiniKit();
   const [frameAdded, setFrameAdded] = useState(false);
-  const [activeTab, setActiveTab] = useState("home");
+  const [activeTab, setActiveTab] = useState('home');
 
   const addFrame = useAddFrame();
   const openUrl = useOpenUrl();
@@ -74,17 +74,15 @@ export default function App() {
           <div>
             <div className="flex items-center space-x-2">
               {/* OnChain wallet components completely removed to prevent deployment errors */}
-              <div className="text-sm text-gray-600">
-                Welcome to GroqTales
-              </div>
+              <div className="text-sm text-gray-600">Welcome to GroqTales</div>
             </div>
           </div>
           <div>{saveFrameButton}</div>
         </header>
 
         <main className="flex-1">
-          {activeTab === "home" && <Home setActiveTab={setActiveTab} />}
-          {activeTab === "features" && <Features setActiveTab={setActiveTab} />}
+          {activeTab === 'home' && <Home setActiveTab={setActiveTab} />}
+          {activeTab === 'features' && <Features setActiveTab={setActiveTab} />}
         </main>
 
         <footer className="mt-2 pt-4 flex justify-center">
@@ -92,7 +90,7 @@ export default function App() {
             variant="ghost"
             size="sm"
             className="text-[var(--ock-text-foreground-muted)] text-xs"
-            onClick={() => openUrl("https://base.org/builders/minikit")}
+            onClick={() => openUrl('https://base.org/builders/minikit')}
           >
             Built on Base with MiniKit
           </Button>

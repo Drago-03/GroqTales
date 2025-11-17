@@ -1,11 +1,11 @@
-"use client";
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { ethers } from "ethers";
-import { useToast } from "@/components/ui/use-toast";
-import { uploadToIPFS, getIPFSUrl, getIPFSFallbackUrls } from "@/utils/ipfs";
+'use client';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { ethers } from 'ethers';
+import { useToast } from '@/components/ui/use-toast';
+import { uploadToIPFS, getIPFSUrl, getIPFSFallbackUrls } from '@/utils/ipfs';
 // Import Coinbase AgentKit and related modules
 // Removed problematic import for OnchainKit due to linter errors
-import { base } from "viem/chains";
+import { base } from 'viem/chains';
 // Import Coinbase Wallet SDK
 import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 
@@ -15,12 +15,14 @@ import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
 
 // Constants for Base network
 const BASE_CHAIN_ID = base.id;
-const BASE_RPC_URL = process.env.NEXT_PUBLIC_COINBASE_MAINNET_RPC_ENDPOINT || "https://mainnet.base.org";
+const BASE_RPC_URL =
+  process.env.NEXT_PUBLIC_COINBASE_MAINNET_RPC_ENDPOINT ||
+  'https://mainnet.base.org';
 
 // Initialize Coinbase Wallet SDK with environment variables
 const sdk = new CoinbaseWalletSDK({
-  appName: "GroqTales",
-  appChainIds: [BASE_CHAIN_ID]
+  appName: 'GroqTales',
+  appChainIds: [BASE_CHAIN_ID],
 });
 
 // Make web3 provider
@@ -51,7 +53,10 @@ interface Web3ContextType {
   networkName: string;
   ensName: string | null;
   switchNetwork: (chainId: number) => Promise<void>;
-  mintNFTOnBase: (metadata: any, recipient?: string) => Promise<{
+  mintNFTOnBase: (
+    metadata: any,
+    recipient?: string
+  ) => Promise<{
     tokenId: string;
     transactionHash: string;
     metadata: {
@@ -62,8 +67,14 @@ interface Web3ContextType {
     tokenURI: string;
     fallbackUrls: string[];
   }>;
-  buyNFTOnBase: (tokenId: string, price: string) => Promise<{ transactionHash: string; tokenId: string }>;
-  sellNFTOnBase: (tokenId: string, price: string) => Promise<{ transactionHash: string }>;
+  buyNFTOnBase: (
+    tokenId: string,
+    price: string
+  ) => Promise<{ transactionHash: string; tokenId: string }>;
+  sellNFTOnBase: (
+    tokenId: string,
+    price: string
+  ) => Promise<{ transactionHash: string }>;
   getNFTListings: () => Promise<NFT[]>;
 }
 
@@ -76,30 +87,30 @@ const Web3Context = createContext<Web3ContextType>({
   connecting: false,
   connectWallet: async () => {},
   disconnectWallet: () => {},
-  networkName: "",
+  networkName: '',
   ensName: null,
   switchNetwork: async () => {},
   mintNFTOnBase: async () => ({
-    tokenId: "",
-    transactionHash: "",
-    metadata: { content: "" },
-    ipfsHash: "",
-    tokenURI: "",
-    fallbackUrls: []
+    tokenId: '',
+    transactionHash: '',
+    metadata: { content: '' },
+    ipfsHash: '',
+    tokenURI: '',
+    fallbackUrls: [],
   }),
-  buyNFTOnBase: async () => ({ transactionHash: "", tokenId: "" }),
-  sellNFTOnBase: async () => ({ transactionHash: "" }),
+  buyNFTOnBase: async () => ({ transactionHash: '', tokenId: '' }),
+  sellNFTOnBase: async () => ({ transactionHash: '' }),
   getNFTListings: async () => [],
 });
 
 // Networks mapping
 const NETWORKS: Record<number, string> = {
-  1: "Ethereum",
-  137: "Polygon",
-  56: "BNB Chain",
-  42161: "Arbitrum",
-  10: "Optimism",
-  43114: "Avalanche",
+  1: 'Ethereum',
+  137: 'Polygon',
+  56: 'BNB Chain',
+  42161: 'Arbitrum',
+  10: 'Optimism',
+  43114: 'Avalanche',
 };
 
 export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
@@ -112,7 +123,8 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   const [ensName, setEnsName] = useState<string | null>(null);
 
   // Get the network name based on chainId
-  const networkName = chainId && NETWORKS[chainId] ? NETWORKS[chainId] : "Unknown Network";
+  const networkName =
+    chainId && NETWORKS[chainId] ? NETWORKS[chainId] : 'Unknown Network';
 
   // Function to disconnect wallet
   const disconnectWallet = () => {
@@ -121,11 +133,11 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
     setBalance(null);
     setConnected(false);
     setEnsName(null);
-    localStorage.removeItem("walletConnected");
-    
+    localStorage.removeItem('walletConnected');
+
     toast({
-      title: "Wallet Disconnected",
-      description: "Your wallet has been disconnected successfully",
+      title: 'Wallet Disconnected',
+      description: 'Your wallet has been disconnected successfully',
     });
   };
 
@@ -133,9 +145,9 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   const switchNetwork = async (targetChainId: number) => {
     if (!window.ethereum) {
       toast({
-        title: "No Wallet Found",
-        description: "Please install MetaMask or another Web3 wallet",
-        variant: "destructive",
+        title: 'No Wallet Found',
+        description: 'Please install MetaMask or another Web3 wallet',
+        variant: 'destructive',
       });
       return;
     }
@@ -147,9 +159,9 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
       });
     } catch (error: any) {
       toast({
-        title: "Network Switch Failed",
-        description: error.message || "Failed to switch network",
-        variant: "destructive",
+        title: 'Network Switch Failed',
+        description: error.message || 'Failed to switch network',
+        variant: 'destructive',
       });
       throw error;
     }
@@ -161,20 +173,20 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
       // Mock implementation for demo
       const tokenId = Math.floor(Math.random() * 10000).toString();
       const transactionHash = `0x${Math.random().toString(16).substring(2)}`;
-      
+
       return {
         tokenId,
         transactionHash,
-        metadata: { content: metadata.content || "", ...metadata },
-        ipfsHash: "QmExample",
-        tokenURI: "https://ipfs.io/ipfs/QmExample",
-        fallbackUrls: ["https://gateway.pinata.cloud/ipfs/QmExample"]
+        metadata: { content: metadata.content || '', ...metadata },
+        ipfsHash: 'QmExample',
+        tokenURI: 'https://ipfs.io/ipfs/QmExample',
+        fallbackUrls: ['https://gateway.pinata.cloud/ipfs/QmExample'],
       };
     } catch (error: any) {
       toast({
-        title: "Minting Failed",
-        description: error.message || "Failed to mint NFT",
-        variant: "destructive",
+        title: 'Minting Failed',
+        description: error.message || 'Failed to mint NFT',
+        variant: 'destructive',
       });
       throw error;
     }
@@ -185,18 +197,18 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
     try {
       // Mock implementation for demo
       const transactionHash = `0x${Math.random().toString(16).substring(2)}`;
-      
+
       toast({
-        title: "Purchase Successful",
+        title: 'Purchase Successful',
         description: `NFT #${tokenId} purchased for ${price} ETH`,
       });
-      
+
       return { transactionHash, tokenId };
     } catch (error: any) {
       toast({
-        title: "Purchase Failed",
-        description: error.message || "Failed to purchase NFT",
-        variant: "destructive",
+        title: 'Purchase Failed',
+        description: error.message || 'Failed to purchase NFT',
+        variant: 'destructive',
       });
       throw error;
     }
@@ -207,18 +219,18 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
     try {
       // Mock implementation for demo
       const transactionHash = `0x${Math.random().toString(16).substring(2)}`;
-      
+
       toast({
-        title: "Listed for Sale",
+        title: 'Listed for Sale',
         description: `NFT #${tokenId} listed for ${price} ETH`,
       });
-      
+
       return { transactionHash };
     } catch (error: any) {
       toast({
-        title: "Listing Failed",
-        description: error.message || "Failed to list NFT for sale",
-        variant: "destructive",
+        title: 'Listing Failed',
+        description: error.message || 'Failed to list NFT for sale',
+        variant: 'destructive',
       });
       throw error;
     }
@@ -237,21 +249,34 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
         seller: `0x${Math.random().toString(16).substring(2, 42)}`,
         owner: `0x${Math.random().toString(16).substring(2, 42)}`,
         image: `https://picsum.photos/400/400?random=${i + 1}`,
-        status: Math.random() > 0.3 ? 'listed' : (Math.random() > 0.5 ? 'unlisted' : 'sold'),
+        status:
+          Math.random() > 0.3
+            ? 'listed'
+            : Math.random() > 0.5
+              ? 'unlisted'
+              : 'sold',
         metadata: {
           attributes: [
-            { trait_type: "Type", value: Math.random() > 0.5 ? "Comic" : "Text" },
-            { trait_type: "Rarity", value: ["Common", "Uncommon", "Rare", "Legendary"][Math.floor(Math.random() * 4)] }
-          ]
-        }
+            {
+              trait_type: 'Type',
+              value: Math.random() > 0.5 ? 'Comic' : 'Text',
+            },
+            {
+              trait_type: 'Rarity',
+              value: ['Common', 'Uncommon', 'Rare', 'Legendary'][
+                Math.floor(Math.random() * 4)
+              ],
+            },
+          ],
+        },
       }));
-      
+
       return mockNFTs;
     } catch (error: any) {
       toast({
-        title: "Failed to Load NFTs",
-        description: error.message || "Failed to fetch NFT listings",
-        variant: "destructive",
+        title: 'Failed to Load NFTs',
+        description: error.message || 'Failed to fetch NFT listings',
+        variant: 'destructive',
       });
       throw error;
     }
@@ -261,9 +286,10 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   const connectWallet = async () => {
     if (!window.ethereum) {
       toast({
-        title: "No Wallet Found",
-        description: "Please install MetaMask or another Web3 wallet to continue",
-        variant: "destructive",
+        title: 'No Wallet Found',
+        description:
+          'Please install MetaMask or another Web3 wallet to continue',
+        variant: 'destructive',
       });
       return;
     }
@@ -271,15 +297,19 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
     try {
       setConnecting(true);
       // Request account access
-      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-      const chainIdHex = await window.ethereum.request({ method: "eth_chainId" });
+      const accounts = await window.ethereum.request({
+        method: 'eth_requestAccounts',
+      });
+      const chainIdHex = await window.ethereum.request({
+        method: 'eth_chainId',
+      });
       const chainIdNum = parseInt(chainIdHex, 16);
 
       if (accounts && accounts[0]) {
         // Get account balance
         const balanceHex = await window.ethereum.request({
-          method: "eth_getBalance",
-          params: [accounts[0], "latest"],
+          method: 'eth_getBalance',
+          params: [accounts[0], 'latest'],
         });
         const balanceWei = parseInt(balanceHex, 16);
         const balanceEth = (balanceWei / 1e18).toFixed(4);
@@ -289,11 +319,11 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
         if (chainIdNum === 1) {
           try {
             // This is a mock for demonstration - in production you'd use an actual ENS lookup
-            if (accounts[0].toLowerCase().includes("0x")) {
+            if (accounts[0].toLowerCase().includes('0x')) {
               name = null; // Would lookup actual ENS name here
             }
           } catch (error) {
-            console.error("ENS lookup failed:", error);
+            console.error('ENS lookup failed:', error);
           }
         }
 
@@ -302,19 +332,19 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
         setBalance(balanceEth);
         setConnected(true);
         setEnsName(name);
-        localStorage.setItem("walletConnected", "true");
+        localStorage.setItem('walletConnected', 'true');
 
         toast({
-          title: "Wallet Connected",
+          title: 'Wallet Connected',
           description: `Connected to ${accounts[0].substring(0, 6)}...${accounts[0].substring(38)}`,
         });
       }
     } catch (error: any) {
-      console.error("Error connecting wallet:", error);
+      console.error('Error connecting wallet:', error);
       toast({
-        title: "Connection Failed",
-        description: error.message || "Failed to connect wallet",
-        variant: "destructive",
+        title: 'Connection Failed',
+        description: error.message || 'Failed to connect wallet',
+        variant: 'destructive',
       });
     } finally {
       setConnecting(false);
@@ -324,14 +354,19 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   // Check for existing connection on mount
   useEffect(() => {
     const checkConnection = async () => {
-      if (window.ethereum && localStorage.getItem("walletConnected") === "true") {
+      if (
+        window.ethereum &&
+        localStorage.getItem('walletConnected') === 'true'
+      ) {
         try {
-          const accounts = await window.ethereum.request({ method: "eth_accounts" });
+          const accounts = await window.ethereum.request({
+            method: 'eth_accounts',
+          });
           if (accounts && accounts.length > 0) {
             connectWallet();
           }
         } catch (error) {
-          console.error("Error checking connection:", error);
+          console.error('Error checking connection:', error);
         }
       }
     };
@@ -361,15 +396,18 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
       disconnectWallet();
     };
 
-    window.ethereum.on("accountsChanged", handleAccountsChanged);
-    window.ethereum.on("chainChanged", handleChainChanged);
-    window.ethereum.on("disconnect", handleDisconnect);
+    window.ethereum.on('accountsChanged', handleAccountsChanged);
+    window.ethereum.on('chainChanged', handleChainChanged);
+    window.ethereum.on('disconnect', handleDisconnect);
 
     return () => {
       if (window.ethereum) {
-        window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
-        window.ethereum.removeListener("chainChanged", handleChainChanged);
-        window.ethereum.removeListener("disconnect", handleDisconnect);
+        window.ethereum.removeListener(
+          'accountsChanged',
+          handleAccountsChanged
+        );
+        window.ethereum.removeListener('chainChanged', handleChainChanged);
+        window.ethereum.removeListener('disconnect', handleDisconnect);
       }
     };
   }, [account]);
@@ -379,12 +417,12 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
     // If no real wallet is connected, use mock data after a delay
     if (!window.ethereum && !connected) {
       const timer = setTimeout(() => {
-        const mockAccount = "0xd8da6bf26964af9d7eed9e03e53415d37aa96045";
+        const mockAccount = '0xd8da6bf26964af9d7eed9e03e53415d37aa96045';
         setAccount(mockAccount);
         setChainId(1); // Ethereum Mainnet
-        setBalance("2.5432");
+        setBalance('2.5432');
         setConnected(true);
-        setEnsName("groq.eth");
+        setEnsName('groq.eth');
       }, 2000);
       return () => clearTimeout(timer);
     }

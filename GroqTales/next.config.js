@@ -3,12 +3,12 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   poweredByHeader: false,
-  
+
   // Enable experimental features for better module resolution
   experimental: {
     esmExternals: true,
   },
-  
+
   // Webpack configuration for better path resolution
   webpack: (config) => {
     config.resolve.alias = {

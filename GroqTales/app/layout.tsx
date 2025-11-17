@@ -1,12 +1,12 @@
-import "./theme.css";
+import './theme.css';
 // OnChain styles commented out to prevent deployment errors
 // import "@coinbase/onchainkit/styles.css";
-import type { Metadata, Viewport } from "next";
-import "./globals.css";
-import { Providers } from "./providers";
+import type { Metadata, Viewport } from 'next';
+import './globals.css';
+import { Providers } from './providers';
 
 export const viewport: Viewport = {
-  width: "device-width",
+  width: 'device-width',
   initialScale: 1,
 };
 
@@ -14,20 +14,19 @@ export async function generateMetadata(): Promise<Metadata> {
   const URL = process.env.NEXT_PUBLIC_URL;
   // OnChain project name commented out to prevent deployment errors
   // const projectName = process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME ?? null;
-  const projectName = "GroqTales";
+  const projectName = 'GroqTales';
   return {
     title: projectName,
-    description:
-      "GroqTales - AI-powered storytelling platform",
+    description: 'GroqTales - AI-powered storytelling platform',
     other: {
-      "fc:frame": JSON.stringify({
+      'fc:frame': JSON.stringify({
         version: process.env.NEXT_PUBLIC_VERSION,
         imageUrl: process.env.NEXT_PUBLIC_IMAGE_URL,
         button: {
-          title: `Launch ${projectName ?? "Project"}`,
+          title: `Launch ${projectName ?? 'Project'}`,
           action: {
-            type: "launch_frame",
-            name: projectName ?? "Project",
+            type: 'launch_frame',
+            name: projectName ?? 'Project',
             url: URL,
             splashImageUrl: process.env.NEXT_PUBLIC_SPLASH_IMAGE_URL,
             splashBackgroundColor: `#${process.env.NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR}`,
