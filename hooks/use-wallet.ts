@@ -32,7 +32,9 @@ export function useWallet() {
         setAddress(account);
         toast({
           title: 'Wallet Connected',
-          description: `Connected to ${account.slice(0, 6)}...${account.slice(-4)}`,
+          description: `Connected to ${account.slice(0, 6)}...${account.slice(
+            -4
+          )}`,
         });
       } else {
         setAddress('');

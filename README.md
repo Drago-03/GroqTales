@@ -18,7 +18,7 @@
   <img src="https://img.shields.io/badge/website-groqtales.xyz-0052cc?style=flat-square" alt="Website"/>
   <a href="mailto:support@groqtales.xyz"><img src="https://img.shields.io/badge/contact-support%40groqtales.xyz-orange?style=flat-square" alt="Contact Us"/></a>
   <a href="https://discord.gg/JK29FZRm"><img src="https://img.shields.io/discord/1245696768829601812?label=Discord&logo=discord&style=flat-square" alt="Discord"/></a>
-  
+
 </p>
 
 <p align="center">
@@ -48,39 +48,36 @@ world of creative writing, generative AI, and decentralized technology.
 
 ## Features
 
-- **AI-Driven Story & Comic Generation**  
-  Use Groq AI to generate stories or comic panel outlines by specifying title, genre, setting,
-  characters, and themes. Both text and comic formats are supported.
-- **Extensive Story Customization (70+ Parameters)**  
-  Fine-tune every aspect of your story with comprehensive customization across 9 categories:
+- **AI-Driven Story & Comic Generation** Use Groq AI to generate stories or comic panel outlines by
+  specifying title, genre, setting, characters, and themes. Both text and comic formats are
+  supported.
+- **Extensive Story Customization (70+ Parameters)** Fine-tune every aspect of your story with
+  comprehensive customization across 9 categories:
   - **Characters**: Name, count, traits, age, background, protagonist type
   - **Plot & Structure**: Type, conflict, arc, pacing, ending, plot twists
   - **Setting & World**: Time period, location, world-building depth, atmosphere
-  - **Writing Style & Tone**: Voice, tone, style, reading level, mood, dialogue percentage, description detail
+  - **Writing Style & Tone**: Voice, tone, style, reading level, mood, dialogue percentage,
+    description detail
   - **Themes & Messages**: Primary/secondary themes, moral complexity, social commentary
   - **Content Controls**: Violence, romance, language levels, mature content warnings
   - **Advanced Options**: Chapters, foreshadowing, symbolism, multiple POVs
   - **Inspiration & References**: Similar works, inspired by, tropes to avoid/include
   - **Technical Parameters**: AI creativity slider, model selection
-- **NFT Minting on Monad Blockchain**  
-  Seamlessly mint your stories as NFTs on Monad (Testnet live, Mainnet coming soon). Each NFT proves
-  authenticity, ownership, and collectibility.
-- **Community Gallery**  
-  Publish your stories publicly, browse the gallery, and interact with other creators. Stories can
-  be shared freely or as NFTs.
-- **Progressive Disclosure UI**  
-  Clean, accordion-based interface with 9 collapsible sections. Keeps simple tasks simple while offering
-  advanced options when needed. Only prompt is required—everything else is optional!
-- **Wallet Integration**  
-  Connect with MetaMask, WalletConnect, or Ledger for secure publishing and minting. Wallet is
-  required for NFT actions.
-- **Real-Time Story Streaming**  
-  Watch your story unfold in real-time as Groq AI generates each segment.
-- **Mobile-Friendly & Responsive UI**  
-  Built with modern web technologies for a seamless experience on any device.
-- **Extensible & Open Source**  
-  Modular codebase with clear separation of frontend, backend, and smart contract logic.
-  Contributions are welcome!
+- **NFT Minting on Monad Blockchain** Seamlessly mint your stories as NFTs on Monad (Testnet live,
+  Mainnet coming soon). Each NFT proves authenticity, ownership, and collectibility.
+- **Community Gallery** Publish your stories publicly, browse the gallery, and interact with other
+  creators. Stories can be shared freely or as NFTs.
+- **Progressive Disclosure UI** Clean, accordion-based interface with 9 collapsible sections. Keeps
+  simple tasks simple while offering advanced options when needed. Only prompt is
+  required—everything else is optional!
+- **Wallet Integration** Connect with MetaMask, WalletConnect, or Ledger for secure publishing and
+  minting. Wallet is required for NFT actions.
+- **Real-Time Story Streaming** Watch your story unfold in real-time as Groq AI generates each
+  segment.
+- **Mobile-Friendly & Responsive UI** Built with modern web technologies for a seamless experience
+  on any device.
+- **Extensible & Open Source** Modular codebase with clear separation of frontend, backend, and
+  smart contract logic. Contributions are welcome!
 
 ---
 
@@ -118,6 +115,7 @@ and deployment details.
 ## For Developers
 
 - **Folder Structure:**
+
   - `/app` – Next.js application (pages, UI, routes)
   - `/components` – Reusable React components
   - `/contracts` – Solidity smart contracts for NFT minting
@@ -127,18 +125,22 @@ and deployment details.
   - `/scripts` – Automation and deployment scripts
 
 - **Environment Variables:**
+
   - `GROQ_API_KEY` – Your Groq AI API key
   - `UNSPLASH_API_KEY` – (Optional) for placeholder visuals
   - `MONAD_RPC_URL` – Monad blockchain RPC endpoint
 
 - **Smart Contract Deployment:**
+
   - Contracts are written in Solidity and can be deployed to Monad Testnet/Mainnet.
   - See `/contracts` and `/scripts` for deployment instructions.
 
 - **Extending AI Models:**
+
   - AI logic is modular—add support for new models or prompt types in `/lib` and `/components`.
 
 - **Testing:**
+
   - Frontend: Use Jest/React Testing Library.
   - Smart Contracts: Use Hardhat/Foundry for Solidity tests.
 
@@ -151,8 +153,8 @@ and deployment details.
 
 ## 🤝 Contributing
 
-GroqTales is community-powered!  
-We welcome all contributions—whether you're a developer, designer, writer, or blockchain enthusiast.
+GroqTales is community-powered! We welcome all contributions—whether you're a developer, designer,
+writer, or blockchain enthusiast.
 
 **How You Can Help:**
 

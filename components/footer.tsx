@@ -85,7 +85,8 @@ export function Footer() {
                 </div>
               </div>
               <p className="text-sm font-bold text-black leading-relaxed border-l-4 border-black pl-4 text-center md:text-left">
-                Empowering creators with AI-driven storytelling and Web3 ownership.
+                Empowering creators with AI-driven storytelling and Web3
+                ownership.
                 <span className="block mt-2 text-xs text-gray-700">
                   Create • Mint • Own • Trade
                 </span>

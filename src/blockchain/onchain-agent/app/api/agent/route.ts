@@ -36,6 +36,9 @@ export async function POST(req: Request): Promise<NextResponse<AgentResponse>> {
     return NextResponse.json({ status: 200, data: { response: response } });
   } catch (error) {
     console.error('Error processing agent request:', error);
-    return NextResponse.json({ status: 500, data: { error: 'Internal server error' } });
+    return NextResponse.json({
+      status: 500,
+      data: { error: 'Internal server error' },
+    });
   }
 }

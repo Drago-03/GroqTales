@@ -46,10 +46,10 @@ Generate AI-powered stories.
 ```typescript
 const story = await sdk.stories.generate({
   prompt: string,
-  genre?: string,
-  length?: 'short' | 'medium' | 'long',
-  style?: string,
-  temperature?: number
+  genre: string,
+  length: 'short' | 'medium' | 'long',
+  style: string,
+  temperature: number,
 });
 ```
 
@@ -190,7 +190,7 @@ function StoryGenerator() {
   const handleGenerate = async () => {
     const story = await generateStory({
       prompt: 'Write a sci-fi story...',
-      genre: 'sci-fi'
+      genre: 'sci-fi',
     });
     console.log(story);
   };
@@ -315,7 +315,7 @@ class StoryApp {
 - **Documentation**: [docs.groqtales.com](https://docs.groqtales.com)
 - **GitHub**: [github.com/Drago-03/GroqTales](https://github.com/Drago-03/GroqTales)
 - **Discord**: [Join our community](https://discord.gg/groqtales)
-- **Email**: support@groqtales.com
+- **Email**: <support@groqtales.com>
 
 ## Changelog
 

@@ -98,7 +98,9 @@ export function useGroq(): UseGroqResult {
         setIsLoading(true);
         setError(null);
 
-        const url = `/api/groq/models?action=test&special=${useSpecialModel}&apiKey=${apiKey || ''}`;
+        const url = `/api/groq/models?action=test&special=${useSpecialModel}&apiKey=${
+          apiKey || ''
+        }`;
         const response = await fetch(url);
 
         if (!response.ok) {
