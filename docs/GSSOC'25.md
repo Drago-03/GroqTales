@@ -23,6 +23,7 @@ real-world projects, learn collaboratively, and grow their technical and teamwor
    standards, and how to use issue templates and labels.
 
 2. **Join our Community:**
+
    - [Discord Server](https://discord.gg/JK29FZRm) – For real-time help, project discussions, and
      team announcements.
    - [GitHub Discussions](https://github.com/Drago-03/GroqTales/discussions) – For questions, ideas,

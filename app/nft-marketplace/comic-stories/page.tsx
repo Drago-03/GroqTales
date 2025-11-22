@@ -492,7 +492,9 @@ export default function ComicStoriesPage() {
 
                       {/* Rarity Badge */}
                       <Badge
-                        className={`absolute top-2 right-2 capitalize ${getRarityColor(comic.rarity)}`}
+                        className={`absolute top-2 right-2 capitalize ${getRarityColor(
+                          comic.rarity
+                        )}`}
                       >
                         {comic.rarity}
                       </Badge>

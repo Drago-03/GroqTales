@@ -33,7 +33,9 @@ export function Address({ className }: { className?: string }) {
 export function Avatar({ className }: { className?: string }) {
   return (
     <div
-      className={`w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm ${className || ""}`}
+      className={`w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm ${
+        className || ""
+      }`}
     >
       DU
     </div>

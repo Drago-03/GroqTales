@@ -31,7 +31,7 @@ export async function getDb() {
 }
 /**
    * Retrieves collection data
-   * 
+   *
 
    */
 export async function getCollection(collectionName: string) {

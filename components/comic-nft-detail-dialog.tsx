@@ -171,7 +171,11 @@ export function ComicNFTDetailDialog({
                               setCurrentPreviewImage(idx)
                             )
                           }
-                          className={`w-2 h-2 rounded-full ${currentPreviewImage === idx ? 'bg-white' : 'bg-white/50'}`}
+                          className={`w-2 h-2 rounded-full ${
+                            currentPreviewImage === idx
+                              ? 'bg-white'
+                              : 'bg-white/50'
+                          }`}
                           aria-label={`Go to preview image ${idx + 1}`}
                         />
                       ))}

@@ -123,7 +123,9 @@ export function TransactionButton({
 
   return (
     <button
-      className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 ${className || ''}`}
+      className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 ${
+        className || ''
+      }`}
       onClick={execute}
       disabled={isLoading}
     >
@@ -144,7 +146,9 @@ export function TransactionToast({ children }: TransactionToastProps) {
 
   return (
     <div
-      className={`p-4 rounded-lg ${isSuccess ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
+      className={`p-4 rounded-lg ${
+        isSuccess ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+      }`}
     >
       {children}
     </div>
