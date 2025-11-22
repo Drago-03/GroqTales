@@ -1,17 +1,28 @@
-"use client";
+'use client';
 
-import React from "react";
+import {
+  Loader2,
+  RefreshCw,
+  Trash2,
+  CheckCircle,
+  AlertCircle,
+} from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 
-
-import { useState, useEffect } from "react";
-import { useStorySummary } from "@/hooks/use-story-summary";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, RefreshCw, Trash2, CheckCircle, AlertCircle } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/components/ui/use-toast';
+import { useStorySummary } from '@/hooks/use-story-summary';
 
 interface StorySummaryProps {
   storyId: string;
@@ -21,24 +32,31 @@ interface StorySummaryProps {
   apiKey?: string;
   className?: string;
 }
-export function StorySummary({ 
+export function StorySummary({
   storyId,
   content,
-  title = "Story Summary",
+  title = 'Story Summary',
   onSummaryGenerated,
   apiKey,
-  className
+  className,
 }: StorySummaryProps) {
-  const { generateSummary, fetchSummary, updateSummary, deleteSummary, isLoading, error } = useStorySummary();
+  const {
+    generateSummary,
+    fetchSummary,
+    updateSummary,
+    deleteSummary,
+    isLoading,
+    error,
+  } = useStorySummary();
   const [summary, setSummary] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<string>("summary");
+  const [activeTab, setActiveTab] = useState<string>('summary');
   const { toast } = useToast();
 
   // Get existing summary on mount
   useEffect(() => {
     if (storyId) {
       loadSummary();
-}
+    }
   }, [storyId]);
 
   const loadSummary = async () => {
@@ -47,8 +65,8 @@ export function StorySummary({
       setSummary(result);
       if (onSummaryGenerated) {
         onSummaryGenerated(result);
-}
-}
+      }
+    }
   };
 
   const handleGenerateSummary = async () => {
@@ -57,21 +75,21 @@ export function StorySummary({
     if (result) {
       setSummary(result);
       toast({
-        title: "Summary Generated",
-        description: "The AI summary has been created successfully.",
-        variant: "default",
+        title: 'Summary Generated',
+        description: 'The AI summary has been created successfully.',
+        variant: 'default',
       });
 
       if (onSummaryGenerated) {
         onSummaryGenerated(result);
-}
+      }
     } else if (error) {
       toast({
-        title: "Error",
+        title: 'Error',
         description: error,
-        variant: "destructive",
+        variant: 'destructive',
       });
-}
+    }
   };
 
   const handleRegenerate = async () => {
@@ -87,21 +105,21 @@ export function StorySummary({
     if (result) {
       setSummary(result);
       toast({
-        title: "Summary Updated",
-        description: "The AI summary has been regenerated successfully.",
-        variant: "default",
+        title: 'Summary Updated',
+        description: 'The AI summary has been regenerated successfully.',
+        variant: 'default',
       });
 
       if (onSummaryGenerated) {
         onSummaryGenerated(result);
-}
+      }
     } else if (error) {
       toast({
-        title: "Error",
+        title: 'Error',
         description: error,
-        variant: "destructive",
+        variant: 'destructive',
       });
-}
+    }
   };
 
   const handleDelete = async () => {
@@ -112,38 +130,38 @@ export function StorySummary({
     if (success) {
       setSummary(null);
       toast({
-        title: "Summary Deleted",
-        description: "The AI summary has been removed.",
-        variant: "default",
+        title: 'Summary Deleted',
+        description: 'The AI summary has been removed.',
+        variant: 'default',
       });
     } else if (error) {
       toast({
-        title: "Error",
+        title: 'Error',
         description: error,
-        variant: "destructive",
+        variant: 'destructive',
       });
-}
+    }
   };
 
   // Render sentiment badge with appropriate color
   const renderSentimentBadge = (sentiment: string) => {
     const sentimentMap: Record<string, { color: string; icon: JSX.Element }> = {
-      "positive": { 
-        color: "bg-green-500/10 text-green-500 hover:bg-green-500/20", 
-        icon: <CheckCircle className="h-3 w-3 mr-1" /> 
+      positive: {
+        color: 'bg-green-500/10 text-green-500 hover:bg-green-500/20',
+        icon: <CheckCircle className="h-3 w-3 mr-1" />,
       },
-      "negative": { 
-        color: "bg-red-500/10 text-red-500 hover:bg-red-500/20", 
-        icon: <AlertCircle className="h-3 w-3 mr-1" /> 
+      negative: {
+        color: 'bg-red-500/10 text-red-500 hover:bg-red-500/20',
+        icon: <AlertCircle className="h-3 w-3 mr-1" />,
       },
-      "mixed": { 
-        color: "bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20", 
-        icon: <></>
+      mixed: {
+        color: 'bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20',
+        icon: <></>,
       },
-      "neutral": { 
-        color: "bg-blue-500/10 text-blue-500 hover:bg-blue-500/20", 
-        icon: <></>
-      }
+      neutral: {
+        color: 'bg-blue-500/10 text-blue-500 hover:bg-blue-500/20',
+        icon: <></>,
+      },
     };
 
     const { color, icon } = sentimentMap[sentiment.toLowerCase()] || {
@@ -152,8 +170,8 @@ export function StorySummary({
     };
 
     return (
-      <Badge 
-        variant="outline" 
+      <Badge
+        variant="outline"
         className={`${color} flex items-center capitalize`}
       >
         {icon}
@@ -182,14 +200,17 @@ export function StorySummary({
         ) : !summary ? (
           <div className="text-center py-8">
             <p className="text-muted-foreground mb-4">
-              No summary has been generated yet. Click the button below to create an AI-powered summary of this story.
+              No summary has been generated yet. Click the button below to
+              create an AI-powered summary of this story.
             </p>
-            <Button onClick={handleGenerateSummary}>
-              Generate Summary
-            </Button>
+            <Button onClick={handleGenerateSummary}>Generate Summary</Button>
           </div>
         ) : (
-          <Tabs defaultValue="summary" value={activeTab} onValueChange={setActiveTab}>
+          <Tabs
+            defaultValue="summary"
+            value={activeTab}
+            onValueChange={setActiveTab}
+          >
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="summary">Summary</TabsTrigger>
               <TabsTrigger value="keyPoints">Key Points</TabsTrigger>
@@ -197,9 +218,7 @@ export function StorySummary({
             </TabsList>
 
             <TabsContent value="summary" className="mt-4">
-              <div className="whitespace-pre-line">
-                {summary.summary}
-              </div>
+              <div className="whitespace-pre-line">{summary.summary}</div>
             </TabsContent>
 
             <TabsContent value="keyPoints" className="mt-4">
@@ -213,7 +232,9 @@ export function StorySummary({
             <TabsContent value="keywords" className="mt-4">
               <div className="flex flex-wrap gap-2">
                 {summary.keywords.map((keyword: string, index: number) => (
-                  <Badge key={index} variant="secondary">{keyword}</Badge>
+                  <Badge key={index} variant="secondary">
+                    {keyword}
+                  </Badge>
                 ))}
               </div>
             </TabsContent>
@@ -224,21 +245,22 @@ export function StorySummary({
       {summary && (
         <CardFooter className="flex justify-between">
           <div className="text-xs text-muted-foreground">
-            {new Date(summary.updatedAt).toLocaleDateString()} · {summary.model?.split('/').pop() || 'AI'}
+            {new Date(summary.updatedAt).toLocaleDateString()} ·{' '}
+            {summary.model?.split('/').pop() || 'AI'}
           </div>
           <div className="flex space-x-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Button
+              variant="outline"
+              size="sm"
               onClick={handleRegenerate}
               disabled={isLoading}
             >
               <RefreshCw className="h-4 w-4 mr-1" />
               Regenerate
             </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
+            <Button
+              variant="outline"
+              size="sm"
               onClick={handleDelete}
               disabled={isLoading}
               className="text-destructive border-destructive hover:bg-destructive/10"

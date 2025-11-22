@@ -28,10 +28,11 @@ export function useWallet() {
 
     const handleAccountsChanged = (accounts: string[]) => {
       if (accounts.length > 0) {
-        setAddress(accounts[0]);
+        const account = accounts[0] || '';
+        setAddress(account);
         toast({
           title: 'Wallet Connected',
-          description: `Connected to ${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`,
+          description: `Connected to ${account.slice(0, 6)}...${account.slice(-4)}`,
         });
       } else {
         setAddress('');

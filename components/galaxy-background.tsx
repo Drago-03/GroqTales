@@ -7,10 +7,36 @@ export const GalaxyBackground = () => {
   const [stars, setStars] = useState<
     Array<{ x: number; y: number; size: number; delay: number; color: string }>
   >([]);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    setDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+
+    const handleResize = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     // Generate way more random stars with different colors
-    const colors = ['#ffffff', '#ffd700', '#ff8f00', '#ff69b4', '#4169e1'] as const;
+    const colors = [
+      '#ffffff',
+      '#ffd700',
+      '#ff8f00',
+      '#ff69b4',
+      '#4169e1',
+    ] as const;
     const newStars = Array.from({ length: 200 }, () => {
       const colorIndex = Math.floor(Math.random() * colors.length);
       return {
@@ -23,6 +49,8 @@ export const GalaxyBackground = () => {
     });
     setStars(newStars);
   }, []);
+
+  if (!isMounted) return null;
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
@@ -194,19 +222,12 @@ export const GalaxyBackground = () => {
                 zIndex: 3,
               }}
               animate={{
-                x: [
-                  0,
-                  typeof window !== 'undefined'
-                    ? window.innerWidth * 1.2
-                    : 1200,
-                ],
+                x: [0, dimensions.width * 1.2],
                 y: [
                   0,
-                  typeof window !== 'undefined'
-                    ? isFromCorner
-                      ? window.innerHeight * 0.8
-                      : window.innerHeight * 0.5
-                    : 600,
+                  isFromCorner
+                    ? dimensions.height * 0.8
+                    : dimensions.height * 0.5,
                 ],
                 opacity: [0, 1, 1, 0],
                 scale: [0.8, 1.1, 0.9], // Slight scale change for depth perception
@@ -232,19 +253,12 @@ export const GalaxyBackground = () => {
                 zIndex: 2,
               }}
               animate={{
-                x: [
-                  0,
-                  typeof window !== 'undefined'
-                    ? window.innerWidth * 1.2
-                    : 1200,
-                ],
+                x: [0, dimensions.width * 1.2],
                 y: [
                   0,
-                  typeof window !== 'undefined'
-                    ? isFromCorner
-                      ? window.innerHeight * 0.8
-                      : window.innerHeight * 0.5
-                    : 600,
+                  isFromCorner
+                    ? dimensions.height * 0.8
+                    : dimensions.height * 0.5,
                 ],
                 opacity: [0, 0.9, 0.9, 0],
                 scaleX: [0.3, 1.3, 0.6], // More dynamic trail length based on velocity
@@ -268,12 +282,12 @@ export const GalaxyBackground = () => {
                   boxShadow: '0 0 8px rgba(255, 255, 255, 0.9)',
                 }}
                 animate={{
-                  x: [-particleIndex * 20, window.innerWidth * 1.2],
+                  x: [-particleIndex * 20, dimensions.width * 1.2],
                   y: [
                     -particleIndex * (isFromCorner ? 20 : 10),
                     isFromCorner
-                      ? window.innerHeight * 0.8
-                      : window.innerHeight * 0.5,
+                      ? dimensions.height * 0.8
+                      : dimensions.height * 0.5,
                   ],
                   opacity: [0, 0.7, 0.7, 0],
                   scale: [1, 0.5, 0],
@@ -320,10 +334,10 @@ export const GalaxyBackground = () => {
                 `,
               }}
               animate={{
-                x: [0, window.innerWidth * 1.5],
+                x: [0, dimensions.width * 1.5],
                 y: [
                   0,
-                  isFromCorner ? window.innerHeight : window.innerHeight * 0.6,
+                  isFromCorner ? dimensions.height : dimensions.height * 0.6,
                 ],
                 opacity: [0, 1, 1, 0],
                 rotate: [0, 360],
@@ -350,10 +364,10 @@ export const GalaxyBackground = () => {
                 filter: 'blur(3px)',
               }}
               animate={{
-                x: [0, window.innerWidth * 1.5],
+                x: [0, dimensions.width * 1.5],
                 y: [
                   0,
-                  isFromCorner ? window.innerHeight : window.innerHeight * 0.6,
+                  isFromCorner ? dimensions.height : dimensions.height * 0.6,
                 ],
                 opacity: [0, 0.95, 0.95, 0],
                 scaleX: [0.3, 1.6, 0.7], // More dynamic trail length

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import * as React from 'react';
 import * as RechartsPrimitive from 'recharts';
@@ -38,7 +38,7 @@ const ChartContainer = React.forwardRef<
     children: React.ComponentProps<
       typeof RechartsPrimitive.ResponsiveContainer
     >['children'];
-}
+  }
 >(({ id, className, children, config, ...props }, ref) => {
   const uniqueId = React.useId();
   const chartId = `chart-${id || uniqueId.replace(/:/g, '')}`;
@@ -71,7 +71,7 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
 
   if (!colorConfig.length) {
     return null;
-}
+  }
   return (
     <style
       dangerouslySetInnerHTML={{
@@ -107,7 +107,7 @@ const ChartTooltipContent = React.forwardRef<
       indicator?: 'line' | 'dot' | 'dashed';
       nameKey?: string;
       labelKey?: string;
-}
+    }
 >(
   (
     {
@@ -132,9 +132,9 @@ const ChartTooltipContent = React.forwardRef<
     const tooltipLabel = React.useMemo(() => {
       if (hideLabel || !payload?.length) {
         return null;
-}
+      }
       const [item] = payload;
-      const key = `${labelKey || item.dataKey || item.name || 'value'}`;
+      const key = `${labelKey || item?.dataKey || item?.name || 'value'}`;
       const itemConfig = getPayloadConfigFromPayload(config, item, key);
       const value =
         !labelKey && typeof label === 'string'
@@ -147,10 +147,10 @@ const ChartTooltipContent = React.forwardRef<
             {labelFormatter(value, payload)}
           </div>
         );
-}
+      }
       if (!value) {
         return null;
-}
+      }
       return <div className={cn('font-medium', labelClassName)}>{value}</div>;
     }, [
       label,
@@ -164,7 +164,7 @@ const ChartTooltipContent = React.forwardRef<
 
     if (!active || !payload?.length) {
       return null;
-}
+    }
     const nestLabel = payload.length === 1 && indicator !== 'dot';
 
     return (
@@ -207,14 +207,14 @@ const ChartTooltipContent = React.forwardRef<
                               'w-0 border-[1.5px] border-dashed bg-transparent':
                                 indicator === 'dashed',
                               'my-0.5': nestLabel && indicator === 'dashed',
-}
+                            }
                           )}
                           style={
                             {
                               '--color-bg': indicatorColor,
                               '--color-border': indicatorColor,
                             } as React.CSSProperties
-}
+                          }
                         />
                       )
                     )}
@@ -244,9 +244,9 @@ const ChartTooltipContent = React.forwardRef<
         </div>
       </div>
     );
-    }
-  );
-});
+  }
+);
+
 ChartTooltipContent.displayName = 'ChartTooltip';
 
 const ChartLegend = RechartsPrimitive.Legend;
@@ -257,7 +257,7 @@ const ChartLegendContent = React.forwardRef<
     Pick<RechartsPrimitive.LegendProps, 'payload' | 'verticalAlign'> & {
       hideIcon?: boolean;
       nameKey?: string;
-}
+    }
 >(
   (
     { className, hideIcon = false, payload, verticalAlign = 'bottom', nameKey },
@@ -267,7 +267,7 @@ const ChartLegendContent = React.forwardRef<
 
     if (!payload?.length) {
       return null;
-}
+    }
     return (
       <div
         ref={ref}
@@ -304,9 +304,9 @@ const ChartLegendContent = React.forwardRef<
         })}
       </div>
     );
-    }
-  );
-});
+  }
+);
+
 ChartLegendContent.displayName = 'ChartLegend';
 
 // Helper to extract item config from a payload.
@@ -317,7 +317,7 @@ function getPayloadConfigFromPayload(
 ) {
   if (typeof payload !== 'object' || payload === null) {
     return undefined;
-}
+  }
   const payloadPayload =
     'payload' in payload &&
     typeof payload.payload === 'object' &&

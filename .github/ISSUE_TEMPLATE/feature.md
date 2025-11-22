@@ -1,10 +1,9 @@
 ---
-name: "Feature Request"
-about: "Suggest a new feature or enhancement"
-title: "[Feature] <title>"
+name: 'Feature Request'
+about: 'Suggest a new feature or enhancement'
+title: '[Feature] <title>'
 labels: enhancement, feature
 assignees: ''
-
 ---
 
 ## Is your feature request related to a problem? Please describe.
@@ -25,5 +24,6 @@ Add any other context, screenshots, or references to documentation here.
 
 ---
 
-**Related Links:**  
+**Related Links:**
+
 - [GroqTales Website](https://www.groqtales.xyz/)

@@ -10,6 +10,7 @@ import {
   Trophy,
 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
@@ -27,7 +28,6 @@ import WalletConnect from '@/components/wallet-connect';
 import { cn } from '@/lib/utils';
 
 import { CreateStoryDialog } from './create-story-dialog';
-import { ThemeToggle } from './theme-toggle';
 
 // Type definitions for nav items
 type NavSubItem = {
@@ -119,9 +119,8 @@ export function Header() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       className={cn(
-        'border-b border-white/5 backdrop-blur-[12px] sticky top-0 z-50 transition-all duration-300 comic-text',
-        'bg-background/25',
-        scrolled && 'shadow-lg shadow-black/5 bg-background/30'
+        'border-b-4 border-black sticky top-0 z-50 transition-all duration-300 comic-text bg-white',
+        scrolled && 'shadow-[0px_4px_0px_0px_rgba(0,0,0,1)]'
       )}
     >
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -133,9 +132,17 @@ export function Header() {
             <motion.div
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-              className="w-9 h-9 rounded-full bg-primary/20 backdrop-blur-sm flex items-center justify-center doodle-wiggle"
+              className="w-9 h-9 rounded-full bg-primary/20 backdrop-blur-sm flex items-center justify-center doodle-wiggle overflow-hidden"
             >
-              <BookOpen className="w-5 h-5 text-primary" />
+              <div className="relative w-full h-full">
+                <Image
+                  src="/logo.png"
+                  alt="GroqTales Logo"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
             </motion.div>
             <span className="text-xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent doodle-heading comic-text-bold">
               GroqTales
@@ -204,7 +211,6 @@ export function Header() {
             <PenSquare className="h-4 w-4 mr-2" />
             Create
           </Button>
-          <ThemeToggle />
           <UserNav />
         </div>
       </div>

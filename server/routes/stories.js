@@ -5,24 +5,34 @@
 
 const express = require('express');
 const router = express.Router();
+const Story = require('../models/Story');
 
 // GET /api/v1/stories - Get all stories
 router.get('/', async (req, res) => {
   try {
     const { page = 1, limit = 10, genre, author } = req.query;
+    const query = {};
 
-    // Placeholder implementation - replace with actual database queries
-    const stories = {
-      data: [],
+    if (genre) query.genre = genre;
+    if (author) query.author = author;
+
+    const stories = await Story.find(query)
+      .limit(limit * 1)
+      .skip((page - 1) * limit)
+      .sort({ createdAt: -1 })
+      .exec();
+
+    const count = await Story.countDocuments(query);
+
+    res.json({
+      data: stories,
       pagination: {
         page: parseInt(page),
         limit: parseInt(limit),
-        total: 0,
-        pages: 0,
+        total: count,
+        pages: Math.ceil(count / limit),
       },
-    };
-
-    res.json(stories);
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -33,15 +43,12 @@ router.post('/', async (req, res) => {
   try {
     const { title, content, genre, author } = req.body;
 
-    // Placeholder implementation
-    const story = {
-      id: Date.now().toString(),
+    const story = await Story.create({
       title,
       content,
       genre,
-      author,
-      createdAt: new Date().toISOString(),
-    };
+      author
+    });
 
     res.status(201).json(story);
   } catch (error) {
@@ -52,17 +59,11 @@ router.post('/', async (req, res) => {
 // GET /api/v1/stories/:id - Get story by ID
 router.get('/:id', async (req, res) => {
   try {
-    const { id } = req.params;
+    const story = await Story.findById(req.params.id);
 
-    // Placeholder implementation
-    const story = {
-      id,
-      title: 'Sample Story',
-      content: 'Story content...',
-      genre: 'fantasy',
-      author: 'AI Assistant',
-      createdAt: new Date().toISOString(),
-    };
+    if (!story) {
+      return res.status(404).json({ error: 'Story not found' });
+    }
 
     res.json(story);
   } catch (error) {
@@ -76,6 +77,7 @@ router.post('/generate', async (req, res) => {
     const { prompt, genre, length, style } = req.body;
 
     // Placeholder implementation - integrate with Groq API
+    // This part remains a placeholder as per "What Remains to be Done"
     const generatedStory = {
       id: Date.now().toString(),
       title: 'AI Generated Story',

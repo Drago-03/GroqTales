@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Bangers } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
@@ -29,6 +29,13 @@ const inter = Inter({
   fallback: ['system-ui', 'sans-serif'],
 });
 
+const bangers = Bangers({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-bangers',
+  display: 'swap',
+});
+
 // Build-time environment variable validation
 const requiredEnvVars = [
   'NEXT_PUBLIC_URL',
@@ -41,7 +48,11 @@ const requiredEnvVars = [
 
 // Validate required environment variables at build time (only in production)
 // Skip validation during build process (CI/Vercel build)
-if (process.env.NODE_ENV === 'production' && !process.env.CI && !process.env.NEXT_PUBLIC_BUILD_MODE) {
+if (
+  process.env.NODE_ENV === 'production' &&
+  !process.env.CI &&
+  !process.env.NEXT_PUBLIC_BUILD_MODE
+) {
   for (const envVar of requiredEnvVars) {
     if (!process.env[envVar]) {
       throw new Error(`Missing required environment variable: ${envVar}`);
@@ -50,11 +61,17 @@ if (process.env.NODE_ENV === 'production' && !process.env.CI && !process.env.NEX
 } else {
   // In development or build mode, set default values for missing environment variables
   const defaultEnvVars: Record<string, string> = {
-    NEXT_PUBLIC_URL: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000',
+    NEXT_PUBLIC_URL: process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'http://localhost:3000',
     // 'NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME': 'GroqTales', // Commented out OnChain references
     NEXT_PUBLIC_VERSION: '1.0.0',
-    NEXT_PUBLIC_IMAGE_URL: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}/images` : 'https://groqtales.com/images',
-    NEXT_PUBLIC_SPLASH_IMAGE_URL: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}/splash.jpg` : 'https://groqtales.com/splash.jpg',
+    NEXT_PUBLIC_IMAGE_URL: process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}/images`
+      : 'https://groqtales.com/images',
+    NEXT_PUBLIC_SPLASH_IMAGE_URL: process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}/splash.jpg`
+      : 'https://groqtales.com/splash.jpg',
     NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR: '#1a1a2e',
   };
 
@@ -150,18 +167,29 @@ export default function RootLayout({
           strategy="beforeInteractive"
         />
         <Script
+          id="comic-dots"
+          src="/comic-dots-animation.js"
+          strategy="afterInteractive"
+        />
+        <Script
           id="performance-fix"
           src="/performance-fix.js"
           strategy="afterInteractive"
         />
+        <Script
+          id="scroll-optimization"
+          src="/scroll-optimization.js"
+          strategy="afterInteractive"
+        />
       </head>
-      <body className={`${inter.className} optimize-paint`}>
+      <body className={`${inter.className} ${bangers.variable} optimize-paint`}>
         <Web3Provider>
           <QueryProvider>
             <ThemeProvider
               attribute="class"
-              defaultTheme="dark"
+              defaultTheme="light"
               enableSystem={false}
+              forcedTheme="light"
               disableTransitionOnChange={false}
               storageKey="groqtales-theme"
             >

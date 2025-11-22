@@ -1,5 +1,18 @@
-import * as React from 'react';
+import {
+  Heart,
+  Eye,
+  MessageSquare,
+  Share2,
+  Wallet,
+  ShoppingCart,
+} from 'lucide-react';
 import Link from 'next/link';
+import * as React from 'react';
+
+import { useWeb3 } from '@/components/providers/web3-provider';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -7,13 +20,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Heart, Eye, MessageSquare, Share2, Wallet, ShoppingCart } from "lucide-react";
-import { useWeb3 } from "@/components/providers/web3-provider";
-import { useToast } from "@/components/ui/use-toast";
+} from '@/components/ui/dialog';
+import { useToast } from '@/components/ui/use-toast';
 
 interface StoryDetailsDialogProps {
   isOpen: boolean;
@@ -38,13 +46,13 @@ export default function StoryDetailsDialog({
   const handlePurchase = () => {
     if (!account) {
       toast({
-        title: "Connect Wallet",
-        description: "Please connect your wallet to purchase this NFT",
-        variant: "destructive",
+        title: 'Connect Wallet',
+        description: 'Please connect your wallet to purchase this NFT',
+        variant: 'destructive',
       });
       return;
     }
-    
+
     if (onPurchase) {
       onPurchase();
     }
@@ -82,7 +90,8 @@ export default function StoryDetailsDialog({
                 <div>
                   <h3 className="font-semibold">{story.author}</h3>
                   <p className="text-sm text-muted-foreground">
-                    {story.authorUsername || '@' + story.author.toLowerCase().replace(/\s+/g, '')}
+                    {story.authorUsername ||
+                      '@' + story.author.toLowerCase().replace(/\s+/g, '')}
                   </p>
                 </div>
               </div>
@@ -102,12 +111,17 @@ export default function StoryDetailsDialog({
               <div className="p-4 bg-accent/20 rounded-lg border border-accent/30">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                   <div>
-                    <h3 className="font-semibold text-lg mb-1">Own this unique story as an NFT</h3>
-                    <p className="text-sm text-muted-foreground">Collect this story and get exclusive benefits from the author.</p>
+                    <h3 className="font-semibold text-lg mb-1">
+                      Own this unique story as an NFT
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Collect this story and get exclusive benefits from the
+                      author.
+                    </p>
                   </div>
                   <div className="flex gap-3">
-                    <Button 
-                      onClick={handlePurchase} 
+                    <Button
+                      onClick={handlePurchase}
                       className="bg-amber-600 hover:bg-amber-700 text-white"
                       size="lg"
                     >

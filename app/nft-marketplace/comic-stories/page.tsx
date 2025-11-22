@@ -14,6 +14,7 @@ import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 
 import { ComicNFTDetailDialog } from '@/components/comic-nft-detail-dialog';
+import { PageHeader } from '@/components/page-header';
 import { useWeb3 } from '@/components/providers/web3-provider';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -26,8 +27,6 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
-
-import { PageHeader } from '@/components/page-header';
 
 interface ComicNFT {
   id: number;

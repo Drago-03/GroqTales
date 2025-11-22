@@ -12,8 +12,13 @@ const rateLimit = require('express-rate-limit');
 const compression = require('compression');
 const morgan = require('morgan');
 
+const connectDB = require('./config/db');
+
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Connect to Database
+connectDB();
 
 // Security middleware
 app.use(
@@ -75,7 +80,7 @@ app.use('/api/v1/ai', require('./routes/ai'));
 app.use('/sdk/v1', require('./routes/sdk'));
 
 // 404 handler
-app.use('*', (req, res) => {
+app.use((req, res) => {
   res.status(404).json({
     error: 'Endpoint not found',
     message: `The requested endpoint ${req.originalUrl} does not exist.`,

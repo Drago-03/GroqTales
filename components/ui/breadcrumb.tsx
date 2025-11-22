@@ -113,13 +113,3 @@ export {
   BreadcrumbSeparator,
   BreadcrumbEllipsis,
 };
-
-export {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-  BreadcrumbEllipsis,
-};

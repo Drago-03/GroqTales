@@ -26,17 +26,12 @@ type WalletData = {
 
 /**
  * Prepares the AgentKit and WalletProvider.
- *
- * @ prepareAgentkitAndWalletProvider
-
-   */ prepareAgentkitAndWalletProvider
-
- *
-
- *
-
- * Prepares the AgentKit and WalletProvider.
  */
+export async function prepareAgentkitAndWalletProvider() {
+  let walletData: WalletData | undefined;
+  let privateKey: Hex | undefined;
+
+  try {
     // Read existing wallet data if available
     if (fs.existsSync(WALLET_DATA_FILE)) {
       try {
@@ -45,16 +40,16 @@ type WalletData = {
       } catch (error) {
         console.error("Error reading wallet data:", error);
         // Continue without wallet data
-}
-}
+      }
+    }
     if (!privateKey) {
       if (walletData?.smartWalletAddress) {
         throw new Error(
           `Smart wallet found but no private key provided. Either provide the private key, or delete ${WALLET_DATA_FILE} and try again.`,
         );
-}
+      }
       privateKey = (process.env.PRIVATE_KEY || generatePrivateKey()) as Hex;
-}
+    }
     const signer = privateKeyToAccount(privateKey);
 
     // Initialize WalletProvider: https://docs.cdp.coinbase.com/agentkit/docs/wallet-management
@@ -94,5 +89,5 @@ type WalletData = {
   } catch (error) {
     console.error("Error initializing agent:", error);
     throw new Error("Failed to initialize agent");
-}
+  }
 }

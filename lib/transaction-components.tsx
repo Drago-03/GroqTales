@@ -32,7 +32,8 @@ const TransactionContext = createContext<TransactionContextType>({
 });
 
 // Transaction component props
-type TransactionProps = {
+// Transaction component props
+export type TransactionProps = {
   children: ReactNode;
   calls: { to: string; data: `0x${string}`; value: bigint }[];
   onSuccess?: (response: TransactionResponse) => void;
@@ -87,12 +88,17 @@ export function Transaction({
   );
 }
 // Hook to use transaction context
-const useTransaction = () => useContext(TransactionContext);
+export const useTransaction = () => useContext(TransactionContext);
 
 // Transaction Button
-type TransactionButtonProps = {
+export type TransactionButtonProps = {
   className?: string;
   children?: ReactNode;
+};
+
+// Transaction Toast Action
+export type TransactionToastActionProps = {
+  className?: string;
 };
 
 export function TransactionToastAction() {
@@ -109,11 +115,14 @@ export function TransactionToastAction() {
 }
 
 // Additional missing exports
-export function TransactionButton({ className, children }: TransactionButtonProps) {
+export function TransactionButton({
+  className,
+  children,
+}: TransactionButtonProps) {
   const { execute, isLoading } = useTransaction();
-  
+
   return (
-    <button 
+    <button
       className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 ${className || ''}`}
       onClick={execute}
       disabled={isLoading}
@@ -123,21 +132,32 @@ export function TransactionButton({ className, children }: TransactionButtonProp
   );
 }
 
-export function TransactionToast({ children }: { children: ReactNode }) {
+export type TransactionToastProps = {
+  children: ReactNode;
+  className?: string;
+};
+
+export function TransactionToast({ children }: TransactionToastProps) {
   const { isSuccess, isError, error } = useTransaction();
-  
+
   if (!isSuccess && !isError) return null;
-  
+
   return (
-    <div className={`p-4 rounded-lg ${isSuccess ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+    <div
+      className={`p-4 rounded-lg ${isSuccess ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
+    >
       {children}
     </div>
   );
 }
 
+export type TransactionToastIconProps = {
+  className?: string;
+};
+
 export function TransactionToastIcon() {
   const { isSuccess, isError } = useTransaction();
-  
+
   if (isSuccess) {
     return <span className="text-green-500">✅</span>;
   }
@@ -147,15 +167,26 @@ export function TransactionToastIcon() {
   return null;
 }
 
-export function TransactionToastLabel({ children }: { children: ReactNode }) {
+export type TransactionToastLabelProps = {
+  children: ReactNode;
+  className?: string;
+};
+
+export function TransactionToastLabel({
+  children,
+}: TransactionToastLabelProps) {
   return <span className="font-medium">{children}</span>;
 }
 
+export type TransactionStatusActionProps = {
+  className?: string;
+};
+
 export function TransactionStatusAction() {
   const { isLoading, execute } = useTransaction();
-  
+
   return (
-    <button 
+    <button
       onClick={execute}
       disabled={isLoading}
       className="text-sm text-blue-500 hover:text-blue-700 disabled:opacity-50"
@@ -165,13 +196,24 @@ export function TransactionStatusAction() {
   );
 }
 
-export function TransactionStatusLabel({ children }: { children: ReactNode }) {
+export type TransactionStatusLabelProps = {
+  children: ReactNode;
+  className?: string;
+};
+
+export function TransactionStatusLabel({
+  children,
+}: TransactionStatusLabelProps) {
   return <span className="text-sm text-gray-600">{children}</span>;
 }
 
+export type TransactionStatusProps = {
+  className?: string;
+};
+
 export function TransactionStatus() {
   const { isLoading, isSuccess, isError, error } = useTransaction();
-  
+
   if (isLoading) {
     return <div className="text-blue-500">Processing transaction...</div>;
   }
@@ -179,7 +221,9 @@ export function TransactionStatus() {
     return <div className="text-green-500">Transaction successful!</div>;
   }
   if (isError) {
-    return <div className="text-red-500">Transaction failed: {error?.message}</div>;
+    return (
+      <div className="text-red-500">Transaction failed: {error?.message}</div>
+    );
   }
   return <div className="text-gray-500">Ready to transact</div>;
 }

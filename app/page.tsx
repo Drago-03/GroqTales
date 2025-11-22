@@ -1,19 +1,22 @@
 'use client';
 
+import { motion } from 'framer-motion';
 import {
   BookOpen,
   Sparkles,
   ArrowRight,
   PenSquare,
   Wallet,
+  Zap,
+  Star,
+  Rocket,
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { FeaturedCreators } from '@/components/featured-creators';
-import { GalaxyBackground } from '@/components/galaxy-background';
 import { useWeb3 } from '@/components/providers/web3-provider';
 import { TrendingStories } from '@/components/trending-stories';
 import { Button } from '@/components/ui/button';
@@ -23,299 +26,198 @@ export default function Home() {
   const router = useRouter();
 
   return (
-    <main className="flex min-h-screen flex-col relative">
-      {/* Add the galaxy background */}
-      <GalaxyBackground />
+    <main className="flex min-h-screen flex-col relative bg-yellow-50 overflow-hidden">
+      {/* Comic Halftone Background Overlay */}
+      <div className="absolute inset-0 bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:20px_20px] opacity-5 pointer-events-none" />
 
-      {/* Updated overlay with reduced opacity */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/30 to-blue-950/80 pointer-events-none" />
+      {/* Hero Section */}
+      <section className="relative py-24 border-b-8 border-black bg-yellow-400 overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            <div className="lg:w-1/2 space-y-8">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="inline-block bg-white border-4 border-black px-6 py-3 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transform -rotate-2"
+              >
+                <span className="font-black text-xl md:text-2xl text-black uppercase tracking-widest">
+                  The Future of Storytelling
+                </span>
+              </motion.div>
 
-      {/* Wrap all content in a relative container for proper z-indexing */}
-      <div className="relative z-10">
-        {/* Hero Section */}
-        <section className="py-20">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col lg:flex-row items-center gap-12">
-              <div className="lg:w-1/2 space-y-6">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-primary via-blue-500 to-purple-500 bg-clip-text text-transparent [text-shadow:_0_1px_30px_rgb(255_255_255_/_20%)]">
-                  Create, Mint & Share AI-Generated Stories
-                </h1>
+              <motion.h1
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-6xl md:text-8xl font-black text-black uppercase leading-none [text-shadow:4px_4px_0px_#fff,8px_8px_0px_#000]"
+              >
+                Create <br />
+                <span className="text-white [text-shadow:4px_4px_0px_#000]">
+                  Mint
+                </span>{' '}
+                <br />& Share
+              </motion.h1>
 
-                <p className="text-lg md:text-xl text-white/90">
-                  GroqTales turns your ideas into unique stories with the power
-                  of AI. Own your creations as NFTs on the Monad blockchain.
-                </p>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="text-2xl font-bold text-black border-l-8 border-black pl-6 py-4 bg-white/80 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              >
+                Unleash your imagination with AI. Turn your stories into
+                valuable NFTs on the Monad blockchain.
+              </motion.p>
 
-                <div className="flex flex-wrap gap-4 pt-4">
-                  <Link href="/create/ai-story">
-                    <Button
-                      size="lg"
-                      className="bg-gradient-to-r from-cyan-500 to-emerald-500 shadow-lg shadow-cyan-500/20"
-                    >
-                      <PenSquare className="mr-2 h-5 w-5" />
-                      Create Story
-                    </Button>
-                  </Link>
-
-                  {!account ? (
-                    <Button
-                      onClick={connectWallet}
-                      variant="outline"
-                      size="lg"
-                      className="border-white/20 bg-white/10 backdrop-blur-sm hover:bg-white/20"
-                    >
-                      <Wallet className="mr-2 h-5 w-5" />
-                      Connect Wallet
-                    </Button>
-                  ) : (
-                    <Link href="/nft-gallery">
-                      <Button
-                        size="lg"
-                        className="bg-gradient-to-r from-purple-600 to-pink-500 shadow-lg shadow-purple-500/20"
-                      >
-                        <Sparkles className="mr-2 h-5 w-5" />
-                        Browse NFTs
-                      </Button>
-                    </Link>
-                  )}
-                </div>
-              </div>
-
-              <div className="lg:w-1/2">
-                <div className="relative group">
-                  {/* Premium NFT Card */}
-                  <div className="relative bg-black/20 rounded-xl overflow-hidden border border-white/10 shadow-2xl backdrop-blur-[1px] transition-all duration-500 group-hover:scale-[1.02] group-hover:border-white/20">
-                    {/* Featured NFT Image */}
-                    <div className="aspect-[4/3] relative overflow-hidden">
-                      <Image
-                        src="https://images.unsplash.com/photo-1614313913007-2b4ae8ce32d6?w=800&auto=format&fit=crop&q=80"
-                        alt="Featured NFT Story - The Quantum Dreamer"
-                        width={800}
-                        height={600}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        priority
-                      />
-                      {/* Overlay gradient */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-                      {/* Add floating particles effect */}
-                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(76,29,149,0.1)_0%,rgba(0,0,0,0)_100%)] mix-blend-screen" />
-                      <div className="absolute inset-0 opacity-50 mix-blend-overlay bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIzMDAiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMC4xIi8+PC9zdmc+')]" />
-                    </div>
-
-                    {/* NFT Info with enhanced styling */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white bg-gradient-to-t from-black/90 via-black/50 to-transparent">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Sparkles className="h-5 w-5 text-primary animate-pulse" />
-                        <span className="text-sm font-medium text-primary">
-                          Featured NFT #001
-                        </span>
-                      </div>
-                      <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-white via-primary-foreground to-blue-200 bg-clip-text text-transparent">
-                        The Quantum Dreamer
-                      </h3>
-                      <p className="text-sm text-white/80">
-                        A mind-bending journey through parallel universes where
-                        dreams and reality intertwine.
-                      </p>
-                    </div>
-
-                    {/* Glow effects */}
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/20 via-purple-500/20 to-blue-500/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Updated NFT Gallery section */}
-        <section className="py-16 bg-black/20 backdrop-blur-[1px]">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
-                Featured NFT Stories
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Browse through unique AI-generated stories minted as NFTs on the
-                blockchain
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <Link href={`/nft-gallery/${i + 1}`} key={i}>
-                  <div className="border rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 h-full">
-                    <div className="aspect-video relative overflow-hidden">
-                      <Image
-                        src={`https://via.placeholder.com/600x400?text=NFT+Story+${i + 1}`}
-                        alt={`Featured NFT ${i + 1}`}
-                        fill
-                        className="object-cover transition-transform duration-500 hover:scale-105"
-                      />
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-bold text-xl">
-                        {
-                          [
-                            'The Digital Dreamer',
-                            'Echoes of Tomorrow',
-                            'Chronicles of the Forgotten',
-                          ][i]
-                        }
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        {
-                          [
-                            'A sci-fi adventure in a virtual world',
-                            'Post-apocalyptic survival story',
-                            'Fantasy tale of ancient magic',
-                          ][i]
-                        }
-                      </p>
-                    </div>
-                    <div className="p-4 pt-0 flex justify-between">
-                      <span className="text-sm flex items-center">
-                        <Sparkles className="h-4 w-4 mr-1 text-primary" />
-                        NFT #{i + 101}
-                      </span>
-                      <span className="text-sm">
-                        By @{['neuralink', 'stargazer', 'cryptobard'][i]}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-            <div className="text-center mt-10">
-              <Link href="/nft-gallery">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-blue-600 to-violet-600"
-                >
-                  View All NFT Stories
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Trending Stories Section */}
-        <TrendingStories />
-
-        {/* Featured Creators Section */}
-        <FeaturedCreators />
-
-        {/* Updated How It Works section */}
-        <section className="py-16 bg-black/20 backdrop-blur-[1px]">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 bg-clip-text text-transparent">
-                How GroqTales Works
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                From idea to blockchain in three simple steps
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                {
-                  title: 'Create Your Story',
-                  description:
-                    'Choose your genre, set parameters, and let our AI craft a unique story based on your inputs',
-                },
-                {
-                  title: 'Mint as NFT',
-                  description:
-                    'Turn your story into a valuable NFT with a single click and store it permanently on the blockchain',
-                },
-                {
-                  title: 'Share & Trade',
-                  description:
-                    'Share your creation with the world and trade it on supported NFT marketplaces',
-                },
-              ].map((step, i) => (
-                <div
-                  key={i}
-                  className="border-2 border-muted/50 bg-background/50 rounded-lg p-6 h-full"
-                >
-                  <div className="flex flex-col items-center text-center">
-                    <div className="mb-4 p-4 rounded-full bg-muted/30">
-                      {
-                        [
-                          <PenSquare
-                            key="pen"
-                            className="h-12 w-12 text-cyan-500"
-                          />,
-                          <Sparkles
-                            key="sparkles"
-                            className="h-12 w-12 text-teal-500"
-                          />,
-                          <BookOpen
-                            key="book"
-                            className="h-12 w-12 text-emerald-500"
-                          />,
-                        ][i]
-                      }
-                    </div>
-                    <h3 className="text-xl font-bold">{step.title}</h3>
-                    <p className="text-muted-foreground mt-2">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="text-center mt-16">
-              <Link href="/create/ai-story">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-orange-500 to-yellow-500"
-                >
-                  Start Creating
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Updated CTA section */}
-        <section className="py-16 bg-gradient-to-r from-primary/10 via-purple-500/10 to-blue-500/10 backdrop-blur-[1px]">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-primary via-purple-500 to-blue-500 bg-clip-text text-transparent">
-                Ready to Create Your Own AI Story NFT?
-              </h2>
-
-              <p className="text-lg text-muted-foreground mb-8">
-                Join the GroqTales community today and transform your ideas into
-                unique stories powered by Groq's advanced AI
-              </p>
-
-              <div className="flex flex-wrap gap-4 justify-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="flex flex-wrap gap-6 pt-4"
+              >
                 <Link href="/create/ai-story">
                   <Button
                     size="lg"
-                    className="bg-gradient-to-r from-cyan-500 to-emerald-500"
+                    className="bg-red-500 text-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all text-xl font-black uppercase px-8 py-6 h-auto rounded-none"
                   >
-                    Get Started Now
+                    <PenSquare className="mr-3 h-6 w-6" />
+                    Start Creating
                   </Button>
                 </Link>
 
-                <Link href="/about">
-                  <Button variant="outline" size="lg">
-                    Learn More
+                {!account && (
+                  <Button
+                    onClick={connectWallet}
+                    size="lg"
+                    className="bg-white text-black border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all text-xl font-black uppercase px-8 py-6 h-auto rounded-none"
+                  >
+                    <Wallet className="mr-3 h-6 w-6" />
+                    Connect Wallet
                   </Button>
-                </Link>
-              </div>
+                )}
+              </motion.div>
+            </div>
+
+            <div className="lg:w-1/2 relative">
+              <motion.div
+                animate={{ rotate: [2, -2, 2] }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 5,
+                  ease: 'easeInOut',
+                }}
+                className="relative z-10"
+              >
+                <div className="bg-white border-8 border-black p-4 shadow-[20px_20px_0px_0px_rgba(0,0,0,1)]">
+                  <div className="aspect-square relative overflow-hidden border-4 border-black bg-blue-400">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Rocket className="w-32 h-32 text-white animate-bounce" />
+                    </div>
+                    {/* Comic Speech Bubble */}
+                    <div className="absolute -top-6 -right-6 bg-white border-4 border-black px-6 py-4 rounded-[50%] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] z-20">
+                      <span className="font-black text-2xl text-black">
+                        BOOM!
+                      </span>
+                    </div>
+                  </div>
+                  <div className="mt-4 border-t-4 border-black pt-4">
+                    <h3 className="text-3xl font-black uppercase">
+                      AI Powered
+                    </h3>
+                    <p className="font-bold text-lg">
+                      Generate stories in seconds!
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Decorative Elements */}
+              <Star className="absolute top-0 right-0 w-12 h-12 text-yellow-400 fill-current stroke-black stroke-2 animate-spin-slow" />
+              <Zap className="absolute bottom-0 left-0 w-16 h-16 text-blue-500 fill-current stroke-black stroke-2 animate-pulse" />
             </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
+
+      {/* Features Grid */}
+      <section className="py-20 bg-white border-b-8 border-black">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-5xl md:text-7xl font-black uppercase mb-4 [text-shadow:4px_4px_0px_#000] text-white stroke-black text-stroke-2">
+              Why GroqTales?
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                title: 'AI Generation',
+                desc: 'Powered by Groq for lightning-fast story creation.',
+                icon: <Zap className="w-12 h-12" />,
+                color: 'bg-cyan-300',
+              },
+              {
+                title: 'NFT Ownership',
+                desc: 'Your stories are truly yours on the blockchain.',
+                icon: <Wallet className="w-12 h-12" />,
+                color: 'bg-magenta-300',
+              },
+              {
+                title: 'Community',
+                desc: 'Read, share, and trade with other creators.',
+                icon: <Sparkles className="w-12 h-12" />,
+                color: 'bg-green-300',
+              },
+            ].map((feature, i) => (
+              <motion.div
+                key={i}
+                whileHover={{ scale: 1.05, rotate: 1 }}
+                className={`${feature.color} border-4 border-black p-8 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]`}
+              >
+                <div className="bg-white border-4 border-black w-20 h-20 flex items-center justify-center mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                  {feature.icon}
+                </div>
+                <h3 className="text-3xl font-black uppercase mb-4">
+                  {feature.title}
+                </h3>
+                <p className="text-xl font-bold border-l-4 border-black pl-4 bg-white/50 py-2">
+                  {feature.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trending Section */}
+      <section className="py-20 bg-pink-100 border-b-8 border-black">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between mb-12">
+            <h2 className="text-4xl font-black uppercase bg-white border-4 border-black px-6 py-2 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+              Trending Now
+            </h2>
+            <Link href="/nft-gallery">
+              <Button className="bg-black text-white border-4 border-transparent hover:bg-gray-800 font-bold uppercase">
+                View All <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
+          <TrendingStories />
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-24 bg-blue-600 border-b-8 border-black text-center">
+        <div className="container mx-auto px-4">
+          <h2 className="text-6xl md:text-8xl font-black text-white uppercase mb-8 [text-shadow:6px_6px_0px_#000]">
+            Ready to Start?
+          </h2>
+          <Link href="/create/ai-story">
+            <Button className="bg-yellow-400 text-black border-4 border-black text-2xl font-black uppercase px-12 py-8 h-auto shadow-[12px_12px_0px_0px_#fff] hover:shadow-[16px_16px_0px_0px_#fff] hover:-translate-y-1 transition-all rounded-none">
+              Create Your Story
+            </Button>
+          </Link>
+        </div>
+      </section>
     </main>
   );
 }

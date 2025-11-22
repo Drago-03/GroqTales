@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, ReactNode, useState } from 'react';
+import React, { createContext, useContext, ReactNode, useState } from "react";
 
 // Mock TransactionResponse and TransactionError types
 export type TransactionResponse = {
@@ -67,7 +67,7 @@ export function Transaction({
     setResponse(null);
 
     // Simulate transaction
-    console.log('Executing transaction with calls:', calls);
+    console.log("Executing transaction with calls:", calls);
 
     try {
       // Mock successful transaction after 2 seconds
@@ -90,17 +90,19 @@ export function Transaction({
       return txResponse;
     } catch (originalError) {
       // Capture original error details and create wrapped error
-      const errorMessage = originalError instanceof Error 
-        ? originalError.message 
-        : 'Transaction failed';
-      
-      const txError: TransactionError = { 
-        message: errorMessage, 
-        code: originalError instanceof Error && 'code' in originalError 
-          ? (originalError as any).code 
-          : 4001 
+      const errorMessage =
+        originalError instanceof Error
+          ? originalError.message
+          : "Transaction failed";
+
+      const txError: TransactionError = {
+        message: errorMessage,
+        code:
+          originalError instanceof Error && "code" in originalError
+            ? (originalError as any).code
+            : 4001,
       };
-      
+
       // Update error state first to ensure cleanup happens before throwing
       setIsLoading(false);
       setIsError(true);
@@ -109,7 +111,7 @@ export function Transaction({
       // Call both error handlers if provided
       if (onError) onError(txError);
       if (onErrorAction) onErrorAction(txError);
-      
+
       // Rethrow the original error to preserve stack trace and details
       throw originalError;
     }
@@ -154,50 +156,61 @@ export function TransactionToastAction() {
 }
 
 // Additional missing exports
-export function TransactionButton({ className, children }: TransactionButtonProps) {
+export function TransactionButton({
+  className,
+  children,
+}: TransactionButtonProps) {
   const { execute, isLoading } = useTransaction();
-  
+
   return (
     <>
-      <button 
-        className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 ${className || ''}`}
+      <button
+        className={`px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 ${className || ""}`}
         onClick={execute}
         disabled={isLoading}
         aria-busy={isLoading}
         aria-disabled={isLoading}
         type="button"
       >
-        {isLoading ? 'Processing...' : children}
+        {isLoading ? "Processing..." : children}
       </button>
       {/* Visually hidden aria-live region for screen readers */}
-      <div 
-        aria-live="polite" 
+      <div
+        aria-live="polite"
         aria-atomic="true"
         style={{
-          position: 'absolute',
-          width: '1px',
-          height: '1px',
-          padding: '0',
-          margin: '-1px',
-          overflow: 'hidden',
-          clip: 'rect(0, 0, 0, 0)',
-          whiteSpace: 'nowrap',
-          border: '0'
+          position: "absolute",
+          width: "1px",
+          height: "1px",
+          padding: "0",
+          margin: "-1px",
+          overflow: "hidden",
+          clip: "rect(0, 0, 0, 0)",
+          whiteSpace: "nowrap",
+          border: "0",
         }}
       >
-        {isLoading && 'Transaction is processing, please wait.'}
+        {isLoading && "Transaction is processing, please wait."}
       </div>
     </>
   );
 }
 
-export function TransactionToast({ children, className }: { children: ReactNode; className?: string }) {
+export function TransactionToast({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   const { isSuccess, isError, error } = useTransaction();
-  
+
   if (!isSuccess && !isError) return null;
-  
+
   return (
-    <div className={`p-4 rounded-lg ${isSuccess ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'} ${className || ''}`}>
+    <div
+      className={`p-4 rounded-lg ${isSuccess ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"} ${className || ""}`}
+    >
       {children}
     </div>
   );
@@ -205,7 +218,7 @@ export function TransactionToast({ children, className }: { children: ReactNode;
 
 export function TransactionToastIcon() {
   const { isSuccess, isError } = useTransaction();
-  
+
   if (isSuccess) {
     return <span className="text-green-500">✅</span>;
   }
@@ -216,35 +229,39 @@ export function TransactionToastIcon() {
 }
 
 export function TransactionToastLabel({ children }: { children?: ReactNode }) {
-  return <span className="font-medium">{children || 'Transaction'}</span>;
+  return <span className="font-medium">{children || "Transaction"}</span>;
 }
 
 export function TransactionStatusAction() {
   const { isLoading, execute } = useTransaction();
-  
+
   return (
-    <button 
+    <button
       onClick={execute}
       disabled={isLoading}
       className="text-sm text-blue-500 hover:text-blue-700 disabled:opacity-50"
     >
-      {isLoading ? 'Processing...' : 'Retry'}
+      {isLoading ? "Processing..." : "Retry"}
     </button>
   );
 }
 
 export function TransactionStatusLabel({ children }: { children?: ReactNode }) {
-  return <span className="text-sm text-gray-600">{children || 'Transaction Status'}</span>;
+  return (
+    <span className="text-sm text-gray-600">
+      {children || "Transaction Status"}
+    </span>
+  );
 }
 
 export function TransactionStatus({ children }: { children?: ReactNode }) {
   const { isLoading, isSuccess, isError, error } = useTransaction();
-  
+
   // If children are provided, render them
   if (children) {
     return <div className="transaction-status">{children}</div>;
   }
-  
+
   // Default behavior when no children
   if (isLoading) {
     return <div className="text-blue-500">Processing transaction...</div>;
@@ -253,7 +270,9 @@ export function TransactionStatus({ children }: { children?: ReactNode }) {
     return <div className="text-green-500">Transaction successful!</div>;
   }
   if (isError) {
-    return <div className="text-red-500">Transaction failed: {error?.message}</div>;
+    return (
+      <div className="text-red-500">Transaction failed: {error?.message}</div>
+    );
   }
   return <div className="text-gray-500">Ready to transact</div>;
 }

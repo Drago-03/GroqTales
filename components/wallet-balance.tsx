@@ -3,13 +3,13 @@
 import { Wallet } from 'lucide-react';
 import React from 'react';
 
+import { useWeb3 } from '@/components/providers/web3-provider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useWeb3Auth } from '@/hooks/use-web3-auth';
 
 export function WalletBalance() {
-  const { address, isConnected } = useWeb3Auth();
+  const { account, connected } = useWeb3();
 
-  if (!isConnected || !address) {
+  if (!connected || !account) {
     return null;
   }
   // Placeholder balance - replace with actual API call in future
@@ -26,7 +26,7 @@ export function WalletBalance() {
       <CardContent>
         <p className="text-2xl font-bold text-center">{mockBalance}</p>
         <p className="text-sm text-muted-foreground text-center mt-1">
-          Connected: {`${address.slice(0, 6)}...${address.slice(-4)}`}
+          Connected: {`${account.slice(0, 6)}...${account.slice(-4)}`}
         </p>
       </CardContent>
     </Card>

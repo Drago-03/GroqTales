@@ -41,9 +41,9 @@ export const generateNftEntries = (count: number) => {
   return Array.from({ length: count }, (_, i) => ({
     id: `story-${i + 1}`,
     title: `Story Title ${i + 1}`,
-    author: authors[i % authors.length].name,
-    authorUsername: authors[i % authors.length].username,
-    authorAvatar: authors[i % authors.length].avatar,
+    author: authors[i % authors.length]!.name,
+    authorUsername: authors[i % authors.length]!.username,
+    authorAvatar: authors[i % authors.length]!.avatar,
     coverImage: `/covers/cover-${(i % 12) + 1}.jpg`,
     price: `${(Math.random() * 2 + 0.05).toFixed(2)} ETH`,
     likes: Math.floor(Math.random() * 500),

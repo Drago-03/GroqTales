@@ -12,6 +12,116 @@ Active full support: 1.1.2 (latest), 1.1.1 (previous). Security maintenance (cri
 ## [Unreleased]
 
 _Planned changes will appear here before the next tagged release._
+
+## [1.2.5] - 2025-11-22
+
+### UI/UX Improvements
+- **Dropdown Styling Enhancement**: Fixed dropdown menus to have solid light backgrounds with blur effect
+  - Changed from transparent to white/95% opacity with backdrop blur
+  - Added comic book style border (2px black) and shadow
+  - Improved readability and visual consistency
+  - Applied to all Select components across the application
+
+### Files Modified
+- `components/ui/select.tsx` - Updated SelectContent styling
+
+
+
+## [1.2.4] - 2025-11-22
+
+### Major Features - Complete Customization Suite
+- **70+ Total Customization Parameters**: Completed the full implementation of all planned story customization options
+  - **Character Background**: Added textarea for detailed character backstory
+  - **Social Commentary**: Toggle with topic field for thematic social commentary
+  - **Mature Content Warning**: Toggle for stories with mature themes
+  - **Advanced Story Options**: New accordion section with:
+    - Chapter/Section count selection (1, 3, 5, 10 chapters)
+    - Foreshadowing level (None, Subtle, Obvious)
+    - Symbolism level (None, Subtle, Prominent)
+    - Multiple POVs toggle with character count (2-5 POVs)
+  - **Inspiration & References**: New accordion section with:
+    - "Similar To" field for comparative descriptions
+    - "Inspired By" field for author/work references
+    - Tropes to Avoid (5 common tropes: Chosen One, Love Triangle, Deus Ex Machina, Amnesia Plot, Evil Twin)
+    - Tropes to Include (5 popular tropes: Hero Journey, Mentor Figure, Found Family, Redemption Arc, Underdog Story)
+  - **Technical Parameters**: New accordion section with:
+    - AI Creativity slider (Temperature: 0.1-1.0)
+    - Model Selection (Default, Creative, Precise, Fast)
+
+### UI/UX Enhancements
+- Added 3 new collapsible accordion sections with color-coded icons
+- Implemented interactive trope selection with visual feedback
+- Added conditional fields that appear based on toggle states
+- Enhanced form organization with 9 total customization categories
+- Maintained comic book aesthetic across all new sections
+
+### Technical Improvements
+- Complete state management for all 70+ parameters
+- Optimized component structure for large form handling
+- Prepared comprehensive parameter collection for AI API integration
+- All fields remain optional except the core prompt
+
+### Files Modified
+- `components/ai-story-generator.tsx` - Added 300+ lines of new UI components and state management
+
+
+
+## [1.2.3] - 2025-11-22
+
+### Major Features
+- **Extensive Story Customization**: Completely redesigned AI story generator with 50+ optional parameters
+  - Added 6 collapsible customization sections: Characters, Plot & Structure, Setting & World, Writing Style & Tone, Themes & Messages, Content Controls
+  - Only prompt field is required - all other fields are optional with smart defaults
+  - Character customization: name, count, traits, age, protagonist type
+  - Plot controls: type, conflict, arc, pacing, ending, plot twists
+  - Setting options: time period, location, world-building depth, atmosphere
+  - Writing style: narrative voice, tone, style, reading level, mood, dialogue percentage, description detail
+  - Theme selection: primary and secondary themes, moral complexity
+  - Content controls: violence level, romance level, language level
+
+### UI/UX Improvements
+- Implemented clean accordion-based interface for advanced options
+- Added visual indicators and icons for each customization category
+- Improved form organization with collapsible sections
+- Enhanced user experience with progressive disclosure pattern
+- Maintained comic book aesthetic throughout new interface
+
+### Technical Improvements
+- Comprehensive state management for all customization parameters
+- Built parameter collection system for API integration
+- Prepared for future AI model integration with detailed prompt building
+- Maintained backward compatibility with existing story generation
+
+### Files Modified
+- `components/ai-story-generator.tsx` - Complete rewrite with extensive customization options
+
+
+
+## [1.2.2] - 2025-11-22
+
+### Bug Fixes
+- **Critical Build Fix**: Resolved 500 Internal Server Error caused by syntax errors in `hooks/use-monad.ts`
+  - Fixed nested block comments that prevented TypeScript parser from processing the file
+  - Uncommented and restored full functionality of the `useMonad` hook
+  - Fixed type mismatch in chainId comparison (string vs number)
+  - Applied Prettier formatting to resolve all formatting errors
+- **Build Stability**: Application now builds successfully and dev server runs without errors
+
+### Technical Improvements
+- Restored complete functionality of Monad blockchain integration hook
+- Added proper type handling for chainId comparison across different formats
+- Improved code quality with consistent formatting
+
+### Files Affected
+- `hooks/use-monad.ts` - Fixed syntax errors, type mismatches, and formatting issues
+
+
+## [1.2.1] - 2025-11-22
+
+### UI/UX Improvements
+- Updated main application logo to `public/logo.png` in header and metadata.
+- Enhanced brand consistency across the platform.
+
 ## [1.2.0] - 2025-09-05
 
 ## [1.1.2] - 2025-08-08
