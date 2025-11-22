@@ -13,6 +13,24 @@ Active full support: 1.1.2 (latest), 1.1.1 (previous). Security maintenance (cri
 
 _Planned changes will appear here before the next tagged release._
 
+## [1.2.6] - 2025-11-22
+
+### Bug Fixes
+- **Vercel Deployment Fix**: Resolved `npm ci` package-lock.json sync error that prevented deployment
+  - Updated Node.js engine specification from exact version `20.18.0` to `>=20.0.0`
+  - Regenerated `package-lock.json` to sync with `package.json` dependencies
+  - Fixed missing dependencies: `uploadthing@7.7.4`, `effect@3.17.7`, `@standard-schema/spec@1.0.0`
+  - Eliminated Vercel build warnings about unsupported engine version format
+
+### Technical Improvements
+- Changed Node.js version constraint to allow flexible minor/patch versions
+- Improved compatibility with Vercel's Node.js version selection system
+- Ensured package-lock.json stays in sync with package.json
+
+### Files Modified
+- `package.json` - Updated engines.node from `20.18.0` to `>=20.0.0`
+- `package-lock.json` - Regenerated to sync with package.json
+
 ## [1.2.5] - 2025-11-22
 
 ### UI/UX Improvements
