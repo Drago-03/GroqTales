@@ -6,15 +6,17 @@ GroqTales follows a rolling support window for the latest minor line plus the tw
 releases. Older minors are considered End of Security Support (EoSS) once two newer minor versions
 ship or critical architectural changes occur.
 
-| Version | Status               | Support Level                 | Notes                      |
-| ------- | -------------------- | ----------------------------- | -------------------------- |
-| 1.2.5   | ✅ Active (Latest)   | Full (features + security)    | Current production release |
-| 1.2.4   | ✅ Active (Previous) | Security & critical bug fixes | Upgrade recommended        |
-| 1.2.3   | ✅ Maintained        | Security (critical only)      | Upgrade to 1.2.5           |
+| Version | Status               | Support Level                 | Notes                        |
+| ------- | -------------------- | ----------------------------- | ---------------------------- |
+| 1.2.5   | ✅ Active (Latest)   | Full (features + security)    | Current production release   |
+| 1.2.4   | ✅ Active (Previous) | Security & critical bug fixes | Upgrade recommended          |
+| 1.2.3   | ✅ Maintained        | Security (critical only)      | Upgrade to 1.2.5             |
 | 1.2.2   | ⚠️ Limited Support   | Critical security only        | Upgrade to 1.2.5 recommended |
-| < 1.2.0 | ❌ EoSS              | No updates                    | Please upgrade immediately |
+| < 1.2.0 | ❌ EoSS              | No updates                    | Please upgrade immediately   |
 
-Note: Version 1.2.x series introduces extensive story customization features (70+ parameters), improved UI/UX, and important bug fixes. Upgrading to 1.2.5 is strongly recommended for the best experience.
+Note: Version 1.2.x series introduces extensive story customization features (70+ parameters),
+improved UI/UX, and important bug fixes. Upgrading to 1.2.5 is strongly recommended for the best
+experience.
 
 ## Reporting a Vulnerability
 

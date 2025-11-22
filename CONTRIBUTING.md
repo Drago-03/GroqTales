@@ -68,8 +68,7 @@ You can contribute in several ways:
 ## Using Issue Templates
 
 **Before opening any issue or pull request, you must use the relevant template provided in
-`.github/ISSUE_TEMPLATE/`.**  
-Templates include:
+`.github/ISSUE_TEMPLATE/`.** Templates include:
 
 - `bug_report.md` – For bugs or unexpected behavior
 - `feature.md` – For new features or enhancements
@@ -94,8 +93,7 @@ To get started with development:
    cd GroqTales
    ```
 
-2. **Install Dependencies:**  
-   Ensure you have Node.js (v16+) and npm or yarn.
+2. **Install Dependencies:** Ensure you have Node.js (v16+) and npm or yarn.
 
    ```bash
    npm install
@@ -103,8 +101,8 @@ To get started with development:
    yarn install
    ```
 
-3. **Set Up Environment Variables:**  
-   Copy `.env.example` to `.env.local` and fill in required values.
+3. **Set Up Environment Variables:** Copy `.env.example` to `.env.local` and fill in required
+   values.
 
    ```bash
    cp .env.example .env.local
@@ -115,11 +113,13 @@ To get started with development:
    - `MONAD_RPC_URL` – Monad blockchain endpoint
 
 4. **Run the Development Server:**
+
    ```bash
    npm run dev
    # or
    yarn dev
    ```
+
    Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
@@ -286,7 +286,7 @@ label to your issues/PRs.**
 
 ---
 
-Thank you for contributing to GroqTales!  
-If you have any questions, open an issue, ask in Discord, or contact the maintainers directly.
+Thank you for contributing to GroqTales! If you have any questions, open an issue, ask in Discord,
+or contact the maintainers directly.
 
 <!-- markdownlint-enable MD033 -->

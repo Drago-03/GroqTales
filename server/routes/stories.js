@@ -47,7 +47,7 @@ router.post('/', async (req, res) => {
       title,
       content,
       genre,
-      author
+      author,
     });
 
     res.status(201).json(story);

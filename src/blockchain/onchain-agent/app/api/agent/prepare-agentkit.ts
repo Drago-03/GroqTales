@@ -17,7 +17,7 @@ import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts';
  */
 
 // Configure a file to persist the agent's Smart Wallet + Private Key data
-const WALLET_DATA_FILE = "wallet_data.txt";
+const WALLET_DATA_FILE = 'wallet_data.txt';
 
 type WalletData = {
   privateKey: Hex;
@@ -35,17 +35,19 @@ export async function prepareAgentkitAndWalletProvider() {
     // Read existing wallet data if available
     if (fs.existsSync(WALLET_DATA_FILE)) {
       try {
-        walletData = JSON.parse(fs.readFileSync(WALLET_DATA_FILE, "utf8")) as WalletData;
+        walletData = JSON.parse(
+          fs.readFileSync(WALLET_DATA_FILE, 'utf8')
+        ) as WalletData;
         privateKey = walletData.privateKey;
       } catch (error) {
-        console.error("Error reading wallet data:", error);
+        console.error('Error reading wallet data:', error);
         // Continue without wallet data
       }
     }
     if (!privateKey) {
       if (walletData?.smartWalletAddress) {
         throw new Error(
-          `Smart wallet found but no private key provided. Either provide the private key, or delete ${WALLET_DATA_FILE} and try again.`,
+          `Smart wallet found but no private key provided. Either provide the private key, or delete ${WALLET_DATA_FILE} and try again.`
         );
       }
       privateKey = (process.env.PRIVATE_KEY || generatePrivateKey()) as Hex;
@@ -54,7 +56,7 @@ export async function prepareAgentkitAndWalletProvider() {
 
     // Initialize WalletProvider: https://docs.cdp.coinbase.com/agentkit/docs/wallet-management
     const walletProvider = await SmartWalletProvider.configureWithWallet({
-      networkId: process.env.NETWORK_ID || "base-sepolia",
+      networkId: process.env.NETWORK_ID || 'base-sepolia',
       signer,
       smartWalletAddress: walletData?.smartWalletAddress,
       paymasterUrl: undefined, // Sponsor transactions: https://docs.cdp.coinbase.com/paymaster/docs/welcome
@@ -82,12 +84,12 @@ export async function prepareAgentkitAndWalletProvider() {
       JSON.stringify({
         privateKey,
         smartWalletAddress,
-      } as WalletData),
+      } as WalletData)
     );
 
     return { agentkit, walletProvider };
   } catch (error) {
-    console.error("Error initializing agent:", error);
-    throw new Error("Failed to initialize agent");
+    console.error('Error initializing agent:', error);
+    throw new Error('Failed to initialize agent');
   }
 }

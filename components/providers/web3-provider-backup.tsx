@@ -255,8 +255,8 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
           Math.random() > 0.3
             ? 'listed'
             : Math.random() > 0.5
-              ? 'unlisted'
-              : 'sold',
+            ? 'unlisted'
+            : 'sold',
         metadata: {
           attributes: [
             {
@@ -338,7 +338,10 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
 
         toast({
           title: 'Wallet Connected',
-          description: `Connected to ${accounts[0].substring(0, 6)}...${accounts[0].substring(38)}`,
+          description: `Connected to ${accounts[0].substring(
+            0,
+            6
+          )}...${accounts[0].substring(38)}`,
         });
       }
     } catch (error: any) {

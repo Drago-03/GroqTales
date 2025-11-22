@@ -118,8 +118,8 @@ addCheck(
   vercelConfig
     ? 'Vercel configured'
     : netlifyConfig
-      ? 'Netlify configured'
-      : 'No frontend deployment config'
+    ? 'Netlify configured'
+    : 'No frontend deployment config'
 );
 addCheck(
   'Backend Deployment',

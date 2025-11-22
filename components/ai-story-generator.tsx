@@ -294,13 +294,25 @@ export default function AIStoryGenerator({
 
     // Simulate API call
     setTimeout(() => {
-      const mockStory = `In the neon-soaked streets of Neo-Tokyo, where the rain never stopped and the holograms danced like ghosts, ${mainCharacterName || 'Kael'} tightened ${mainCharacterName ? 'their' : 'his'} grip on the data-drive. "They said it couldn't be done," ${mainCharacterName ? 'they' : 'he'} muttered, the cybernetic implant in ${mainCharacterName ? 'their' : 'his'} left eye whirring softly. 
+      const mockStory = `In the neon-soaked streets of Neo-Tokyo, where the rain never stopped and the holograms danced like ghosts, ${
+        mainCharacterName || 'Kael'
+      } tightened ${
+        mainCharacterName ? 'their' : 'his'
+      } grip on the data-drive. "They said it couldn't be done," ${
+        mainCharacterName ? 'they' : 'he'
+      } muttered, the cybernetic implant in ${
+        mainCharacterName ? 'their' : 'his'
+      } left eye whirring softly.
 
 The corporation known as Omni-Corp had eyes everywhere, but they didn't have this. A code so pure, so chaotic, it could rewrite reality itself.
 
-Suddenly, a shadow detached itself from the alley wall. "Hand it over, ${mainCharacterName || 'Kael'}," a voice rasped, metallic and cold. It was Unit 734, a hunter-killer droid with a reputation for leaving no witnesses.
+Suddenly, a shadow detached itself from the alley wall. "Hand it over, ${
+        mainCharacterName || 'Kael'
+      }," a voice rasped, metallic and cold. It was Unit 734, a hunter-killer droid with a reputation for leaving no witnesses.
 
-${mainCharacterName || 'Kael'} smirked, pulling ${mainCharacterName ? 'their' : 'his'} plasma-pistol from its holster. "Come and get it, tin can."
+${mainCharacterName || 'Kael'} smirked, pulling ${
+        mainCharacterName ? 'their' : 'his'
+      } plasma-pistol from its holster. "Come and get it, tin can."
 
 The air crackled with energy as the first shot was fired...`;
 
@@ -476,10 +488,18 @@ The air crackled with energy as the first shot was fired...`;
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="flash">FLASH (100-500 words)</SelectItem>
-                      <SelectItem value="short">SHORT (500-2000 words)</SelectItem>
-                      <SelectItem value="medium">MEDIUM (2000-5000 words)</SelectItem>
-                      <SelectItem value="long">LONG (5000-10000 words)</SelectItem>
+                      <SelectItem value="flash">
+                        FLASH (100-500 words)
+                      </SelectItem>
+                      <SelectItem value="short">
+                        SHORT (500-2000 words)
+                      </SelectItem>
+                      <SelectItem value="medium">
+                        MEDIUM (2000-5000 words)
+                      </SelectItem>
+                      <SelectItem value="long">
+                        LONG (5000-10000 words)
+                      </SelectItem>
                       <SelectItem value="epic">EPIC (10000+ words)</SelectItem>
                     </SelectContent>
                   </Select>
@@ -649,7 +669,10 @@ The air crackled with energy as the first shot was fired...`;
                             <Label className="font-bold mb-2 block">
                               Plot Type
                             </Label>
-                            <Select value={plotType} onValueChange={setPlotType}>
+                            <Select
+                              value={plotType}
+                              onValueChange={setPlotType}
+                            >
                               <SelectTrigger className="border-2 border-black">
                                 <SelectValue placeholder="Select plot type" />
                               </SelectTrigger>
@@ -661,7 +684,9 @@ The air crackled with energy as the first shot was fired...`;
                                 <SelectItem value="coming-of-age">
                                   Coming of Age
                                 </SelectItem>
-                                <SelectItem value="survival">Survival</SelectItem>
+                                <SelectItem value="survival">
+                                  Survival
+                                </SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
@@ -702,7 +727,10 @@ The air crackled with energy as the first shot was fired...`;
                             <Label className="font-bold mb-2 block">
                               Story Arc
                             </Label>
-                            <Select value={storyArc} onValueChange={setStoryArc}>
+                            <Select
+                              value={storyArc}
+                              onValueChange={setStoryArc}
+                            >
                               <SelectTrigger className="border-2 border-black">
                                 <SelectValue placeholder="Select arc" />
                               </SelectTrigger>
@@ -723,14 +751,18 @@ The air crackled with energy as the first shot was fired...`;
                             </Select>
                           </div>
                           <div>
-                            <Label className="font-bold mb-2 block">Pacing</Label>
+                            <Label className="font-bold mb-2 block">
+                              Pacing
+                            </Label>
                             <Select value={pacing} onValueChange={setPacing}>
                               <SelectTrigger className="border-2 border-black">
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectItem value="slow">Slow Burn</SelectItem>
-                                <SelectItem value="moderate">Moderate</SelectItem>
+                                <SelectItem value="moderate">
+                                  Moderate
+                                </SelectItem>
                                 <SelectItem value="fast">Fast-paced</SelectItem>
                                 <SelectItem value="action">
                                   Action-packed
@@ -817,7 +849,9 @@ The air crackled with energy as the first shot was fired...`;
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectItem value="ancient">Ancient</SelectItem>
-                                <SelectItem value="medieval">Medieval</SelectItem>
+                                <SelectItem value="medieval">
+                                  Medieval
+                                </SelectItem>
                                 <SelectItem value="renaissance">
                                   Renaissance
                                 </SelectItem>
@@ -831,7 +865,9 @@ The air crackled with energy as the first shot was fired...`;
                                 <SelectItem value="far-future">
                                   Far Future
                                 </SelectItem>
-                                <SelectItem value="timeless">Timeless</SelectItem>
+                                <SelectItem value="timeless">
+                                  Timeless
+                                </SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
@@ -884,7 +920,9 @@ The air crackled with energy as the first shot was fired...`;
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectItem value="minimal">Minimal</SelectItem>
-                                <SelectItem value="moderate">Moderate</SelectItem>
+                                <SelectItem value="moderate">
+                                  Moderate
+                                </SelectItem>
                                 <SelectItem value="rich">Rich</SelectItem>
                                 <SelectItem value="immersive">
                                   Immersive
@@ -969,7 +1007,9 @@ The air crackled with energy as the first shot was fired...`;
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectItem value="serious">Serious</SelectItem>
-                                <SelectItem value="humorous">Humorous</SelectItem>
+                                <SelectItem value="humorous">
+                                  Humorous
+                                </SelectItem>
                                 <SelectItem value="dark">Dark</SelectItem>
                                 <SelectItem value="light">
                                   Light-hearted
@@ -1032,12 +1072,16 @@ The air crackled with energy as the first shot was fired...`;
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="children">Children</SelectItem>
+                                <SelectItem value="children">
+                                  Children
+                                </SelectItem>
                                 <SelectItem value="young-adult">
                                   Young Adult
                                 </SelectItem>
                                 <SelectItem value="adult">Adult</SelectItem>
-                                <SelectItem value="literary">Literary</SelectItem>
+                                <SelectItem value="literary">
+                                  Literary
+                                </SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
@@ -1055,7 +1099,9 @@ The air crackled with energy as the first shot was fired...`;
                                 Melancholic
                               </SelectItem>
                               <SelectItem value="tense">Tense</SelectItem>
-                              <SelectItem value="whimsical">Whimsical</SelectItem>
+                              <SelectItem value="whimsical">
+                                Whimsical
+                              </SelectItem>
                               <SelectItem value="gritty">Gritty</SelectItem>
                               <SelectItem value="inspirational">
                                 Inspirational
@@ -1128,7 +1174,10 @@ The air crackled with energy as the first shot was fired...`;
                             </SelectTrigger>
                             <SelectContent>
                               {themeOptions.map((theme) => (
-                                <SelectItem key={theme} value={theme.toLowerCase()}>
+                                <SelectItem
+                                  key={theme}
+                                  value={theme.toLowerCase()}
+                                >
                                   {theme}
                                 </SelectItem>
                               ))}
@@ -1188,10 +1237,15 @@ The air crackled with energy as the first shot was fired...`;
                               type="checkbox"
                               id="socialCommentary"
                               checked={socialCommentary}
-                              onChange={(e) => setSocialCommentary(e.target.checked)}
+                              onChange={(e) =>
+                                setSocialCommentary(e.target.checked)
+                              }
                               className="w-4 h-4 border-2 border-black rounded"
                             />
-                            <Label htmlFor="socialCommentary" className="font-bold">
+                            <Label
+                              htmlFor="socialCommentary"
+                              className="font-bold"
+                            >
                               Include Social Commentary
                             </Label>
                           </div>
@@ -1199,7 +1253,9 @@ The air crackled with energy as the first shot was fired...`;
                             <Input
                               placeholder="Topic or theme for social commentary..."
                               value={socialCommentaryTopic}
-                              onChange={(e) => setSocialCommentaryTopic(e.target.value)}
+                              onChange={(e) =>
+                                setSocialCommentaryTopic(e.target.value)
+                              }
                               className="border-2 border-black"
                             />
                           )}
@@ -1236,7 +1292,9 @@ The air crackled with energy as the first shot was fired...`;
                               <SelectContent>
                                 <SelectItem value="none">None</SelectItem>
                                 <SelectItem value="mild">Mild</SelectItem>
-                                <SelectItem value="moderate">Moderate</SelectItem>
+                                <SelectItem value="moderate">
+                                  Moderate
+                                </SelectItem>
                                 <SelectItem value="intense">Intense</SelectItem>
                               </SelectContent>
                             </Select>
@@ -1255,7 +1313,9 @@ The air crackled with energy as the first shot was fired...`;
                               <SelectContent>
                                 <SelectItem value="none">None</SelectItem>
                                 <SelectItem value="subtle">Subtle</SelectItem>
-                                <SelectItem value="moderate">Moderate</SelectItem>
+                                <SelectItem value="moderate">
+                                  Moderate
+                                </SelectItem>
                                 <SelectItem value="central">Central</SelectItem>
                               </SelectContent>
                             </Select>
@@ -1276,7 +1336,9 @@ The air crackled with energy as the first shot was fired...`;
                                   Family-friendly
                                 </SelectItem>
                                 <SelectItem value="mild">Mild</SelectItem>
-                                <SelectItem value="moderate">Moderate</SelectItem>
+                                <SelectItem value="moderate">
+                                  Moderate
+                                </SelectItem>
                                 <SelectItem value="mature">Mature</SelectItem>
                               </SelectContent>
                             </Select>
@@ -1289,10 +1351,15 @@ The air crackled with energy as the first shot was fired...`;
                               type="checkbox"
                               id="matureContent"
                               checked={matureContent}
-                              onChange={(e) => setMatureContent(e.target.checked)}
+                              onChange={(e) =>
+                                setMatureContent(e.target.checked)
+                              }
                               className="w-4 h-4 border-2 border-black rounded"
                             />
-                            <Label htmlFor="matureContent" className="font-bold">
+                            <Label
+                              htmlFor="matureContent"
+                              className="font-bold"
+                            >
                               Mature Content Warning
                             </Label>
                           </div>
@@ -1372,7 +1439,9 @@ The air crackled with energy as the first shot was fired...`;
                               <SelectContent>
                                 <SelectItem value="none">None</SelectItem>
                                 <SelectItem value="subtle">Subtle</SelectItem>
-                                <SelectItem value="prominent">Prominent</SelectItem>
+                                <SelectItem value="prominent">
+                                  Prominent
+                                </SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
@@ -1382,15 +1451,23 @@ The air crackled with energy as the first shot was fired...`;
                                 type="checkbox"
                                 id="multiplePOVs"
                                 checked={multiplePOVs}
-                                onChange={(e) => setMultiplePOVs(e.target.checked)}
+                                onChange={(e) =>
+                                  setMultiplePOVs(e.target.checked)
+                                }
                                 className="w-4 h-4 border-2 border-black rounded"
                               />
-                              <Label htmlFor="multiplePOVs" className="font-bold">
+                              <Label
+                                htmlFor="multiplePOVs"
+                                className="font-bold"
+                              >
                                 Multiple POVs
                               </Label>
                             </div>
                             {multiplePOVs && (
-                              <Select value={povCount} onValueChange={setPovCount}>
+                              <Select
+                                value={povCount}
+                                onValueChange={setPovCount}
+                              >
                                 <SelectTrigger className="border-2 border-black">
                                   <SelectValue />
                                 </SelectTrigger>
@@ -1450,14 +1527,29 @@ The air crackled with energy as the first shot was fired...`;
                             Tropes to Avoid (Optional)
                           </Label>
                           <div className="flex flex-wrap gap-2">
-                            {['Chosen One', 'Love Triangle', 'Deus Ex Machina', 'Amnesia Plot', 'Evil Twin'].map((trope) => (
+                            {[
+                              'Chosen One',
+                              'Love Triangle',
+                              'Deus Ex Machina',
+                              'Amnesia Plot',
+                              'Evil Twin',
+                            ].map((trope) => (
                               <button
                                 key={trope}
                                 onClick={() => {
-                                  if (avoidCliches.includes(trope.toLowerCase())) {
-                                    setAvoidCliches(avoidCliches.filter(t => t !== trope.toLowerCase()));
+                                  if (
+                                    avoidCliches.includes(trope.toLowerCase())
+                                  ) {
+                                    setAvoidCliches(
+                                      avoidCliches.filter(
+                                        (t) => t !== trope.toLowerCase()
+                                      )
+                                    );
                                   } else {
-                                    setAvoidCliches([...avoidCliches, trope.toLowerCase()]);
+                                    setAvoidCliches([
+                                      ...avoidCliches,
+                                      trope.toLowerCase(),
+                                    ]);
                                   }
                                 }}
                                 className={`px-3 py-1 rounded-md border-2 border-black text-sm font-bold transition-all ${
@@ -1477,14 +1569,29 @@ The air crackled with energy as the first shot was fired...`;
                             Tropes to Include (Optional)
                           </Label>
                           <div className="flex flex-wrap gap-2">
-                            {['Hero Journey', 'Mentor Figure', 'Found Family', 'Redemption Arc', 'Underdog Story'].map((trope) => (
+                            {[
+                              'Hero Journey',
+                              'Mentor Figure',
+                              'Found Family',
+                              'Redemption Arc',
+                              'Underdog Story',
+                            ].map((trope) => (
                               <button
                                 key={trope}
                                 onClick={() => {
-                                  if (includeTropes.includes(trope.toLowerCase())) {
-                                    setIncludeTropes(includeTropes.filter(t => t !== trope.toLowerCase()));
+                                  if (
+                                    includeTropes.includes(trope.toLowerCase())
+                                  ) {
+                                    setIncludeTropes(
+                                      includeTropes.filter(
+                                        (t) => t !== trope.toLowerCase()
+                                      )
+                                    );
                                   } else {
-                                    setIncludeTropes([...includeTropes, trope.toLowerCase()]);
+                                    setIncludeTropes([
+                                      ...includeTropes,
+                                      trope.toLowerCase(),
+                                    ]);
                                   }
                                 }}
                                 className={`px-3 py-1 rounded-md border-2 border-black text-sm font-bold transition-all ${
@@ -1517,7 +1624,8 @@ The air crackled with energy as the first shot was fired...`;
                       <AccordionContent className="px-6 pb-6 space-y-4">
                         <div>
                           <Label className="font-bold mb-2 block">
-                            AI Creativity (Temperature): {temperature[0]?.toFixed(1) ?? '0.7'}
+                            AI Creativity (Temperature):{' '}
+                            {temperature[0]?.toFixed(1) ?? '0.7'}
                           </Label>
                           <Slider
                             value={temperature}
@@ -1545,10 +1653,18 @@ The air crackled with energy as the first shot was fired...`;
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="default">Default (Balanced)</SelectItem>
-                              <SelectItem value="creative">Creative Mode</SelectItem>
-                              <SelectItem value="precise">Precise Mode</SelectItem>
-                              <SelectItem value="fast">Fast Generation</SelectItem>
+                              <SelectItem value="default">
+                                Default (Balanced)
+                              </SelectItem>
+                              <SelectItem value="creative">
+                                Creative Mode
+                              </SelectItem>
+                              <SelectItem value="precise">
+                                Precise Mode
+                              </SelectItem>
+                              <SelectItem value="fast">
+                                Fast Generation
+                              </SelectItem>
                             </SelectContent>
                           </Select>
                         </div>

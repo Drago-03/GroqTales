@@ -34,6 +34,7 @@ _Planned changes will appear here before the next tagged release._
 ## [1.2.5] - 2025-11-22
 
 ### UI/UX Improvements
+
 - **Dropdown Styling Enhancement**: Fixed dropdown menus to have solid light backgrounds with blur effect
   - Changed from transparent to white/95% opacity with backdrop blur
   - Added comic book style border (2px black) and shadow
@@ -41,13 +42,13 @@ _Planned changes will appear here before the next tagged release._
   - Applied to all Select components across the application
 
 ### Files Modified
+
 - `components/ui/select.tsx` - Updated SelectContent styling
-
-
 
 ## [1.2.4] - 2025-11-22
 
 ### Major Features - Complete Customization Suite
+
 - **70+ Total Customization Parameters**: Completed the full implementation of all planned story customization options
   - **Character Background**: Added textarea for detailed character backstory
   - **Social Commentary**: Toggle with topic field for thematic social commentary
@@ -67,6 +68,7 @@ _Planned changes will appear here before the next tagged release._
     - Model Selection (Default, Creative, Precise, Fast)
 
 ### UI/UX Enhancements
+
 - Added 3 new collapsible accordion sections with color-coded icons
 - Implemented interactive trope selection with visual feedback
 - Added conditional fields that appear based on toggle states
@@ -74,19 +76,20 @@ _Planned changes will appear here before the next tagged release._
 - Maintained comic book aesthetic across all new sections
 
 ### Technical Improvements
+
 - Complete state management for all 70+ parameters
 - Optimized component structure for large form handling
 - Prepared comprehensive parameter collection for AI API integration
 - All fields remain optional except the core prompt
 
 ### Files Modified
+
 - `components/ai-story-generator.tsx` - Added 300+ lines of new UI components and state management
-
-
 
 ## [1.2.3] - 2025-11-22
 
 ### Major Features
+
 - **Extensive Story Customization**: Completely redesigned AI story generator with 50+ optional parameters
   - Added 6 collapsible customization sections: Characters, Plot & Structure, Setting & World, Writing Style & Tone, Themes & Messages, Content Controls
   - Only prompt field is required - all other fields are optional with smart defaults
@@ -98,6 +101,7 @@ _Planned changes will appear here before the next tagged release._
   - Content controls: violence level, romance level, language level
 
 ### UI/UX Improvements
+
 - Implemented clean accordion-based interface for advanced options
 - Added visual indicators and icons for each customization category
 - Improved form organization with collapsible sections
@@ -105,19 +109,20 @@ _Planned changes will appear here before the next tagged release._
 - Maintained comic book aesthetic throughout new interface
 
 ### Technical Improvements
+
 - Comprehensive state management for all customization parameters
 - Built parameter collection system for API integration
 - Prepared for future AI model integration with detailed prompt building
 - Maintained backward compatibility with existing story generation
 
 ### Files Modified
+
 - `components/ai-story-generator.tsx` - Complete rewrite with extensive customization options
-
-
 
 ## [1.2.2] - 2025-11-22
 
 ### Bug Fixes
+
 - **Critical Build Fix**: Resolved 500 Internal Server Error caused by syntax errors in `hooks/use-monad.ts`
   - Fixed nested block comments that prevented TypeScript parser from processing the file
   - Uncommented and restored full functionality of the `useMonad` hook
@@ -126,17 +131,19 @@ _Planned changes will appear here before the next tagged release._
 - **Build Stability**: Application now builds successfully and dev server runs without errors
 
 ### Technical Improvements
+
 - Restored complete functionality of Monad blockchain integration hook
 - Added proper type handling for chainId comparison across different formats
 - Improved code quality with consistent formatting
 
 ### Files Affected
-- `hooks/use-monad.ts` - Fixed syntax errors, type mismatches, and formatting issues
 
+- `hooks/use-monad.ts` - Fixed syntax errors, type mismatches, and formatting issues
 
 ## [1.2.1] - 2025-11-22
 
 ### UI/UX Improvements
+
 - Updated main application logo to `public/logo.png` in header and metadata.
 - Enhanced brand consistency across the platform.
 
@@ -173,12 +180,12 @@ Codebase integrity restoration and build stabilization after widespread comment 
 
 ### Files Affected (Representative)
 
-`components/ui/{chart.tsx,pagination.tsx,skeleton.tsx,calendar.tsx,carousel.tsx}`  
-`components/story-summary-backup.tsx`  
-`hooks/{use-groq.ts,use-monad.ts,use-story-analysis.ts,use-story-summary.ts}`  
-`src/blockchain/onchain-agent/app/hooks/useAgent.ts`  
-`lib/{api-utils.ts,constants.ts,logger-broken.ts,mock-data-backup.ts,transaction-components.ts}`  
-`app/stories/page.tsx`  
+`components/ui/{chart.tsx,pagination.tsx,skeleton.tsx,calendar.tsx,carousel.tsx}`
+`components/story-summary-backup.tsx`
+`hooks/{use-groq.ts,use-monad.ts,use-story-analysis.ts,use-story-summary.ts}`
+`src/blockchain/onchain-agent/app/hooks/useAgent.ts`
+`lib/{api-utils.ts,constants.ts,logger-broken.ts,mock-data-backup.ts,transaction-components.ts}`
+`app/stories/page.tsx`
 `src/blockchain/onchain-agent/app/api/agent/{route.new.ts,create-agent.ts,prepare-agentkit.ts}`
 
 ### Notes
@@ -190,6 +197,7 @@ Codebase integrity restoration and build stabilization after widespread comment 
 ## [1.1.1] - 2025-08-05
 
 ### Major Changes (1.1.1)
+
 - **Production Deployment Focus**: Removed all blockchain/Web3 functionality to focus on core AI storytelling features
 - **GROQ-Only Integration**: Eliminated LLAMA support, maintaining only GROQ API for story generation
 - **Clean Architecture**: Commented out all onchain scripts and wallet mockups for streamlined deployment
@@ -263,7 +271,7 @@ Codebase integrity restoration and build stabilization after widespread comment 
 
 ### New Features (1.1.0)
 
-- **Organized Directory Structure**: 
+- **Organized Directory Structure**:
   - Created `src/blockchain/` for Web3 and blockchain-related files
   - Created `src/ai/` for AI model training and processing scripts
   - Created `src/data/` for datasets and training configurations
@@ -345,6 +353,7 @@ Codebase integrity restoration and build stabilization after widespread comment 
 ## [1.0.0] - 2025-02-04
 
 ### Initial Release
+
 - Core GroqTales platform functionality
 - AI-powered story generation
 - NFT marketplace integration
@@ -355,15 +364,17 @@ Codebase integrity restoration and build stabilization after widespread comment 
 ---
 
 ### Version Format
+
 - **Major.Minor.Patch** (e.g., 1.1.0)
 - **Major**: Breaking changes or significant new features
 - **Minor**: New features, backwards compatible
 - **Patch**: Bug fixes and small improvements
 
 ### Categories
+
 - **Major Changes**: Significant new features or breaking changes
 - **New Features**: New functionality added
-- **Technical Improvements**: Code quality and architecture improvements  
+- **Technical Improvements**: Code quality and architecture improvements
 - **Bug Fixes**: Issues resolved
 - **File Organization**: Structure and organization changes
 - **Security Updates**: Security-related improvements

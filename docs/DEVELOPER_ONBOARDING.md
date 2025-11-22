@@ -318,7 +318,7 @@ npm run format
 - **Sprint Planning**: Estimate and commit to work
 - **Retrospectives**: Improve team processes
 
-## 🎉 Welcome to the Team!
+## 🎉 Welcome to the Team
 
 You're now ready to contribute to GroqTales! Remember:
 
