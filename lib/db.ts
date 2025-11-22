@@ -7,7 +7,10 @@ import clientPromise from './mongodb';
  */
 export async function getDb() {
   // In build mode, return mock database
-  if (process.env.NEXT_PUBLIC_BUILD_MODE === 'true' || process.env.CI === 'true') {
+  if (
+    process.env.NEXT_PUBLIC_BUILD_MODE === 'true' ||
+    process.env.CI === 'true'
+  ) {
     return {
       collection: () => ({
         findOne: () => Promise.resolve(null),
@@ -21,7 +24,7 @@ export async function getDb() {
       createCollection: () => Promise.resolve(),
     } as any;
   }
-  
+
   const client = await clientPromise;
   const db = client.db(process.env.MONGODB_DB_NAME);
   return db;
@@ -30,6 +33,7 @@ export async function getDb() {
    * Retrieves collection data
    * 
 
+   */
 export async function getCollection(collectionName: string) {
   const db = await getDb();
   return db.collection(collectionName);
@@ -107,25 +111,10 @@ export async function deleteOne(collectionName: string, query: any) {
     throw error;
   }
 }
+
 /**
-   * Updates existing one
-   * 
-
-export async function updateOne(collectionName: string, query: any, update: any) {
-  const collection = await getCollection(collectionName);
-  return collection.updateOne(query, { $set: update });
-}
-  /**
-   * Deletes one
-   * 
-
-export async function deleteOne(collectionName: string, query: any) {
-  const collection = await getCollection(collectionName);
-  return collection.deleteOne(query);
-}
-  /**
-   * Creates new objectid
-   */
+ * Creates new objectid
+ */
 export function createObjectId(id: string) {
   return new ObjectId(id);
 }

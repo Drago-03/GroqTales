@@ -42,6 +42,19 @@ export function UserNav() {
     }
   };
 
+  if (!account) {
+    return (
+      <Button
+        variant="default"
+        size="sm"
+        onClick={handleConnect}
+        className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium comic-pop comic-text-bold"
+      >
+        Login
+      </Button>
+    );
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -55,39 +68,31 @@ export function UserNav() {
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {account ? (
-          <>
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Link href="/profile" legacyBehavior passHref>
-                  <span>Profile</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/my-stories" legacyBehavior passHref>
-                  <span>My Stories</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link href="/nft-gallery" legacyBehavior passHref>
-                  <span>My NFTs</span>
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={disconnectWallet}>
-              <span>Disconnect Wallet</span>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuLabel>
-              Wallet: {truncateAddress(account)}
-            </DropdownMenuLabel>
-          </>
-        ) : (
-          <DropdownMenuItem onClick={handleConnect}>
-            <span>Connect Wallet</span>
+        <DropdownMenuGroup>
+          <DropdownMenuItem>
+            <Link href="/profile" legacyBehavior passHref>
+              <span>Profile</span>
+            </Link>
           </DropdownMenuItem>
-        )}
+          <DropdownMenuItem>
+            <Link href="/my-stories" legacyBehavior passHref>
+              <span>My Stories</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href="/nft-gallery" legacyBehavior passHref>
+              <span>My NFTs</span>
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={disconnectWallet}>
+          <span>Disconnect Wallet</span>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel>
+          Wallet: {truncateAddress(account)}
+        </DropdownMenuLabel>
       </DropdownMenuContent>
     </DropdownMenu>
   );

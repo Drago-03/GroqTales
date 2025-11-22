@@ -120,16 +120,16 @@ export default function WalletConnect() {
       <Button
         onClick={connectWallet}
         disabled={connecting}
-        className="flex items-center gap-2 px-6 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
+        className="flex items-center gap-2 px-6 py-2 rounded-none bg-white text-black border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 transition-all duration-200 font-black uppercase tracking-wider"
       >
         {connecting ? (
           <>
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-black" />
             <span>Connecting...</span>
           </>
         ) : (
           <>
-            <Wallet className="h-4 w-4" />
+            <Wallet className="h-5 w-5" />
             <span>Connect Wallet</span>
           </>
         )}

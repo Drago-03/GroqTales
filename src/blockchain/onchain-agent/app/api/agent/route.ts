@@ -16,20 +16,16 @@ interface AgentResponse {
  * Handles incoming POST requests to interact with the AgentKit-powered AI agent.
  * This processes user messages and streams responses from the agent.
  *
- * @ POST
-
-   */ POST
-
  *
-
- *
-
+ * Example usage:
+ * ```typescript
  * const response = await fetch("/api/agent", {
  *     method: "POST",
  *     headers: { "Content-Type": "application/json" },
  *     body: JSON.stringify({ userMessage: input }),
  * });
- */ POST
+ * ```
+ */
 
 export async function POST(req: Request): Promise<NextResponse<AgentResponse>> {
   try {
@@ -41,5 +37,5 @@ export async function POST(req: Request): Promise<NextResponse<AgentResponse>> {
   } catch (error) {
     console.error('Error processing agent request:', error);
     return NextResponse.json({ status: 500, data: { error: 'Internal server error' } });
-}
+  }
 }

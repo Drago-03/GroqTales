@@ -2,7 +2,8 @@
 
 ## Overview
 
-The GroqTales SDK provides developers with easy-to-use tools for integrating AI-powered storytelling capabilities into their applications. Built for modern JavaScript/TypeScript applications.
+The GroqTales SDK provides developers with easy-to-use tools for integrating AI-powered storytelling
+capabilities into their applications. Built for modern JavaScript/TypeScript applications.
 
 ## Quick Start
 
@@ -21,14 +22,14 @@ import { GroqTalesSDK } from '@groqtales/sdk';
 
 const sdk = new GroqTalesSDK({
   apiKey: 'your-api-key',
-  baseUrl: 'https://groqtales-api.onrender.com'
+  baseUrl: 'https://groqtales-api.onrender.com',
 });
 
 // Generate a story
 const story = await sdk.stories.generate({
   prompt: 'Write a fantasy story about a magical forest',
   genre: 'fantasy',
-  length: 'medium'
+  length: 'medium',
 });
 
 console.log(story.content);
@@ -39,6 +40,7 @@ console.log(story.content);
 ### Stories
 
 #### `sdk.stories.generate(options)`
+
 Generate AI-powered stories.
 
 ```typescript
@@ -52,6 +54,7 @@ const story = await sdk.stories.generate({
 ```
 
 #### `sdk.stories.analyze(content)`
+
 Analyze story content for themes and sentiment.
 
 ```typescript
@@ -60,19 +63,21 @@ const analysis = await sdk.stories.analyze('Story content...');
 ```
 
 #### `sdk.stories.list(options)`
+
 Get paginated list of stories.
 
 ```typescript
 const stories = await sdk.stories.list({
   page: 1,
   limit: 10,
-  genre: 'fantasy'
+  genre: 'fantasy',
 });
 ```
 
 ### AI Content
 
 #### `sdk.ai.generate(options)`
+
 Generate content using various AI models.
 
 ```typescript
@@ -81,12 +86,13 @@ const content = await sdk.ai.generate({
   model: 'llama-3-70b',
   parameters: {
     temperature: 0.7,
-    max_tokens: 1000
-  }
+    max_tokens: 1000,
+  },
 });
 ```
 
 #### `sdk.ai.analyze(content, type)`
+
 Analyze content with AI.
 
 ```typescript
@@ -99,6 +105,7 @@ const analysis = await sdk.ai.analyze(
 ### NFT Integration
 
 #### `sdk.nft.mint(storyId, metadata)`
+
 Mint NFT from story content.
 
 ```typescript
@@ -107,18 +114,19 @@ const nft = await sdk.nft.mint('story123', {
   description: 'AI-generated story NFT',
   attributes: [
     { trait_type: 'Genre', value: 'Fantasy' },
-    { trait_type: 'Length', value: 'Medium' }
-  ]
+    { trait_type: 'Length', value: 'Medium' },
+  ],
 });
 ```
 
 #### `sdk.nft.list(options)`
+
 Get NFT marketplace listings.
 
 ```typescript
 const listings = await sdk.nft.list({
   category: 'stories',
-  priceRange: { min: 0.1, max: 1.0 }
+  priceRange: { min: 0.1, max: 1.0 },
 });
 ```
 
@@ -128,11 +136,12 @@ const listings = await sdk.nft.list({
 
 ```typescript
 interface SDKOptions {
-  apiKey: string;           // Your API key
-  baseUrl?: string;         // API base URL
-  timeout?: number;         // Request timeout (ms)
-  retries?: number;         // Number of retries
-  rateLimit?: {            // Rate limiting options
+  apiKey: string; // Your API key
+  baseUrl?: string; // API base URL
+  timeout?: number; // Request timeout (ms)
+  retries?: number; // Number of retries
+  rateLimit?: {
+    // Rate limiting options
     requests: number;
     window: number;
   };
@@ -155,7 +164,7 @@ import { GroqTalesError, APIError, ValidationError } from '@groqtales/sdk';
 
 try {
   const story = await sdk.stories.generate({
-    prompt: 'Write a story...'
+    prompt: 'Write a story...',
   });
 } catch (error) {
   if (error instanceof APIError) {
@@ -223,8 +232,8 @@ const story = await sdk.ai.generate({
   parameters: {
     temperature: 0.8,
     top_p: 0.9,
-    frequency_penalty: 0.1
-  }
+    frequency_penalty: 0.1,
+  },
 });
 ```
 
@@ -233,7 +242,7 @@ const story = await sdk.ai.generate({
 ```typescript
 // Stream story generation
 const stream = sdk.stories.generateStream({
-  prompt: 'Write a long story...'
+  prompt: 'Write a long story...',
 });
 
 for await (const chunk of stream) {
@@ -248,7 +257,7 @@ for await (const chunk of stream) {
 const stories = await sdk.stories.generateBatch([
   { prompt: 'Fantasy story...', genre: 'fantasy' },
   { prompt: 'Sci-fi story...', genre: 'sci-fi' },
-  { prompt: 'Mystery story...', genre: 'mystery' }
+  { prompt: 'Mystery story...', genre: 'mystery' },
 ]);
 ```
 
@@ -271,7 +280,7 @@ class StoryApp {
     const story = await this.sdk.stories.generate({
       prompt,
       genre,
-      length: 'medium'
+      length: 'medium',
     });
 
     // Analyze content
@@ -284,8 +293,8 @@ class StoryApp {
       attributes: [
         { trait_type: 'Genre', value: genre },
         { trait_type: 'Sentiment', value: analysis.sentiment },
-        { trait_type: 'Word Count', value: analysis.wordCount.toString() }
-      ]
+        { trait_type: 'Word Count', value: analysis.wordCount.toString() },
+      ],
     });
 
     return { story, analysis, nft };
@@ -311,6 +320,7 @@ class StoryApp {
 ## Changelog
 
 ### v1.0.0
+
 - Initial SDK release
 - Core story generation and analysis
 - NFT integration

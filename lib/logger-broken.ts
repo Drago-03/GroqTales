@@ -50,18 +50,25 @@ export class Logger {
    * Create a child logger with additional context
    */
   child(context: string): Logger {
-    return new Logger(this.config, `${this.context ? `${this.context}:` : ''}${context}`);
+    return new Logger(
+      this.config,
+      `${this.context ? `${this.context}:` : ''}${context}`
+    );
   }
-  
+
   /**
    * Log an error message
    */
-  error(message: string, error?: Error | undefined, metadata?: Record<string, unknown> | undefined): void {
+  error(
+    message: string,
+    error?: Error | undefined,
+    metadata?: Record<string, unknown> | undefined
+  ): void {
     const options: any = {};
     if (error !== undefined) options.error = error;
     if (metadata !== undefined) options.metadata = metadata;
     this.log(LogLevel.ERROR, message, options);
-}
+  }
   /**
    * Log a warning message
    */
@@ -69,7 +76,7 @@ export class Logger {
     const options: any = {};
     if (metadata !== undefined) options.metadata = metadata;
     this.log(LogLevel.WARN, message, options);
-}
+  }
   /**
    * Log an info message
    */
@@ -77,7 +84,7 @@ export class Logger {
     const options: any = {};
     if (metadata !== undefined) options.metadata = metadata;
     this.log(LogLevel.INFO, message, options);
-}
+  }
   /**
    * Log an HTTP request/response
    */
@@ -85,7 +92,7 @@ export class Logger {
     const options: any = {};
     if (metadata !== undefined) options.metadata = metadata;
     this.log(LogLevel.HTTP, message, options);
-}
+  }
   /**
    * Log a debug message
    */
@@ -93,19 +100,23 @@ export class Logger {
     const options: any = {};
     if (metadata !== undefined) options.metadata = metadata;
     this.log(LogLevel.DEBUG, message, options);
-}
+  }
   /**
    * Log performance metrics
    */
-  performance(operation: string, duration: number, metadata?: Record<string, unknown>): void {
+  performance(
+    operation: string,
+    duration: number,
+    metadata?: Record<string, unknown>
+  ): void {
     if (this.config.enablePerformanceLogging) {
       this.info(`Performance: ${operation}`, {
         duration,
         operation,
         ...metadata,
       });
-}
-}
+    }
+  }
   /**
    * Time an operation
    */
@@ -116,22 +127,24 @@ export class Logger {
       const result = fn();
 
       if (result instanceof Promise) {
-        return result.then((value) => {
-          this.performance(operation, Date.now() - start);
-          return value;
-        }).catch((error) => {
-          this.performance(operation, Date.now() - start, { error: true });
-          throw error;
-        });
+        return result
+          .then((value) => {
+            this.performance(operation, Date.now() - start);
+            return value;
+          })
+          .catch((error) => {
+            this.performance(operation, Date.now() - start, { error: true });
+            throw error;
+          });
       } else {
         this.performance(operation, Date.now() - start);
         return result;
-}
+      }
     } catch (error) {
       this.performance(operation, Date.now() - start, { error: true });
       throw error;
-}
-}
+    }
+  }
   /**
    * Core logging method
    */
@@ -147,7 +160,7 @@ export class Logger {
   ): void {
     if (level > this.config.level) {
       return;
-}
+    }
     const entry: LogEntry = {
       level,
       message,
@@ -158,14 +171,14 @@ export class Logger {
 
     if (this.config.enableConsole) {
       this.logToConsole(entry);
-}
+    }
     if (this.config.enableFile) {
       this.logToFile(entry);
-}
+    }
     if (this.config.enableRemote) {
       this.logToRemote(entry);
-}
-}
+    }
+  }
   /**
    * Log to console with proper formatting
    */
@@ -177,32 +190,38 @@ export class Logger {
     let output: string;
 
     if (this.config.format === 'json') {
-      output = JSON.stringify({
-        level: levelName,
-        timestamp,
-        context: entry.context,
-        message: entry.message,
-        metadata: entry.metadata,
-        ...(entry.error && {
-          error: {
-            name: entry.error.name,
-            message: entry.error.message,
-            ...(this.config.includeStackTrace && { stack: entry.error.stack }),
-          },
-        }),
-      }, null, 2);
+      output = JSON.stringify(
+        {
+          level: levelName,
+          timestamp,
+          context: entry.context,
+          message: entry.message,
+          metadata: entry.metadata,
+          ...(entry.error && {
+            error: {
+              name: entry.error.name,
+              message: entry.error.message,
+              ...(this.config.includeStackTrace && {
+                stack: entry.error.stack,
+              }),
+            },
+          }),
+        },
+        null,
+        2
+      );
     } else {
       output = `${timestamp} ${levelName} ${context} ${entry.message}`;
       if (entry.metadata) {
         output += ` ${JSON.stringify(entry.metadata)}`;
-}
+      }
       if (entry.error) {
         output += `\nError: ${entry.error.message}`;
         if (this.config.includeStackTrace && entry.error.stack) {
           output += `\n${entry.error.stack}`;
-}
-}
-}
+        }
+      }
+    }
     // Use appropriate console method based on log level
     switch (entry.level) {
       case LogLevel.ERROR:
@@ -216,15 +235,15 @@ export class Logger {
         break;
       default:
         console.log(output);
-}
-}
+    }
+  }
   /**
    * Log to file (in Node.js environment)
    */
   private logToFile(entry: LogEntry): void {
     if (typeof window !== 'undefined') {
       return; // Skip file logging in browser
-}
+    }
     try {
       const fs = require('fs');
       const path = require('path');
@@ -235,34 +254,35 @@ export class Logger {
       // Ensure log directory exists
       if (!fs.existsSync(logDir)) {
         fs.mkdirSync(logDir, { recursive: true });
-}
-      const logLine = JSON.stringify({
-        level: LogLevel[entry.level],
-        timestamp: entry.timestamp.toISOString(),
-        context: entry.context,
-        message: entry.message,
-        metadata: entry.metadata,
-        ...(entry.error && {
-          error: {
-            name: entry.error.name,
-            message: entry.error.message,
-            stack: entry.error.stack,
-          },
-        }),
-      }) + '\n';
+      }
+      const logLine =
+        JSON.stringify({
+          level: LogLevel[entry.level],
+          timestamp: entry.timestamp.toISOString(),
+          context: entry.context,
+          message: entry.message,
+          metadata: entry.metadata,
+          ...(entry.error && {
+            error: {
+              name: entry.error.name,
+              message: entry.error.message,
+              stack: entry.error.stack,
+            },
+          }),
+        }) + '\n';
 
       fs.appendFileSync(filename, logLine, 'utf8');
     } catch (error) {
       console.error('Failed to write to log file:', error);
-}
-}
+    }
+  }
   /**
    * Log to remote endpoint
    */
   private logToRemote(entry: LogEntry): void {
     if (!this.config.remoteEndpoint) {
       return;
-}
+    }
     // In a real implementation, you would send this to your logging service
     // This is a placeholder for demonstration
     const payload = {
@@ -290,7 +310,7 @@ export class Logger {
     }).catch((error) => {
       console.error('Failed to send log to remote endpoint:', error);
     });
-}
+  }
 }
 /**
  * Request logging middleware
@@ -308,7 +328,8 @@ export class RequestLogger {
   middleware() {
     return (req: any, res: any, next: any) => {
       const start = Date.now();
-      const requestId = req.headers['x-request-id'] || Math.random().toString(36).substr(2, 9);
+      const requestId =
+        req.headers['x-request-id'] || Math.random().toString(36).substr(2, 9);
 
       // Add request ID to request object
       req.requestId = requestId;
@@ -338,6 +359,7 @@ export class RequestLogger {
     };
   }
 }
+/**
  * Create application loggers
 
 export const createLogger = (context?: string, config?: Partial<LoggerConfig>): Logger => {
@@ -368,3 +390,4 @@ export const blockchainLogger = createLogger('Blockchain');
 export const aiLogger = createLogger('AI');
 
 export default logger;
+*/

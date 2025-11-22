@@ -399,7 +399,9 @@ function TransactionDemo() {
   const sendNotification = useNotification();
 
   const handleSuccess = useCallback(
-    async (response: { transactionReceipts: { transactionHash: string }[] }) => {
+    async (response: {
+      transactionReceipts: { transactionHash: string }[];
+    }) => {
       const txHash = response.transactionReceipts[0]?.transactionHash;
       console.log(`Transaction successful: ${txHash}`);
 

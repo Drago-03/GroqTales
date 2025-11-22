@@ -30,5 +30,6 @@
         "viem",
         "wagmi",
         "Worldbuilding"
-    ]
+    ],
+    "git.ignoreLimitWarning": true
 }

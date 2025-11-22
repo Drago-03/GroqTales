@@ -7,7 +7,6 @@ import {
   MessageSquare,
   Phone,
   MapPin,
-  Twitter,
   Linkedin,
   Send,
 } from 'lucide-react';
@@ -27,7 +26,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -41,19 +39,10 @@ const FloatingGithub = () => (
   <Link
     href="https://github.com/Drago-03/GroqTales.git"
     target="_blank"
-    className="fixed bottom-24 right-6 p-3 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-50"
+    className="fixed bottom-24 right-6 p-3 bg-black text-white border-4 border-white rounded-none shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all duration-300 z-50"
   >
-    <Github className="w-6 h-6 text-white" />
+    <Github className="w-8 h-8" />
   </Link>
-);
-
-// Floating doodle elements
-const FloatingDoodles = () => (
-  <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-    <div className="absolute top-20 right-10 w-32 h-32 bg-gradient-to-r from-emerald-200 to-teal-200 rounded-full blur-3xl opacity-20 animate-float"></div>
-    <div className="absolute bottom-40 left-20 w-40 h-40 bg-gradient-to-r from-violet-200 to-purple-200 rounded-full blur-3xl opacity-20 animate-float-delayed"></div>
-    <div className="absolute top-1/3 right-1/3 w-36 h-36 bg-gradient-to-r from-blue-200 to-cyan-200 rounded-full blur-3xl opacity-20 animate-float-slow"></div>
-  </div>
 );
 
 const formSchema = z.object({
@@ -72,21 +61,21 @@ const formSchema = z.object({
 });
 
 const ContactInfo = ({ icon: Icon, title, content, link }: any) => (
-  <div className="flex items-start space-x-4">
-    <div className="p-2 bg-primary/10 rounded-full">
-      <Icon className="w-5 h-5 text-primary" />
+  <div className="flex items-start space-x-4 p-4 border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-transform">
+    <div className="p-2 bg-primary border-2 border-black">
+      <Icon className="w-6 h-6 text-white" />
     </div>
     <div>
-      <h3 className="font-medium">{title}</h3>
+      <h3 className="font-black uppercase text-lg">{title}</h3>
       {link ? (
         <Link
           href={link}
-          className="text-sm text-muted-foreground hover:text-primary"
+          className="text-sm font-bold text-gray-700 hover:text-primary hover:underline decoration-2"
         >
           {content}
         </Link>
       ) : (
-        <p className="text-sm text-muted-foreground">{content}</p>
+        <p className="text-sm font-bold text-gray-700">{content}</p>
       )}
     </div>
   </div>
@@ -115,45 +104,48 @@ export default function ContactPage() {
     form.reset();
   }
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
-      <FloatingDoodles />
+    <div className="min-h-screen bg-yellow-50 pattern-dots">
       <FloatingGithub />
 
       <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent mb-4">
+          <div className="text-center mb-12 bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <h1 className="text-5xl font-black uppercase mb-4 text-black [text-shadow:3px_3px_0px_#primary]">
               Get in Touch
             </h1>
-            <p className="text-muted-foreground text-lg">
-              Have questions? We'd love to hear from you.
+            <p className="text-black font-bold text-xl border-t-4 border-black pt-4 inline-block">
+              Have questions? We'd love to hear from you!
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Contact Form */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Send us a Message</CardTitle>
-                <CardDescription>
-                  Fill out the form below and we'll get back to you as soon as
-                  possible.
+            <Card className="bg-white">
+              <CardHeader className="border-b-4 border-black bg-cyan-300">
+                <CardTitle className="text-2xl font-black uppercase">
+                  Send us a Message
+                </CardTitle>
+                <CardDescription className="text-black font-bold opacity-100">
+                  Fill out the form below and we'll get back to you ASAP!
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-6">
                 {isSubmitted ? (
-                  <div className="text-center py-8">
-                    <div className="bg-primary/10 p-3 rounded-full w-fit mx-auto mb-4">
-                      <Send className="w-6 h-6 text-primary" />
+                  <div className="text-center py-8 border-4 border-black bg-green-100 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <div className="bg-primary p-4 border-4 border-black w-fit mx-auto mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                      <Send className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">
+                    <h3 className="text-2xl font-black uppercase mb-2">
                       Message Sent!
                     </h3>
-                    <p className="text-muted-foreground mb-4">
+                    <p className="text-black font-bold mb-6">
                       Thank you for reaching out. We'll respond to your message
                       soon.
                     </p>
-                    <Button onClick={() => setIsSubmitted(false)}>
+                    <Button
+                      onClick={() => setIsSubmitted(false)}
+                      className="w-full"
+                    >
                       Send Another Message
                     </Button>
                   </div>
@@ -168,11 +160,13 @@ export default function ContactPage() {
                         name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Name</FormLabel>
+                            <FormLabel className="font-black uppercase">
+                              Name
+                            </FormLabel>
                             <FormControl>
-                              <Input placeholder="Your name" {...field} />
+                              <Input placeholder="YOUR NAME" {...field} />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="font-bold text-red-500" />
                           </FormItem>
                         )}
                       />
@@ -181,11 +175,13 @@ export default function ContactPage() {
                         name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel className="font-black uppercase">
+                              Email
+                            </FormLabel>
                             <FormControl>
-                              <Input placeholder="your@email.com" {...field} />
+                              <Input placeholder="YOUR@EMAIL.COM" {...field} />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="font-bold text-red-500" />
                           </FormItem>
                         )}
                       />
@@ -194,14 +190,16 @@ export default function ContactPage() {
                         name="subject"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Subject</FormLabel>
+                            <FormLabel className="font-black uppercase">
+                              Subject
+                            </FormLabel>
                             <FormControl>
                               <Input
-                                placeholder="What's this about?"
+                                placeholder="WHAT'S THIS ABOUT?"
                                 {...field}
                               />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="font-bold text-red-500" />
                           </FormItem>
                         )}
                       />
@@ -210,21 +208,23 @@ export default function ContactPage() {
                         name="message"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Message</FormLabel>
+                            <FormLabel className="font-black uppercase">
+                              Message
+                            </FormLabel>
                             <FormControl>
                               <Textarea
-                                placeholder="Your message..."
+                                placeholder="YOUR MESSAGE..."
                                 className="min-h-[120px]"
                                 {...field}
                               />
                             </FormControl>
-                            <FormMessage />
+                            <FormMessage className="font-bold text-red-500" />
                           </FormItem>
                         )}
                       />
                       <Button
                         type="submit"
-                        className="w-full"
+                        className="w-full text-xl py-6"
                         disabled={isSubmitting}
                       >
                         {isSubmitting ? 'Sending...' : 'Send Message'}
@@ -238,13 +238,15 @@ export default function ContactPage() {
             {/* Contact Information */}
             <div className="space-y-8">
               <Card>
-                <CardHeader>
-                  <CardTitle>Contact Information</CardTitle>
-                  <CardDescription>
+                <CardHeader className="border-b-4 border-black bg-magenta-300">
+                  <CardTitle className="text-2xl font-black uppercase">
+                    Contact Information
+                  </CardTitle>
+                  <CardDescription className="text-black font-bold opacity-100">
                     Reach out to us through any of these channels
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <CardContent className="space-y-6 p-6">
                   <ContactInfo
                     icon={Mail}
                     title="Email"
@@ -271,27 +273,37 @@ export default function ContactPage() {
               </Card>
 
               <Card>
-                <CardHeader>
-                  <CardTitle>Connect With Us</CardTitle>
-                  <CardDescription>
+                <CardHeader className="border-b-4 border-black bg-yellow-300">
+                  <CardTitle className="text-2xl font-black uppercase">
+                    Connect With Us
+                  </CardTitle>
+                  <CardDescription className="text-black font-bold opacity-100">
                     Follow us on social media for updates
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-6">
                   <div className="grid grid-cols-2 gap-4">
-                    <Button variant="outline" className="w-full" asChild>
+                    <Button
+                      variant="outline"
+                      className="w-full border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+                      asChild
+                    >
                       <Link href="https://github.com/Drago-03/" target="_blank">
-                        <Github className="w-4 h-4 mr-2" />
-                        Github
+                        <Github className="w-5 h-5 mr-2" />
+                        GITHUB
                       </Link>
                     </Button>
-                    <Button variant="outline" className="w-full" asChild>
+                    <Button
+                      variant="outline"
+                      className="w-full border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+                      asChild
+                    >
                       <Link
                         href="https://www.linkedin.com/in/mantej-singh-arora/"
                         target="_blank"
                       >
-                        <Linkedin className="w-4 h-4 mr-2" />
-                        LinkedIn
+                        <Linkedin className="w-5 h-5 mr-2" />
+                        LINKEDIN
                       </Link>
                     </Button>
                   </div>

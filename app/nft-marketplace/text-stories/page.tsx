@@ -15,6 +15,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 
+import { PageHeader } from '@/components/page-header';
 import { useWeb3 } from '@/components/providers/web3-provider';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -37,8 +38,6 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
-
-import { PageHeader } from '@/components/page-header';
 
 interface TextNFT {
   id: number;
@@ -204,7 +203,8 @@ function generateMoreTextNFTs(count: number): TextNFT[] {
 
   return Array.from({ length: count }, (_, index) => {
     const id = index + textNFTs.length + 1;
-    const genre = genres[Math.floor(Math.random() * genres.length)] || 'Fantasy';
+    const genre =
+      genres[Math.floor(Math.random() * genres.length)] || 'Fantasy';
     const wordCount = Math.floor(Math.random() * 15000) + 5000;
     const readTime = `${Math.ceil(wordCount / 300)} min`;
 

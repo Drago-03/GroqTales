@@ -44,178 +44,152 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-gradient-to-t from-background to-background border-t">
-      <div className="container mx-auto px-4 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-full theme-gradient-bg flex items-center justify-center">
-                <BookOpen className="w-4 h-4 text-white" />
-              </div>
-              <span className="text-xl font-bold gradient-heading">
-                GroqTales
-              </span>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              A Web3-enabled AI storytelling platform where creativity meets
-              blockchain technology.
-            </p>
-            <p className="text-sm text-muted-foreground flex items-center">
-              <span>In partnership with</span>
+    <footer className="relative mt-20">
+      {/* Comic Container */}
+      <div className="bg-white border-t-4 border-black">
+        <div className="container mx-auto px-6 pt-16 pb-8">
+          {/* Product of Indie Hub Section */}
+          <div className="flex flex-col items-center justify-center mb-12 text-center">
+            <div className="inline-block p-4 border-4 border-black bg-secondary mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all">
+              <p className="font-bold text-sm text-black tracking-widest uppercase mb-2">
+                Architected by
+              </p>
               <Link
-                href="https://indie-hub-landing-page-git-main-dragos-projects-f5e4e2da.vercel.app"
-                className="ml-1 font-medium gradient-heading flex items-center"
+                href="https://www.indiehub.co.in"
+                target="_blank"
+                className="group flex items-center space-x-2"
               >
-                Indie Hub <ExternalLink className="h-3 w-3 ml-1" />
+                <span className="text-2xl font-black tracking-tighter group-hover:text-primary transition-colors">
+                  INDIE HUB
+                </span>
+                <ExternalLink className="w-4 h-4 text-black" />
               </Link>
-            </p>
-            <div className="flex space-x-4 pt-2">
-              {socialLinks.map((link) => (
-                <Link
-                  key={link.url}
-                  href={link.url}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {link.icon}
-                  <span className="sr-only">{link.label}</span>
-                </Link>
-              ))}
             </div>
+            <p className="text-xs font-bold text-black max-w-md uppercase">
+              Forging digital experiences with pixel-perfect precision and comic
+              soul.
+            </p>
           </div>
 
-          <div>
-            <h3 className="font-semibold text-lg mb-4 gradient-heading">
-              Explore
-            </h3>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  href="/genres"
-                  className="text-sm hover:text-foreground transition-colors flex items-center"
-                >
-                  <Sparkles className="h-4 w-4 mr-2 opacity-60" />
-                  Genres
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/community"
-                  className="text-sm hover:text-foreground transition-colors flex items-center"
-                >
-                  <Users className="h-4 w-4 mr-2 opacity-60" />
-                  Community
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/create"
-                  className="text-sm hover:text-foreground transition-colors flex items-center"
-                >
-                  <PenSquare className="h-4 w-4 mr-2 opacity-60" />
-                  Create Story
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/nft-gallery"
-                  className="text-sm hover:text-foreground transition-colors flex items-center"
-                >
-                  <Frame className="h-4 w-4 mr-2 opacity-60" />
-                  NFT Gallery
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/nft-marketplace"
-                  className="text-sm hover:text-foreground transition-colors flex items-center"
-                >
-                  <Wallet className="h-4 w-4 mr-2 opacity-60" />
-                  NFT Marketplace
-                </Link>
-              </li>
-            </ul>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12 border-b-4 border-black pb-12">
+            {/* Brand Section - Logo Only */}
+            <div className="space-y-6">
+              <div className="flex items-center justify-center md:justify-start">
+                <div className="relative group">
+                  <div className="absolute -inset-2 bg-gradient-to-r from-primary to-blue-500 rounded-lg blur opacity-25 group-hover:opacity-40 transition duration-300" />
+                  <img
+                    src="/logo.png"
+                    alt="Logo"
+                    className="relative w-32 h-32 object-contain border-4 border-black bg-white p-2 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all duration-300"
+                  />
+                </div>
+              </div>
+              <p className="text-sm font-bold text-black leading-relaxed border-l-4 border-black pl-4 text-center md:text-left">
+                Empowering creators with AI-driven storytelling and Web3 ownership.
+                <span className="block mt-2 text-xs text-gray-700">
+                  Create • Mint • Own • Trade
+                </span>
+              </p>
+
+              <div className="flex space-x-3 pt-2 justify-center md:justify-start">
+                {socialLinks.map((link) => (
+                  <Link
+                    key={link.url}
+                    href={link.url}
+                    className="p-2 border-4 border-black rounded-none hover:bg-primary hover:text-white transition-all duration-300 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+                  >
+                    {link.icon}
+                    <span className="sr-only">{link.label}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Links Sections */}
+            {[
+              {
+                title: 'EXPLORE',
+                links: [
+                  { href: '/genres', label: 'Genres', icon: Sparkles },
+                  { href: '/community', label: 'Community', icon: Users },
+                  { href: '/create', label: 'Create Story', icon: PenSquare },
+                  { href: '/nft-gallery', label: 'NFT Gallery', icon: Frame },
+                  {
+                    href: '/nft-marketplace',
+                    label: 'NFT Marketplace',
+                    icon: Wallet,
+                  },
+                ],
+              },
+              {
+                title: 'RESOURCES',
+                links: [
+                  { href: '/docs', label: 'Documentation', icon: FileText },
+                  { href: '/faq', label: 'FAQ', icon: HelpCircle },
+                ],
+              },
+              {
+                title: 'LEGAL',
+                links: [
+                  {
+                    href: '/terms',
+                    label: 'Terms of Service',
+                    icon: FileCheck,
+                  },
+                  { href: '/privacy', label: 'Privacy Policy', icon: Shield },
+                  { href: '/cookies', label: 'Cookie Policy', icon: Cookie },
+                  { href: '/contact', label: 'Contact Us', icon: Mail },
+                ],
+              },
+            ].map((section) => (
+              <div key={section.title}>
+                <h3 className="font-black text-lg mb-6 text-black border-b-4 border-black inline-block pb-1 uppercase">
+                  {section.title}
+                </h3>
+                <ul className="space-y-3">
+                  {section.links.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="group flex items-center text-sm font-bold text-black hover:text-primary transition-colors uppercase"
+                      >
+                        <span className="w-2 h-2 bg-black mr-2 opacity-0 group-hover:opacity-100 transition-opacity border border-black" />
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
 
-          <div>
-            <h3 className="font-semibold text-lg mb-4 gradient-heading">
-              Resources
-            </h3>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  href="/docs"
-                  className="text-sm hover:text-foreground transition-colors flex items-center"
-                >
-                  <FileText className="h-4 w-4 mr-2 opacity-60" />
-                  Documentation
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/faq"
-                  className="text-sm hover:text-foreground transition-colors flex items-center"
-                >
-                  <HelpCircle className="h-4 w-4 mr-2 opacity-60" />
-                  FAQ
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-lg mb-4 gradient-heading">
-              Legal
-            </h3>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  href="/terms"
-                  className="text-sm hover:text-foreground transition-colors flex items-center"
-                >
-                  <FileCheck className="h-4 w-4 mr-2 opacity-60" />
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/privacy"
-                  className="text-sm hover:text-foreground transition-colors flex items-center"
-                >
-                  <Shield className="h-4 w-4 mr-2 opacity-60" />
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/cookies"
-                  className="text-sm hover:text-foreground transition-colors flex items-center"
-                >
-                  <Cookie className="h-4 w-4 mr-2 opacity-60" />
-                  Cookie Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-sm hover:text-foreground transition-colors flex items-center"
-                >
-                  <Mail className="h-4 w-4 mr-2 opacity-60" />
-                  Contact Us
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-10 pt-6 border-t border-border flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-muted-foreground">
-            &copy; {currentYear} GroqTales × Monad × Indie Hub. All rights
-            reserved.
-          </p>
-          <div className="flex items-center space-x-1 mt-4 md:mt-0 text-sm text-muted-foreground">
-            <span>
-              Made by Indie Hub using Groq AI and Monad blockchain technology
-            </span>
+          {/* Footer Bottom */}
+          <div className="flex flex-col md:flex-row justify-between items-center font-bold text-xs text-black uppercase space-y-4 md:space-y-0">
+            <p className="flex items-center space-x-2">
+              <span>&copy; {currentYear} All Rights Reserved</span>
+              <span className="hidden md:inline mx-2">•</span>
+              <span className="flex items-center space-x-1">
+                <span>Powered by</span>
+                <span className="text-primary">Monad</span>
+                <span>×</span>
+                <span className="text-primary">Groq AI</span>
+              </span>
+            </p>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center">
+                <span className="w-3 h-3 bg-green-500 border-2 border-black mr-2 animate-pulse" />
+                <span className="text-green-700">Platform Online</span>
+              </div>
+              <span className="hidden md:inline">•</span>
+              <Link
+                href="https://www.indiehub.co.in"
+                target="_blank"
+                className="hover:text-primary transition-colors flex items-center space-x-1"
+              >
+                <span>Built by</span>
+                <span className="font-black">INDIE HUB</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

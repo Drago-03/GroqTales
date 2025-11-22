@@ -4,7 +4,7 @@
 <p align="center">Create, share, and own AI-generated stories and comics as NFTs on the Monad blockchain.</p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.1.2-blue?style=flat-square" alt="Version"/>
+  <img src="https://img.shields.io/badge/version-1.2.5-blue?style=flat-square" alt="Version"/>
   <img src="https://img.shields.io/github/deployments/Drago-03/GroqTales/Production?label=deploy%20(prod)&logo=vercel&style=flat-square" alt="Production Deployment"/>
   <img src="https://img.shields.io/github/deployments/Drago-03/GroqTales/Preview?label=deploy%20(preview)&logo=vercel&style=flat-square" alt="Preview Deployments"/>
   <img src="https://img.shields.io/github/actions/workflow/status/Drago-03/GroqTales/ci.yml?branch=main&label=CI&style=flat-square" alt="CI Status"/>
@@ -51,15 +51,26 @@ world of creative writing, generative AI, and decentralized technology.
 - **AI-Driven Story & Comic Generation**  
   Use Groq AI to generate stories or comic panel outlines by specifying title, genre, setting,
   characters, and themes. Both text and comic formats are supported.
+- **Extensive Story Customization (70+ Parameters)**  
+  Fine-tune every aspect of your story with comprehensive customization across 9 categories:
+  - **Characters**: Name, count, traits, age, background, protagonist type
+  - **Plot & Structure**: Type, conflict, arc, pacing, ending, plot twists
+  - **Setting & World**: Time period, location, world-building depth, atmosphere
+  - **Writing Style & Tone**: Voice, tone, style, reading level, mood, dialogue percentage, description detail
+  - **Themes & Messages**: Primary/secondary themes, moral complexity, social commentary
+  - **Content Controls**: Violence, romance, language levels, mature content warnings
+  - **Advanced Options**: Chapters, foreshadowing, symbolism, multiple POVs
+  - **Inspiration & References**: Similar works, inspired by, tropes to avoid/include
+  - **Technical Parameters**: AI creativity slider, model selection
 - **NFT Minting on Monad Blockchain**  
   Seamlessly mint your stories as NFTs on Monad (Testnet live, Mainnet coming soon). Each NFT proves
   authenticity, ownership, and collectibility.
 - **Community Gallery**  
   Publish your stories publicly, browse the gallery, and interact with other creators. Stories can
   be shared freely or as NFTs.
-- **Customizable Prompts & Creativity Levels**  
-  Fine-tune AI output by adjusting prompts, genres, outlines, and creativity settings to match your
-  vision.
+- **Progressive Disclosure UI**  
+  Clean, accordion-based interface with 9 collapsible sections. Keeps simple tasks simple while offering
+  advanced options when needed. Only prompt is required—everything else is optional!
 - **Wallet Integration**  
   Connect with MetaMask, WalletConnect, or Ledger for secure publishing and minting. Wallet is
   required for NFT actions.
@@ -195,8 +206,8 @@ Thanks to these amazing people for making GroqTales better!
 
 ### Core Documentation
 
-- **Architecture Overview:** [ARCHITECTURE.md](docs/ARCHITECTURE.md) - Comprehensive system design and
-  technical architecture
+- **Architecture Overview:** [ARCHITECTURE.md](docs/ARCHITECTURE.md) - Comprehensive system design
+  and technical architecture
 - **Project Wiki:** [GitHub Wiki](https://github.com/Drago-03/GroqTales/wiki) - Detailed guides and
   documentation
 - **API Documentation:** [Wiki/API](https://github.com/Drago-03/GroqTales/wiki/API) - Backend API
@@ -206,14 +217,16 @@ Thanks to these amazing people for making GroqTales better!
 
 ### System Architecture
 
-- **Frontend Architecture:** [ARCHITECTURE.md#frontend](docs/ARCHITECTURE.md#frontend-architecture) -
-  Next.js application structure
-- **Backend Architecture:** [ARCHITECTURE.md#backend](docs/ARCHITECTURE.md#backend-architecture) - API
-  and service design
+- **Frontend Architecture:**
+  [ARCHITECTURE.md#frontend](docs/ARCHITECTURE.md#frontend-architecture) - Next.js application
+  structure
+- **Backend Architecture:** [ARCHITECTURE.md#backend](docs/ARCHITECTURE.md#backend-architecture) -
+  API and service design
 - **Blockchain Integration:**
-  [ARCHITECTURE.md#blockchain](docs/ARCHITECTURE.md#blockchain-architecture) - Web3 and smart contract
-  integration
-- **AI Integration:** [ARCHITECTURE.md#ai](docs/ARCHITECTURE.md#ai-architecture) - Groq AI implementation
+  [ARCHITECTURE.md#blockchain](docs/ARCHITECTURE.md#blockchain-architecture) - Web3 and smart
+  contract integration
+- **AI Integration:** [ARCHITECTURE.md#ai](docs/ARCHITECTURE.md#ai-architecture) - Groq AI
+  implementation
 - **System Diagrams:** [ARCHITECTURE.md#diagrams](docs/ARCHITECTURE.md#system-diagrams) - Mermaid
   flowcharts and architecture diagrams
 

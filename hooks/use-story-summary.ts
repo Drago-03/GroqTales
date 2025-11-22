@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { ObjectId } from "mongodb";
+import { ObjectId } from 'mongodb';
+import { useState } from 'react';
 
 interface StorySummary {
   _id?: ObjectId | string;
@@ -16,23 +16,34 @@ interface StorySummary {
   updatedAt: Date;
 }
 interface UseStorySummaryResult {
-  generateSummary: (storyId: string, content: string, model?: string, apiKey?: string) => Promise<StorySummary | null>;
+  generateSummary: (
+    storyId: string,
+    content: string,
+    model?: string,
+    apiKey?: string
+  ) => Promise<StorySummary | null>;
   fetchSummary: (storyId: string) => Promise<StorySummary | null>;
-  updateSummary: (id: string, updates: Partial<StorySummary>, regenerate?: boolean, content?: string) => Promise<StorySummary | null>;
+  updateSummary: (
+    id: string,
+    updates: Partial<StorySummary>,
+    regenerate?: boolean,
+    content?: string
+  ) => Promise<StorySummary | null>;
   deleteSummary: (id: string) => Promise<boolean>;
   isLoading: boolean;
   error: string | null;
 }
-  export function useStorySummary(): UseStorySummaryResult {
+export function useStorySummary(): UseStorySummaryResult {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   /**
    * Generate and store a summary for a story
+   */
 
   const generateSummary = async (
-    storyId: string, 
-    content: string, 
+    storyId: string,
+    content: string,
     model?: string,
     apiKey?: string
   ): Promise<StorySummary | null> => {
@@ -40,10 +51,10 @@ interface UseStorySummaryResult {
     setError(null);
 
     try {
-      const response = await fetch("/api/story-summaries", {
-        method: "POST",
+      const response = await fetch('/api/story-summaries', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           storyId,
@@ -56,49 +67,55 @@ interface UseStorySummaryResult {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to generate summary");
-}
+        throw new Error(data.error || 'Failed to generate summary');
+      }
       return data.summary;
     } catch (err: any) {
-      setError(err.message || "An error occurred");
+      setError(err.message || 'An error occurred');
       return null;
     } finally {
       setIsLoading(false);
-}
+    }
   };
 
   /**
    * Fetch a summary for a story
+   */
 
-  const fetchSummary = async (storyId: string): Promise<StorySummary | null> => {
+  const fetchSummary = async (
+    storyId: string
+  ): Promise<StorySummary | null> => {
     setIsLoading(true);
     setError(null);
 
     try {
       const response = await fetch(`/api/story-summaries?storyId=${storyId}`, {
-        method: "GET",
+        method: 'GET',
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to fetch summary");
-}
+        throw new Error(data.error || 'Failed to fetch summary');
+      }
       // Return the first summary if there are multiple (should be only one per story)
-      return data.summaries && data.summaries.length > 0 ? data.summaries[0] : null;
+      return data.summaries && data.summaries.length > 0
+        ? data.summaries[0]
+        : null;
     } catch (err: any) {
-      setError(err.message || "An error occurred");
+      setError(err.message || 'An error occurred');
       return null;
     } finally {
       setIsLoading(false);
-}
+    }
   };
 
   /**
    * Update a story summary
+   */
 
   const updateSummary = async (
-    id: string, 
+    id: string,
     updates: Partial<StorySummary>,
     regenerate: boolean = false,
     content?: string
@@ -107,10 +124,10 @@ interface UseStorySummaryResult {
     setError(null);
 
     try {
-      const response = await fetch("/api/story-summaries", {
-        method: "PUT",
+      const response = await fetch('/api/story-summaries', {
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           id,
@@ -123,19 +140,20 @@ interface UseStorySummaryResult {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to update summary");
-}
+        throw new Error(data.error || 'Failed to update summary');
+      }
       return data.summary;
     } catch (err: any) {
-      setError(err.message || "An error occurred");
+      setError(err.message || 'An error occurred');
       return null;
     } finally {
       setIsLoading(false);
-}
+    }
   };
 
   /**
    * Delete a story summary
+   */
 
   const deleteSummary = async (id: string): Promise<boolean> => {
     setIsLoading(true);
@@ -143,7 +161,7 @@ interface UseStorySummaryResult {
 
     try {
       const response = await fetch(`/api/story-summaries?id=${id}`, {
-        method: "DELETE",
+        method: 'DELETE',
       });
 
       const data = await response.json();
