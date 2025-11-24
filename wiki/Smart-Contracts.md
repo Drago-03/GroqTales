@@ -81,6 +81,7 @@ Developers and advanced users can interact with GroqTales smart contracts in sev
      click "Mint as NFT" in the AI Story Generator, the frontend handles the contract interaction,
      prompting your wallet (e.g., MetaMask) to confirm the transaction.
 2. **Directly via Web3 Libraries**:
+
    - Use libraries like `ethers.js` or `web3.js` to call contract methods programmatically. You'll
      need the contract address and ABI (see below).
    - **Example with ethers.js**:
