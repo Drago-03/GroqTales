@@ -99,6 +99,7 @@ AI's output, resulting in a more personalized story. Here's how to use each cust
   ```
 
   This helps the AI create consistent character arcs and interactions.
+
 - **World & Setting**: Detail the environment, time period, and locations where your story unfolds.
   A vivid setting anchors the narrative. For example:
 
@@ -107,6 +108,7 @@ AI's output, resulting in a more personalized story. Here's how to use each cust
   ```
 
   This guides the AI in crafting immersive descriptions and context.
+
 - **Plot Outline**: Outline the main events, conflicts, and resolution to structure the story's
   progression. This can be a high-level summary or specific beats. For example:
 
@@ -115,6 +117,7 @@ AI's output, resulting in a more personalized story. Here's how to use each cust
   ```
 
   This ensures the AI follows a coherent narrative arc.
+
 - **Themes & Motifs to Explore**: Specify underlying messages, recurring symbols, or emotional tones
   you want woven into the story. For example:
 
@@ -123,6 +126,7 @@ AI's output, resulting in a more personalized story. Here's how to use each cust
   ```
 
   This adds layers of meaning to the narrative.
+
 - **Additional Details & Specific Instructions**: Add any extra requests or elements to further
   tailor the output. This is a catch-all for unique ideas or stylistic preferences. For example:
 
