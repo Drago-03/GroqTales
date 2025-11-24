@@ -99,7 +99,7 @@
     "concat-stream": "github:maxogden/concat-stream",
     "cors": "^2.8.5",
     "date-fns": "^3.3.1",
-    "dotenv": "^16.5.0",
+    "dotenv": "^17.2.3",
     "embla-carousel-react": "^8.6.0",
     "ethers": "^6.11.1",
     "express": "^5.1.0",
