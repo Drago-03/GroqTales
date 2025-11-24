@@ -94,6 +94,7 @@ specifications for each endpoint will be added as they are implemented.
 Endpoints for generating AI-powered stories. These interact with Groq AI or other integrated models.
 
 - **Generate Story** (POST `/stories/generate`)
+
   - **Description**: Generate a story based on provided parameters like genre, title, and prompt.
   - **Request Body** (example):
 
@@ -133,6 +134,7 @@ Endpoints for generating AI-powered stories. These interact with Groq AI or othe
 Endpoints for minting stories as NFTs on the Monad blockchain.
 
 - **Mint NFT** (POST `/nfts/mint`)
+
   - **Description**: Mint a generated story as an NFT. Requires a connected wallet and Monad
     network.
   - **Request Body** (example):
@@ -172,6 +174,7 @@ Endpoints for minting stories as NFTs on the Monad blockchain.
 Endpoints for managing user accounts and profiles.
 
 - **Get User Profile** (GET `/users/profile`)
+
   - **Description**: Retrieve the profile information associated with the connected wallet or API
     key.
   - **Response** (example):
