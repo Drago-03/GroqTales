@@ -162,6 +162,7 @@ application locally.
 
    You'll see output in your terminal indicating the server is running, typically on port 3000
    (e.g., `ready - started server on 0.0.0.0:3000`).
+
 2. **Access GroqTales in Your Browser**: Open your preferred web browser and navigate to:
 
    ```
@@ -169,6 +170,7 @@ application locally.
    ```
 
    You should see the GroqTales application interface load, confirming a successful setup.
+
 3. **Hot Reloading**: The development server supports hot reloading, meaning any changes you make to
    the code will automatically refresh the application in your browser, speeding up development and
    testing.
@@ -218,6 +220,7 @@ on track:
   ```
 
   Download the correct version from [nodejs.org](https://nodejs.org/) if necessary.
+
 - **Dependency Errors**: If `npm install` fails with errors, try clearing the `node_modules`
   directory and `package-lock.json` file, then reinstall:
 
@@ -230,6 +233,7 @@ on track:
   ```
 
   Ensure your package manager (npm or yarn) is up to date.
+
 - **Environment Variables Missing**: If the application fails to start with errors about missing
   environment variables, verify that `.env.local` is in the project root and all required variables
   are set. Check the terminal output for specific missing keys and refer to
@@ -244,6 +248,7 @@ on track:
 
   Alternatively, start the server on a different port by modifying `package.json` or using an
   environment variable (check Next.js documentation).
+
 - **Wallet Connection Issues**: If connecting a wallet fails, ensure the wallet extension (e.g.,
   MetaMask) is installed, unlocked, and granted permission to interact with the site. Use a
   compatible browser (Chrome or Firefox) and disable any extensions that might interfere with Web3
