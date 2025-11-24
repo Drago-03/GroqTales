@@ -37,23 +37,24 @@ and help you set up the project completely.
 You need a place to store data. We use MongoDB.
 
 1. **Create an Account**: Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) and sign up
-    (it's free).
+   (it's free).
 2. **Create a Cluster**: Follow the prompts to create a free "Shared" cluster.
 3. **Get Connection String**:
-    - Click "Connect".
-    - Choose "Drivers".
-    - Copy the string that looks like:
-      `mongodb+srv://<username>:<password>@cluster0.mongodb.net/?retryWrites=true&w=majority`.
+   - Click "Connect".
+   - Choose "Drivers".
+   - Copy the string that looks like:
+     `mongodb+srv://<username>:<password>@cluster0.mongodb.net/?retryWrites=true&w=majority`.
 4. **Update Environment**:
-    - Open the `.env` file in the project root (create one if it doesn't exist, copy from
-      `.env.example`).
-    - Add/Update this line:
 
-      ```env
-      MONGODB_URI=your_copied_connection_string_here
-      ```
+   - Open the `.env` file in the project root (create one if it doesn't exist, copy from
+     `.env.example`).
+   - Add/Update this line:
 
-    - **Important**: Replace `<password>` with your actual database user password.
+     ```env
+     MONGODB_URI=your_copied_connection_string_here
+     ```
+
+   - **Important**: Replace `<password>` with your actual database user password.
 
 ### Step 2: Install Dependencies
 
@@ -62,16 +63,16 @@ We need to make sure all the tools are installed.
 1. Open your terminal in the project folder.
 2. Run:
 
-    ```bash
-    npm install
-    ```
+   ```bash
+   npm install
+   ```
 
 3. We also need `concurrently` to run both servers at once. I will install this for you
-    automatically, but just so you know:
+   automatically, but just so you know:
 
-    ```bash
-    npm install concurrently --save-dev
-    ```
+   ```bash
+   npm install concurrently --save-dev
+   ```
 
 ### Step 3: Running the App
 
@@ -79,9 +80,9 @@ Once everything is set up:
 
 1. Run:
 
-    ```bash
-    npm start
-    ```
+   ```bash
+   npm start
+   ```
 
 2. This will start **BOTH** the Frontend (localhost:3000) and the Backend (localhost:3001).
 
