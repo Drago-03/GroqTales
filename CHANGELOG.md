@@ -18,13 +18,14 @@ _Planned changes will appear here before the next tagged release._
 ### Bug Fixes
 - **Deployment Fix**: Resolved `npm ci` ERESOLVE error caused by `react-native` peer dependency conflict
   - Added `overrides` in `package.json` to pin `react-native` to `^0.76.0`
+  - Added `overrides` for `@noble/curves` to `^1.9.7` to resolve lockfile synchronization issues
   - Ensures compatibility with React 18 and prevents transitive dependencies from pulling in React 19
-  - Regenerated `package-lock.json` to reflect the override
+  - Regenerated `package-lock.json` to reflect the overrides
   - Verified successful `npm ci` and build locally
 
 ### Files Modified
 - `package.json` - Added `overrides` section
-- `package-lock.json` - Regenerated with locked `react-native` version
+- `package-lock.json` - Regenerated with locked versions
 
 ## [1.2.8] - 2025-11-24
 

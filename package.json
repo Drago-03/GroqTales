@@ -183,6 +183,7 @@
     }
   },
   "overrides": {
-    "react-native": "^0.76.0"
+    "react-native": "^0.76.0",
+    "@noble/curves": "^1.9.7"
   }
 }
