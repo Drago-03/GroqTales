@@ -13,6 +13,19 @@ Active full support: 1.1.2 (latest), 1.1.1 (previous). Security maintenance (cri
 
 _Planned changes will appear here before the next tagged release._
 
+## [1.2.9] - 2025-11-24
+
+### Bug Fixes
+- **Deployment Fix**: Resolved `npm ci` ERESOLVE error caused by `react-native` peer dependency conflict
+  - Added `overrides` in `package.json` to pin `react-native` to `^0.76.0`
+  - Ensures compatibility with React 18 and prevents transitive dependencies from pulling in React 19
+  - Regenerated `package-lock.json` to reflect the override
+  - Verified successful `npm ci` and build locally
+
+### Files Modified
+- `package.json` - Added `overrides` section
+- `package-lock.json` - Regenerated with locked `react-native` version
+
 ## [1.2.8] - 2025-11-24
 
 ### Technical Improvements

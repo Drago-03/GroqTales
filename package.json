@@ -181,5 +181,8 @@
       "pre-commit": "lint-staged",
       "pre-push": "npm run type-check && npm run test"
     }
+  },
+  "overrides": {
+    "react-native": "^0.76.0"
   }
 }
