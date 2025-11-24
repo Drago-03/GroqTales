@@ -40,6 +40,7 @@ already started, follow these steps:
    ```
 
    Wait for the server to start (you'll see output like `ready - started server on 0.0.0.0:3000`).
+
 3. **Access GroqTales**: Open your web browser and go to:
 
    ```

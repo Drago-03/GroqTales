@@ -16,22 +16,26 @@ _Planned changes will appear here before the next tagged release._
 ## [1.2.7] - 2025-11-22
 
 ### Bug Fixes
+
 - **Deployment Fix**: Resolved `npm ci` error "Missing: @standard-schema/spec@1.0.0 from lock file"
   - Regenerated `package-lock.json` to properly sync with `package.json`
   - Fixed version mismatch where lock file had `1.0.0-beta.4` but deployment expected `1.0.0`
   - Ensures successful deployment on Vercel and other CI/CD platforms
 
 ### Technical Improvements
+
 - Improved package-lock.json integrity and consistency
 - Eliminated deployment blocking errors related to dependency resolution
 
 ### Files Modified
+
 - `package.json` - Updated version to 1.2.7
 - `package-lock.json` - Regenerated to fix dependency version mismatches
 
 ## [1.2.6] - 2025-11-22
 
 ### Bug Fixes
+
 - **Vercel Deployment Fix**: Resolved `npm ci` package-lock.json sync error that prevented deployment
   - Updated Node.js engine specification from exact version `20.18.0` to `>=20.0.0`
   - Regenerated `package-lock.json` to sync with `package.json` dependencies
@@ -39,11 +43,13 @@ _Planned changes will appear here before the next tagged release._
   - Eliminated Vercel build warnings about unsupported engine version format
 
 ### Technical Improvements
+
 - Changed Node.js version constraint to allow flexible minor/patch versions
 - Improved compatibility with Vercel's Node.js version selection system
 - Ensured package-lock.json stays in sync with package.json
 
 ### Files Modified
+
 - `package.json` - Updated engines.node from `20.18.0` to `>=20.0.0`
 - `package-lock.json` - Regenerated to sync with package.json
 
