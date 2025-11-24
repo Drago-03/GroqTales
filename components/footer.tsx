@@ -80,7 +80,7 @@ export function Footer() {
                   <img
                     src="/logo.png"
                     alt="Logo"
-                    className="relative w-32 h-32 object-contain border-4 border-black bg-white p-2 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all duration-300"
+                    className="relative w-48 h-48 object-contain border-4 border-black bg-neutral-900 p-2 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all duration-300"
                   />
                 </div>
               </div>

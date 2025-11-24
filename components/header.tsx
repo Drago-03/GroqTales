@@ -119,8 +119,8 @@ export function Header() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       className={cn(
-        'border-b-4 border-black sticky top-0 z-50 transition-all duration-300 comic-text bg-white',
-        scrolled && 'shadow-[0px_4px_0px_0px_rgba(0,0,0,1)]'
+        'border-b-4 border-black sticky top-0 z-50 transition-all duration-300 comic-text bg-[#36454F]',
+        scrolled && 'shadow-[0px_4px_0px_0px_rgba(255,255,255,0.2)]'
       )}
     >
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -132,7 +132,7 @@ export function Header() {
             <motion.div
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-              className="w-9 h-9 rounded-full bg-primary/20 backdrop-blur-sm flex items-center justify-center doodle-wiggle overflow-hidden"
+              className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center doodle-wiggle overflow-hidden border-2 border-white/20"
             >
               <div className="relative w-full h-full">
                 <Image
@@ -144,9 +144,6 @@ export function Header() {
                 />
               </div>
             </motion.div>
-            <span className="text-xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent doodle-heading comic-text-bold">
-              GroqTales
-            </span>
           </Link>
 
           <nav className="hidden md:flex items-center space-x-2">
@@ -166,7 +163,7 @@ export function Header() {
                 {item.type === 'dropdown' ? (
                   <DropdownMenu>
                     <DropdownMenuTrigger
-                      className={`px-4 py-2 text-sm rounded-md transition-all duration-200 flex items-center text-foreground/90 hover:text-foreground hover:bg-white/5 backdrop-blur-sm comic-pop comic-text`}
+                      className={`px-4 py-2 text-sm rounded-md transition-all duration-200 flex items-center text-white hover:text-white/80 hover:bg-white/10 backdrop-blur-sm comic-pop comic-text`}
                     >
                       {item.icon}
                       {item.label}
@@ -189,7 +186,7 @@ export function Header() {
                 ) : item.href ? (
                   <Link
                     href={item.href}
-                    className={`px-4 py-2 text-sm rounded-md transition-all duration-200 flex items-center text-foreground/90 hover:text-foreground hover:bg-white/5 backdrop-blur-sm comic-pop comic-text`}
+                    className={`px-4 py-2 text-sm rounded-md transition-all duration-200 flex items-center text-white hover:text-white/80 hover:bg-white/10 backdrop-blur-sm comic-pop comic-text`}
                   >
                     {item.icon}
                     {item.label}

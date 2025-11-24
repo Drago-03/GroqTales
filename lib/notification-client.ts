@@ -1,25 +1,73 @@
-import { toast } from '@/components/ui/use-toast';
+import {
+  type SendNotificationRequest,
+  sendNotificationResponseSchema,
+} from "@farcaster/frame-sdk";
+import { getUserNotificationDetails, type FrameNotificationDetails } from "@/lib/notification";
 
-/**
- * Sends a notification to a recipient address with a title and body.
- * @param params - The notification parameters including fid, title, body, and optional details
- * @returns Promise with success status and optional error message
- */
-export async function sendFrameNotification(params: {
-  fid: string;
+const appUrl = process.env.NEXT_PUBLIC_URL || "";
+
+type SendFrameNotificationResult =
+  | {
+    state: "error";
+    error: unknown;
+  }
+  | { state: "no_token" }
+  | { state: "rate_limit" }
+  | { state: "success" };
+
+export type SendFrameNotificationParams = {
+  fid: number;
   title: string;
   body: string;
-  notificationDetails?: any;
-}): Promise<{ success: boolean; error?: string }> {
-  const { fid, title, body, notificationDetails } = params;
-  // Implementation for sending notification to a specific FID
-  // This is a placeholder for actual notification logic
-  console.log(
-    `Sending notification to FID: ${fid}, Title: ${title}, Body: ${body}, Details: ${
-      notificationDetails ? JSON.stringify(notificationDetails) : 'none'
-    }`
-  );
+  notificationDetails?: FrameNotificationDetails | null;
+};
 
-  // Return a mock response for now
-  return { success: true };
+export async function sendFrameNotification({
+  fid,
+  title,
+  body,
+  notificationDetails,
+}: {
+  fid: number;
+  title: string;
+  body: string;
+  notificationDetails?: FrameNotificationDetails | null;
+}): Promise<SendFrameNotificationResult> {
+  if (!notificationDetails) {
+    notificationDetails = await getUserNotificationDetails(fid);
+  }
+  if (!notificationDetails) {
+    return { state: "no_token" };
+  }
+
+  const response = await fetch(notificationDetails.url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      notificationId: crypto.randomUUID(),
+      title,
+      body,
+      targetUrl: appUrl,
+      tokens: [notificationDetails.token],
+    } satisfies SendNotificationRequest),
+  });
+
+  const responseJson = await response.json();
+
+  if (response.status === 200) {
+    const responseBody = sendNotificationResponseSchema.safeParse(responseJson);
+    if (responseBody.success === false) {
+      return { state: "error", error: responseBody.error.errors };
+    }
+
+    if (responseBody.data.result.rateLimitedTokens.length) {
+      return { state: "rate_limit" };
+    }
+
+    return { state: "success" };
+  }
+
+  return { state: "error", error: responseJson };
 }

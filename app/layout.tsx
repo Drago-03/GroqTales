@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 
 import type { Metadata } from 'next';
-import { Inter, Bangers } from 'next/font/google';
+import { Inter, Comic_Neue } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
@@ -28,10 +28,10 @@ const inter = Inter({
   fallback: ['system-ui', 'sans-serif'],
 });
 
-const bangers = Bangers({
-  weight: '400',
+const comicNeue = Comic_Neue({
+  weight: ['300', '400', '700'],
   subsets: ['latin'],
-  variable: '--font-bangers',
+  variable: '--font-comic',
   display: 'swap',
 });
 
@@ -188,7 +188,7 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
       </head>
-      <body className={`${inter.className} ${bangers.variable} optimize-paint`}>
+      <body className={`${inter.className} ${comicNeue.variable} optimize-paint`}>
         <Web3Provider>
           <QueryProvider>
             <ThemeProvider
@@ -214,8 +214,8 @@ export default function RootLayout({
             </ThemeProvider>
           </QueryProvider>
         </Web3Provider>
+        <BackToTop />
       </body>
-      <BackToTop />
     </html>
   );
 }

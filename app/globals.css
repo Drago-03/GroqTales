@@ -104,15 +104,10 @@
     font-family: var(--font-comic);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     /* Gen-Z comic style - bold outline text */
     color: #000000;
-    text-shadow:
-      3px 3px 0px #ff0000,
-      -1px -1px 0px #ffffff,
-      1px -1px 0px #ffffff,
-      -1px 1px 0px #ffffff,
-      1px 1px 0px #ffffff;
+    text-shadow: 2px 2px 0px #ffffff;
     line-height: 1.2;
   }
 

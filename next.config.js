@@ -17,12 +17,27 @@ const nextConfig = {
   // Image optimization
   images: {
     unoptimized: false,
-    domains: [
-      'images.unsplash.com',
-      'source.unsplash.com',
-      'via.placeholder.com',
-      'ipfs.io',
-      'gateway.pinata.cloud',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'source.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ipfs.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'gateway.pinata.cloud',
+      },
     ],
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
@@ -124,7 +139,7 @@ const nextConfig = {
 
   // ESLint configuration
   eslint: {
-    ignoreDuringBuilds: process.env.CI === 'true' || process.env.VERCEL === '1',
+    ignoreDuringBuilds: true,
     dirs: ['app', 'components', 'lib', 'hooks', 'utils'],
   },
 

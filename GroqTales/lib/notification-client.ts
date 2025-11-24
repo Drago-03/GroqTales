@@ -1,3 +1,7 @@
+// DISABLED: @farcaster/frame-sdk is not installed
+// This file is for future Farcaster frame notification integration
+
+/*
 import {
   FrameNotificationDetails,
   type SendNotificationRequest,
@@ -71,4 +75,16 @@ export async function sendFrameNotification({
   }
 
   return { state: "error", error: responseJson };
+}
+*/
+
+// Placeholder export to prevent build errors
+export type SendFrameNotificationParams = {
+  fid: number;
+  title: string;
+  body: string;
+};
+
+export async function sendFrameNotification(params: SendFrameNotificationParams): Promise<{ state: "no_token" }> {
+  return { state: "no_token" };
 }

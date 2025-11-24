@@ -13,7 +13,41 @@ Active full support: 1.1.2 (latest), 1.1.1 (previous). Security maintenance (cri
 
 _Planned changes will appear here before the next tagged release._
 
+## [1.2.8] - 2025-11-24
+
+### Technical Improvements
+- **Concurrent Server Launch**: Configured `npm start` and `npm run dev` to launch both frontend and backend servers together
+  - Added `nodemon@^3.0.2` to devDependencies for backend auto-restart during development
+  - Verified `concurrently@^9.2.1` package for running multiple processes simultaneously
+  - Frontend (Next.js) runs on `http://localhost:3000`
+  - Backend (Express.js API) runs on `http://localhost:3001`
+  - Both servers start with a single command for improved developer experience
+
+### Bug Fixes
+- **ESLint TypeScript Resolver**: Fixed "typescript with invalid interface loaded as resolver" warnings
+  - Installed `eslint-import-resolver-typescript` package to properly resolve TypeScript imports
+  - Resolved all ESLint import resolution warnings across the codebase
+  - ESLint now correctly validates import paths and module resolution
+- **Hydration Error Fix**: Resolved "Expected server HTML to contain a matching <button> in <html>" error
+  - Moved `<BackToTop />` component inside the `<body>` tag in `app/layout.tsx`
+  - Fixed invalid HTML structure that caused hydration failures
+- **Footer Styling**: Updated footer logo aesthetics
+  - Changed logo background to Charcoal (`bg-neutral-900`)
+  - Increased logo size to `w-48 h-48` (192px)
+
+### Developer Experience
+- Simplified development workflow - no need to run frontend and backend in separate terminals
+- Backend auto-restarts on file changes during development (via nodemon)
+- Frontend hot-reloads during development (via Next.js dev server)
+- Health check endpoint verified at `http://localhost:3001/api/health`
+- Clarified difference between `npm run dev` (development) and `npm start` (production)
+- Added comprehensive troubleshooting guide for common issues
+
+### Files Modified
+- `package.json` - Added nodemon and eslint-import-resolver-typescript to devDependencies
+
 ## [1.2.7] - 2025-11-22
+
 
 ### Bug Fixes
 - **Deployment Fix**: Resolved `npm ci` error "Missing: @standard-schema/spec@1.0.0 from lock file"

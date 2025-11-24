@@ -1,9 +1,11 @@
-import type { FrameNotificationDetails } from '@farcaster/frame-sdk';
-
+// import type FrameNotificationDetails from '@farcaster/frame-sdk';
 import { redis } from './redis';
 
 const notificationServiceKey =
   process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME ?? 'minikit';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type FrameNotificationDetails = any;
 
 /**
  * Gets the Redis key for user notification details

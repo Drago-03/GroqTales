@@ -63,8 +63,8 @@ describe('Admin Actions', () => {
 
     const actions = getAdminActions();
     expect(actions.length).toBe(1);
-    expect(actions[0].type).toBe('like');
-    expect(actions[0].storyId).toBe(storyId);
+    expect(actions[0]!.type).toBe('like');
+    expect(actions[0]!.storyId).toBe(storyId);
   });
 
   test('admin can comment on a story', async () => {
@@ -81,9 +81,9 @@ describe('Admin Actions', () => {
 
     const actions = getAdminActions();
     expect(actions.length).toBe(1);
-    expect(actions[0].type).toBe('comment');
-    expect(actions[0].storyId).toBe(storyId);
-    expect(actions[0].content).toBe(content);
+    expect(actions[0]!.type).toBe('comment');
+    expect(actions[0]!.storyId).toBe(storyId);
+    expect(actions[0]!.content).toBe(content);
   });
 
   test('admin can delete a story', async () => {
@@ -98,8 +98,8 @@ describe('Admin Actions', () => {
 
     const actions = getAdminActions();
     expect(actions.length).toBe(1);
-    expect(actions[0].type).toBe('delete');
-    expect(actions[0].storyId).toBe(storyId);
+    expect(actions[0]!.type).toBe('delete');
+    expect(actions[0]!.storyId).toBe(storyId);
   });
 
   test('admin can create a post', async () => {
@@ -114,8 +114,8 @@ describe('Admin Actions', () => {
 
     const actions = getAdminActions();
     expect(actions.length).toBe(1);
-    expect(actions[0].type).toBe('post');
-    expect(actions[0].content).toBe(content);
+    expect(actions[0]!.type).toBe('post');
+    expect(actions[0]!.content).toBe(content);
   });
 });
 
@@ -139,9 +139,9 @@ describe('Admin Actions History', () => {
 
     expect(actions.length).toBe(3);
     // Most recent action should be first
-    expect(actions[0].type).toBe('comment');
-    expect(actions[1].type).toBe('like');
-    expect(actions[2].type).toBe('post');
+    expect(actions[0]!.type).toBe('comment');
+    expect(actions[1]!.type).toBe('like');
+    expect(actions[2]!.type).toBe('post');
   });
 
   test('clearAdminActions removes all actions', async () => {
